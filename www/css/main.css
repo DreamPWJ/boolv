@@ -1,5 +1,5 @@
 
-#logo{
+#logo {
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
@@ -8,4 +8,38 @@
   border-radius: 50%;
 }
 
+.main-list {
+  margin-top: -0.3rem;
+  padding: 0;
 
+}
+
+.main-list a {
+  height: 5rem;
+  line-height: 5rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.main-list .col p {
+  display: inline-block;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  line-height: 2.6rem;
+  vertical-align: middle;
+}
+
+
+
+.main-list .col p i {
+  color: #ffffff;
+  font-size: 1.5rem;
+
+}
+
+.main-list .col span {
+  padding-left: 0.3rem;
+  color: #585858;
+}
