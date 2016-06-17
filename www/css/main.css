@@ -3,9 +3,9 @@
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: 0.1rem;
   border: 2px solid #ffffff;
   vertical-align: text-bottom;
+  border-radius: 50%;
 }
 
 
