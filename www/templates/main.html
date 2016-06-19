@@ -1,47 +1,145 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button icon ion-android-person no-border" ng-href="#/login" ></a>
+    <a class="button icon ion-android-person no-border" ng-href="#/login"></a>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 博绿网</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-plus no-border"></button>
+    <button class="button icon ion-plus no-border" ng-click="openPopover($event)" ></button>
   </ion-nav-buttons>
 
-  <ion-content overflow-scroll="true" scroll="false"  class="stable-bg">
+  <ion-content overflow-scroll="false" class="stable-bg">
     <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="false">
       <ion-slide><img ng-src="img/banner/banner1.jpg" alt="" class="full-image"/></ion-slide>
       <ion-slide><img ng-src="img/banner/banner2.jpg" alt="" class="full-image"/></ion-slide>
       <ion-slide><img ng-src="img/banner/banner3.jpg" alt="" class="full-image"/></ion-slide>
     </ion-slide-box>
 
-    <div class="row text-center light-bg main-list" >
+    <div class="row text-center light-bg main-list">
       <a class="col"><p class="balanced-bg"><i class="icon ion-forward"></i></p>
         <span>我要卖货</span>
       </a>
-      <a  class="col" ng-href=""><p class="calm-bg" ><i class="icon ion-android-cart"></i></p>
+      <a class="col" ng-href=""><p class="calm-bg"><i class="icon ion-android-cart"></i></p>
         <span>我要买货</span></a>
 
     </div>
-    <div class="row text-center white-bg main-list" >
+    <div class="row text-center light-bg main-list">
       <a class="col"><p class="energized-bg"><i class="icon ion-filing"></i></p>
         <span>接单供货</span></a>
-      <a class="col "><p class="balanced-bg"><i class="icon ion-social-usd"></i></p>
+      <a class="col"><p class="balanced-bg" style="margin-left: 1.2rem;"><i class="icon ion-social-usd"></i></p>
         <span>申请预收款</span>
       </a>
-
     </div>
 
-    <div class="row text-center white-bg main-list" >
-      <a class="col"><p class="calm-bg"><i class="icon ion-android-train"></i></p>
-        <span>发货</span></a>
-      <a class="col "><p class="balanced-bg"><i class="icon ion-compose"></i></p>
-        <span>签收</span>
+    <div class="row text-center calm-bg second-list" style="margin-top: 0.3rem">
+      <a ng-href="" class="col "><p class="balanced-bg "><i class="icon ion-android-train"></i></p>
+        <p class="light">发货</p></a>
+      <a class="col "><p class="assertive-bg"><i class="icon ion-compose"></i></p>
+        <p class="light">签收</p></a>
+      <a class="col"><p class="energized-bg"><i class="icon ion-android-contact"></i></p>
+        <p class="light">验货</p></a>
+    </div>
+    <p class="padding-top"></p>
+    <div class="list light-bg ">
+      <a class="item item-borderless">
+        <strong>行情报价</strong>
+        <span class="item-note">详情>></span>
       </a>
-      <a class="col" ><p class="energized-bg"><i class="icon ion-android-contact"></i></p>
-        <span>验货</span></a>
+      <a class="item item-thumbnail-left" ng-href="#">
+        <img src="img/main/phone.png" alt="">
+        <h2>拆解机 <span class="calm">[按量报价]</span></h2>
+        <p>主板、屏幕、按键板、壳四大部分完整</p>
+        <p>一万台以下 一万~5万台 5万台以上</p>
+        <p>3.5元/台 3.6元/台 3.7元/台</p>
+      </a>
+      <a class="item item-thumbnail-left" ng-href="#">
+        <img src="img/main/phone.png" alt="">
+        <h2>拆解机 <span class="calm">[按量报价]</span></h2>
+        <p>主板、屏幕、按键板、壳四大部分完整</p>
+        <p>一万台以下 一万~5万台 5万台以上</p>
+        <p>3.5元/台 3.6元/台 3.7元/台</p>
+      </a>
+      <a class="item item-thumbnail-left" ng-href="#">
+        <img src="img/main/phone.png" alt="">
+        <h2>拆解机 <span class="calm">[按量报价]</span></h2>
+        <p>主板、屏幕、按键板、壳四大部分完整</p>
+        <p>一万台以下 一万~5万台 5万台以上</p>
+        <p>3.5元/台 3.6元/台 3.7元/台</p>
+      </a>
+    </div>
+    <div class="list light-bg">
+      <a ng-href="" class="item item-borderless">
+        <strong>交易公告</strong>
+      </a>
+      <a ng-href="" class="item">
+        拆解机分类标准
+        <span class="item-note">2016-06-19</span>
+      </a>
+      <a ng-href="" class="item">
+        拆解机分类标准
+        <span class="item-note">2016-06-19</span>
+      </a>
+      <a ng-href="" class="item">
+        拆解机分类标准
+        <span class="item-note">2016-06-19</span>
+      </a>
+      <a ng-href="" class="item">
+        拆解机分类标准
+        <span class="item-note">2016-06-19</span>
+      </a>
+      <a ng-href="" class="item">
+        拆解机分类标准
+        <span class="item-note">2016-06-19</span>
+      </a>
+    </div>
+
+    <div class="list light-bg">
+      <a ng-href="" class="item item-borderless">
+        <strong>公司动态</strong>
+      </a>
+      <a ng-href="" class="item">
+        公司动态新闻
+        <span class="item-note">2016-06-20</span>
+      </a>
+      <a ng-href="" class="item">
+        公司动态新闻
+        <span class="item-note">2016-06-20</span>
+      </a> <a ng-href="" class="item">
+      公司动态新闻
+      <span class="item-note">2016-06-20</span>
+    </a> <a ng-href="" class="item">
+      公司动态新闻
+      <span class="item-note">2016-06-20</span>
+    </a> <a ng-href="" class="item">
+      公司动态新闻
+      <span class="item-note">2016-06-20</span>
+    </a>
     </div>
   </ion-content>
-
+  <script id="my-popover.html" type="text/ng-template">
+    <ion-popover-view>
+      <ion-content overflow-scroll="false" >
+         <div class="list">
+           <a ng-href="" class="item item-icon-left">
+             <i class="icon ion-forward"></i>
+             我要卖货
+           </a>
+           <a ng-href="" class="item item-icon-left">
+             <i class="icon ion-android-cart"></i>
+             我要买货
+           </a>
+           <a ng-href="" class="item item-icon-left">
+             <i class="icon ion-star"></i>
+             直供拆解
+           </a>
+           <a ng-href="" class="item item-icon-left">
+             <i class="icon ion-camera"></i>
+             扫一扫
+           </a>
+         </div>
+      </ion-content>
+    </ion-popover-view>
+  </script>
 </ion-view>
+

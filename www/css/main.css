@@ -33,7 +33,7 @@
 
 
 
-.main-list .col p i {
+.main-list .col p i ,.second-list p i{
   color: #ffffff;
   font-size: 1.5rem;
 
@@ -42,4 +42,18 @@
 .main-list .col span {
   padding-left: 0.3rem;
   color: #585858;
+}
+
+.second-list{
+
+}
+.second-list a{
+  height: 5rem;
+}
+.second-list a p:first-child{
+  margin: 0.2rem auto;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  line-height: 2.6rem;
 }

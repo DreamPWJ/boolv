@@ -6,17 +6,25 @@
     <form name="loginForm">
       <div class="list card">
         <label class="item item-input">
-          <span class="input-label icon ion-person"> 账号</span>
-          <input type="text" ng-model="user.username" required>
+          <div class="row">
+            <span class="input-label icon ion-android-phone-portrait col-20"> 手机号</span>
+            <input type="text" ng-model="user.username" class="col-80" required>
+          </div>
+
         </label>
         <label class="item item-input">
-          <span class="input-label icon ion-unlocked"> 密码</span>
-          <input type="password" ng-model="user.password" required="">
+          <div class="row">
+            <span class="input-label icon ion-unlocked col-20"> 验证码</span>
+            <input type="password" ng-model="user.password" class="col-60" required>
+          </div>
         </label>
-
+        <ion-checkbox class="checkbox-calm">
+          同意登录协议
+        </ion-checkbox>
       </div>
       <div class="padding-horizontal">
-        <button class="button full-image button-calm " ng-click="loginSubmit()" ng-disabled="!loginForm.$valid">登录</button>
+        <button class="button full-image button-calm " ng-click="loginSubmit()" ng-disabled="!loginForm.$valid">登录
+        </button>
       </div>
     </form>
   </ion-content>

@@ -20,8 +20,18 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicModal, $stateParams, $http, BooLv, $ionicLoading) {
-
+  .controller('MainCtrl', function ($scope, $state, $rootScope,$ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading) {
+    $ionicPopover.fromTemplateUrl('my-popover.html', {
+      scope: $scope,
+    }).then(function(popover) {
+      $scope.popover = popover;
+    });
+    $scope.openPopover = function($event) {
+      $scope.popover.show($event);
+    };
+    $scope.closePopover = function() {
+      $scope.popover.hide();
+    };
 
   })
   .controller('WorklistCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
@@ -55,5 +65,5 @@ angular.module('starter.controllers', [])
     }
 
   })
-  
+
 
