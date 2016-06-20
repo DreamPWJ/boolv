@@ -40,3 +40,16 @@
   width: 5rem;
   height: 5rem;
 }
+.authcode{
+  position: absolute;
+  top: 3.2rem;
+  right: 0.5rem;
+  height: 40px;
+  background-color:#33cd5f;
+  border: none;
+  color: #ffffff;
+  z-index: 1000;
+}
+.authcode:hover{
+  background-color: #0fcd1a;
+}

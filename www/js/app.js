@@ -5,43 +5,43 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config','ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'ngCordova'])
 
-  .run(function ($ionicPlatform,$rootScope,$ionicPopup,$location,$ionicHistory) {
+  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory) {
     $ionicPlatform.ready(function () {
-        //主页面显示退出提示框
-        $ionicPlatform.registerBackButtonAction(function (e) {
-          e.preventDefault();
-          function showConfirm() {
-            var confirmPopup = $ionicPopup.confirm({
-              title: '<strong>退出应用?</strong>',
-              template: '你确定要退出博绿网应用吗?',
-              okText: '退出',
-              cancelText: '取消'
-            });
+      //主页面显示退出提示框
+      $ionicPlatform.registerBackButtonAction(function (e) {
+        e.preventDefault();
+        function showConfirm() {
+          var confirmPopup = $ionicPopup.confirm({
+            title: '<strong>退出应用?</strong>',
+            template: '你确定要退出博绿网应用吗?',
+            okText: '退出',
+            cancelText: '取消'
+          });
 
-            confirmPopup.then(function (res) {
-              if (res) {
-                ionic.Platform.exitApp();
-              } else {
-                // Don't close
-              }
-            });
-          }
+          confirmPopup.then(function (res) {
+            if (res) {
+              ionic.Platform.exitApp();
+            } else {
+              // Don't close
+            }
+          });
+        }
 
-          // Is there a page to go back to? 制定页面返回退出程序
-          if ($location.path() == '/tab/main' ||$location.path() == '/login' || $location.path() == '/tab/account') {
-            showConfirm();
-          } else if ($ionicHistory.backView()) {
-            // Go back in history
-            $ionicHistory.goBack();
-          } else {
-            // This is the last page: Show confirmation popup
-            showConfirm();
-          }
+        // Is there a page to go back to? 制定页面返回退出程序
+        if ($location.path() == '/tab/main' || $location.path() == '/login' || $location.path() == '/tab/account') {
+          showConfirm();
+        } else if ($ionicHistory.backView()) {
+          // Go back in history
+          $ionicHistory.goBack();
+        } else {
+          // This is the last page: Show confirmation popup
+          showConfirm();
+        }
 
-          return false;
-        }, 101);
+        return false;
+      }, 101);
 
       //hide splash immediately 加载完成立刻隐藏启动画面
       if (navigator && navigator.splashscreen) {
@@ -86,11 +86,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     // Each state's controller can be found in controllers.js
     $stateProvider
 
-      // setup an abstract state for the tabs directive
+    // setup an abstract state for the tabs directive
       .state('tab', {
         url: '/tab',
         abstract: true,
-        cache:false,
+        cache: false,
         templateUrl: 'templates/tabs.html',
         controller: 'TabCtrl'
       })
@@ -106,20 +106,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
-      .state('tab.worklist', {
-        url: '/worklist',
-        cache:false,
-        views: {
-          'tab-worklist': {
-            templateUrl: 'templates/worklist.html',
-            controller: 'WorklistCtrl'
-          }
-        }
-      })
+
 
       .state('tab.account', {
         url: '/account',
-        cache:false,
+        cache: false,
         views: {
           'tab-account': {
             templateUrl: 'templates/account.html',
@@ -127,18 +118,35 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
-
       .state('login', {
         url: '/login',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
+      })
+      .state('tab.searchorder', {
+        url: '/searchorder',
+        cache: false,
+        views: {
+          'tab-searchorder': {
+            templateUrl: 'templates/searchorder.html',
+            controller: 'SearchOrderCtrl'
+          }
+        }
+      })
+      .state('tab.news', {
+        url: '/news',
+        cache: false,
+        views: {
+          'tab-news': {
+            templateUrl: 'templates/news.html',
+            controller: 'NewsCtrl'
+          }
+        }
       });
-
     // if none of the above states are matched, use this as the fallback
 
-      $urlRouterProvider.otherwise('/tab/main');
-
+    $urlRouterProvider.otherwise('/tab/main');
 
 
   });

@@ -34,10 +34,7 @@ angular.module('starter.controllers', [])
     };
 
   })
-  .controller('WorklistCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
 
-
-  })
 
   .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
@@ -63,6 +60,14 @@ angular.module('starter.controllers', [])
       })
 
     }
+
+  })
+  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+
+
+  })
+  .controller('NewsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+
 
   })
 
