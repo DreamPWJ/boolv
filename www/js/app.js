@@ -59,7 +59,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         //状态栏颜色设置
         // org.apache.cordova.statusbar required
         StatusBar.overlaysWebView(false);
-        StatusBar.backgroundColorByHexString("#33cd5f");
+        StatusBar.backgroundColorByHexString("#11c1f3");
       }
     });
   })
