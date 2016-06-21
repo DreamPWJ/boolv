@@ -44,14 +44,11 @@
   color: #585858;
 }
 
-.second-list{
-
-}
 .second-list a{
   height: 5rem;
 }
 .second-list a p:first-child{
-  margin: 0.2rem auto;
+  margin: 0.4rem auto;
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 50%;

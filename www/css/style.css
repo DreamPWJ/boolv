@@ -54,3 +54,11 @@
 .white-bg{
   background-color: #ffffff;
 }
+/* 修改android平台默认样式*/
+.platform-android .popover{
+  margin-top: 0;!important;
+  background-color: #ffffff!important;
+}
+.platform-android .popover .item {
+  background-color: #ffffff!important;
+}
