@@ -1,8 +1,187 @@
 <ion-view>
   <ion-nav-title>
-    <h1 class="title icon ion-search"> 查单</h1>
+    <h1 class="title icon ion-search"> 我的{{title}}</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false"  class="stable-bg ">
-  </ion-content>
+  <ion-tabs class="has-subheader tabs-calm  tabs-striped  tabs-top ">
+    <ion-tab title="卖货单" on-select="searchsettitle('卖货单')">
+      <ion-view>
+        <ion-content class="stable-bg" overflow-scroll="false">
+          <div class="list" style="margin-top: -1px;">
+            <a ng-href="" class="item">
+              <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+              <p>卖货人 :张三</p>
+              <p>手机号 :1893394533</p>
+              <p>卖货品类 :拆解机 、二手手机 、电池</p>
+              <p>订单状态 :已验货</p>
+            </a>
+            <a ng-href="" class="item">
+              <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+              <p>卖货人 :张三</p>
+              <p>手机号 :1893394533</p>
+              <p>卖货品类 :拆解机 、二手手机 、电池</p>
+              <p>订单状态 :已验货</p>
+            </a> <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>卖货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>卖货品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a> <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>卖货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>卖货品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a> <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>卖货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>卖货品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a> <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>卖货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>卖货品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a>
+          </div>
+        </ion-content>
+      </ion-view>
+    </ion-tab>
+    <ion-tab title="买货单" on-select="searchsettitle('买货单')">
+      <ion-view>
+        <ion-content class="stable-bg" overflow-scroll="false">
+          <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>采购人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>采购品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a>
+          <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>采购人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>采购品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>采购人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>采购品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>采购人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>采购品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>采购人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>采购品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>采购人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>采购品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a>
+        </ion-content>
+      </ion-view>
+    </ion-tab>
+
+    <ion-tab title="供货计划" on-select="searchsettitle('供货计划')">
+      <ion-view>
+        <ion-content class="stable-bg" overflow-scroll="false">
+          <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>供货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a>
+          <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>供货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>供货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>供货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>供货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>供货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a>
+        </ion-content>
+      </ion-view>
+    </ion-tab>
+    <ion-tab title="收货单" on-select="searchsettitle('收货单')">
+      <ion-view>
+        <ion-content class="stable-bg" overflow-scroll="false">
+          <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>收货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>收货品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a>
+          <a ng-href="" class="item">
+            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+            <p>收货人 :张三</p>
+            <p>手机号 :1893394533</p>
+            <p>收货品类 :拆解机 、二手手机 、电池</p>
+            <p>订单状态 :已验货</p>
+          </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>收货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>收货品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>收货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>收货品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>收货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>收货品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a> <a ng-href="" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>收货人 :张三</p>
+          <p>手机号 :1893394533</p>
+          <p>收货品类 :拆解机 、二手手机 、电池</p>
+          <p>订单状态 :已验货</p>
+        </a>
+        </ion-content>
+      </ion-view>
+    </ion-tab>
+  </ion-tabs>
 </ion-view>

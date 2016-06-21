@@ -20,16 +20,16 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope,$ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading) {
     $ionicPopover.fromTemplateUrl('my-popover.html', {
       scope: $scope,
-    }).then(function(popover) {
+    }).then(function (popover) {
       $scope.popover = popover;
     });
-    $scope.openPopover = function($event) {
+    $scope.openPopover = function ($event) {
       $scope.popover.show($event);
     };
-    $scope.closePopover = function() {
+    $scope.closePopover = function () {
       $scope.popover.hide();
     };
 
@@ -62,8 +62,10 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
-
+  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicTabsDelegate) {
+    $scope.searchsettitle = function (title) {
+      $scope.title = title;
+    }
 
   })
   .controller('NewsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
