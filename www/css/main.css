@@ -20,6 +20,7 @@
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
+  text-decoration: none;
 }
 
 .main-list .col p {
@@ -31,9 +32,11 @@
   vertical-align: middle;
 }
 
+.second-list a {
+  text-decoration: none;
+}
 
-
-.main-list .col p i ,.second-list p i{
+.main-list .col p i, .second-list p i {
   color: #ffffff;
   font-size: 1.5rem;
 
@@ -44,13 +47,15 @@
   color: #585858;
 }
 
-.second-list a{
+.second-list a {
   height: 5rem;
 }
-.second-list a p:first-child{
+
+.second-list a p:first-child {
   margin: 0.4rem auto;
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 50%;
   line-height: 2.6rem;
 }
+

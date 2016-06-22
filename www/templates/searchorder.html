@@ -1,8 +1,10 @@
 <ion-view>
   <ion-nav-title>
-    <h1 class="title icon ion-search"> 我的{{title}}</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我的{{title}}</h1>
   </ion-nav-title>
-
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-search no-border" ng-click=""></button>
+  </ion-nav-buttons>
   <ion-tabs class="has-subheader tabs-calm  tabs-striped  tabs-top ">
     <ion-tab title="卖货单" on-select="searchsettitle('卖货单')">
       <ion-view>

@@ -72,5 +72,35 @@ angular.module('starter.controllers', [])
 
 
   })
+  .controller('DeliverGoodsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+    $scope.delivery = function () {
+      $scope.goodtype = 1;
+    }
+    $scope.delivergoods = function () {
+      $scope.goodtype = 2;
+    }
+    $scope.recover = function () {
+      $scope.goodtype = 3;
+    }
+  })
+  .controller('SupplyGoodCtrl', function ($scope, BooLv, $http, commonService) {
 
+
+  })
+  .controller('SupplyPlanCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
+  .controller('BuyGoodCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
+  .controller('SellGoodCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
+  .controller('CheckGoodCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
 

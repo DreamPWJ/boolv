@@ -143,6 +143,60 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             controller: 'NewsCtrl'
           }
         }
+      })
+      .state('tab.delivergoods', {
+        url: '/delivergoods',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/delivergoods/delivergoods.html',
+            controller: 'DeliverGoodsCtrl'
+          }
+        }
+      })
+      .state('tab.supplygood', {
+        url: '/supplygood',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/jiedan/supplygood.html',
+            controller: 'SupplyGoodCtrl'
+          }
+        }
+      })
+      .state('tab.supplyplan', {
+        url: '/supplyplan',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/jiedan/supplyplan.html',
+            controller: 'SupplyPlanCtrl'
+          }
+        }
+      })
+      .state('tab.buygood', {
+        url: '/buygood',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/buygood/buygood.html',
+            controller: 'BuyGoodCtrl'
+          }
+        }
+      })
+      .state('tab.sellgood', {
+        url: '/sellgood',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/sellgood/sellgood.html',
+            controller: 'SellGoodCtrl'
+          }
+        }
+      })
+      .state('tab.checkgood', {
+        url: '/checkgood',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/checkgood/checkgood.html',
+            controller: 'CheckGoodCtrl'
+          }
+        }
       });
     // if none of the above states are matched, use this as the fallback
 
