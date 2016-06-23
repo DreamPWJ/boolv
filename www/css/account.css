@@ -28,3 +28,9 @@
 .authcode:hover{
   background-color: #0fcd1a;
 }
+
+#mycredit{
+  margin-top: -5rem;
+  width: 100%;
+  height: 100%;
+}

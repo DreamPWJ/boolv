@@ -188,3 +188,34 @@ angular.module('starter.controllers', [])
   .controller('AddBankAccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
   })
+  .controller('MyCreditCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('mycredit'));
+    option = {
+      tooltip: {
+        formatter: "{a} <br/>{b} : {c}%"
+      },
+      toolbox: {
+        feature: {
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      series: [
+        {
+          name: '信用指标',
+          type: 'gauge',
+          detail: {formatter: '80%'},
+          data: [{value: 80, name: '信用率'}]
+        }
+      ]
+    };
+    myChart.setOption(option, true);
+
+  })
+  .controller('SettingCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('UpdateUserCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })

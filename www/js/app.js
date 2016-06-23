@@ -259,6 +259,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/addbankaccount.html',
         controller: 'AddBankAccountCtrl'
       })
+      .state('mycredit', {
+        url: '/mycredit',
+        templateUrl: 'templates/account/mycredit.html',
+        controller: 'MyCreditCtrl'
+      })
+      .state('setting', {
+        url: '/setting',
+        templateUrl: 'templates/account/setting.html',
+        controller: 'SettingCtrl'
+      })
+      .state('updateuser', {
+        url: '/updateuser',
+        templateUrl: 'templates/account/updateuser.html',
+        controller: 'UpdateUserCtrl'
+      })
     ;
 // if none of the above states are matched, use this as the fallback
 
