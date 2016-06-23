@@ -30,7 +30,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
 
         // Is there a page to go back to? 制定页面返回退出程序
-        if ($location.path() == '/tab/main' || $location.path() == '/login' ) {
+        if ($location.path() == '/tab/main' || $location.path() == '/login') {
           showConfirm();
         } else if ($ionicHistory.backView()) {
           // Go back in history
@@ -145,99 +145,74 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
-      .state('tab.delivergoods', {
+      .state('search', {
+        url: '/search',
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
+
+      })
+      .state('delivergoods', {
         url: '/delivergoods',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/delivergoods/delivergoods.html',
-            controller: 'DeliverGoodsCtrl'
-          }
-        }
+        templateUrl: 'templates/delivergoods/delivergoods.html',
+        controller: 'DeliverGoodsCtrl'
+
       })
-      .state('tab.supplygood', {
+      .state('supplygood', {
         url: '/supplygood',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/jiedan/supplygood.html',
-            controller: 'SupplyGoodCtrl'
-          }
-        }
+        templateUrl: 'templates/jiedan/supplygood.html',
+        controller: 'SupplyGoodCtrl'
+
       })
-      .state('tab.supplydetails', {
+      .state('supplydetails', {
         url: '/supplydetails',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/jiedan/supplydetails.html',
-            controller: 'SupplyDetailsCtrl'
-          }
-        }
+        templateUrl: 'templates/jiedan/supplydetails.html',
+        controller: 'SupplyDetailsCtrl'
       })
-      .state('tab.supplyplan', {
+      .state('supplyplan', {
         url: '/supplyplan',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/jiedan/supplyplan.html',
-            controller: 'SupplyPlanCtrl'
-          }
-        }
+        templateUrl: 'templates/jiedan/supplyplan.html',
+        controller: 'SupplyPlanCtrl'
+
       })
-      .state('tab.releasesupply', {
+      .state('releasesupply', {
         url: '/releasesupply',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/jiedan/releasesupply.html',
-            controller: 'ReleaseSupplyCtrl'
-          }
-        }
+        templateUrl: 'templates/jiedan/releasesupply.html',
+        controller: 'ReleaseSupplyCtrl'
+
       })
-      .state('tab.adddealaddress', {
+      .state('adddealaddress', {
         url: '/adddealaddress',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/jiedan/adddealaddress.html',
-            controller: 'AddDealAddressCtrl'
-          }
-        }
+        templateUrl: 'templates/jiedan/adddealaddress.html',
+        controller: 'AddDealAddressCtrl'
+
       })
-      .state('tab.dealaddress', {
+      .state('dealaddress', {
         url: '/dealaddress',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/jiedan/dealaddress.html',
-            controller: 'DealAddressCtrl'
-          }
-        }
+
+        templateUrl: 'templates/jiedan/dealaddress.html',
+        controller: 'DealAddressCtrl'
+
       })
-      .state('tab.buygood', {
+      .state('buygood', {
         url: '/buygood',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/buygood/buygood.html',
-            controller: 'BuyGoodCtrl'
-          }
-        }
+        templateUrl: 'templates/buygood/buygood.html',
+        controller: 'BuyGoodCtrl'
+
       })
-      .state('tab.sellgood', {
+      .state('sellgood', {
         url: '/sellgood',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/sellgood/sellgood.html',
-            controller: 'SellGoodCtrl'
-          }
-        }
+        templateUrl: 'templates/sellgood/sellgood.html',
+        controller: 'SellGoodCtrl'
       })
-      .state('tab.checkgood', {
+      .state('checkgood', {
         url: '/checkgood',
-        views: {
-          'tab-main': {
-            templateUrl: 'templates/checkgood/checkgood.html',
-            controller: 'CheckGoodCtrl'
-          }
-        }
+        templateUrl: 'templates/checkgood/checkgood.html',
+        controller: 'CheckGoodCtrl'
       });
-    // if none of the above states are matched, use this as the fallback
+// if none of the above states are matched, use this as the fallback
 
     $urlRouterProvider.otherwise('/tab/main');
 
 
-  });
+  })
+;

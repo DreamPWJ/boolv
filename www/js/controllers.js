@@ -17,7 +17,8 @@ angular.module('starter.controllers', [])
     }
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, commonService) {
-    //点击搜索跳转搜索modal
+
+//点击搜索跳转搜索modal
     $ionicModal.fromTemplateUrl('templates/search.html', {
       scope: $scope,
       animation: 'slide-in-up'
@@ -26,7 +27,7 @@ angular.module('starter.controllers', [])
     });
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading, $ionicHistory) {
     $ionicPopover.fromTemplateUrl('my-popover.html', {
       scope: $scope,
     }).then(function (popover) {
@@ -39,8 +40,16 @@ angular.module('starter.controllers', [])
       $scope.popover.hide();
     };
 
-  })
 
+    //统一返回上一级方法
+    $rootScope.goBack = function () {
+      $ionicHistory.goBack();
+    }
+
+  })
+  .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, BooLv, $http, $state, commonService) {
+
+  })
 
   .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
@@ -69,6 +78,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicTabsDelegate) {
+
     $scope.searchsettitle = function (title) {
       $scope.title = title;
     }
@@ -97,11 +107,11 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('BuyGoodCtrl', function ($scope, BooLv, $http, commonService) {
+  .controller('BuyGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
 
 
   })
-  .controller('SellGoodCtrl', function ($scope, BooLv, $http, commonService) {
+  .controller('SellGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
 
 
   })
@@ -122,7 +132,7 @@ angular.module('starter.controllers', [])
   })
   .controller('AddDealAddressCtrl', function ($scope, BooLv, $http, commonService) {
     $scope.dealaddresssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'tab.dealaddress')
+      commonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress')
     }
 
   })
