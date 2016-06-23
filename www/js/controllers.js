@@ -105,26 +105,57 @@ angular.module('starter.controllers', [])
 
 
   })
+
+  .controller('ReleaseProcureCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
+    commonService.searchModal($scope);
+
+  })
+  .controller('ProcureDetailsCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
+    commonService.searchModal($scope);
+
+  })
+
   .controller('BuyGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
     commonService.searchModal($scope);
 
   })
   .controller('SellGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-    commonService.searchModal($scope);
+
+
+  })
+  .controller('SellDetailsCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
+    $scope.sellgoodssubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭')
+    }
+
+  })
+
+  .controller('SellProcureCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
+
 
   })
   .controller('CheckGoodCtrl', function ($scope, BooLv, $http, commonService) {
 
 
   })
+  .controller('CheckDetailsCtrl', function ($scope, BooLv, $http, commonService) {
 
+
+  })
+
+  .controller('EnteringCheckCtrl', function ($scope, BooLv, $http, commonService) {
+
+    $scope.checkgoodssubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭')
+    }
+  })
   .controller('SupplyDetailsCtrl', function ($scope, BooLv, $http, commonService) {
 
 
   })
   .controller('ReleaseSupplyCtrl', function ($scope, BooLv, $http, commonService) {
     $scope.supplysubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭')
+      commonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'buygood')
     }
 
   })

@@ -204,15 +204,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'BuyGoodCtrl'
 
       })
+      .state('releaseprocure', {
+        url: '/releaseprocure',
+        templateUrl: 'templates/buygood/releaseprocure.html',
+        controller: 'ReleaseProcureCtrl'
+
+      })
+      .state('procuredetails', {
+        url: '/procuredetails',
+        templateUrl: 'templates/buygood/procuredetails.html',
+        controller: 'ProcureDetailsCtrl'
+
+      })
       .state('sellgood', {
         url: '/sellgood',
         templateUrl: 'templates/sellgood/sellgood.html',
         controller: 'SellGoodCtrl'
       })
+      .state('sellprocure', {
+        url: '/sellprocure',
+        templateUrl: 'templates/sellgood/sellprocure.html',
+        controller: 'SellProcureCtrl'
+      })
+      .state('selldetails', {
+        url: '/selldetails',
+        templateUrl: 'templates/sellgood/selldetails.html',
+        controller: 'SellDetailsCtrl'
+      })
       .state('checkgood', {
         url: '/checkgood',
         templateUrl: 'templates/checkgood/checkgood.html',
         controller: 'CheckGoodCtrl'
+      })
+      .state('checkdetails', {
+        url: '/checkdetails',
+        templateUrl: 'templates/checkgood/checkdetails.html',
+        controller: 'CheckDetailsCtrl'
+      })
+      .state('enteringcheck', {
+        url: '/enteringcheck',
+        templateUrl: 'templates/checkgood/enteringcheck.html',
+        controller: 'EnteringCheckCtrl'
       })
       .state('signlist', {
         url: '/signlist',

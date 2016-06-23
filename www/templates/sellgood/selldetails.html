@@ -1,0 +1,48 @@
+<ion-view>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 卖货下单</h1>
+  </ion-nav-title>
+  <ion-content overflow-scroll="false" class="stable-bg">
+    <div class="list ">
+      <a ng-href="" class="item item-borderless">
+        <strong>请输入卖货输入 </strong>
+      </a>
+      <label class="item item-input">
+        <span class="input-label"> 拆解机 :</span>
+        <input type="number">
+        <span class="item-note padding-right">台</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 不合格拆解机 :</span>
+        <input type="number">
+        <span class="item-note padding-right">台</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 二手手机 :</span>
+        <input type="number">
+        <span class="item-note padding-right">台</span>
+      </label>
+      <label class="item item-input border-bottom-none">
+        <span class="input-label"> 电池 :</span>
+        <input type="number">
+        <span class="item-note padding-right">台</span>
+      </label>
+    </div>
+
+    <div class="list">
+      <a ng-href="" class="item item-borderless">
+        <strong>匹配供应商 : </strong>
+      </a>
+      <a ng-href="#/sellgood"  class="item item-icon-right border-bottom-none">
+        <h2>姓名 : 张三 <span class="item-note">距离 : 50米</span></h2>
+        <h2>手机号码 : <span class="calm">18888888888</span></h2>
+        <h2>地址 : 深圳市南山区******</h2>
+        <i class="icon ion-ios-arrow-right grey"></i>
+      </a>
+    </div>
+
+  </ion-content>
+  <div class="padding light-bg bottom-0">
+    <button class="button button-calm full-image" ng-click="sellgoodssubmit()">提交</button>
+  </div>
+</ion-view>
