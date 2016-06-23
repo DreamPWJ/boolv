@@ -59,3 +59,16 @@
   line-height: 2.6rem;
 }
 
+.jiedan-icon:after {
+  position: absolute;
+  content: '我要接单';
+  font-size: 1rem;
+  right: 100%;
+  top: 50%;
+  margin-top: -0.6rem;
+}
+
+.jiedan-time {
+  position: absolute;
+  right: 22px;
+}

@@ -30,7 +30,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
 
         // Is there a page to go back to? 制定页面返回退出程序
-        if ($location.path() == '/tab/main' || $location.path() == '/login' || $location.path() == '/tab/account') {
+        if ($location.path() == '/tab/main' || $location.path() == '/login' ) {
           showConfirm();
         } else if ($ionicHistory.backView()) {
           // Go back in history
@@ -124,6 +124,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
+
       .state('tab.searchorder', {
         url: '/searchorder',
         cache: false,
@@ -162,12 +163,48 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      .state('tab.supplydetails', {
+        url: '/supplydetails',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/jiedan/supplydetails.html',
+            controller: 'SupplyDetailsCtrl'
+          }
+        }
+      })
       .state('tab.supplyplan', {
         url: '/supplyplan',
         views: {
           'tab-main': {
             templateUrl: 'templates/jiedan/supplyplan.html',
             controller: 'SupplyPlanCtrl'
+          }
+        }
+      })
+      .state('tab.releasesupply', {
+        url: '/releasesupply',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/jiedan/releasesupply.html',
+            controller: 'ReleaseSupplyCtrl'
+          }
+        }
+      })
+      .state('tab.adddealaddress', {
+        url: '/adddealaddress',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/jiedan/adddealaddress.html',
+            controller: 'AddDealAddressCtrl'
+          }
+        }
+      })
+      .state('tab.dealaddress', {
+        url: '/dealaddress',
+        views: {
+          'tab-main': {
+            templateUrl: 'templates/jiedan/dealaddress.html',
+            controller: 'DealAddressCtrl'
           }
         }
       })

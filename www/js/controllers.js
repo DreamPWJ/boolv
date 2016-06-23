@@ -17,7 +17,13 @@ angular.module('starter.controllers', [])
     }
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, commonService) {
-
+    //点击搜索跳转搜索modal
+    $ionicModal.fromTemplateUrl('templates/search.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      $scope.modal = modal;
+    });
 
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading) {
@@ -104,3 +110,23 @@ angular.module('starter.controllers', [])
 
   })
 
+  .controller('SupplyDetailsCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
+  .controller('ReleaseSupplyCtrl', function ($scope, BooLv, $http, commonService) {
+    $scope.supplysubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！你的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭')
+    }
+
+  })
+  .controller('AddDealAddressCtrl', function ($scope, BooLv, $http, commonService) {
+    $scope.dealaddresssubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'tab.dealaddress')
+    }
+
+  })
+  .controller('DealAddressCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })

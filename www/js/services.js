@@ -1,19 +1,36 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup) {
-     return{
-       showAlert :function (title, template)  {
-         // 一个提示对话框
-           var alertPopup = $ionicPopup.alert({
-             title: title,
-             template: template,
-             okText: '确定',
-             okType: 'button-balanced'
-           });
-           alertPopup.then(function (res) {
-             console.log(res);
-           });
-       }
-     }
+  .service('commonService', function ($ionicPopup,$state) {
+    return {
+      showAlert: function (title, template) {
+        // 一个提示对话框
+        var alertPopup = $ionicPopup.alert({
+          title: title,
+          template: template,
+          okText: '确定',
+          okType: 'button-calm'
+        });
+        alertPopup.then(function (res) {
+          console.log(res);
+        });
+      },
+      showConfirm: function (title,template,okText,cancelText,stateurl) {
+        var confirmPopup = $ionicPopup.confirm({
+          title: '<strong>'+title+'</strong>',
+          template: template,
+          okText: okText,
+          cancelText: cancelText,
+          okType: 'button-calm'
+        });
+
+        confirmPopup.then(function (res) {
+          if (res) {
+           $state.go(stateurl)
+          } else {
+            // Don't close
+          }
+        });
+      }
+    }
   })
   .service('encodingService', function () {
     return {
