@@ -1,0 +1,37 @@
+<ion-view>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 新增账户</h1>
+  </ion-nav-title>
+  <ion-content overflow-scroll="false" class="stable-bg ">
+    <div class="list list-borderless ">
+      <p class="padding-top"></p>
+      <label class="item item-input ">
+        <span class="input-label">用户姓名 : </span>
+        <input type="text" placeholder="请输入真实姓名">
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input ">
+        <span class="input-label">银行卡号 : </span>
+        <input type="number" placeholder="请输入完整卡号">
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-select ">
+        <span class="input-label">请选择银行名称 : </span>
+        <select>
+          <option></option>
+          <option>中国银行</option>
+          <option>中国平安</option>
+          <option>建设银行</option>
+        </select>
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input ">
+        <span class="input-label">支行名称 : </span>
+        <input type="text" placeholder="请输入正确的支行名称">
+      </label>
+    </div>
+  </ion-content>
+  <div class="padding light-bg  bottom-0">
+    <a class="button button-calm full-image " ng-href="#/collectionaccount">申请提交</a>
+  </div>
+</ion-view>

@@ -1,16 +1,13 @@
 <ion-view>
-  <ion-nav-buttons side="left">
-    <button class="button icon ion-chevron-left no-border" ng-click="goBack()"></button>
-  </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{goodtype==null||goodtype==1?'签收':'发货'}}</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 签收</h1>
   </ion-nav-title>
   <div class="bar bar-subheader no-border">
     <div class="button-bar">
       <a ng-click="delivery()" class="button"
          ng-class="{true:'button-calm',false:'button-stable'}[goodtype==null||goodtype==1]">物流配送</a>
       <a ng-click="delivergoods()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==2]">送货上门</a>
-      <a ng-click="recover()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">上门回收</a>
+      <a ng-click="oneself()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">买家自提</a>
     </div>
   </div>
   <ion-content overflow-scroll="false" class="stable-bg  has-subheader">
@@ -23,7 +20,11 @@
         <span class="input-label"> 重量:</span>
         <input type="text" placeholder="(单位 : 公斤)">
       </label>
-      <label ng-show="goodtype==null||goodtype==1" class="item item-input item-select">
+      <label class="item item-input">
+        <span class="input-label"> 车牌号码:</span>
+        <input type="text" placeholder="">
+      </label>
+      <label class="item item-input item-select">
         <div class="input-label">
           物流公司
         </div>
@@ -34,31 +35,31 @@
           <option>物流公司3</option>
         </select>
       </label>
-      <label ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right">
+      <label class="item item-input item-icon-right">
         <span class="input-label"> 物流单号:</span>
         <input type="text" placeholder="点击右侧图标扫描">
         <i class="icon ion-qr-scanner"></i>
       </label>
-
-      <label ng-show="goodtype==2" class="item item-input item-icon-right">
-        <span class="input-label"> 车牌号码:</span>
-        <input type="text" placeholder="">
+      <label class="item item-input">
+        <span class="input-label"> 物流费:</span>
+        <input type="text" placeholder="（单位 : 元）">
       </label>
-      <a ng-href="" ng-show="goodtype==3" class="item item-icon-right">
-        <h2>发货人 : 张三</h2>
-        <p>手机 : 18256546554</p>
-        <p>地址 : 广东省深圳市龙岗区***</p>
-        <i class="icon ion-ios-arrow-right grey"></i>
-      </a>
-
+      <label class="item item-input">
+        <span class="input-label"> 送货费:</span>
+        <input type="text" placeholder="（单位 : 元）">
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 提货费:</span>
+        <input type="text" placeholder="（单位 : 元）">
+      </label>
       <label class="item item-input item-icon-right border-bottom-none">
         <span class="input-label"> 上传照片:</span>
         <input type="text" placeholder="货运车、车牌、货物包装照片"/>
-        <i class="icon ion-android-add calm" ></i>
+        <i class="icon ion-android-add calm"></i>
       </label>
     </div>
     <div class="padding light-bg">
-      <button class="button button-calm full-image " ng-click="delivergoodssubmit()">提交</button>
+      <button class="button button-calm full-image " ng-click="signsubmit()">提交</button>
     </div>
   </ion-content>
 </ion-view>

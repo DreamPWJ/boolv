@@ -18,13 +18,6 @@ angular.module('starter.controllers', [])
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, commonService) {
 
-//点击搜索跳转搜索modal
-    $ionicModal.fromTemplateUrl('templates/search.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function (modal) {
-      $scope.modal = modal;
-    });
 
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading, $ionicHistory) {
@@ -51,9 +44,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
-  })
   .controller('LoginCtrl', function ($scope, $rootScope, BooLv, $http, encodingService, $state, commonService) {
 
     $scope.user = {};//提前定义用户对象
@@ -77,8 +68,8 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicTabsDelegate) {
-
+  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+    commonService.searchModal($scope);
     $scope.searchsettitle = function (title) {
       $scope.title = title;
     }
@@ -89,6 +80,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('DeliverGoodsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -97,6 +89,12 @@ angular.module('starter.controllers', [])
     }
     $scope.recover = function () {
       $scope.goodtype = 3;
+    }
+
+    $scope.delivergoods();
+
+    $scope.delivergoodssubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭')
     }
   })
   .controller('SupplyGoodCtrl', function ($scope, BooLv, $http, commonService) {
@@ -108,11 +106,11 @@ angular.module('starter.controllers', [])
 
   })
   .controller('BuyGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-
+    commonService.searchModal($scope);
 
   })
   .controller('SellGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-
+    commonService.searchModal($scope);
 
   })
   .controller('CheckGoodCtrl', function ($scope, BooLv, $http, commonService) {
@@ -126,7 +124,7 @@ angular.module('starter.controllers', [])
   })
   .controller('ReleaseSupplyCtrl', function ($scope, BooLv, $http, commonService) {
     $scope.supplysubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！你的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭')
+      commonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭')
     }
 
   })
@@ -138,5 +136,55 @@ angular.module('starter.controllers', [])
   })
   .controller('DealAddressCtrl', function ($scope, BooLv, $http, commonService) {
 
+
+  })
+  .controller('SignListCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
+  .controller('SignDetailsCtrl', function ($scope, BooLv, $http, commonService) {
+
+
+  })
+  .controller('SignCtrl', function ($scope, BooLv, $http, commonService) {
+    $scope.delivery = function () {
+      $scope.goodtype = 1;
+    }
+    $scope.delivergoods = function () {
+      $scope.goodtype = 2;
+    }
+    $scope.oneself = function () {
+      $scope.goodtype = 3;
+    }
+
+    $scope.delivergoods();
+    $scope.signsubmit = function () {
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>')
+    }
+  })
+  .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('ApplyProviderCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+    $scope.applyprovidersubmit = function () {
+      commonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
+    }
+  })
+  .controller('MyAvanceCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('DavanceDetailsCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('CollectionAccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+  })
+  .controller('AddBankAccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
   })

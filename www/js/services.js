@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup,$state) {
+  .service('commonService', function ($ionicPopup,$state,$ionicModal) {
     return {
       showAlert: function (title, template) {
         // 一个提示对话框
@@ -28,6 +28,15 @@ angular.module('starter.services', [])
           } else {
             // Don't close
           }
+        });
+      },
+      searchModal:function ($scope) {
+        //点击搜索跳转搜索modal
+        $ionicModal.fromTemplateUrl('templates/search.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function (modal) {
+          $scope.modal = modal;
         });
       }
     }

@@ -79,7 +79,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.platform.ios.views.transition('ios');
     $ionicConfigProvider.platform.android.views.transition('android');
     //设置默认返回按钮的文字
-    $ionicConfigProvider.backButton.previousTitleText(false).text('返回');
+    $ionicConfigProvider.backButton.previousTitleText(false).text('');
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.
@@ -107,7 +107,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       })
 
-
       .state('tab.account', {
         url: '/account',
         cache: false,
@@ -118,6 +117,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      .state('tab.accountinfo', {
+        url: '/accountinfo',
+        cache: false,
+        views: {
+          'tab-account': {
+            templateUrl: 'templates/account/accountinfo.html',
+            controller: 'AccountInfoCtrl'
+          }
+        }
+      })
       .state('login', {
         url: '/login',
         cache: false,
@@ -125,15 +134,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'LoginCtrl'
       })
 
-      .state('tab.searchorder', {
+      .state('searchorder', {
         url: '/searchorder',
         cache: false,
-        views: {
-          'tab-searchorder': {
-            templateUrl: 'templates/searchorder.html',
-            controller: 'SearchOrderCtrl'
-          }
-        }
+        templateUrl: 'templates/searchorder.html',
+        controller: 'SearchOrderCtrl'
       })
       .state('tab.news', {
         url: '/news',
@@ -208,7 +213,53 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/checkgood',
         templateUrl: 'templates/checkgood/checkgood.html',
         controller: 'CheckGoodCtrl'
-      });
+      })
+      .state('signlist', {
+        url: '/signlist',
+        templateUrl: 'templates/sign/signlist.html',
+        controller: 'SignListCtrl'
+      })
+      .state('signdetails', {
+        url: '/signdetails',
+        templateUrl: 'templates/sign/signdetails.html',
+        controller: 'SignDetailsCtrl'
+      })
+      .state('sign', {
+        url: '/sign',
+        templateUrl: 'templates/sign/sign.html',
+        controller: 'SignCtrl'
+      })
+      .state('applyprovider', {
+        url: '/applyprovider',
+        templateUrl: 'templates/account/applyprovider.html',
+        controller: 'ApplyProviderCtrl'
+      })
+      .state('myadvance', {
+        url: '/myadvance',
+        templateUrl: 'templates/account/myadvance.html',
+        controller: 'MyAvanceCtrl'
+      })
+      .state('davancedetails', {
+        url: '/davancedetails',
+        templateUrl: 'templates/account/davancedetails.html',
+        controller: 'DavanceDetailsCtrl'
+      })
+      .state('applyadvance', {
+        url: '/applyadvance',
+        templateUrl: 'templates/account/applyadvance.html',
+        controller: 'ApplyAdvancesCtrl'
+      })
+      .state('collectionaccount', {
+        url: '/collectionaccount',
+        templateUrl: 'templates/account/collectionaccount.html',
+        controller: 'CollectionAccountCtrl'
+      })
+      .state('addbankaccount', {
+        url: '/addbankaccount',
+        templateUrl: 'templates/account/addbankaccount.html',
+        controller: 'AddBankAccountCtrl'
+      })
+    ;
 // if none of the above states are matched, use this as the fallback
 
     $urlRouterProvider.otherwise('/tab/main');
