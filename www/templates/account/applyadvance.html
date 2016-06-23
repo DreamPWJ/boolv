@@ -1,0 +1,37 @@
+<ion-view>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 申请预收款</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="stable-bg ">
+    <div class="list list-borderless ">
+        <label class="item item-input">
+          <span class="input-label">申请金额</span>
+          <input type="number" placeholder="最高额度100000元">
+        </label>
+
+      <a ng-href="" class="item item-divider">
+        <p>贷款发放日起 , 开始计息</p>
+      </a>
+      <a ng-href="" class="item item-borderless">
+        <strong class="calm">借款周期 不能超过30天</strong>
+      </a>
+      <a ng-href="" class="item" style="border-top: 1px solid rgb(221, 221, 221);">
+        <h2>服务费 <span class="item-note dark font-size-1" >0.03%</span></h2>
+      </a>
+      <a ng-href="" class="item item-divider">
+        <p>收款账户</p>
+      </a>
+      <a ng-href="#/collectionaccount" class="item  item-icon-right item-borderless">
+        <h2><strong>收款人 : </strong>张三</h2>
+        <h2><strong>账号 : </strong>**********88963</h2>
+        <h2><strong>银行 : </strong>中国平安银行</h2>
+        <i class="icon ion-ios-arrow-right grey"></i>
+      </a>
+    </div>
+    <p class="text-center"><a ng-href="" class="grey padding-right">查看额度  </a> | <a ng-href="" class="calm padding-left">  我要提高额度>></a></p>
+  </ion-content>
+  <div class="padding light-bg  bottom-0">
+    <button class="button button-calm full-image " ng-click="applyprovidersubmit()">提交申请</button>
+  </div>
+</ion-view>

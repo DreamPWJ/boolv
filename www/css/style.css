@@ -1,7 +1,8 @@
 /* Empty. Add your own CSS if you like */
-.no-border{
+.no-border {
   border: none;
 }
+
 /* 网格布局row水平方向居中*/
 .row-horizontal-center {
   -webkit-box-pack: center;
@@ -27,7 +28,7 @@
   border-radius: 50%;
 }
 
-.margin-top-1,.margin-top-2,.margin-top-3,.margin-top-4{
+.margin-top-1, .margin-top-2, .margin-top-3, .margin-top-4 {
   display: inline-block;
 }
 
@@ -47,20 +48,49 @@
   margin-top: 4rem;
 }
 
-.float-left{
-  float:left;
+.float-left {
+  float: left;
 }
 
-.white-bg{
+.white-bg {
   background-color: #ffffff;
 }
+
 /* 修改android平台默认样式*/
-.platform-android .popover{
-  margin-top: 0;!important;
-  background-color: #ffffff!important;
+.platform-android .popover {
+  margin-top: 0;
+!important;
+  background-color: #ffffff !important;
 }
+
 .platform-android .popover .item {
-  background-color: #ffffff!important;
+  background-color: #ffffff !important;
+}
+
+.grey {
+  color: #aaa;
+}
+
+.border-bottom-none {
+  border-bottom: none;
+}
+
+.margin-top-1px {
+  margin-top: -1px;
+}
+
+.font-size-1 {
+  font-size: 1rem
+}
+
+.font-size-1-3 {
+  font-size: 1.3rem
+}
+
+.bottom-0{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 .gray{
   color: #777;

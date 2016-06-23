@@ -1,0 +1,62 @@
+<ion-view>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 录入验货数据</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="stable-bg">
+    <div class="list">
+      <a ng-href="" class="item item-borderless ">
+        <h2><strong>拆解机</strong><span class="item-note"><i
+          class="icon ion-chevron-down"></i></span></h2>
+      </a>
+      <label class="item item-input">
+        <span class="input-label">合格数量</span>
+        <input type="number" placeholder="(单位:台)">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">不合格数量</span>
+        <input type="number" placeholder="(单位:台)">
+      </label>
+      <label class="item item-input border-bottom-none">
+        <span class="input-label">不合格价格</span>
+        <input type="number" placeholder="(单位:元/台)">
+      </label>
+
+    </div>
+
+    <div class="list">
+      <a ng-href="" class="item item-borderless ">
+        <h2><strong>电池</strong><span class="item-note"><i
+          class="icon ion-chevron-down"></i></span></h2>
+      </a>
+      <label class="item item-input">
+        <span class="input-label">合格数量</span>
+        <input type="number" placeholder="(单位:台)">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">不合格数量</span>
+        <input type="number" placeholder="(单位:台)">
+      </label>
+      <label class="item item-input border-bottom-none">
+        <span class="input-label">不合格价格</span>
+        <input type="number" placeholder="(单位:元/台)">
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input item-icon-right item-borderless">
+        <span class="input-label"> 添加品种:</span>
+        <i class="icon ion-android-add calm" ></i>
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input item-icon-right item-borderless">
+        <span class="input-label"> 上传照片:</span>
+        <i class="icon ion-android-add calm" ></i>
+      </label>
+    </div>
+    <div class="padding light-bg ">
+      <button class="button button-calm full-image " ng-click="checkgoodssubmit()">提交</button>
+    </div>
+
+  </ion-content>
+
+
+</ion-view>
