@@ -20,7 +20,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, $http, BooLv, $ionicLoading, $ionicHistory) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, commonService,$http, BooLv, $ionicLoading, $ionicHistory) {
     $ionicPopover.fromTemplateUrl('my-popover.html', {
       scope: $scope,
     }).then(function (popover) {
@@ -38,7 +38,14 @@ angular.module('starter.controllers', [])
     $rootScope.goBack = function () {
       $ionicHistory.goBack();
     }
-
+    //扫一扫
+    $rootScope.barcodeScanner = function () {
+      commonService.barcodeScanner();
+    }
+    //拍照
+    $rootScope.takePicture=function(){
+      commonService.takePicture();
+    }
   })
   .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, BooLv, $http, $state, commonService) {
 

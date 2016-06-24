@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup,$state,$ionicModal) {
+  .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $cordovaToast,$cordovaBarcodeScanner) {
     return {
       showAlert: function (title, template) {
         // 一个提示对话框
@@ -13,9 +13,9 @@ angular.module('starter.services', [])
           console.log(res);
         });
       },
-      showConfirm: function (title,template,okText,cancelText,stateurl) {
+      showConfirm: function (title, template, okText, cancelText, stateurl) {
         var confirmPopup = $ionicPopup.confirm({
-          title: '<strong>'+title+'</strong>',
+          title: '<strong>' + title + '</strong>',
           template: template,
           okText: okText,
           cancelText: cancelText,
@@ -24,13 +24,29 @@ angular.module('starter.services', [])
 
         confirmPopup.then(function (res) {
           if (res) {
-           $state.go(stateurl)
+            $state.go(stateurl)
           } else {
             // Don't close
           }
         });
       },
-      searchModal:function ($scope) {
+      showToast: function (title, flag) {
+        // 一个原生Toast提示框
+        if (flag == 'center') {
+          $cordovaToast.showShortCenter(title).then(function (success) {
+            // success
+          }, function (error) {
+            // error
+          });
+        } else {
+          $cordovaToast.showShortTop(title).then(function (success) {
+            // success
+          }, function (error) {
+            // error
+          });
+        }
+      },
+      searchModal: function ($scope) {
         //点击搜索跳转搜索modal
         $ionicModal.fromTemplateUrl('templates/search.html', {
           scope: $scope,
@@ -38,6 +54,47 @@ angular.module('starter.services', [])
         }).then(function (modal) {
           $scope.modal = modal;
         });
+      }
+      ,
+      //拍照
+      takePicture: function () {
+        //$cordovaCamera.cleanup();
+        var options = {
+          quality: 100,
+          width: 500,
+          height: 500
+        };
+
+        $cordovaCamera.getPicture(options).then(function (imageUrl) {
+
+        }, function (err) {
+          // An error occured. Show a message to the user
+
+        });
+
+      },
+      //扫一扫
+      barcodeScanner:function () {
+        /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
+        document.addEventListener("deviceready", function () {
+          $cordovaBarcodeScanner
+            .scan()
+            .then(function (barcodeData) {
+              // Success! Barcode data is here 扫描数据：barcodeData.text
+            }, function (error) {
+              // An err11or occurred
+            });
+
+
+          // NOTE: encoding not functioning yet
+          $cordovaBarcodeScanner
+            .encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
+            .then(function (success) {
+              // Success!
+            }, function (error) {
+              // An error occurred
+            });
+        }, false);
       }
     }
   })
