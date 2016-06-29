@@ -10,30 +10,10 @@
       <a ng-href="" class="item item-borderless">
         <strong>请选择产品 : </strong>
       </a>
-      <div class="item item-checkbox  checkbox-calm ">
-        <label class="checkbox calm">
-          <input type="checkbox">
-        </label>
-        拆解机
-      </div>
-      <div class="item item-checkbox  checkbox-calm ">
-        <label class="checkbox calm">
-          <input type="checkbox">
-        </label>
-        不合格拆解机
-      </div>
-      <div class="item item-checkbox  checkbox-calm ">
-        <label class="checkbox calm">
-          <input type="checkbox">
-        </label>
-        二手手机
-      </div>
-      <div class="item item-checkbox  checkbox-calm border-bottom-none ">
-        <label class="checkbox calm">
-          <input type="checkbox">
-        </label>
-        电池
-      </div>
+      <ion-radio ng-model="selltype" ng-value="1" >拆解机</ion-radio>
+      <ion-radio ng-model="selltype" ng-value="4">不合格拆解机</ion-radio>
+      <ion-radio ng-model="selltype" ng-value="2">二手手机</ion-radio>
+      <ion-radio ng-model="selltype" ng-value="3">  电池</ion-radio>
 
 
     </div>
