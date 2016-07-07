@@ -18,7 +18,7 @@ var paths = {
   sass: ['./scss/**/*.scss']
 };
 
-gulp.task('default', ['autoprefixer']);
+gulp.task('default', ['mergeMiniJsCss','minifyCss','minifyJs','minImages','copyHtml','copyLib']);
 
 /* 自动添加css兼容前缀任务*/
 gulp.task('autoprefixer', function () {
@@ -30,7 +30,7 @@ gulp.task('autoprefixer', function () {
       //        transform: rotate(45deg);
       remove: true //是否去掉不必要的前缀 默认：true
     }))
-    .pipe(gulp.dest('./www//css'));
+    .pipe(gulp.dest('./www/css'));
 });
 
 /*  拼接合并压缩html中的js css减少http请求和大小
@@ -46,33 +46,44 @@ gulp.task('mergeMiniJsCss', function () {
         mangle: false //不混淆变量名
       }
     )))
-    .pipe(gulp.dest('./www/'));
+    .pipe(gulp.dest('./juhua/'));
 });
 
 /*压缩css*/
 gulp.task('minifyCss', function () {
   return gulp.src('./www/css/**/*.css')      //压缩的文件
     .pipe(minifyCss())    //执行压缩
-    .pipe(gulp.dest('./platforms/android/assets/www/css'));  //输出文件夹
+    .pipe(gulp.dest('./juhua/css/'));  //输出文件夹
 });
 
 /*压缩js*/
 gulp.task('minifyJs', function () {
-  return gulp.src('./www/js/**/*.js')
+  return gulp.src('./www/js/**/*.js/')
     .pipe(uglify())    //压缩
-    .pipe(gulp.dest('./platforms/android/assets/www/js'));  //输出
+    .pipe(gulp.dest('./juhua/js/'));  //输出
 });
 
 /*压缩图片*/
 gulp.task('minImages', function(){
-  return gulp.src('./www/img/news/*.+(png|jpg|gif|svg)')
+  return gulp.src('./www/img/**/*.+(png|jpg|gif|svg)')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('./www/img/news/'));
+    .pipe(gulp.dest('./juhua/img/'));
 });
 
+/*复制html*/
+gulp.task('copyHtml', function () {
+  return gulp.src('./www/templates/**/*.html')      //复制的文件
+    .pipe(gulp.dest('./juhua/templates/'));  //输出文件夹
+});
+
+/*复制Lib*/
+gulp.task('copyLib', function () {
+  return gulp.src('./www/lib/**')      //复制的文件
+    .pipe(gulp.dest('./juhua/lib/'));  //输出文件夹
+});
 /*执行压缩前，先删除文件夹里的内容*/
 gulp.task('clean', function (cb) {
-  del(['./platforms/android/assets/www//css', './platforms/android/assets/www//js'], cb);
+  del(['./juhua/css', './juhua/js'], cb);
 });
 
 gulp.task('sass', function(done) {
