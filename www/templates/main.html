@@ -9,7 +9,7 @@
     <button class="button icon ion-plus no-border" ng-click="openPopover($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content overflow-scroll="false" class="stable-bg">
+  <ion-content overflow-scroll="false" class="stable-bg" on-swipe-left="searchorder()">
     <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="false">
       <ion-slide><img ng-src="img/banner/banner1.jpg" alt="" class="full-image"/></ion-slide>
       <ion-slide><img ng-src="img/banner/banner2.jpg" alt="" class="full-image"/></ion-slide>

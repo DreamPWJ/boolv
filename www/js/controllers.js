@@ -46,6 +46,10 @@ angular.module('starter.controllers', [])
     $rootScope.takePicture=function(){
       commonService.takePicture();
     }
+
+    $scope.searchorder=function () {
+      $state.go("searchorder")
+    }
   })
   .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, BooLv, $http, $state, commonService) {
 
