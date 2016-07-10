@@ -10,7 +10,7 @@
       <a ng-click="oneself()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">买家自提</a>
     </div>
   </div>
-  <ion-content overflow-scroll="false" class="stable-bg  has-subheader">
+  <ion-content overflow-scroll="false" class="stable-bg  has-subheader has-button-footer">
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数:</span>
@@ -58,8 +58,9 @@
         <i class="icon ion-android-add calm"></i>
       </label>
     </div>
-    <div class="padding light-bg">
-      <button class="button button-calm full-image " ng-click="signsubmit()">提交</button>
-    </div>
+
   </ion-content>
+  <div class="padding light-bg bottom-0">
+    <button class="button button-calm full-image " ng-click="signsubmit()">提交</button>
+  </div>
 </ion-view>

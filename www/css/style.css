@@ -87,11 +87,36 @@
   font-size: 1.3rem
 }
 
-.bottom-0{
+.bottom-0 {
   position: absolute;
   width: 100%;
   bottom: 0;
 }
-.gray{
+
+.gray {
   color: #777;
+}
+
+.item-radio input:checked + .radio-content {
+  color: #11c1f3;
+}
+
+.margin-righ-1 {
+  margin-right: 1rem;
+}
+
+.has-button-footer {
+  bottom: 67px;
+}
+/*修改覆盖弹出框默认样式*/
+.show-alert .popup,.show-confirm .popup {
+  text-align: center;
+  background-color: #fff;  !important;
+}
+.show-alert .popup .popup-head,.show-confirm .popup .popup-head{
+  border: none;
+}
+.show-alert .popup .popup-body p,.show-confirm .popup .popup-body p{
+  margin: 0;
+  padding: 0;
 }

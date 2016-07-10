@@ -1,17 +1,16 @@
 
 #logo {
   display: inline-block;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border: 2px solid #ffffff;
   vertical-align: text-bottom;
   border-radius: 50%;
 }
 
 .main-list {
-  margin-top: -0.3rem;
+  margin-top: 0.1rem;
   padding: 0;
-
 }
 
 .main-list a {
@@ -22,7 +21,10 @@
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   text-decoration: none;
 }
-
+.main-list-last a{
+  margin-top: 0.3rem;
+  border-bottom:none;
+}
 .main-list .col p {
   display: inline-block;
   width: 2.6rem;

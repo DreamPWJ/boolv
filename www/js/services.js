@@ -1,25 +1,29 @@
 angular.module('starter.services', [])
   .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $cordovaToast,$cordovaBarcodeScanner) {
     return {
-      showAlert: function (title, template) {
+      showAlert: function (title, template,stateurl) {
         // 一个提示对话框
         var alertPopup = $ionicPopup.alert({
+          cssClass:"show-alert",
           title: title,
           template: template,
           okText: '确定',
           okType: 'button-calm'
         });
         alertPopup.then(function (res) {
+          $state.go(stateurl)
           console.log(res);
         });
       },
       showConfirm: function (title, template, okText, cancelText, stateurl) {
         var confirmPopup = $ionicPopup.confirm({
+          cssClass:"show-confirm",
           title: '<strong>' + title + '</strong>',
           template: template,
           okText: okText,
           cancelText: cancelText,
-          okType: 'button-calm'
+          okType: 'button-calm',
+          cancelType: 'button-assertive'
         });
 
         confirmPopup.then(function (res) {

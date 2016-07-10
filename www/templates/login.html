@@ -1,4 +1,7 @@
 <ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button icon ion-chevron-left no-border" ng-click="goBack()"></button>
+  </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title icon ion-person"> 登录</h1>
   </ion-nav-title>
@@ -20,7 +23,7 @@
         </ion-checkbox>
       </div>
       <div class="padding-horizontal">
-        <button class="button full-image button-calm " ng-click="loginSubmit()" ng-disabled="!loginForm.$valid">登录
+        <button class="button full-image button-balanced " ng-click="loginSubmit()" ng-disabled="!loginForm.$valid">登录
         </button>
       </div>
     </form>

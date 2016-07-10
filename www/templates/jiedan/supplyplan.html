@@ -3,40 +3,58 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 供货计划</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
       <a ng-href="" class="item item-borderless">
         <strong>拆解机 : <span class="item-note"><i class="icon ion-chevron-down"></i></span></strong>
       </a>
-      <a ng-href="" class="item">
-        <h2>申请供货数量 : <span class="item-note"><span class="calm font-size-1-3" >18000</span> 台</span></h2>
-      </a>
-      <a ng-href="" class="item">
-        <h2>剩余供货量 : <span class="item-note"><span class="calm font-size-1-3" >30000</span> 台</span></h2>
-      </a>
-      <a ng-href="" class="item">
-        <h2>供货次数 : <span class="item-note"><span class="calm font-size-1-3" >8000</span> 次</span></h2>
-      </a>
-      <a ng-href="" class="item border-bottom-none">
-        <h2>单次供货数量 : <span class="item-note"><span class="calm font-size-1-3 " >2000</span> 台</span></h2>
-      </a>
+      <label class="item item-input">
+        <span class="input-label"> 申请供货数量 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">台</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 剩余供货量 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">台</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 供货次数 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">次</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 单次供货数量 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">台</span>
+      </label>
+
     </div>
     <div class="list">
       <a ng-href="" class="item item-borderless">
         <strong>电池 : <span class="item-note"><i class="icon ion-chevron-down"></i></span></strong>
       </a>
-      <a ng-href="" class="item">
-        <h2>申请供货数量 : <span class="item-note"><span class="calm font-size-1-3" >12000</span> 公斤</span></h2>
-      </a>
-      <a ng-href="" class="item">
-        <h2>剩余供货量 : <span class="item-note"><span class="calm font-size-1-3" >2000</span> 公斤</span></h2>
-      </a>
-      <a ng-href="" class="item">
-        <h2>供货次数 : <span class="item-note"><span class="calm font-size-1-3" >8000</span> 次</span></h2>
-      </a>
-      <a ng-href="" class="item border-bottom-none">
-        <h2>单次供货数量 : <span class="item-note"><span class="calm font-size-1-3 " >2000</span> 台</span></h2>
-      </a>
+      <label class="item item-input">
+        <span class="input-label"> 申请供货数量 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">公斤</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 剩余供货量 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">公斤</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 供货次数 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">次</span>
+      </label>
+      <label class="item item-input">
+        <span class="input-label"> 单次供货数量 :</span>
+        <input type="number">
+        <span class="item-note padding-right margin-righ-1">台</span>
+      </label>
+
     </div>
 
     <div class="list list-borderless">
@@ -44,8 +62,9 @@
         <strong>预计物流费 :500元</strong>
       </a>
     </div>
-    <div class="padding light-bg">
-      <a class="button button-calm full-image  " ng-href="#/releasesupply">提交</a>
-    </div>
+
   </ion-content>
+  <div class="padding light-bg bottom-0">
+    <a class="button button-calm full-image  " ng-href="#/releasesupply">提交</a>
+  </div>
 </ion-view>

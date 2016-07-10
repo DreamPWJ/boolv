@@ -20,7 +20,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, commonService,$http, BooLv, $ionicLoading, $ionicHistory) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $ionicPopover, $ionicModal, $stateParams, commonService, $http, BooLv, $ionicLoading, $ionicHistory) {
     $ionicPopover.fromTemplateUrl('my-popover.html', {
       scope: $scope,
     }).then(function (popover) {
@@ -43,11 +43,11 @@ angular.module('starter.controllers', [])
       commonService.barcodeScanner();
     }
     //拍照
-    $rootScope.takePicture=function(){
+    $rootScope.takePicture = function () {
       commonService.takePicture();
     }
 
-    $scope.searchorder=function () {
+    $scope.searchorder = function () {
       $state.go("searchorder")
     }
   })
@@ -105,7 +105,7 @@ angular.module('starter.controllers', [])
     $scope.delivergoods();
 
     $scope.delivergoodssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭')
+      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭','checkdetails')
     }
   })
   .controller('SupplyGoodCtrl', function ($scope, BooLv, $http, commonService) {
@@ -131,12 +131,12 @@ angular.module('starter.controllers', [])
 
   })
   .controller('SellGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-
+    commonService.searchModal($scope);
 
   })
   .controller('SellDetailsCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
     $scope.sellgoodssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭')
+      commonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellgood')
     }
 
   })
@@ -157,7 +157,7 @@ angular.module('starter.controllers', [])
   .controller('EnteringCheckCtrl', function ($scope, BooLv, $http, commonService) {
 
     $scope.checkgoodssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭')
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>','checkdetails')
     }
   })
   .controller('SupplyDetailsCtrl', function ($scope, BooLv, $http, commonService) {
@@ -201,7 +201,7 @@ angular.module('starter.controllers', [])
 
     $scope.delivergoods();
     $scope.signsubmit = function () {
-      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>')
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>','signdetails')
     }
   })
   .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
