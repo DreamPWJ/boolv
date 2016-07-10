@@ -4,51 +4,57 @@
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list ">
-      <a ng-href="" class="item item-borderless">
-        <strong>拆解机 <span class="item-note margin-righ-1"><i class="icon ion-ios-arrow-down"></i></span> </strong>
+      <a ng-click="toggle()" class="item item-borderless" hide-show>
+        <strong>拆解机 <span class="item-note margin-righ-1"><i class="icon ion-chevron-down"></i></span> </strong>
       </a>
-      <label class="item item-input">
-        <span class="input-label"> 数量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">台</span>
-      </label>
-      <label class="item item-input border-bottom-none">
-        <span class="input-label"> 价格 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">元/台</span>
-      </label>
+      <div ng-hide="showme">
+        <label class="item item-input">
+          <span class="input-label"> 数量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">台</span>
+        </label>
+        <label class="item item-input border-bottom-none">
+          <span class="input-label"> 价格 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">元/台</span>
+        </label>
+      </div>
     </div>
 
     <div class="list">
-      <a ng-href="" class="item item-borderless">
-        <strong>二手手机 <span class="item-note margin-righ-1"><i class="icon ion-ios-arrow-down"></i></span> </strong>
+      <a ng-click="toggle()" class="item item-borderless" hide-show>
+        <strong>二手手机 <span class="item-note margin-righ-1"><i class="icon ion-chevron-down"></i></span> </strong>
       </a>
-      <label class="item item-input">
-        <span class="input-label"> 数量 :</span>
-        <input type="number">
-        <span class="item-note padding-righ margin-righ-1">台</span>
-      </label>
-      <label class="item item-input border-bottom-none">
-        <span class="input-label"> 价格 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">元/台</span>
-      </label>
+      <div ng-hide="showme">
+        <label class="item item-input">
+          <span class="input-label"> 数量 :</span>
+          <input type="number">
+          <span class="item-note padding-righ margin-righ-1">台</span>
+        </label>
+        <label class="item item-input border-bottom-none">
+          <span class="input-label"> 价格 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">元/台</span>
+        </label>
+      </div>
     </div>
 
     <div class="list">
-      <a ng-href="" class="item item-borderless">
-        <strong>电池 <span class="item-note margin-righ-1"><i class="icon ion-ios-arrow-down"></i></span> </strong>
+      <a ng-click="toggle()" class="item item-borderless" hide-show>
+        <strong>电池 <span class="item-note margin-righ-1"><i class="icon ion-chevron-down"></i></span> </strong>
       </a>
-      <label class="item item-input">
-        <span class="input-label"> 数量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">台</span>
-      </label>
-      <label class="item item-input border-bottom-none">
-        <span class="input-label"> 价格 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">元/台</span>
-      </label>
+      <div ng-hide="showme">
+        <label class="item item-input">
+          <span class="input-label"> 数量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">台</span>
+        </label>
+        <label class="item item-input border-bottom-none">
+          <span class="input-label"> 价格 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">元/台</span>
+        </label>
+      </div>
     </div>
   </ion-content>
   <div class="padding light-bg bottom-0">
