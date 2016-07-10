@@ -17,7 +17,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             title: '<strong>退出应用?</strong>',
             template: '你确定要退出博绿网应用吗?',
             okText: '退出',
-            cancelText: '取消'
+            cancelText: '取消'   ,
+            okType: 'button-calm',
+            cancelType: 'button-assertive'
           });
 
           confirmPopup.then(function (res) {
@@ -73,8 +75,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.platform.ios.navBar.alignTitle('center');
     $ionicConfigProvider.platform.android.navBar.alignTitle('center');
 
-    $ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-ios-arrow-back');
-    $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-ios-arrow-back');
+    $ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-chevron-left');
+    $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-chevron-left');
 
     $ionicConfigProvider.platform.ios.views.transition('ios');
     $ionicConfigProvider.platform.android.views.transition('android');
