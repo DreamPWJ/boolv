@@ -1,8 +1,8 @@
 
 #logo {
   display: inline-block;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.7rem;
+  height: 1.7rem;
   vertical-align: text-bottom;
 
 }
@@ -20,10 +20,12 @@
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   text-decoration: none;
 }
-.main-list-last a{
+
+.main-list-last a {
   margin-top: 0.3rem;
-  border-bottom:none;
+  border-bottom: none;
 }
+
 .main-list .col p {
   display: inline-block;
   width: 2.6rem;
@@ -72,4 +74,14 @@
 .jiedan-time {
   position: absolute;
   right: 22px;
+}
+
+#searhorder .tab-item-active {
+  color: #fff;
+  background-color: #11c1f3;
+}
+
+#searhorder .tab-nav {
+  border: none;
+  box-shadow: 0px 0px 10px #ddd
 }
