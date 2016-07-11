@@ -5,56 +5,58 @@
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
-      <a ng-href="" class="item item-borderless">
+      <a ng-click="toggle(1)" hide-show class="item item-borderless">
         <strong>拆解机 : <span class="item-note"><i class="icon ion-chevron-down"></i></span></strong>
       </a>
-      <label class="item item-input">
-        <span class="input-label"> 申请供货数量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">台</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 剩余供货量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">台</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 供货次数 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">次</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 单次供货数量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">台</span>
-      </label>
-
+      <div ng-hide="showme1">
+        <label class="item item-input">
+          <span class="input-label"> 申请供货数量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">台</span>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 剩余供货量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">台</span>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 供货次数 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">次</span>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 单次供货数量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">台</span>
+        </label>
+      </div>
     </div>
     <div class="list">
-      <a ng-href="" class="item item-borderless">
+      <a ng-click="toggle(2)" hide-show class="item item-borderless">
         <strong>电池 : <span class="item-note"><i class="icon ion-chevron-down"></i></span></strong>
       </a>
-      <label class="item item-input">
-        <span class="input-label"> 申请供货数量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">公斤</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 剩余供货量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">公斤</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 供货次数 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">次</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 单次供货数量 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-righ-1">台</span>
-      </label>
-
+      <div ng-hide="showme2">
+        <label class="item item-input">
+          <span class="input-label"> 申请供货数量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">公斤</span>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 剩余供货量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">公斤</span>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 供货次数 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">次</span>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 单次供货数量 :</span>
+          <input type="number">
+          <span class="item-note padding-right margin-righ-1">台</span>
+        </label>
+      </div>
     </div>
 
     <div class="list list-borderless">

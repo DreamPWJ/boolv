@@ -18,15 +18,17 @@
 
 
     <div class="list">
-      <a ng-href="" class="item item-borderless">
+      <a ng-click="toggle(1)" hide-show class="item item-borderless">
         <strong>剩余供货量 : <span class="item-note"><i class="icon ion-chevron-down"></i></span></strong>
       </a>
-      <a ng-href="" class="item">
-        <h2>拆解机 : <span class="item-note"><span class="calm font-size-1-3" >20000</span> 台</span></h2>
-      </a>
-      <a ng-href="" class="item border-bottom-none">
-        <h2>电池 : <span class="item-note"><span class="calm font-size-1-3" >18000</span> 公斤</span></h2>
-      </a>
+      <div ng-hide="showme1">
+        <a ng-href="" class="item">
+          <h2>拆解机 : <span class="item-note"><span class="calm font-size-1-3">20000</span> 台</span></h2>
+        </a>
+        <a ng-href="" class="item border-bottom-none">
+          <h2>电池 : <span class="item-note"><span class="calm font-size-1-3">18000</span> 公斤</span></h2>
+        </a>
+      </div>
     </div>
     <div class="list list-borderless">
 

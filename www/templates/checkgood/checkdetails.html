@@ -5,35 +5,39 @@
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
-      <a ng-href="" class="item item-borderless ">
+      <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>订单号 : GF201615484878787877</strong><span class="item-note"><i
           class="icon ion-chevron-down"></i></span></h2>
       </a>
-      <a ng-href="" class="item ">
-        <h2>卖货人 : 张三</h2>
-      </a>
-      <a ng-href="" class="item ">
-        <h2>订单状态 : 已验货</h2>
-      </a>
-      <a ng-href="" class="item border-bottom-none">
-        <h2>下单时间 : 2016-06-23</h2>
-      </a>
+      <div ng-hide="showme1">
+        <a ng-href="" class="item ">
+          <h2>卖货人 : 张三</h2>
+        </a>
+        <a ng-href="" class="item ">
+          <h2>订单状态 : 已验货</h2>
+        </a>
+        <a ng-href="" class="item border-bottom-none">
+          <h2>下单时间 : 2016-06-23</h2>
+        </a>
+      </div>
     </div>
 
 
     <div class="list">
-      <a ng-href="" class="item item-borderless">
+      <a ng-click="toggle(2)" hide-show class="item item-borderless">
         <strong>供货清单 : <span class="item-note"><i class="icon ion-chevron-down"></i></span></strong>
       </a>
-      <a ng-href="" class="item">
-        <h2>拆解机 : 10000台</h2>
-      </a>
-      <a ng-href="" class="item border-bottom-none">
-        <h2>二手手机 : 10000台</h2>
-      </a>
-      <a ng-href="" class="item border-bottom-none">
-        <h2>电池 : 10000块</h2>
-      </a>
+      <div ng-hide="showme2">
+        <a ng-href="" class="item">
+          <h2>拆解机 : 10000台</h2>
+        </a>
+        <a ng-href="" class="item border-bottom-none">
+          <h2>二手手机 : 10000台</h2>
+        </a>
+        <a ng-href="" class="item border-bottom-none">
+          <h2>电池 : 10000块</h2>
+        </a>
+      </div>
     </div>
 
 
