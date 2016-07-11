@@ -39,7 +39,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           $ionicHistory.goBack();
         } else {
           // This is the last page: Show confirmation popup
-          showConfirm();
+          $ionicHistory.goBack();
+         // showConfirm();
         }
 
         return false;

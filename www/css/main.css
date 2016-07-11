@@ -3,9 +3,8 @@
   display: inline-block;
   width: 1.6rem;
   height: 1.6rem;
-  border: 2px solid #ffffff;
   vertical-align: text-bottom;
-  border-radius: 50%;
+
 }
 
 .main-list {
