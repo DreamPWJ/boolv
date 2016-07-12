@@ -1,10 +1,14 @@
 <ion-view>
-
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 预收款详情</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg ">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <div class="list list-borderless  light-bg text-center">
       <p class="item energized" style="font-size: 1.5rem;">
         100,000.00
@@ -13,38 +17,44 @@
       </p>
     </div>
     <div class="list ">
-      <a ng-href="" class="item item-borderless">
-        <strong>预收款明细 <span class="item-note"><i class="icon ion-ios-arrow-down"></i></span></strong>
+      <a ng-click="toggle(1)" hide-show class="item item-borderless">
+        <strong>预收款明细 <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></strong>
       </a>
-      <a ng-href="" class="item ">
-        <h2>申请金额 <span class="item-note font-size-1-3 dark">100,000.00</span></h2>
-      </a>
-      <a ng-href="" class="item ">
-        <h2>申请时间 <span class="item-note ">2016-06-23 10:00:00</span></h2>
-      </a>
-      <a ng-href="" class="item ">
-        <h2>合同期限 <span class="item-note ">2016-06-23 至 2017-06-23</span></h2>
-      </a>
-      <a ng-href="" class="item ">
-        <h2>还款方式 <span class="item-note ">等额本金</span></h2>
-      </a>
-      <a ng-href="" class="item  border-bottom-none">
-        <h2>借款合同 <span class="item-note ">查看 <i class="icon ion-ios-arrow-right"></i></span></h2>
-      </a>
+      <div ng-hide="showme1">
+        <a ng-href="" class="item ">
+          <h2>申请金额 <span class="item-note font-size-1-3 dark">100,000.00</span></h2>
+        </a>
+        <a ng-href="" class="item ">
+          <h2>申请时间 <span class="item-note ">2016-06-23 10:00:00</span></h2>
+        </a>
+        <a ng-href="" class="item ">
+          <h2>合同期限 <span class="item-note ">2016-06-23 至 2017-06-23</span></h2>
+        </a>
+        <a ng-href="" class="item ">
+          <h2>还款方式 <span class="item-note ">等额本金</span></h2>
+        </a>
+        <a ng-href="" class="item  border-bottom-none">
+          <h2>借款合同 <span class="item-note ">查看 <i class="icon ion-ios-arrow-right"></i></span></h2>
+        </a>
+      </div>
     </div>
     <div class="list ">
-      <a ng-href="" class="item item-borderless">
-        <strong>还款明细 <span class="item-note"><i class="icon ion-ios-arrow-down"></i></span></strong>
+      <a ng-click="toggle(2)" hide-show class="item item-borderless">
+        <strong>还款明细 <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
-      <a ng-href="" class="item  border-bottom-none">
-        <h2>申请金额 <span class="item-note font-size-1-3 dark">100,000.00</span></h2>
-      </a>
+      <div ng-hide="showme2">
+        <a ng-href="" class="item ">
+          <h2>已还本金 <span class="item-note font-size-1-3 dark">5,000.00</span></h2>
+        </a>
+        <a ng-href="" class="item  border-bottom-none">
+          <h2>已还服务费 <span class="item-note font-size-1-3 dark">3,000.00</span></h2>
+        </a>
+      </div>
+    </div>
 
-    </div>
-    <div class="padding light-bg row row-horizontal-around">
-      <button class="col-40 button button-calm  " ng-click="">还款</button>
-      <button class="col-40 button button-stable  " ng-click="">取消</button>
-    </div>
   </ion-content>
-
+  <div class="padding light-bg row row-horizontal-around bottom-0">
+    <button class="col-40 button button-calm  " ng-click="">还款</button>
+    <button class="col-40 button button-stable  " ng-click="">取消</button>
+  </div>
 </ion-view>

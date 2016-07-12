@@ -55,6 +55,22 @@ angular.module('starter.controllers', [])
 
   })
 
+  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
+
+  })
+  .controller('DealNoticeCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+   $scope.shareActionSheet=function () {
+     commonService.shareActionSheet();
+   }
+
+  })
+  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+    $scope.shareActionSheet=function () {
+      commonService.shareActionSheet();
+    }
+
+  })
 
   .controller('LoginCtrl', function ($scope, $rootScope, BooLv, $http, encodingService, $state, commonService) {
 
@@ -80,6 +96,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+
     commonService.searchModal($scope);
     $scope.searchsettitle = function (title) {
       $scope.title = title;
@@ -90,8 +107,23 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('DeliverGoodsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+  .controller('DeliverListCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
 
+  })
+  .controller('DeliverDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService,$ionicPopover) {
+    $ionicPopover.fromTemplateUrl('my-deliverdetails-popover.html', {
+      scope: $scope,
+    }).then(function (popover) {
+      $scope.popover = popover;
+    });
+    $scope.openDeliverdetailsPopover = function ($event) {
+      $scope.popover.show($event);
+    };
+    $scope.closeDeliverdetailsPopover = function () {
+      $scope.popover.hide();
+    };
+  })
+  .controller('DeliverGoodsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -105,7 +137,7 @@ angular.module('starter.controllers', [])
     $scope.delivergoods();
 
     $scope.delivergoodssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭','checkdetails')
+      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'checkdetails')
     }
   })
   .controller('SupplyGoodCtrl', function ($scope, BooLv, $http, commonService) {
@@ -154,11 +186,19 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('EnteringCheckCtrl', function ($scope, BooLv, $http, commonService) {
+  .controller('EnteringCheckCtrl', function ($scope,$state, BooLv, $http, commonService) {
+
+    $scope.toaddproduct = function () {
+      $state.go("addproduct")
+    }
 
     $scope.checkgoodssubmit = function () {
-      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>','checkdetails')
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkdetails')
     }
+  })
+
+  .controller('AddProductCtrl', function ($scope, BooLv, $http, commonService) {
+
   })
   .controller('SupplyDetailsCtrl', function ($scope, BooLv, $http, commonService) {
 
@@ -199,9 +239,9 @@ angular.module('starter.controllers', [])
       $scope.goodtype = 3;
     }
 
-    $scope.delivergoods();
+    $scope.delivery();
     $scope.signsubmit = function () {
-      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>','signdetails')
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signdetails')
     }
   })
   .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
@@ -211,6 +251,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('ApplyProviderCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
     $scope.applyprovidersubmit = function () {
       commonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
     }
@@ -223,6 +264,9 @@ angular.module('starter.controllers', [])
   })
   .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
+    $scope.applyadvancesubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！您的预收款申请提交成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭', 'davancedetails')
+    }
   })
   .controller('CollectionAccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
@@ -231,6 +275,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('MyCreditCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('mycredit'));
     option = {

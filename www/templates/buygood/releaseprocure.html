@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
@@ -8,17 +8,33 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 发布采购单</h1>
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
-    <div class="list">
+    <ul class="list">
       <a ng-href="" class="item item-borderless">
         <strong>请选择产品 : </strong>
       </a>
-      <ion-radio ng-model="buytype" ng-value="1" >拆解机</ion-radio>
-      <ion-radio ng-model="buytype" ng-value="2">二手手机</ion-radio>
-      <ion-radio ng-model="buytype" ng-value="3" class="border-bottom-none">  电池</ion-radio>
-      <p class="padding-top light-bg"></p>
-    </div>
+      <li class="item item-checkbox ">
+        <label class="checkbox checkbox-calm">
+          <input type="checkbox">
+        </label>
+        拆解机
+      </li>
+
+      <li class="item item-checkbox ">
+        <label class="checkbox checkbox-calm">
+          <input type="checkbox">
+        </label>
+        二手手机
+      </li>
+      <li class="item item-checkbox  border-bottom-none">
+        <label class="checkbox checkbox-calm">
+          <input type="checkbox">
+        </label>
+        电池
+      </li>
+
+    </ul>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image" ng-href="#/procuredetails">提交</a>
+    <a class="button button-calm full-image" ng-href="#/procuredetails">下一步</a>
   </div>
 </ion-view>

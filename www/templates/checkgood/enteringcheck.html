@@ -1,4 +1,9 @@
 <ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 录入验货数据</h1>
   </ion-nav-title>
@@ -7,7 +12,7 @@
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>拆解机</strong><span class="item-note"><i
-          class="icon ion-chevron-down"></i></span></h2>
+          class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></h2>
       </a>
       <div ng-hide="showme1">
         <label class="item item-input">
@@ -28,7 +33,7 @@
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless ">
         <h2><strong>电池</strong><span class="item-note"><i
-          class="icon ion-chevron-down"></i></span></h2>
+          class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></h2>
       </a>
       <div ng-hide="showme2">
         <label class="item item-input">
@@ -44,8 +49,8 @@
           <input type="number" placeholder="(单位:元/台)">
         </label>
         <p class="padding-top"></p>
-        <label class="item item-input item-icon-right item-borderless">
-          <span class="input-label"> 添加品种:</span>
+        <label ng-click="toaddproduct()" class="item item-input item-icon-right item-borderless">
+          <span class="input-label"> 添加产品:</span>
           <i class="icon ion-android-add calm"></i>
         </label>
         <p class="padding-top"></p>

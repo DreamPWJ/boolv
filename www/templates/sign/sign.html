@@ -1,4 +1,9 @@
 <ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 签收</h1>
   </ion-nav-title>
@@ -7,24 +12,24 @@
       <a ng-click="delivery()" class="button"
          ng-class="{true:'button-calm',false:'button-stable'}[goodtype==null||goodtype==1]">物流配送</a>
       <a ng-click="delivergoods()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==2]">送货上门</a>
-      <a ng-click="oneself()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">买家自提</a>
+      <a ng-click="oneself()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">上门回收</a>
     </div>
   </div>
   <ion-content overflow-scroll="false" class="stable-bg  has-subheader has-button-footer">
     <div class="list padding-top">
       <label class="item item-input item-borderless">
-        <span class="input-label"> 件数:</span>
+        <span class="input-label"> 件数</span>
         <input type="text" placeholder="(单位 : 件)">
       </label>
       <label class="item item-input">
-        <span class="input-label"> 重量:</span>
+        <span class="input-label"> 重量</span>
         <input type="text" placeholder="(单位 : 公斤)">
       </label>
-      <label class="item item-input">
-        <span class="input-label"> 车牌号码:</span>
-        <input type="text" placeholder="">
+      <label class="item item-input" ng-show="goodtype==2">
+        <span class="input-label"> 车牌号码</span>
+        <input type="text" placeholder="填写真实车牌号码">
       </label>
-      <label class="item item-input item-select">
+      <label class="item item-input item-select" ng-show="goodtype==null||goodtype==1">
         <div class="input-label">
           物流公司
         </div>
@@ -35,25 +40,25 @@
           <option>物流公司3</option>
         </select>
       </label>
-      <label class="item item-input item-icon-right" ng-click="barcodeScanner()">
-        <span class="input-label"> 物流单号:</span>
+      <label class="item item-input item-icon-right" ng-click="barcodeScanner()" ng-show="goodtype==null||goodtype==1">
+        <span class="input-label"> 物流单号</span>
         <input type="text" placeholder="点击右侧图标扫描" readonly style="background-color: #fff;">
         <i class="icon ion-qr-scanner"></i>
       </label>
-      <label class="item item-input">
-        <span class="input-label"> 物流费:</span>
+      <label class="item item-input" ng-show="goodtype==null||goodtype==1">
+        <span class="input-label"> 提货费</span>
         <input type="text" placeholder="（单位 : 元）">
       </label>
-      <label class="item item-input">
-        <span class="input-label"> 送货费:</span>
+      <label class="item item-input" ng-show="goodtype==null||goodtype==1">
+        <span class="input-label"> 物流费</span>
         <input type="text" placeholder="（单位 : 元）">
       </label>
-      <label class="item item-input">
-        <span class="input-label"> 提货费:</span>
+      <label class="item item-input" ng-show="goodtype!=3">
+        <span class="input-label"> 送货费</span>
         <input type="text" placeholder="（单位 : 元）">
       </label>
       <label class="item item-input item-icon-right border-bottom-none" ng-click="takePicture()">
-        <span class="input-label"> 上传照片:</span>
+        <span class="input-label"> 上传照片</span>
         <input type="text" placeholder="货运车、车牌、货物包装照片" readonly style="background-color: #fff;"/>
         <i class="icon ion-android-add calm"></i>
       </label>

@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{goodtype==null||goodtype==1?'签收':'发货'}}</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 发货</h1>
   </ion-nav-title>
   <div class="bar bar-subheader no-border">
     <div class="button-bar">
@@ -18,11 +18,11 @@
   <ion-content overflow-scroll="false" class="stable-bg  has-subheader  has-button-footer">
     <div class="list padding-top">
       <label class="item item-input item-borderless">
-        <span class="input-label"> 件数:</span>
+        <span class="input-label"> 件数</span>
         <input type="text" placeholder="(单位 : 件)">
       </label>
       <label class="item item-input">
-        <span class="input-label"> 重量:</span>
+        <span class="input-label"> 重量</span>
         <input type="text" placeholder="(单位 : 公斤)">
       </label>
       <label ng-show="goodtype==null||goodtype==1" class="item item-input item-select">
@@ -37,24 +37,24 @@
         </select>
       </label>
       <label ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right" ng-click="barcodeScanner()">
-        <span class="input-label"> 物流单号:</span>
+        <span class="input-label"> 物流单号</span>
         <input type="text" placeholder="点击右侧图标扫描" readonly style="background-color: #fff;">
         <i class="icon ion-qr-scanner"></i>
       </label>
 
       <label ng-show="goodtype==2" class="item item-input item-icon-right">
-        <span class="input-label"> 车牌号码:</span>
+        <span class="input-label"> 车牌号码</span>
         <input type="text" placeholder="">
       </label>
       <a ng-href="" ng-show="goodtype==3" class="item item-icon-right">
         <h2>发货人 : 张三</h2>
         <p>手机 : 18256546554</p>
         <p>地址 : 广东省深圳市龙岗区***</p>
-        <i class="icon ion-ios-arrow-right grey"></i>
+        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
       </a>
 
       <label class="item item-input item-icon-right border-bottom-none" ng-click="takePicture()">
-        <span class="input-label"> 上传照片:</span>
+        <span class="input-label"> 上传照片</span>
         <input type="text" placeholder="货运车、车牌、货物包装照片" readonly style="background-color: #fff;"/>
         <i class="icon ion-android-add calm" ></i>
       </label>

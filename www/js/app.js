@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config','starter.directive', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova'])
 
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory) {
     $ionicPlatform.ready(function () {
@@ -17,7 +17,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             title: '<strong>退出应用?</strong>',
             template: '你确定要退出博绿网应用吗?',
             okText: '退出',
-            cancelText: '取消'   ,
+            cancelText: '取消',
             okType: 'button-calm',
             cancelType: 'button-assertive'
           });
@@ -32,7 +32,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
 
         // Is there a page to go back to? 制定页面返回退出程序
-        if ($location.path() == '/tab/main' || $location.path() == '/login') {
+        if ($location.path() == '/tab/main') {
           showConfirm();
         } else if ($ionicHistory.backView()) {
           // Go back in history
@@ -40,7 +40,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         } else {
           // This is the last page: Show confirmation popup
           $ionicHistory.goBack();
-         // showConfirm();
+          // showConfirm();
         }
 
         return false;
@@ -109,7 +109,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      .state('currenttimeoffer', {
+        url: '/currenttimeoffer',
+        templateUrl: 'templates/maindetails/currenttimeoffer.html',
+        controller: 'CurrentTimeOfferCtrl'
 
+      })
+      .state('dealnotice', {
+        url: '/dealnotice',
+        templateUrl: 'templates/maindetails/dealnotice.html',
+        controller: 'DealNoticeCtrl'
+
+      })
+      .state('companytrends', {
+        url: '/companytrends',
+        templateUrl: 'templates/maindetails/companytrends.html',
+        controller: 'CompanyTrendsCtrl'
+
+      })
       .state('tab.account', {
         url: '/account',
         cache: false,
@@ -120,15 +137,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
-      .state('tab.accountinfo', {
+      .state('accountinfo', {
         url: '/accountinfo',
         cache: false,
-        views: {
-          'tab-account': {
-            templateUrl: 'templates/account/accountinfo.html',
-            controller: 'AccountInfoCtrl'
-          }
-        }
+        templateUrl: 'templates/account/accountinfo.html',
+        controller: 'AccountInfoCtrl'
       })
       .state('login', {
         url: '/login',
@@ -157,6 +170,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/search',
         templateUrl: 'templates/search.html',
         controller: 'SearchCtrl'
+
+      })
+      .state('deliverlist', {
+        url: '/deliverlist',
+        templateUrl: 'templates/delivergoods/deliverlist.html',
+        controller: 'DeliverListCtrl'
+
+      })
+      .state('deliverdetails', {
+        url: '/deliverdetails',
+        templateUrl: 'templates/delivergoods/deliverdetails.html',
+        controller: 'DeliverDetailsCtrl'
 
       })
       .state('delivergoods', {
@@ -248,6 +273,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/enteringcheck',
         templateUrl: 'templates/checkgood/enteringcheck.html',
         controller: 'EnteringCheckCtrl'
+      })
+      .state('addproduct', {
+        url: '/addproduct',
+        templateUrl: 'templates/checkgood/addproduct.html',
+        controller: 'AddProductCtrl'
       })
       .state('signlist', {
         url: '/signlist',

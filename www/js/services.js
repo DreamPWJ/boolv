@@ -1,10 +1,10 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $cordovaToast,$cordovaBarcodeScanner) {
+  .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $cordovaToast, $cordovaBarcodeScanner) {
     return {
-      showAlert: function (title, template,stateurl) {
+      showAlert: function (title, template, stateurl) {
         // 一个提示对话框
         var alertPopup = $ionicPopup.alert({
-          cssClass:"show-alert",
+          cssClass: "show-alert",
           title: title,
           template: template,
           okText: '确定',
@@ -15,9 +15,9 @@ angular.module('starter.services', [])
           console.log(res);
         });
       },
-      showConfirm: function (title, template, okText, cancelText, stateurl) {
+      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl) {
         var confirmPopup = $ionicPopup.confirm({
-          cssClass:"show-confirm",
+          cssClass: "show-confirm",
           title: '<strong>' + title + '</strong>',
           template: template,
           okText: okText,
@@ -30,7 +30,8 @@ angular.module('starter.services', [])
           if (res) {
             $state.go(stateurl)
           } else {
-            // Don't close
+            $state.go(closeurl || 'tab.main')
+
           }
         });
       },
@@ -78,7 +79,7 @@ angular.module('starter.services', [])
 
       },
       //扫一扫
-      barcodeScanner:function () {
+      barcodeScanner: function () {
         /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
         document.addEventListener("deviceready", function () {
           $cordovaBarcodeScanner
@@ -99,6 +100,35 @@ angular.module('starter.services', [])
               // An error occurred
             });
         }, false);
+      },
+      shareActionSheet: function () {
+        $ionicActionSheet.show({
+          cssClass: 'action-s',
+          titleText: '<p>分享</p>',
+          buttons: [
+            {text: ' <p>收藏</p>'},
+            {text: '<p>微信朋友圈</p>'},
+            {text: '<p>QQ好友</p>'},
+            {text: '<p>QQ空间</p>'},
+            {text: '<p>更多</p>'}
+          ],
+          cancelText: '<p>关闭</p>',
+          cancel: function () {
+            return true;
+          },
+          buttonClicked: function (index) {
+            switch (index) {
+              case 0:
+
+                break;
+              case 1:
+                break;
+              default:
+                break;
+            }
+            return true;
+          }
+        });
       }
     }
   })
