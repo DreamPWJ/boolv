@@ -156,6 +156,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder.html',
         controller: 'SearchOrderCtrl'
       })
+      .state('procureorderdetails', {
+        url: '/procureorderdetails',
+        templateUrl: 'templates/searchorder/procureorderdetails.html',
+        controller: 'ProcureOrderDetailsCtrl'
+      })
+      .state('supplyorderplan', {
+        url: '/supplyorderplan',
+        templateUrl: 'templates/searchorder/supplyorderplan.html',
+        controller: 'SupplyOrderPlanCtrl'
+      })
+      .state('enteringnum', {
+        url: '/enteringnum',
+        templateUrl: 'templates/searchorder/enteringnum.html',
+        controller: 'EnteringNumCtrl'
+      })
+      .state('supplyorderdetails', {
+        url: '/supplyorderdetails',
+        templateUrl: 'templates/searchorder/supplyorderdetails.html',
+        controller: 'SupplyOrderDetailsCtrl'
+      })
+      .state('examinegoodsorder', {
+        url: '/examinegoodsorder',
+        templateUrl: 'templates/searchorder/examinegoodsorder.html',
+        controller: 'ExamineGoodsOrderCtrl'
+      })
+      .state('deiverorderdetails', {
+        url: '/deiverorderdetails',
+        templateUrl: 'templates/searchorder/deiverorderdetails.html',
+        controller: 'DeiverOrderDetailsCtrl'
+      })
       .state('tab.news', {
         url: '/news',
         cache: false,

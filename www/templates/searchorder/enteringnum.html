@@ -1,0 +1,46 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 录入数量</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+    <div class="list  ">
+      <label class="item item-input item-borderless">
+        <span class="input-label">拆解机</span>
+        <input type="number" placeholder="剩余供货量40000台">
+      </label>
+
+      <label class="item item-input ">
+        <span class="input-label">不合格拆解机</span>
+        <input type="number" placeholder="剩余供货量40000台">
+      </label>
+      <label class="item item-input ">
+        <span class="input-label">二手手机</span>
+        <input type="number" placeholder="剩余供货量40000台">
+      </label>
+      <label class="item item-input border-bottom-none">
+        <span class="input-label">电池</span>
+        <input type="number" placeholder="剩余供货量40000公斤">
+      </label>
+      <a ng-href="" class="item item-divider">
+        <p>选择收款账户</p>
+      </a>
+      <a ng-href="#/collectionaccount" class="item  item-icon-right item-borderless">
+        <h2><strong>收款人 : </strong>张三</h2>
+        <h2><strong>账号 : </strong>**********88963</h2>
+        <h2><strong>银行 : </strong>中国平安银行</h2>
+        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+      </a>
+    </div>
+
+  </ion-content>
+  <div class="row row-horizontal-around padding light-bg bottom-0">
+    <a class="col-40 button button-balanced " ng-click="enteringnumsubmit()">提交</a>
+    <a class="col-40  button button-calm " ng-href="#/delivergoods">继续发货</a>
+  </div>
+</ion-view>

@@ -1,14 +1,14 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 收货单详情</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 采购单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-android-menu no-border"  ng-click="openDeliverdetailsPopover($event)">
+    <button class="button icon ion-android-menu no-border" ng-click="openProcureOrderDetailsPopover($event)">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
@@ -19,10 +19,13 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>采购商家 : 格林美</h2>
+          <h2>采购人 : 张三</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>订单状态 : 已验货</h2>
+          <h2>预计采购总金额 : 10000000元</h2>
+        </a>
+        <a ng-href="" class="item ">
+          <h2>订单状态 : 已审核</h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
           <h2>下单时间 : 2016-06-23</h2>
@@ -33,36 +36,33 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>供货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        <strong>采购清单  <span class="item-note"><i class="icon ion-chevron-down"
+                                                  ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
         <a ng-href="" class="item">
-          <h2>拆解机 : 10000台</h2>
+          <h2>拆解机 : 10000台; 报价: 3.5元/台</h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
-          <h2>二手手机 : 10000台</h2>
+          <h2>二手手机 : 10000台; 报价: 6元/台</h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
-          <h2>电池 : 10000块</h2>
+          <h2>电池 : 10000块; 报价: 15元/公斤</h2>
         </a>
       </div>
     </div>
 
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image  " ng-href="#/delivergoods">下一步</a>
+    <button class="button button-calm full-image" ng-click="procureorderdetailssubmit()">支付定金</button>
   </div>
-  <script id="my-deliverdetails-popover.html" type="text/ng-template">
+  <script id="my-procureorderdetails-popover.html" type="text/ng-template">
     <ion-popover-view>
       <ion-content overflow-scroll="false">
         <div class="list">
-          <a ng-href="#/delivergoods" class="item item-icon-left">
+          <a ng-href="" class="item item-icon-left">
             <i class="icon ion-arrow-up-c balanced"></i>
-            发货
-          </a>
-          <a ng-href="#/examinegoodsorder" class="item item-icon-left">
-            <i class="icon ion-clipboard energized"></i>
-            审核验收单
+            支付定金
           </a>
           <a ng-href="" class="item item-icon-left">
             <i class="icon ion-star calm"></i>
@@ -71,10 +71,6 @@
           <a ng-click="" class="item item-icon-left">
             <i class="icon ion-trash-a royal"></i>
             关闭订单
-          </a>
-          <a ng-click="" class="item item-icon-left">
-            <i class="icon ion-reply assertive"></i>
-            退货
           </a>
         </div>
       </ion-content>

@@ -1,0 +1,62 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 审核验货单</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+    <div class="list">
+      <a ng-click="toggle(1)" hide-show class="item item-borderless ">
+        <h2><strong>订单号 : </strong>GF201615484878787877<span class="item-note"><i
+          class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></h2>
+      </a>
+      <div ng-hide="showme1">
+        <a ng-href="" class="item ">
+          <h2>验收人 : 老王</h2>
+        </a>
+
+        <a ng-href="" class="item border-bottom-none">
+          <h2>验货时间 : 2016-06-23</h2>
+        </a>
+      </div>
+    </div>
+
+
+    <div class="list">
+      <a ng-click="toggle(2)" hide-show class="item item-borderless">
+        <strong>卖货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+      </a>
+      <div ng-hide="showme2">
+        <li class="item item-checkbox ">
+          <label class="checkbox checkbox-calm">
+            <input type="checkbox">
+          </label>
+          拆解机 : 10000台
+        </li>
+        <li class="item item-checkbox ">
+          <label class="checkbox checkbox-calm">
+            <input type="checkbox">
+          </label>
+          二手手机 : 10000台
+        </li>
+        <li class="item item-checkbox ">
+          <label class="checkbox checkbox-calm">
+            <input type="checkbox">
+          </label>
+          电池 : 10000块
+        </li>
+
+      </div>
+    </div>
+
+  </ion-content>
+  <div class="row row-horizontal-around padding light-bg bottom-0">
+    <a class="col-40 button button-balanced " ng-click="examinegoodsordersubmit()">确认交易</a>
+    <a class="col-40  button button-calm " ng-click="">退货</a>
+  </div>
+
+</ion-view>

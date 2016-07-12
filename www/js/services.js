@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $cordovaToast, $cordovaBarcodeScanner) {
+  .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $ionicActionSheet,$ionicHistory, $cordovaToast, $cordovaBarcodeScanner) {
     return {
       showAlert: function (title, template, stateurl) {
         // 一个提示对话框
@@ -11,8 +11,12 @@ angular.module('starter.services', [])
           okType: 'button-calm'
         });
         alertPopup.then(function (res) {
-          $state.go(stateurl)
-          console.log(res);
+          if(stateurl==null||stateurl==''){
+            $ionicHistory.goBack();
+          }else {
+            $state.go(stateurl);
+          }
+
         });
       },
       showConfirm: function (title, template, okText, cancelText, stateurl, closeurl) {

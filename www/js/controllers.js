@@ -26,10 +26,10 @@ angular.module('starter.controllers', [])
     }).then(function (popover) {
       $scope.popover = popover;
     });
-    $scope.openPopover = function ($event) {
+    $rootScope.openPopover = function ($event) {
       $scope.popover.show($event);
     };
-    $scope.closePopover = function () {
+    $rootScope.closePopover = function () {
       $scope.popover.hide();
     };
 
@@ -60,13 +60,13 @@ angular.module('starter.controllers', [])
 
   })
   .controller('DealNoticeCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
-   $scope.shareActionSheet=function () {
-     commonService.shareActionSheet();
-   }
+    $scope.shareActionSheet = function () {
+      commonService.shareActionSheet();
+    }
 
   })
   .controller('CompanyTrendsCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
-    $scope.shareActionSheet=function () {
+    $scope.shareActionSheet = function () {
       commonService.shareActionSheet();
     }
 
@@ -103,6 +103,73 @@ angular.module('starter.controllers', [])
     }
 
   })
+  .controller('ProcureOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicPopover) {
+    $ionicPopover.fromTemplateUrl('my-procureorderdetails-popover.html', {
+      scope: $scope,
+    }).then(function (popover) {
+      $scope.popover = popover;
+    });
+    $scope.openProcureOrderDetailsPopover = function ($event) {
+      $scope.popover.show($event);
+    };
+    $scope.closeProcureOrderDetailsPopover = function () {
+      $scope.popover.hide();
+    };
+    $scope.procureorderdetailssubmit = function () {
+      commonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', 'procureorderdetails','procureorderdetails')
+    }
+  })
+  .controller('SupplyOrderPlanCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicPopover) {
+    $ionicPopover.fromTemplateUrl('my-supplyorderplan-popover.html', {
+      scope: $scope,
+    }).then(function (popover) {
+      $scope.popover = popover;
+    });
+    $scope.openSupplyOrderPlanPopover = function ($event) {
+      $scope.popover.show($event);
+    };
+    $scope.closeSupplyOrderPlanPopover = function () {
+      $scope.popover.hide();
+    };
+  })
+  .controller('EnteringNumCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+    $scope.enteringnumsubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', '')
+    }
+  })
+  .controller('SupplyOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicPopover) {
+    $ionicPopover.fromTemplateUrl('my-supplyorderdetails-popover.html', {
+      scope: $scope,
+    }).then(function (popover) {
+      $scope.popover = popover;
+    });
+    $scope.openSupplyOrderDetailsPopover = function ($event) {
+      $scope.popover.show($event);
+    };
+    $scope.closeSupplyOrderDetailsPopover = function () {
+      $scope.popover.hide();
+    };
+  })
+  .controller('ExamineGoodsOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+    $scope.examinegoodsordersubmit = function () {
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+    }
+
+  })
+
+  .controller('DeiverOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicPopover) {
+    $ionicPopover.fromTemplateUrl('my-deiverorderdetails-popover.html', {
+      scope: $scope,
+    }).then(function (popover) {
+      $scope.popover = popover;
+    });
+    $scope.openDeiverOrderDetailsPopover = function ($event) {
+      $scope.popover.show($event);
+    };
+    $scope.closeDeiverOrderDetailsPopover = function () {
+      $scope.popover.hide();
+    };
+  })
   .controller('NewsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
 
 
@@ -110,7 +177,7 @@ angular.module('starter.controllers', [])
   .controller('DeliverListCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
 
   })
-  .controller('DeliverDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService,$ionicPopover) {
+  .controller('DeliverDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService, $ionicPopover) {
     $ionicPopover.fromTemplateUrl('my-deliverdetails-popover.html', {
       scope: $scope,
     }).then(function (popover) {
@@ -150,7 +217,7 @@ angular.module('starter.controllers', [])
   })
 
   .controller('ReleaseProcureCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-    commonService.searchModal($scope);
+    $rootScope.closePopover();
 
   })
   .controller('ProcureDetailsCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
@@ -174,7 +241,7 @@ angular.module('starter.controllers', [])
   })
 
   .controller('SellProcureCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-
+    $rootScope.closePopover();
 
   })
   .controller('CheckGoodCtrl', function ($scope, BooLv, $http, commonService) {
@@ -186,7 +253,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('EnteringCheckCtrl', function ($scope,$state, BooLv, $http, commonService) {
+  .controller('EnteringCheckCtrl', function ($scope, $state, BooLv, $http, commonService) {
 
     $scope.toaddproduct = function () {
       $state.go("addproduct")
@@ -206,7 +273,7 @@ angular.module('starter.controllers', [])
   })
   .controller('ReleaseSupplyCtrl', function ($scope, BooLv, $http, commonService) {
     $scope.supplysubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'buygood')
+      commonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
     }
 
   })
