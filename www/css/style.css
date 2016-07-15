@@ -57,6 +57,9 @@
 }
 
 /* 修改android平台默认样式*/
+.popover{
+  width: 10rem;
+}
 .platform-android .popover {
   margin-top: 0;
 !important;

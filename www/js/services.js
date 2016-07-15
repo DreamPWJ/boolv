@@ -34,8 +34,8 @@ angular.module('starter.services', [])
           if (res) {
             $state.go(stateurl)
           } else {
-            $state.go(closeurl || 'tab.main')
-
+            $state.go((closeurl==null || closeurl=='')?'tab.main':closeurl)
+            $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
         });
       },

@@ -204,7 +204,7 @@ angular.module('starter.controllers', [])
     $scope.delivergoods();
 
     $scope.delivergoodssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'checkdetails')
+      commonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'supplyorderdetails','deliverlist')
     }
   })
   .controller('SupplyGoodCtrl', function ($scope, BooLv, $http, commonService) {
@@ -221,10 +221,15 @@ angular.module('starter.controllers', [])
 
   })
   .controller('ProcureDetailsCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
-    commonService.searchModal($scope);
+
 
   })
+  .controller('ReleaseProcureOrderCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
+    $scope.releaseprocureordersubmit = function () {
+      commonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
+    }
 
+  })
   .controller('BuyGoodCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
     commonService.searchModal($scope);
 
@@ -235,7 +240,7 @@ angular.module('starter.controllers', [])
   })
   .controller('SellDetailsCtrl', function ($scope, $rootScope, BooLv, $http, commonService) {
     $scope.sellgoodssubmit = function () {
-      commonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellgood')
+      commonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderdetails')
     }
 
   })
@@ -308,7 +313,7 @@ angular.module('starter.controllers', [])
 
     $scope.delivery();
     $scope.signsubmit = function () {
-      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signdetails')
+      commonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
     }
   })
   .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {

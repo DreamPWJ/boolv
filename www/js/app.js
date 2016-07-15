@@ -274,6 +274,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ProcureDetailsCtrl'
 
       })
+      .state('releaseprocureorder', {
+        url: '/releaseprocureorder',
+        templateUrl: 'templates/buygood/releaseprocureorder.html',
+        controller: 'ReleaseProcureOrderCtrl'
+
+      })
       .state('sellgood', {
         url: '/sellgood',
         templateUrl: 'templates/sellgood/sellgood.html',
