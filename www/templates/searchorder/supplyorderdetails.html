@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 供货单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-android-menu no-border"  ng-click="openSupplyOrderDetailsPopover($event)">
+    <button class="button icon ion-android-menu no-border"  ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
@@ -53,32 +53,5 @@
     <a class="col-40 button button-balanced " ng-href="#/delivergoods">发货</a>
     <a class="col-40  button button-calm " ng-href="#/examinegoodsorder">审核验收</a>
   </div>
-  <script id="my-supplyorderdetails-popover.html" type="text/ng-template">
-    <ion-popover-view style="height: 275px;">
-      <ion-content overflow-scroll="false">
-        <div class="list">
-          <a ng-href="#/delivergoods" class="item item-icon-left">
-            <i class="icon ion-arrow-up-c balanced"></i>
-            发货
-          </a>
-          <a ng-href="#/examinegoodsorder" class="item item-icon-left">
-            <i class="icon ion-clipboard energized"></i>
-            审核验货单
-          </a>
-          <a ng-href="" class="item item-icon-left">
-            <i class="icon ion-star calm"></i>
-            评价
-          </a>
-          <a ng-click="" class="item item-icon-left">
-            <i class="icon ion-trash-a royal"></i>
-            关闭订单
-          </a>
-          <a ng-click="" class="item item-icon-left">
-            <i class="icon ion-reply assertive"></i>
-            退货
-          </a>
-        </div>
-      </ion-content>
-    </ion-popover-view>
-  </script>
+
 </ion-view>

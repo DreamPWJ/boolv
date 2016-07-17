@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 供货计划</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-android-menu no-border" ng-click="openSupplyOrderPlanPopover($event)">
+    <button class="button icon ion-android-menu no-border" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
@@ -82,23 +82,6 @@
     <a class="col-40  button button-calm " ng-href="#/supplyorderdetails">供货记录</a>
   </div>
   <script id="my-supplyorderplan-popover.html" type="text/ng-template">
-    <ion-popover-view style="height: 165px;">
-      <ion-content overflow-scroll="false">
-        <div class="list">
-          <a ng-href="#/enteringnum" class="item item-icon-left">
-            <i class="icon ion-android-add balanced"></i>
-            备货
-          </a>
-          <a ng-href="#/supplyorderdetails" class="item item-icon-left">
-            <i class="icon ion-android-list calm"></i>
-            供货记录
-          </a>
-          <a ng-click="" class="item item-icon-left">
-            <i class="icon ion-trash-a royal"></i>
-            关闭订单
-          </a>
-        </div>
-      </ion-content>
-    </ion-popover-view>
+
   </script>
 </ion-view>

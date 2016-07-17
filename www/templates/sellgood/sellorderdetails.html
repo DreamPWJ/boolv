@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 收货单详情</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 卖货单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
     <button class="button icon ion-android-menu no-border"  ng-click="openPopover($event)">
@@ -19,7 +19,10 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>采购商家 : 格林美</h2>
+          <h2>回收商 : 张三</h2>
+        </a>
+        <a ng-href="" class="item ">
+          <h2>手机号码 : 1899994948</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>订单状态 : 已验货</h2>
@@ -33,7 +36,7 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>供货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        <strong>卖货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
         <a ng-href="" class="item">
@@ -49,7 +52,9 @@
     </div>
 
   </ion-content>
-  <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image  " ng-href="#/delivergoods">下一步</a>
+  <div class="row row-horizontal-around padding light-bg bottom-0">
+    <a class="col-40 button button-balanced " ng-href="#/delivergoods">发货</a>
+    <a class="col-40  button button-calm " ng-href="#/examinegoodsorder">审核验收</a>
   </div>
+
 </ion-view>

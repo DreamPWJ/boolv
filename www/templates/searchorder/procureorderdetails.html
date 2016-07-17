@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 采购单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-android-menu no-border" ng-click="openProcureOrderDetailsPopover($event)">
+    <button class="button icon ion-android-menu no-border" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
@@ -57,23 +57,6 @@
     <button class="button button-calm full-image" ng-click="procureorderdetailssubmit()">支付定金</button>
   </div>
   <script id="my-procureorderdetails-popover.html" type="text/ng-template">
-    <ion-popover-view style="height: 165px;">
-      <ion-content overflow-scroll="false">
-        <div class="list">
-          <a ng-href="" class="item item-icon-left">
-            <i class="icon ion-arrow-up-c balanced"></i>
-            支付定金
-          </a>
-          <a ng-href="" class="item item-icon-left">
-            <i class="icon ion-star calm"></i>
-            评价
-          </a>
-          <a ng-click="" class="item item-icon-left">
-            <i class="icon ion-trash-a royal"></i>
-            关闭订单
-          </a>
-        </div>
-      </ion-content>
-    </ion-popover-view>
+
   </script>
 </ion-view>

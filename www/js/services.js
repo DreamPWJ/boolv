@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup, $state, $ionicModal, $cordovaCamera, $ionicActionSheet,$ionicHistory, $cordovaToast, $cordovaBarcodeScanner) {
+  .service('commonService', function ($ionicPopup,$ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet,$ionicHistory, $cordovaToast, $cordovaBarcodeScanner,$ionicViewSwitcher) {
     return {
       showAlert: function (title, template, stateurl) {
         // 一个提示对话框
@@ -32,7 +32,8 @@ angular.module('starter.services', [])
 
         confirmPopup.then(function (res) {
           if (res) {
-            $state.go(stateurl)
+            $state.go(stateurl);
+            $ionicViewSwitcher.nextDirection("forward");//前进画效果
           } else {
             $state.go((closeurl==null || closeurl=='')?'tab.main':closeurl)
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
@@ -65,6 +66,32 @@ angular.module('starter.services', [])
         });
       }
       ,
+      ionicPopover:function($scope,templateUrl){
+        $ionicPopover.fromTemplateUrl('templates/popover/'+templateUrl, {
+          scope: $scope,
+        }).then(function (popover) {
+          $scope.popover = popover;
+        });
+        $scope.openPopover = function ($event) {
+          $scope.popover.show($event);
+        };
+        $scope.closePopover = function () {
+          $scope.popover.hide();
+        };
+        //Cleanup the popover when we're done with it! 清除浮动框
+        $scope.$on('$destroy', function() {
+          $scope.popover.remove();
+        });
+        // 在隐藏浮动框后执行
+        $scope.$on('popover.hidden', function() {
+          // Execute action
+        });
+       // 移除浮动框后执行
+        $scope.$on('popover.removed', function() {
+          // Execute action
+        });
+      },
+
       //拍照
       takePicture: function () {
         //$cordovaCamera.cleanup();

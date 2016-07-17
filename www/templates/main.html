@@ -9,7 +9,7 @@
     <button class="button icon ion-plus no-border" ng-click="openPopover($event)"></button>
   </ion-nav-buttons>
 
-  <ion-content overflow-scroll="false" class="stable-bg" on-swipe-left="searchorder()">
+  <ion-content overflow-scroll="false" class="stable-bg" >
     <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="false">
       <ion-slide><img ng-src="img/banner/banner1.jpg" alt="" class="full-image"/></ion-slide>
       <ion-slide><img ng-src="img/banner/banner2.jpg" alt="" class="full-image"/></ion-slide>
@@ -119,29 +119,5 @@
     </a>
     </div>
   </ion-content>
-  <script id="my-popover.html" type="text/ng-template">
-    <ion-popover-view style="height: 220px;">
-      <ion-content overflow-scroll="false">
-        <div class="list">
-          <a ng-href="#/sellprocure" class="item item-icon-left">
-            <i class="icon ion-forward balanced"></i>
-            我要卖货
-          </a>
-          <a ng-href="#/releaseprocure" class="item item-icon-left">
-            <i class="icon ion-android-cart energized"></i>
-            我要买货
-          </a>
-          <a ng-href="" class="item item-icon-left">
-            <i class="icon ion-star calm"></i>
-            直供拆解
-          </a>
-          <a ng-click="barcodeScanner()" class="item item-icon-left">
-            <i class="icon ion-camera royal"></i>
-            扫一扫
-          </a>
-        </div>
-      </ion-content>
-    </ion-popover-view>
-  </script>
 </ion-view>
 

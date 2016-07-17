@@ -158,11 +158,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('procureorderdetails', {
         url: '/procureorderdetails',
+        cache:false,
         templateUrl: 'templates/searchorder/procureorderdetails.html',
         controller: 'ProcureOrderDetailsCtrl'
       })
       .state('supplyorderplan', {
         url: '/supplyorderplan',
+        cache:false,
         templateUrl: 'templates/searchorder/supplyorderplan.html',
         controller: 'SupplyOrderPlanCtrl'
       })
@@ -173,6 +175,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('supplyorderdetails', {
         url: '/supplyorderdetails',
+        cache:false,
         templateUrl: 'templates/searchorder/supplyorderdetails.html',
         controller: 'SupplyOrderDetailsCtrl'
       })
@@ -183,6 +186,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('deiverorderdetails', {
         url: '/deiverorderdetails',
+        cache:false,
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
       })
@@ -210,6 +214,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('deliverdetails', {
         url: '/deliverdetails',
+        cache:false,
         templateUrl: 'templates/delivergoods/deliverdetails.html',
         controller: 'DeliverDetailsCtrl'
 
@@ -294,6 +299,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/selldetails',
         templateUrl: 'templates/sellgood/selldetails.html',
         controller: 'SellDetailsCtrl'
+      })
+      .state('sellorderdetails', {
+        url: '/sellorderdetails',
+        cache:false,
+        templateUrl: 'templates/sellgood/sellorderdetails.html',
+        controller: 'SellOrderDetailsCtrl'
       })
       .state('checkgood', {
         url: '/checkgood',
