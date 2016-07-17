@@ -190,6 +190,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
       })
+      .state('evaluate', {
+        url: '/evaluate',
+        templateUrl: 'templates/searchorder/evaluate.html',
+        controller: 'EvaluateCtrl'
+      })
       .state('tab.news', {
         url: '/news',
         cache: false,

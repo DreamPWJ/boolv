@@ -123,6 +123,12 @@ angular.module('starter.controllers', [])
     commonService.ionicPopover($scope,'my-payorder.html');
 
   })
+  .controller('EvaluateCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
+    $scope.evaluatestar=function (index) {
+      $scope.star=index;
+    }
+ ;
+  })
   .controller('NewsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
 
 
@@ -324,4 +330,18 @@ angular.module('starter.controllers', [])
   })
   .controller('UpdateUserCtrl', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
 
+  })
+  .controller('MyPopover', function ($scope, $rootScope, BooLv, $http, $state, commonService) {
+    $scope.paymentsubmit = function () {
+      commonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '','')
+    }
+    $scope.closeordersubmit = function () {
+      commonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '','')
+    }
+    $scope.paytopaymentsubmit = function () {
+      commonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '','')
+    }
+    $scope.payfinalpaymenttsubmit = function () {
+      commonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '','')
+    }
   })

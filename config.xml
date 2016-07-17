@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.boolv969171" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>博绿网</name>
-  <description>
-    博绿网
+  <description>&#xD;
+    博绿网&#xD;
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      潘维吉
+  <author email="you@example.com" href="http://example.com.com/">&#xD;
+      潘维吉&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>

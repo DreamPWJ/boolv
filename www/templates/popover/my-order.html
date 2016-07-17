@@ -1,4 +1,4 @@
-<ion-popover-view style="height: 275px;">
+<ion-popover-view style="height: 275px;" ng-controller="MyPopover">
   <ion-content overflow-scroll="false">
     <div class="list">
       <a ng-href="#/delivergoods" class="item item-icon-left">
@@ -9,15 +9,15 @@
         <i class="icon ion-clipboard energized"></i>
         审核验收单
       </a>
-      <a ng-href="" class="item item-icon-left">
+      <a ng-href="#/evaluate" class="item item-icon-left">
         <i class="icon ion-star calm"></i>
         评价
       </a>
-      <a ng-click="" class="item item-icon-left">
+      <a ng-click="closeordersubmit()" class="item item-icon-left">
         <i class="icon ion-trash-a royal"></i>
         关闭订单
       </a>
-      <a ng-click="" class="item item-icon-left">
+      <a ng-href="#/examinegoodsorder" class="item item-icon-left">
         <i class="icon ion-reply assertive"></i>
         退货
       </a>

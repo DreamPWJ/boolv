@@ -104,7 +104,7 @@
 
     <ion-tab title="供货计划" on-select="searchsettitle('供货计划')" >
       <ion-view>
-        <ion-content class="stable-bg" overflow-scroll="false" >
+        <ion-content class="stable-bg" overflow-scroll="false" on-swipe-left="selectTabWithIndex(3)" on-swipe-right="selectTabWithIndex(1)">
           <a ng-href="#/supplyorderplan" class="item">
             <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
             <p>供货人 :  张三</p>
