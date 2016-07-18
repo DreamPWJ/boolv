@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('commonService', function ($ionicPopup,$ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet,$ionicHistory, $cordovaToast, $cordovaBarcodeScanner,$ionicViewSwitcher) {
+  .service('commonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher,$ionicLoading) {
     return {
       showAlert: function (title, template, stateurl) {
         // 一个提示对话框
@@ -11,9 +11,9 @@ angular.module('starter.services', [])
           okType: 'button-calm'
         });
         alertPopup.then(function (res) {
-          if(stateurl==null||stateurl==''){
+          if (stateurl == null || stateurl == '') {
             $ionicHistory.goBack();
-          }else {
+          } else {
             $state.go(stateurl);
           }
 
@@ -35,7 +35,7 @@ angular.module('starter.services', [])
             $state.go(stateurl);
             $ionicViewSwitcher.nextDirection("forward");//前进画效果
           } else {
-            $state.go((closeurl==null || closeurl=='')?'tab.main':closeurl)
+            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl)
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
         });
@@ -66,8 +66,8 @@ angular.module('starter.services', [])
         });
       }
       ,
-      ionicPopover:function($scope,templateUrl){
-        $ionicPopover.fromTemplateUrl('templates/popover/'+templateUrl, {
+      ionicPopover: function ($scope, templateUrl) {
+        $ionicPopover.fromTemplateUrl('templates/popover/' + templateUrl, {
           scope: $scope,
         }).then(function (popover) {
           $scope.popover = popover;
@@ -79,89 +79,102 @@ angular.module('starter.services', [])
           $scope.popover.hide();
         };
         //Cleanup the popover when we're done with it! 清除浮动框
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
           $scope.popover.remove();
         });
         // 在隐藏浮动框后执行
-        $scope.$on('popover.hidden', function() {
+        $scope.$on('popover.hidden', function () {
           // Execute action
         });
-       // 移除浮动框后执行
-        $scope.$on('popover.removed', function() {
+        // 移除浮动框后执行
+        $scope.$on('popover.removed', function () {
           // Execute action
         });
       },
 
-      //拍照
-      takePicture: function () {
-        //$cordovaCamera.cleanup();
-        var options = {
-          quality: 100,
-          width: 500,
-          height: 500
-        };
-
-        $cordovaCamera.getPicture(options).then(function (imageUrl) {
-
-        }, function (err) {
-          // An error occured. Show a message to the user
+      ionicLoadingShow: function (content) {
+        $ionicLoading.show({
+          template: '<ion-spinner icon="bubbles" class="spinner-balanced"></ion-spinner>',
+          animation: 'fade-in',
+          showBackdrop: false
 
         });
-
       },
-      //扫一扫
-      barcodeScanner: function () {
-        /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
-        document.addEventListener("deviceready", function () {
-          $cordovaBarcodeScanner
-            .scan()
-            .then(function (barcodeData) {
-              // Success! Barcode data is here 扫描数据：barcodeData.text
-            }, function (error) {
-              // An err11or occurred
-            });
-
-
-          // NOTE: encoding not functioning yet
-          $cordovaBarcodeScanner
-            .encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
-            .then(function (success) {
-              // Success!
-            }, function (error) {
-              // An error occurred
-            });
-        }, false);
+      ionicLoadingHide: function () {
+        $ionicLoading.hide();
       },
-      shareActionSheet: function () {
-        $ionicActionSheet.show({
-          cssClass: 'action-s',
-          titleText: '<p>分享</p>',
-          buttons: [
-            {text: ' <p>收藏</p>'},
-            {text: '<p>微信朋友圈</p>'},
-            {text: '<p>QQ好友</p>'},
-            {text: '<p>QQ空间</p>'},
-            {text: '<p>更多</p>'}
-          ],
-          cancelText: '<p>关闭</p>',
-          cancel: function () {
-            return true;
-          },
-          buttonClicked: function (index) {
-            switch (index) {
-              case 0:
+    //拍照
+    takePicture: function () {
+      //$cordovaCamera.cleanup();
+      var options = {
+        quality: 100,
+        width: 500,
+        height: 500
+      };
 
-                break;
-              case 1:
-                break;
-              default:
-                break;
-            }
-            return true;
-          }
-        });
-      }
+      $cordovaCamera.getPicture(options).then(function (imageUrl) {
+
+      }, function (err) {
+        // An error occured. Show a message to the user
+
+      });
+
     }
+    ,
+    //扫一扫
+    barcodeScanner: function () {
+      /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
+      document.addEventListener("deviceready", function () {
+        $cordovaBarcodeScanner
+          .scan()
+          .then(function (barcodeData) {
+            // Success! Barcode data is here 扫描数据：barcodeData.text
+          }, function (error) {
+            // An err11or occurred
+          });
+
+
+        // NOTE: encoding not functioning yet
+        $cordovaBarcodeScanner
+          .encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
+          .then(function (success) {
+            // Success!
+          }, function (error) {
+            // An error occurred
+          });
+      }, false);
+    }
+    ,
+    shareActionSheet: function () {
+      $ionicActionSheet.show({
+        cssClass: 'action-s',
+        titleText: '<p>分享</p>',
+        buttons: [
+          {text: ' <p>收藏</p>'},
+          {text: '<p>微信朋友圈</p>'},
+          {text: '<p>QQ好友</p>'},
+          {text: '<p>QQ空间</p>'},
+          {text: '<p>更多</p>'}
+        ],
+        cancelText: '<p>关闭</p>',
+        cancel: function () {
+          return true;
+        },
+        buttonClicked: function (index) {
+          switch (index) {
+            case 0:
+
+              break;
+            case 1:
+              break;
+            default:
+              break;
+          }
+          return true;
+        }
+      });
+    }
+  }
   })
   .service('encodingService', function () {
     return {
