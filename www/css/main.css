@@ -89,3 +89,8 @@
   font-size: 1.8rem;
 
 }
+
+#start,#start img{
+  width: 100%;
+  height: 100%;
+}

@@ -38,6 +38,11 @@ angular.module('starter.controllers', [])
 
 
   })
+  .controller('StartCtrl', function ($scope, $state, $rootScope, $http, BooLv, commonService) {
+       $scope.tomain=function () {
+         $state.go('tab.main');
+       }
+  })
   .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, BooLv, $http, $state, commonService) {
 
   })

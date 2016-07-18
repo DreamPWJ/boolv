@@ -8,6 +8,7 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova'])
 
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory) {
+    localStorage.setItem("start", 1);
     $ionicPlatform.ready(function () {
       //主页面显示退出提示框
       $ionicPlatform.registerBackButtonAction(function (e) {
@@ -109,6 +110,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      .state('start', {
+        url: '/start',
+        templateUrl: 'templates/start.html',
+        controller: 'StartCtrl'
+
+      })
       .state('currenttimeoffer', {
         url: '/currenttimeoffer',
         templateUrl: 'templates/maindetails/currenttimeoffer.html',
@@ -158,13 +165,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('procureorderdetails', {
         url: '/procureorderdetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/searchorder/procureorderdetails.html',
         controller: 'ProcureOrderDetailsCtrl'
       })
       .state('supplyorderplan', {
         url: '/supplyorderplan',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/searchorder/supplyorderplan.html',
         controller: 'SupplyOrderPlanCtrl'
       })
@@ -175,7 +182,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('supplyorderdetails', {
         url: '/supplyorderdetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/searchorder/supplyorderdetails.html',
         controller: 'SupplyOrderDetailsCtrl'
       })
@@ -186,7 +193,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('deiverorderdetails', {
         url: '/deiverorderdetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
       })
@@ -219,7 +226,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('deliverdetails', {
         url: '/deliverdetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/delivergoods/deliverdetails.html',
         controller: 'DeliverDetailsCtrl'
 
@@ -307,7 +314,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       .state('sellorderdetails', {
         url: '/sellorderdetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sellgood/sellorderdetails.html',
         controller: 'SellOrderDetailsCtrl'
       })
@@ -394,8 +401,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     ;
 // if none of the above states are matched, use this as the fallback
 
-    $urlRouterProvider.otherwise('/tab/main');
 
+    if (localStorage.getItem('start') == 1) {
+      $urlRouterProvider.otherwise('/tab/main');
+    } else {
+      $urlRouterProvider.otherwise('start');
+    }
 
   })
 ;
