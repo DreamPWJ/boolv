@@ -38,10 +38,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             showConfirm();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
-            $cordovaToast.showShortCenter('再按一次退出系统');
+            $cordovaToast.showShortCenter('再按返回退出博绿网');
             setTimeout(function () {
               $rootScope.backButtonPressedOnceToExit = false;
-            }, 1000);
+            }, 3000);
           }
 
         } else if ($ionicHistory.backView()) {
@@ -49,10 +49,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           $ionicHistory.goBack();
         } else {
           $rootScope.backButtonPressedOnceToExit = true;
-          $cordovaToast.showShortCenter('再按一次退出系统');
+          $cordovaToast.showShortCenter('再按返回退出博绿网');
           setTimeout(function () {
             $rootScope.backButtonPressedOnceToExit = false;
-          }, 1000);
+          }, 3000);
         }
 
         return false;
