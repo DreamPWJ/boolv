@@ -31,4 +31,13 @@ angular.module('starter.directive', [])
         }
       }
     }
-  })
+  }).directive('scrollTop', function ($ionicScrollDelegate) {//返回顶部指令
+  return {
+    restrict: 'AE',
+    link: function (scope, element, attrs) {
+      scope.scrollTop = function () {
+        $ionicScrollDelegate.scrollTop(500);
+      };
+    }
+  }
+})
