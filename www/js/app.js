@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova'])
 
-  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory) {
+  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory,$cordovaToast) {
     localStorage.setItem("start", 1);
     $ionicPlatform.ready(function () {
       //主页面显示退出提示框
@@ -33,15 +33,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
 
         // Is there a page to go back to? 制定页面返回退出程序
-        if ($location.path() == '/tab/main') {
-          showConfirm();
+        if ($location.path() == '/tab/main'||$location.path() == '/login') {
+          if ($rootScope.backButtonPressedOnceToExit) {
+            showConfirm();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            $cordovaToast.showShortCenter('再按一次退出系统');
+            setTimeout(function () {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 1000);
+          }
+
         } else if ($ionicHistory.backView()) {
           // Go back in history
           $ionicHistory.goBack();
         } else {
-          // This is the last page: Show confirmation popup
-          $ionicHistory.goBack();
-          // showConfirm();
+          $rootScope.backButtonPressedOnceToExit = true;
+          $cordovaToast.showShortCenter('再按一次退出系统');
+          setTimeout(function () {
+            $rootScope.backButtonPressedOnceToExit = false;
+          }, 1000);
         }
 
         return false;

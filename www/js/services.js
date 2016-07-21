@@ -40,22 +40,7 @@ angular.module('starter.services', [])
           }
         });
       },
-      showToast: function (title, flag) {
-        // 一个原生Toast提示框
-        if (flag == 'center') {
-          $cordovaToast.showShortCenter(title).then(function (success) {
-            // success
-          }, function (error) {
-            // error
-          });
-        } else {
-          $cordovaToast.showShortTop(title).then(function (success) {
-            // success
-          }, function (error) {
-            // error
-          });
-        }
-      },
+
       searchModal: function ($scope) {
         //点击搜索跳转搜索modal
         $ionicModal.fromTemplateUrl('templates/search.html', {
