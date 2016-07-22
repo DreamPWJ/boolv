@@ -114,12 +114,19 @@ angular.module('starter.services', [])
           .scan()
           .then(function (barcodeData) {
             // Success! Barcode data is here 扫描数据：barcodeData.text
+            var reg = new RegExp("^((http)||(https)){1}://[\s]{0,}");//二维码信息是否有http链接
+            if (reg.test(barcodeData.text)) {
+              //通过默认浏览器打开
+              window.open(barcodeData.text, '_system', 'location=yes');
+            } else {
+              commonService.showAlert('扫一扫信息', barcodeData.text);
+            }
           }, function (error) {
-            // An err11or occurred
+            $cordovaToast.showShortCenter('扫描失败,请重新扫描');
           });
 
 
-        // NOTE: encoding not functioning yet
+        // NOTE: encoding not functioning yet 编不能正常工作
         $cordovaBarcodeScanner
           .encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
           .then(function (success) {

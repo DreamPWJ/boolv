@@ -76,6 +76,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         StatusBar.overlaysWebView(false);
         StatusBar.backgroundColorByHexString("#11c1f3");
       }
+      //打开外部网页
+      if (window.cordova && window.cordova.InAppBrowser) {
+        window.open = window.cordova.InAppBrowser.open;
+      }
     });
   })
 
