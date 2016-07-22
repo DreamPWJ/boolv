@@ -69,7 +69,9 @@
 .platform-android .popover .item {
   background-color: #ffffff !important;
 }
-
+.platform-android .popover-backdrop,
+.platform-android .popover-backdrop.active {
+  background-color: rgba(0, 0, 0, 0.1); }
 .grey {
   color: #aaa;
 }
