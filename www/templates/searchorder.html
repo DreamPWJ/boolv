@@ -10,9 +10,10 @@
   <ion-nav-buttons side="right">
     <button class="button icon ion-search no-border" ng-click="modal.show()"></button>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false">
-    <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)">
-      <ion-slide>
+
+  <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" id="searchorder">
+    <ion-slide>
+      <ion-content overflow-scroll="false">
         <div class="list margin-top-1px">
           <a ng-href="#/sellorderdetails" class="item">
             <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
@@ -53,8 +54,10 @@
           <p>订单状态 : 已验货</p>
         </a>
         </div>
-      </ion-slide>
-      <ion-slide>
+      </ion-content>
+    </ion-slide>
+    <ion-slide>
+      <ion-content overflow-scroll="false">
         <div class="list margin-top-1px">
           <a ng-href="#/procureorderdetails" class="item">
             <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
@@ -95,8 +98,10 @@
           <p>订单状态 : 已验货</p>
         </a>
         </div>
-      </ion-slide>
-      <ion-slide>
+      </ion-content>
+    </ion-slide>
+    <ion-slide>
+      <ion-content overflow-scroll="false">
         <div class="list margin-top-1px">
           <a ng-href="#/supplyorderplan" class="item">
             <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
@@ -137,51 +142,54 @@
           <p>订单状态 : 已验货</p>
         </a>
         </div>
-      </ion-slide>
-      <ion-slide>
-        <div class="list margin-top-1px">
-          <a ng-href="#/deiverorderdetails" class="item">
-            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
-            <p>收货人 : 张三</p>
-            <p>手机号 : 1893394533</p>
-            <p>收货品类 : 拆解机 、二手手机 、电池</p>
-            <p>订单状态 : 已验货</p>
-          </a>
-          <a ng-href="#/deiverorderdetails" class="item">
-            <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
-            <p>收货人 : 张三</p>
-            <p>手机号 : 1893394533</p>
-            <p>收货品类 : 拆解机 、二手手机 、电池</p>
-            <p>订单状态 : 已验货</p>
-          </a> <a ng-href="#/deiverorderdetails" class="item">
-          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
-          <p>收货人 : 张三</p>
-          <p>手机号 : 1893394533</p>
-          <p>收货品类 : 拆解机 、二手手机 、电池</p>
-          <p>订单状态 : 已验货</p>
-        </a> <a ng-href="#/deiverorderdetails" class="item">
-          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
-          <p>收货人 : 张三</p>
-          <p>手机号 : 1893394533</p>
-          <p>收货品类 : 拆解机 、二手手机 、电池</p>
-          <p>订单状态 : 已验货</p>
-        </a> <a ng-href="#/deiverorderdetails" class="item">
-          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
-          <p>收货人 : 张三</p>
-          <p>手机号 : 1893394533</p>
-          <p>收货品类 : 拆解机 、二手手机 、电池</p>
-          <p>订单状态 : 已验货</p>
-        </a> <a ng-href="#/deiverorderdetails" class="item">
+      </ion-content>
+    </ion-slide>
+    <ion-slide>
+      <ion-content overflow-scroll="false">
+      <div class="list margin-top-1px">
+        <a ng-href="#/deiverorderdetails" class="item">
           <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
           <p>收货人 : 张三</p>
           <p>手机号 : 1893394533</p>
           <p>收货品类 : 拆解机 、二手手机 、电池</p>
           <p>订单状态 : 已验货</p>
         </a>
-        </div>
-      </ion-slide>
-    </ion-slide-box>
-  </ion-content>
+        <a ng-href="#/deiverorderdetails" class="item">
+          <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+          <p>收货人 : 张三</p>
+          <p>手机号 : 1893394533</p>
+          <p>收货品类 : 拆解机 、二手手机 、电池</p>
+          <p>订单状态 : 已验货</p>
+        </a> <a ng-href="#/deiverorderdetails" class="item">
+        <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+        <p>收货人 : 张三</p>
+        <p>手机号 : 1893394533</p>
+        <p>收货品类 : 拆解机 、二手手机 、电池</p>
+        <p>订单状态 : 已验货</p>
+      </a> <a ng-href="#/deiverorderdetails" class="item">
+        <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+        <p>收货人 : 张三</p>
+        <p>手机号 : 1893394533</p>
+        <p>收货品类 : 拆解机 、二手手机 、电池</p>
+        <p>订单状态 : 已验货</p>
+      </a> <a ng-href="#/deiverorderdetails" class="item">
+        <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+        <p>收货人 : 张三</p>
+        <p>手机号 : 1893394533</p>
+        <p>收货品类 : 拆解机 、二手手机 、电池</p>
+        <p>订单状态 : 已验货</p>
+      </a> <a ng-href="#/deiverorderdetails" class="item">
+        <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM</span></h2>
+        <p>收货人 : 张三</p>
+        <p>手机号 : 1893394533</p>
+        <p>收货品类 : 拆解机 、二手手机 、电池</p>
+        <p>订单状态 : 已验货</p>
+      </a>
+      </div>
+      </ion-content>
+    </ion-slide>
+  </ion-slide-box>
+
   <ion-tabs id="searhorder" class="tabs-light">
     <ion-tab title="卖货单" on-select="selectedTab('卖货单',0)">
     </ion-tab>
