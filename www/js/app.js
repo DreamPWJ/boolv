@@ -174,7 +174,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       .state('searchorder', {
         url: '/searchorder',
-        cache: false,
         templateUrl: 'templates/searchorder.html',
         controller: 'SearchOrderCtrl'
       })
