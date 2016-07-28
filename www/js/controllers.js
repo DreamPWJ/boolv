@@ -87,16 +87,22 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService,$ionicTabsDelegate) {
-    //左右滑动方法
-    $scope.selectTabWithIndex = function(index) {
+  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, commonService,$ionicTabsDelegate,$ionicSlideBoxDelegate) {
+    $scope.slideChanged = function (index) {
       $ionicTabsDelegate.select(index);
+    };
+    $scope.$on('$ionicView.afterEnter', function () {
+      $ionicTabsDelegate.select($ionicSlideBoxDelegate.currentIndex());
+    });
+
+    $scope.selectedTab = function (title,index) {
+      //更改标题
+      $scope.title = title;
+      //滑动的索引和速度
+      $ionicSlideBoxDelegate.slide(index)
     }
     commonService.searchModal($scope);
-    $scope.searchsettitle = function (title) {
-      $scope.title = title;
-    }
-    $ionicTabsDelegate.select(1);
+
   })
   .controller('ProcureOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, commonService) {
     commonService.ionicPopover($scope,'my-pay.html')
