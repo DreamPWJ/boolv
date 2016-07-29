@@ -21,8 +21,12 @@ angular.module('starter.controllers', [])
 
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, commonService, $http, BooLv, $ionicLoading, $ionicHistory) {
-    commonService.ionicPopover($scope,'my-popover.html')
 
+    commonService.ionicPopover($scope,'my-popover.html')
+    //在首页中清除导航历史退栈
+    $scope.$on('$ionicView.afterEnter',function () {
+      $ionicHistory.clearHistory();
+    })
     //统一返回上一级方法
     $rootScope.goBack = function () {
       $ionicHistory.goBack();
