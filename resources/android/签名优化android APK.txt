@@ -1,7 +1,9 @@
+#keystore安全存储签名密匙文件生成配置  口令:boolvwang
+keytool -genkey -v -keystore boolv.keystore -alias boolv -keyalg RSA -keysize 2048 -validity 10000
 #签名优化android APK  命令
 
 #签名应用文件命令
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore  juhua.keystore android-release-unsigned.apk juhua
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore  boolv.keystore android-release-unsigned.apk boolv
 
 #优化已签名APK文件 减少占用空间和内存
-zipalign -v 4 android-release-unsigned.apk juhua.apk
+zipalign -v 4 android-release-unsigned.apk boolv.apk
