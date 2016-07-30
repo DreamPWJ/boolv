@@ -1,5 +1,8 @@
 #keystore安全存储签名密匙文件生成配置  口令:boolvwang
 keytool -genkey -v -keystore boolv.keystore -alias boolv -keyalg RSA -keysize 2048 -validity 10000
+#查看应用签名信息命令  SHA1信息是应用签名
+keytool -list -v -keystore boolv.keystore
+
 #签名优化android APK  命令
 
 #签名应用文件命令
