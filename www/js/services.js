@@ -195,6 +195,9 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/AdMsg/GetAdMsg",
+          headers: {
+            'Authorization':localStorage.getItem('token')
+          },
           params: {
             type: 1
           }

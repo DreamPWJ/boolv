@@ -8,6 +8,7 @@ angular.module('starter.controllers', [])
       }
       return str.join("&")
     }
+
     $httpProvider.defaults.headers.post = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -15,19 +16,24 @@ angular.module('starter.controllers', [])
     $httpProvider.defaults.headers.put = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
+ /*   $http.defaults.headers.common = {"Access-Control-Request-Headers": "accept, origin, authorization"};*/
+/*    $http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(token)*/
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, CommonService) {
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $http, BooLv, $ionicLoading, $ionicHistory, MainService) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService) {
     //登录授权
     MainService.authLogin().success(function (data) {
+      localStorage.setItem('token', data.Values)
       console.log(data);
     }).then(function () {
       //获取广告图
       MainService.getAdMsg().success(function (data) {
         console.log(data);
+      }).error(function (err) {
+
       })
 
     })
