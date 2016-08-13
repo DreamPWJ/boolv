@@ -20,7 +20,17 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $http, BooLv, $ionicLoading, $ionicHistory) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $http, BooLv, $ionicLoading, $ionicHistory, MainService) {
+    //登录授权
+    MainService.authLogin().success(function (data) {
+      console.log(data);
+    }).then(function () {
+      //获取广告图
+      MainService.getAdMsg().success(function (data) {
+        console.log(data);
+      })
+
+    })
 
     CommonService.ionicPopover($scope, 'my-popover.html')
     //在首页中清除导航历史退栈
@@ -73,7 +83,7 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.loginSubmit = function () {
       AccountService.login($scope.user).success(function (data) {
-/*        localStorage.setItem('token', data.token);*/
+        /*        localStorage.setItem('token', data.token);*/
       }).error(function () {
         CommonService.showAlert("博绿网", "登录失败!");
       })

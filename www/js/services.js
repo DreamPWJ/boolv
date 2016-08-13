@@ -167,24 +167,79 @@ angular.module('starter.services', [])
         });
       }
     }
-  }).service('AccountService', function ($q,$http,BooLv) {
+  })
+  .service('MainService', function ($q, $http, BooLv) { //主页服务定义
     return {
-      login: function (user) {
-        var deferred = $q.defer();//// 声明延后执行，表示要去监控后面的执行
-        $http({
+      //登录并且授权
+      authLogin: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
           method: 'POST',
-          url: BooLv.api + "/User/Login",
-          data:{
-            PhoneNum:user.username,
-            VerCode:user.password
+          url: BooLv.api + "/Auth/Login",
+          data: {
+            "AppID": "1209889123",
+            "AppKey": "fdsjyt34fwefyu6776yhthhj78643ffghg"
           }
         }).success(function (data) {
-          deferred.resolve(data);/// 声明执行成功，即http请求数据成功，可以返回数据了
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
-          deferred.reject(err);//// 声明执行失败，即服务器返回错误
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
         });
-        return deferred.promise; /// 返回承诺，这里并不是最终数据，而是访问最终数据的API
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取广告图
+      getAdMsg: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/AdMsg/GetAdMsg",
+          params: {
+            type: 1
+          }
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  })
+  }).service('AccountService', function ($q, $http, BooLv) {
+  return {
+    sendCode: function () {
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "",
+
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    login: function (user) {
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/User/Login",
+        data: {
+          PhoneNum: user.username,
+          VerCode: user.password
+        }
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    }
+  }
+})
+
 
