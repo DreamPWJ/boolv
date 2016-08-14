@@ -16,8 +16,8 @@ angular.module('starter.controllers', [])
     $httpProvider.defaults.headers.put = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
- /*   $http.defaults.headers.common = {"Access-Control-Request-Headers": "accept, origin, authorization"};*/
-/*    $http.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(token)*/
+ /*   $httpProvider.defaults.headers.common = {"Access-Control-Request-Headers": "accept, origin, authorization"};*/
+/*    $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(token)*/
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, CommonService) {
 
