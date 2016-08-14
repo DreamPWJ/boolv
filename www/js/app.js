@@ -33,7 +33,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
 
         // Is there a page to go back to? 制定页面返回退出程序
-        if ($location.path() == '/tab/main'||$location.path() == '/login') {
+        if ($location.path() == '/tab/main') {
           if ($rootScope.backButtonPressedOnceToExit) {
             showConfirm();
           } else {
@@ -48,11 +48,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           // Go back in history
           $ionicHistory.goBack();
         } else {
-          $rootScope.backButtonPressedOnceToExit = true;
-          $cordovaToast.showShortCenter('再按返回退出博绿网');
-          setTimeout(function () {
-            $rootScope.backButtonPressedOnceToExit = false;
-          }, 3000);
         }
 
         return false;

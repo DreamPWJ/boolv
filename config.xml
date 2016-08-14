@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.boolv969171" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.boolv969171" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>博绿网</name>
   <description>
     博绿网平台APP
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
+  <author email="you@example.com" href="http://m.boolv.com/">
       潘维吉
     </author>
   <content src="index.html"/>
@@ -22,6 +22,8 @@
   <preference name="SplashScreenDelay" value="10000"/>
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="FadeSplashScreen" value="false"/>
+  <preference name="WECHAT_APPKEY" value="wxb396622c9dcee881"/>
+  <preference name="WECHAT_APPSECRET" value="156d64131e50087c000dee2fb11eef85"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
