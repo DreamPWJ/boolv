@@ -40,6 +40,9 @@
         "cordova-plugin-wechat": {
             "WECHATAPPID": "wxb396622c9dcee881",
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
+        "com.telerik.plugins.nativepagetransitions": {
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
         }
     },
     "dependent_plugins": {
