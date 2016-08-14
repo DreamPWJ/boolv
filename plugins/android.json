@@ -7,10 +7,16 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         },
         "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
+        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         },
         "cordova-plugin-splashscreen": {
@@ -19,26 +25,20 @@
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wxb396622c9dcee881",
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
-        },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
-        },
-        "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         },
         "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
         "phonegap-plugin-barcodescanner": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
-        },
-        "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
-        },
-        "cordova-plugin-wechat": {
-            "WECHATAPPID": "wxb396622c9dcee881",
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         }
     },
