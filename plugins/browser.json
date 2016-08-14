@@ -36,6 +36,10 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wxb396622c9dcee881",
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
         }
     },
     "dependent_plugins": {
