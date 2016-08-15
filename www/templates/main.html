@@ -10,10 +10,10 @@
   </ion-nav-buttons>
 
   <ion-content overflow-scroll="false" class="stable-bg" >
-    <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="false">
+    <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="true" id="main-slide">
+  <!--    <ion-slide ng-repeat="item in adImg"><img ng-src="{{item.Url+item.ImgUrl}}" alt="" class="full-image"/></ion-slide>-->
       <ion-slide><img ng-src="img/banner/banner1.jpg" alt="" class="full-image"/></ion-slide>
       <ion-slide><img ng-src="img/banner/banner2.jpg" alt="" class="full-image"/></ion-slide>
-     <!-- <ion-slide><img ng-src="img/banner/banner3.jpg" alt="" class="full-image"/></ion-slide>-->
     </ion-slide-box>
 
     <div class="row text-center light-bg  main-list">
@@ -48,27 +48,14 @@
         <strong>行情报价</strong>
         <span class="item-note">详情>></span>
       </a>
-      <a class="item item-thumbnail-left" ng-href="#">
+      <a  ng-repeat="item in prods" class="item item-thumbnail-left" ng-href="#">
         <img src="img/main/phone.png" alt="">
-        <h2>拆解机 <span class="calm">[按量报价]</span></h2>
-        <p>主板、屏幕、按键板、壳四大部分完整</p>
+        <h2>{{item.PName}} <span class="calm">[按量报价]</span></h2>
+        <p>{{item.PIntrodu}} </p>
         <p class="row row-no-padding" > <span class="col" >一万台以下</span> <span class="col">一万~5万台</span> <span class="col">5万台以上</span> </p>
         <p class="row row-no-padding" > <span class="col">3.5元/台</span> <span class="col">3.6元/台</span> <span class="col">3.7元/台</span> </p>
       </a>
-      <a class="item item-thumbnail-left" ng-href="#">
-        <img src="img/main/phone.png" alt="">
-        <h2>拆解机 <span class="calm">[按量报价]</span></h2>
-        <p>主板、屏幕、按键板、壳四大部分完整</p>
-        <p class="row row-no-padding" > <span class="col" >一万台以下</span> <span class="col">一万~5万台</span> <span class="col">5万台以上</span> </p>
-        <p class="row row-no-padding" > <span class="col">3.5元/台</span> <span class="col">3.6元/台</span> <span class="col">3.7元/台</span> </p>
-      </a>
-      <a class="item item-thumbnail-left" ng-href="#">
-        <img src="img/main/phone.png" alt="">
-        <h2>拆解机 <span class="calm">[按量报价]</span></h2>
-        <p>主板、屏幕、按键板、壳四大部分完整</p>
-        <p class="row row-no-padding" > <span class="col" >一万台以下</span> <span class="col">一万~5万台</span> <span class="col">5万台以上</span> </p>
-        <p class="row row-no-padding" > <span class="col">3.5元/台</span> <span class="col">3.6元/台</span> <span class="col">3.7元/台</span> </p>
-      </a>
+
     </div>
     <div class="list light-bg">
       <a class="item item-borderless">

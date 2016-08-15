@@ -16,8 +16,8 @@ angular.module('starter.controllers', [])
     $httpProvider.defaults.headers.put = {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
-    /*   $httpProvider.defaults.headers.common = {"Access-Control-Request-Headers": "accept, origin, authorization"};*/
-    /*    $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + Base64.encode(token)*/
+
+    $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, CommonService) {
 
@@ -27,14 +27,15 @@ angular.module('starter.controllers', [])
     //登录授权
     MainService.authLogin().success(function (data) {
       localStorage.setItem('token', data.Values)
-      console.log(data);
     }).then(function () {
       //获取广告图
       MainService.getAdMsg().success(function (data) {
-        console.log(data);
-      }).error(function (err) {
+        $scope.adImg=data.Values;
       })
-
+      //获取行情报价
+      MainService.getProds().success(function (data) {
+        $scope.prods=data.Values;
+      })
     })
 
     CommonService.ionicPopover($scope, 'my-popover.html')

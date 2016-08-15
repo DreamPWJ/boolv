@@ -98,3 +98,11 @@
 #searchorder.slider{
   height: 100%;
 }
+
+#main-slide img {
+  height: 9rem;
+}
+
+.slider-pager-page.active {
+  color: #11c1f3;
+}
