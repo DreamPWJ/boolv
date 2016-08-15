@@ -95,6 +95,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     //设置默认返回按钮的文字
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
     //原生动画效果统一配置
+    $ionicNativeTransitionsProvider.setDefaultOptions({
+      duration: 200, // in milliseconds (ms), default 400,
+    });
     $ionicNativeTransitionsProvider.setDefaultTransition({
       type: 'slide',
       direction: 'left'

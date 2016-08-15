@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button icon ion-android-person no-border" ng-href="#/login"></a>
+    <a class="button icon ion-android-person no-border" nav-direction=forward  ng-href="#/login"></a>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 博绿网</h1>
@@ -17,17 +17,17 @@
     </ion-slide-box>
 
     <div class="row text-center light-bg  main-list">
-      <a class="col" ng-href="#/sellprocure"><p class="balanced-bg"><i class="icon ion-forward"></i></p>
+      <a class="col" nav-direction=forward ng-href="#/sellprocure"><p class="balanced-bg"><i class="icon ion-forward"></i></p>
         <span>我要卖货</span>
       </a>
-      <a class="col" ng-href="#/releaseprocure"><p class="calm-bg"><i class="icon ion-android-cart"></i></p>
+      <a class="col" nav-direction=forward ng-href="#/releaseprocure"><p class="calm-bg"><i class="icon ion-android-cart"></i></p>
         <span>我要买货</span></a>
 
     </div>
     <div class="row text-center light-bg main-list main-list-last ">
-      <a ng-href="#/supplygood" class="col"><p class="energized-bg"><i class="icon ion-filing"></i></p>
+      <a nav-direction=forward ng-href="#/supplygood" class="col"><p class="energized-bg"><i class="icon ion-filing"></i></p>
         <span>接单供货</span></a>
-      <a ng-href="#/applyadvance" class="col"><p class="balanced-bg" style="margin-left: 1.2rem;"><i
+      <a nav-direction=forward ng-href="#/applyadvance" class="col"><p class="balanced-bg" style="margin-left: 1.2rem;"><i
         class="icon ion-social-usd"></i>
       </p>
         <span>申请预收款</span>
@@ -35,16 +35,16 @@
     </div>
 
     <div class="row text-center calm-bg second-list" style="margin-top: 0.6rem">
-      <a ng-href="#/deliverlist" class="col "><p class="balanced-bg "><i class="icon ion-android-train"></i></p>
+      <a nav-direction=forward ng-href="#/deliverlist" class="col "><p class="balanced-bg "><i class="icon ion-android-train"></i></p>
         <p class="light">发货</p></a>
-      <a ng-href="#/signlist" class="col "><p class="assertive-bg"><i class="icon ion-compose"></i></p>
+      <a nav-direction=forward ng-href="#/signlist" class="col "><p class="assertive-bg"><i class="icon ion-compose"></i></p>
         <p class="light">签收</p></a>
-      <a ng-href="#/checkgood" class="col"><p class="energized-bg"><i class="icon ion-android-search"></i></p>
+      <a nav-direction=forward ng-href="#/checkgood" class="col"><p class="energized-bg"><i class="icon ion-android-search"></i></p>
         <p class="light">验货</p></a>
     </div>
 
     <div class="list light-bg " style="margin-top: 0.6rem">
-      <a ng-href="#/currenttimeoffer" class="item item-borderless">
+      <a nav-direction=forward ng-href="#/currenttimeoffer" class="item item-borderless">
         <strong>行情报价</strong>
         <span class="item-note">详情>></span>
       </a>
@@ -74,7 +74,7 @@
       <a class="item item-borderless">
         <strong>交易公告</strong>
       </a>
-      <a ng-href="#/dealnotice" class="item">
+      <a nav-direction=forward ng-href="#/dealnotice" class="item">
         拆解机分类标准
         <span class="item-note">2016-06-19</span>
       </a>
@@ -97,7 +97,7 @@
     </div>
 
     <div class="list light-bg">
-      <a ng-href="" class="item item-borderless">
+      <a nav-direction=forward ng-href="" class="item item-borderless">
         <strong>公司动态</strong>
       </a>
       <a ng-href="#/companytrends" class="item">
