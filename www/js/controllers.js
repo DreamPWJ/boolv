@@ -30,15 +30,28 @@ angular.module('starter.controllers', [])
     }).then(function () {
       //获取广告图
       MainService.getAdMsg().success(function (data) {
-        $scope.adImg=data.Values;
+        $scope.adImg = data.Values;
       })
       //获取行情报价
       MainService.getProds().success(function (data) {
-        $scope.prods=data.Values;
+        $scope.prods = data.Values;
       })
-    })
-
-    CommonService.ionicPopover($scope, 'my-popover.html')
+      //获取交易公告
+      $scope.listNewsParams = {
+        currentPage: 1,
+        pageSize: 5,
+        ID: 0,
+        Keyword: '',
+        IsNew: 1,
+        IsRed: 1,
+        GrpCode: '002'
+      }
+      MainService.getListNews($scope.listNewsParams).success(function (data) {
+        $scope.listNews = data.Values;
+        console.log(data.Values);
+      })
+      })
+    CommonService.ionicPopover($scope, 'my-popover.html');
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
       $ionicHistory.clearHistory();
