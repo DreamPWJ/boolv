@@ -125,6 +125,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       .state('tab.main', {
         url: '/main',
+        nativeTransitions: null,
         views: {
           'tab-main': {
             templateUrl: 'templates/main.html',
@@ -159,6 +160,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('tab.account', {
         url: '/account',
         cache: false,
+        nativeTransitions: null,
         views: {
           'tab-account': {
             templateUrl: 'templates/account.html',
@@ -175,6 +177,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('login', {
         url: '/login',
         cache: false,
+        nativeTransitions: {
+          "type": "flip",
+          "direction": "up"
+        },
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
@@ -226,6 +232,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('tab.news', {
         url: '/news',
         cache: false,
+        nativeTransitions: null,
         views: {
           'tab-news': {
             templateUrl: 'templates/news.html',
