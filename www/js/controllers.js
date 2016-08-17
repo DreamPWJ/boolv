@@ -24,6 +24,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService) {
+    CommonService.ionicLoadingShow()
     //登录授权
     MainService.authLogin().success(function (data) {
       localStorage.setItem('token', data.Values)
@@ -48,9 +49,20 @@ angular.module('starter.controllers', [])
       }
       MainService.getListNews($scope.listNewsParams).success(function (data) {
         $scope.listNews = data.Values;
-        console.log(data.Values);
+
+      }).then(function () {
+        //获取公司公告
+        $scope.listNewsParams.GrpCode='003';
+        MainService.getListNews($scope.listNewsParams).success(function (data) {
+          $scope.listCompanyNews = data.Values;
+
+        })
       })
-      })
+
+      }).finally(function () {
+      CommonService.ionicLoadingHide()
+    })
+
     CommonService.ionicPopover($scope, 'my-popover.html');
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
@@ -84,13 +96,28 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('DealNoticeCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('DealNoticeCtrl', function ($scope, $rootScope,$stateParams, BooLv, $http, $state, CommonService,MainService) {
+    CommonService.ionicLoadingShow();
+    var Id=$stateParams.Id;
+    MainService.getNews(Id).success(function (data) {
+      $scope.news = data.Values;
+    }).finally(function () {
+      CommonService.ionicLoadingHide();
+    })
+
     $scope.shareActionSheet = function () {
       CommonService.shareActionSheet();
     }
 
   })
-  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('CompanyTrendsCtrl', function ($scope, $rootScope,$stateParams, BooLv, $http, $state, CommonService,MainService) {
+    CommonService.ionicLoadingShow();
+    var Id=$stateParams.Id;
+    MainService.getNews(Id).success(function (data) {
+      $scope.news = data.Values;
+    }).finally(function () {
+      CommonService.ionicLoadingHide();
+    })
     $scope.shareActionSheet = function () {
       CommonService.shareActionSheet();
 
@@ -99,14 +126,14 @@ angular.module('starter.controllers', [])
 //Wechat.Scene.TIMELINE 表示分享到朋友圈
 //Wechat.Scene.SESSION 表示分享给好友
 //（1）文本
-      Wechat.share({
+/*      Wechat.share({
         text: "This is just a plain string",
         scene: Wechat.Scene.TIMELINE   // share to Timeline
       }, function () {
         alert("Success");
       }, function (reason) {
         alert("Failed: " + reason);
-      });
+      });*/
       //（2）媒体
       /*    Wechat.share({
        message: {

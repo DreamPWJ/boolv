@@ -146,13 +146,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       })
       .state('dealnotice', {
-        url: '/dealnotice',
+        url: '/dealnotice/:Id',
         templateUrl: 'templates/maindetails/dealnotice.html',
         controller: 'DealNoticeCtrl'
 
       })
       .state('companytrends', {
-        url: '/companytrends',
+        url: '/companytrends/:Id',
         templateUrl: 'templates/maindetails/companytrends.html',
         controller: 'CompanyTrendsCtrl'
 

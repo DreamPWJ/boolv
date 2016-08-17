@@ -70,7 +70,7 @@
       <a class="item item-borderless">
         <strong>交易公告</strong>
       </a>
-      <a nav-direction=forward ng-repeat="item in listNews.data_list" ng-href="#/dealnotice" class="item">
+      <a nav-direction=forward ng-repeat="item in listNews.data_list" ng-href="#/dealnotice/{{item.ID}}" class="item">
         {{item.Title}}
         <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span>
       </a>
@@ -81,22 +81,11 @@
       <a nav-direction=forward ng-href="" class="item item-borderless">
         <strong>公司动态</strong>
       </a>
-      <a ng-href="#/companytrends" class="item">
-        公司动态新闻
-        <span class="item-note">2016-06-20</span>
+      <a ng-href="#/companytrends/{{item.ID}}" ng-repeat="item in listCompanyNews.data_list"  class="item">
+        {{item.Title}}
+        <span class="item-note">{{item.AddTime | date : 'yyyy-MM-dd'}}</span>
       </a>
-      <a ng-href="#/companytrends" class="item">
-        公司动态新闻
-        <span class="item-note">2016-06-20</span>
-      </a> <a ng-href="#/companytrends" class="item">
-      公司动态新闻
-      <span class="item-note">2016-06-20</span>
-    </a> <a ng-href="#/companytrends" class="item">
-      公司动态新闻
-      <span class="item-note">2016-06-20</span>
-    </a> <a ng-href="#/companytrends" class="item">
-      公司动态新闻
-      <span class="item-note">2016-06-20</span>
+
     </a>
     </div>
   </ion-content>
