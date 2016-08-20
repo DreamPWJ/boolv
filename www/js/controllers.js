@@ -36,6 +36,7 @@ angular.module('starter.controllers', [])
       //获取行情报价
       MainService.getProds().success(function (data) {
         $scope.prods = data.Values;
+        sessionStorage.setItem("getProds",JSON.stringify(data.Values));//行情报价数据复用
       })
       //获取交易公告
       $scope.listNewsParams = {
@@ -267,13 +268,62 @@ angular.module('starter.controllers', [])
 
 
   })
-
-  .controller('ReleaseProcureCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
-
+  //买货选择产品
+  .controller('ReleaseProcureCtrl', function ($scope, $rootScope, CommonService) {
+    //获取买货选择产品列表
+    $rootScope.buyprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
+    $rootScope.buyprodsList = [];
+    angular.forEach( $rootScope.buyprods, function (item) {
+      item.checked = false;
+      $scope.buyprodsList.push(item);
+    })
 
   })
-  .controller('ProcureDetailsCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  //买货发布采购单
+  .controller('ProcureDetailsCtrl', function ($scope, $rootScope, CommonService) {
+    $scope.buyDetails = [];
+    angular.forEach($rootScope.buyprodsList, function (item) {
+      if (item.checked == true) {
+        $scope.buyDetails.push(item);
+      }
+    })
 
+    $scope.itemnum = [];//买货数量
+    $scope.buygoodssubmit = function () {//提交买货订单
+      CommonService.ionicLoadingShow();
+      $scope.Details = [];//收货明细数据数组
+      angular.forEach($scope.sellDetails, function (item, index) {
+        var items = {};//收货明细json数据
+        items.ProdID = item.PID;//产品编号
+        items.ProdName = item.PName;//产品名称
+        items.Unit = item.PUID;//计算单位ID
+        items.Num = $scope.itemnum[index].sellnum;//输入数量
+        items.SaleClass = item.PUSaleType;//销售分类ID
+        var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
+        if (item.PriType == 1) {
+          angular.forEach(item.Prices, function (itemprice, index) {
+            if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
+              referenceprice = item.Prices[index].Price;
+            }
+          })
+        } else {
+          referenceprice = item.Prices[0].Price;
+        }
+        items.Price = referenceprice;//参考价格
+        $scope.Details.push(items)
+      })
+      //提交买货订单数据
+      $scope.buyDatas = {
+        FromUser: '7BF8D79B-9228-445A-AB69-887BF4BC4C5B',//供应商账号
+        ToUser: $rootScope.supplierListFirst.LogID,//供应商账号
+        TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
+        FromAddr: 0,//发货地址ID
+        ToAddr: 0,//收货地址ID
+        Account: 0,//收款账号ID
+        Details: $scope.Details//收货明细
+      }
+
+    }
 
   })
   .controller('ReleaseProcureOrderCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
@@ -369,20 +419,15 @@ angular.module('starter.controllers', [])
 
   })
   //我要卖货
-  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
+  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService) {
     //获取卖货列表
-    CommonService.ionicLoadingShow();
-    MainService.getProds().success(function (data) {
-      $rootScope.sellprods = data.Values;
+      $rootScope.sellprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
       $rootScope.sellprodsList = [];
-      angular.forEach(data.Values, function (item) {
+      angular.forEach( $rootScope.sellprods, function (item) {
         item.checked = false;
         $scope.sellprodsList.push(item);
       })
 
-    }).finally(function () {
-      CommonService.ionicLoadingHide();
-    })
 
   })
   .controller('CheckGoodCtrl', function ($scope, BooLv, $http, CommonService) {

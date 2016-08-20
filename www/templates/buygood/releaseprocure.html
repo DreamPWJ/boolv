@@ -12,26 +12,12 @@
       <a ng-href="" class="item item-borderless">
         <strong>请选择产品 : </strong>
       </a>
-      <li class="item item-checkbox ">
-        <label class="checkbox checkbox-calm">
-          <input type="checkbox" checked>
+      <li class="item item-checkbox " collection-repeat="item in buyprodsList"  >
+        <label class="checkbox checkbox-calm" >
+          <input type="checkbox" ng-model="item.checked"   required  ng-checked="item.checked">
         </label>
-        拆解机
+        {{item.PName}}
       </li>
-
-      <li class="item item-checkbox ">
-        <label class="checkbox checkbox-calm">
-          <input type="checkbox">
-        </label>
-        二手手机
-      </li>
-      <li class="item item-checkbox  border-bottom-none">
-        <label class="checkbox checkbox-calm">
-          <input type="checkbox">
-        </label>
-        电池
-      </li>
-
     </ul>
   </ion-content>
   <div class="padding light-bg bottom-0">

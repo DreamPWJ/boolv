@@ -306,12 +306,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'BuyGoodCtrl'
 
       })
+      //买货选择产品
       .state('releaseprocure', {
         url: '/releaseprocure',
         templateUrl: 'templates/buygood/releaseprocure.html',
         controller: 'ReleaseProcureCtrl'
 
       })
+      //买货发布采购单
       .state('procuredetails', {
         url: '/procuredetails',
         templateUrl: 'templates/buygood/procuredetails.html',

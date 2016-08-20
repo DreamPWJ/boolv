@@ -8,61 +8,27 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 发布采购单</h1>
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
-    <div class="list ">
+    <div class="list" ng-repeat="item in buyDetails">
       <a ng-click="toggle(1)" class="item item-borderless"  hide-show>
-        <strong>拆解机 <span class="item-note margin-right-1"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span> </strong>
+        <strong>{{item.PName}} <span class="item-note margin-right-1"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span> </strong>
       </a>
       <div ng-hide="showme1">
         <label class="item item-input">
           <span class="input-label"> 数量 :</span>
-          <input type="number">
-          <span class="item-note padding-right margin-right-1">台</span>
+          <input type="number" ng-model="itemnum[$index].sellnum" >
+          <span class="item-note input-right-1">台</span>
         </label>
         <label class="item item-input border-bottom-none">
           <span class="input-label"> 价格 :</span>
-          <input type="number">
-          <span class="item-note padding-right margin-right-1">元/台</span>
+          <input type="number" ng-model="itemnum[$index].sellnum" >
+          <span class="item-note input-right-1">元/台</span>
         </label>
       </div>
     </div>
 
-    <div class="list">
-      <a ng-click="toggle(2)" class="item item-borderless" hide-show>
-        <strong>二手手机 <span class="item-note margin-right-1"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span> </strong>
-      </a>
-      <div ng-hide="showme2">
-        <label class="item item-input">
-          <span class="input-label"> 数量 :</span>
-          <input type="number">
-          <span class="item-note padding-righ margin-right-1">台</span>
-        </label>
-        <label class="item item-input border-bottom-none">
-          <span class="input-label"> 价格 :</span>
-          <input type="number">
-          <span class="item-note padding-right margin-right-1">元/台</span>
-        </label>
-      </div>
-    </div>
 
-    <div class="list">
-      <a ng-click="toggle(3)" class="item item-borderless" hide-show>
-        <strong>电池 <span class="item-note margin-right-1"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme3]"></i></span> </strong>
-      </a>
-      <div ng-hide="showme3">
-        <label class="item item-input">
-          <span class="input-label"> 数量 :</span>
-          <input type="number">
-          <span class="item-note padding-right margin-right-1">台</span>
-        </label>
-        <label class="item item-input border-bottom-none">
-          <span class="input-label"> 价格 :</span>
-          <input type="number">
-          <span class="item-note padding-right margin-right-1">元/台</span>
-        </label>
-      </div>
-    </div>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image" ng-href="#/releaseprocureorder">提交</a>
+    <a class="button button-calm full-image"  ng-href="#/releaseprocureorder">提交</a>
   </div>
 </ion-view>
