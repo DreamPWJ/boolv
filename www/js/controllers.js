@@ -160,11 +160,18 @@ angular.module('starter.controllers', [])
   .controller('LoginCtrl', function ($scope, $rootScope, BooLv, $state, CommonService, AccountService) {
 
     $scope.user = {};//提前定义用户对象
+    $scope.sendCode = function () {
+      AccountService.sendCode($scope.user.username).success(function (data) {
+        $scope.user.password=data.Values;
+      }).error(function () {
+        CommonService.showAlert("博绿网", "验证码获取失败!",'login');
+      })
+    }
     $scope.loginSubmit = function () {
       AccountService.login($scope.user).success(function (data) {
-        /*        localStorage.setItem('token', data.token);*/
+       localStorage.setItem('token', data.Values);
       }).error(function () {
-        CommonService.showAlert("博绿网", "登录失败!");
+        CommonService.showAlert("博绿网", "登录失败!",'login');
       })
 
     }
@@ -283,7 +290,12 @@ angular.module('starter.controllers', [])
     CommonService.searchModal($scope);
 
   })
-  .controller('SellDetailsCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  //卖货下单
+  .controller('SellDetailsCtrl', function ($scope, $rootScope, CommonService,SellService) {
+    //根据经纬度获取最近N个供应商
+    SellService.getListLongAndLat().success(function () {
+
+    })
     $scope.sellgoodssubmit = function () {
       CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellorderdetails')
     }
@@ -293,8 +305,17 @@ angular.module('starter.controllers', [])
     CommonService.ionicPopover($scope, 'my-order.html');
 
   })
-  .controller('SellProcureCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  //我要卖货
+  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService,MainService) {
+    //获取行情报价
+    MainService.getProds().success(function (data) {
+      $rootScope.sellprods = data.Values;
+      $scope.devList=[];
+      angular.forEach(data.Values, function (item) {
+        $scope.devList.push({id:item.PID,name:item.PName,checked:false});
+      })
 
+    })
 
   })
   .controller('CheckGoodCtrl', function ($scope, BooLv, $http, CommonService) {

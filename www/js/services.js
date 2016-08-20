@@ -195,9 +195,9 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/AdMsg/GetAdMsg",
-   /*       headers: {
-            'Authorization':localStorage.getItem('token')
-          },*/
+          /*       headers: {
+           'Authorization':localStorage.getItem('token')
+           },*/
           params: {
             type: 1
           }
@@ -230,7 +230,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/News/GetListNews",
-          params:listNewsParams
+          params: listNewsParams
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -245,8 +245,8 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/News/GetNews",
-          params:{
-            id:Id
+          params: {
+            id: Id
           }
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -258,12 +258,12 @@ angular.module('starter.services', [])
     }
   }).service('AccountService', function ($q, $http, BooLv) {
   return {
-    sendCode: function () {
+    sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "",
+        url: BooLv.api + "/user/send_code/" + phonenum,
 
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -277,10 +277,10 @@ angular.module('starter.services', [])
       var promise = deferred.promise
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/User/Login",
+        url: BooLv.api + "/user/login",
         data: {
-          PhoneNum: user.username,
-          VerCode: user.password
+          mobile: user.username,
+          code: user.password
         }
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -291,6 +291,30 @@ angular.module('starter.services', [])
     }
   }
 })
+  .service('SellService', function ($q, $http, BooLv) {//卖货服务
+    return {
+      getListLongAndLat: function () { //根据经纬度获取最近N个供应商
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/SupplyUser/GetListLongAndLat",
+          data: {
+            currentPage: 1,
+            pageSize: 5,
+            Longitude: 4.333,
+            Latitude: 3.3456,
+            uff: 5
+          }
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  })
   .service('EncodingService', function () {
     return {
       md5: function (str) {

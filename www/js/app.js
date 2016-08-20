@@ -330,11 +330,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/sellgood/sellgood.html',
         controller: 'SellGoodCtrl'
       })
+      //我要卖货
       .state('sellprocure', {
         url: '/sellprocure',
         templateUrl: 'templates/sellgood/sellprocure.html',
         controller: 'SellProcureCtrl'
       })
+      //卖货下单
       .state('selldetails', {
         url: '/selldetails',
         templateUrl: 'templates/sellgood/selldetails.html',

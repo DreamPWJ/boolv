@@ -11,8 +11,8 @@
 
   <ion-content overflow-scroll="false" class="stable-bg">
     <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="true" id="main-slide">
-  <!--    <ion-slide ng-repeat="item in adImg"><img ng-src="{{item.Url+item.ImgUrl}}" alt="" class="full-image"/>
-      </ion-slide>-->
+      <!--    <ion-slide ng-repeat="item in adImg"><img ng-src="{{item.Url+item.ImgUrl}}" alt="" class="full-image"/>
+          </ion-slide>-->
       <ion-slide><img ng-src="img/banner/banner1.jpg" alt="" class="full-image"/></ion-slide>
       <ion-slide><img ng-src="img/banner/banner2.jpg" alt="" class="full-image"/></ion-slide>
     </ion-slide-box>
@@ -60,7 +60,8 @@
         <img src="{{item.PImgUrl}}" alt="">
         <h2>{{item.PName}} <span class="calm">[按量报价]</span></h2>
         <p>{{item.PIntrodu}} </p>
-        <p class="row row-no-padding" ng-repeat="itemp in item.Prices"><span class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>  <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{item.PUName}}</span>
+        <p class="row row-no-padding" ng-repeat="itemp in item.Prices"><span class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>
+          <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{item.PUName}}</span>
         </p>
         </p>
       </a>
@@ -70,8 +71,11 @@
       <a class="item item-borderless">
         <strong>交易公告</strong>
       </a>
-      <a nav-direction=forward ng-repeat="item in listNews.data_list" ng-href="#/dealnotice/{{item.ID}}" class="item">
-        {{item.Title}}
+      <a nav-direction=forward ng-repeat="item in listNews.data_list" ng-href="#/dealnotice/{{item.ID}}"
+         class="item item-thumbnail-left">
+        <img ng-src="{{item.PicAddr}}" alt="">
+        <h2 class="padding-top">{{item.Title}}</h2>
+        <p>{{item.Note}}</p>
         <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span>
       </a>
 
@@ -81,12 +85,14 @@
       <a nav-direction=forward ng-href="" class="item item-borderless">
         <strong>公司动态</strong>
       </a>
-      <a ng-href="#/companytrends/{{item.ID}}" ng-repeat="item in listCompanyNews.data_list"  class="item">
-        {{item.Title}}
-        <span class="item-note">{{item.AddTime | date : 'yyyy-MM-dd'}}</span>
+      <a ng-href="#/companytrends/{{item.ID}}" ng-repeat="item in listCompanyNews.data_list"  class="item item-thumbnail-left">
+        <img ng-src="{{item.PicAddr}}" alt="">
+        <h2 class="padding-top">{{item.Title}}</h2>
+        <p>{{item.Note}}</p>
+        <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span>
       </a>
 
-    </a>
+      </a>
     </div>
   </ion-content>
 </ion-view>
