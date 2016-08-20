@@ -112,6 +112,17 @@
   margin-right: 1rem;
 }
 
+.input-right-1 {
+  position: absolute;
+  right: 1rem;
+  line-height:36px ;
+}
+
+.right-1 {
+  position: absolute;
+  right: 1rem;
+
+}
 .has-button-footer {
   bottom: 67px;
 }

@@ -7,20 +7,23 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 卖货下单</h1>
   </ion-nav-title>
+
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+
     <ul class="list">
       <a ng-href="" class="item item-borderless">
         <strong>请选择产品 : </strong>
       </a>
-      <li class="item item-checkbox " collection-repeat="item in devList"  >
+      <li class="item item-checkbox " collection-repeat="item in sellprodsList"  >
         <label class="checkbox checkbox-calm" >
-          <input type="checkbox" ng-model="item.checked"  ng-checked="item.checked">
+          <input type="checkbox" ng-model="item.checked"   required  ng-checked="item.checked">
         </label>
-        {{item.name}}
+        {{item.PName}}
       </li>
     </ul>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image" ng-href="#/selldetails">下一步</a>
+    <a    class="button button-calm full-image"  ng-href="#/selldetails">下一步</a>
   </div>
+
 </ion-view>

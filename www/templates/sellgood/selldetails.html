@@ -12,36 +12,22 @@
       <a ng-href="" class="item item-borderless">
         <strong>请输入卖货数量 </strong>
       </a>
-      <label class="item item-input">
-        <span class="input-label"> 拆解机 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-right-1">台</span>
+      <label class="item item-input" ng-repeat="item in sellDetails">
+        <span class="input-label"> {{item.PName}} :</span>
+        <input type="number" ng-model="itemnum[$index].sellnum"  >
+        <span class="item-note input-right-1">台</span>
       </label>
-      <label class="item item-input">
-        <span class="input-label"> 不合格拆解机 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-right-1">台</span>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 二手手机 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-right-1">台</span>
-      </label>
-      <label class="item item-input border-bottom-none">
-        <span class="input-label"> 电池 :</span>
-        <input type="number">
-        <span class="item-note padding-right margin-right-1">台</span>
-      </label>
+
     </div>
 
     <div class="list">
       <a ng-href="" class="item item-borderless">
         <strong>匹配供应商 : </strong>
       </a>
-      <a ng-href="#/sellgood"  class="item item-icon-right border-bottom-none">
-        <h2>姓名 : 张三 <span class="item-note">距离 : 50米</span></h2>
-        <h2>手机号码 : <span class="calm">18888888888</span></h2>
-        <h2>地址 : 深圳市南山区******</h2>
+      <a ng-href="#/sellgood"  class="item item-icon-right border-bottom-none" >
+        <h2>姓名 : {{supplierListFirst.UserName}} <span class="item-note">距离 : {{supplierListFirst.Range}}</span></h2>
+        <h2>手机号码 : <span class="calm">{{supplierListFirst.Motel}}</span></h2>
+        <h2>地址 : {{supplierListFirst.Addr}}</h2>
         <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
       </a>
     </div>

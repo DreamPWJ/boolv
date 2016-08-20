@@ -52,14 +52,14 @@ angular.module('starter.controllers', [])
 
       }).then(function () {
         //获取公司公告
-        $scope.listNewsParams.GrpCode='003';
+        $scope.listNewsParams.GrpCode = '003';
         MainService.getListNews($scope.listNewsParams).success(function (data) {
           $scope.listCompanyNews = data.Values;
 
         })
       })
 
-      }).finally(function () {
+    }).finally(function () {
       CommonService.ionicLoadingHide()
     })
 
@@ -96,9 +96,9 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('DealNoticeCtrl', function ($scope, $rootScope,$stateParams, BooLv, $http, $state, CommonService,MainService) {
+  .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, BooLv, $http, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
-    var Id=$stateParams.Id;
+    var Id = $stateParams.Id;
     MainService.getNews(Id).success(function (data) {
       $scope.news = data.Values;
     }).finally(function () {
@@ -110,9 +110,9 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('CompanyTrendsCtrl', function ($scope, $rootScope,$stateParams, BooLv, $http, $state, CommonService,MainService) {
+  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, BooLv, $http, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
-    var Id=$stateParams.Id;
+    var Id = $stateParams.Id;
     MainService.getNews(Id).success(function (data) {
       $scope.news = data.Values;
     }).finally(function () {
@@ -126,14 +126,14 @@ angular.module('starter.controllers', [])
 //Wechat.Scene.TIMELINE 表示分享到朋友圈
 //Wechat.Scene.SESSION 表示分享给好友
 //（1）文本
-/*      Wechat.share({
-        text: "This is just a plain string",
-        scene: Wechat.Scene.TIMELINE   // share to Timeline
-      }, function () {
-        alert("Success");
-      }, function (reason) {
-        alert("Failed: " + reason);
-      });*/
+      /*      Wechat.share({
+       text: "This is just a plain string",
+       scene: Wechat.Scene.TIMELINE   // share to Timeline
+       }, function () {
+       alert("Success");
+       }, function (reason) {
+       alert("Failed: " + reason);
+       });*/
       //（2）媒体
       /*    Wechat.share({
        message: {
@@ -162,16 +162,16 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.sendCode = function () {
       AccountService.sendCode($scope.user.username).success(function (data) {
-        $scope.user.password=data.Values;
+        $scope.user.password = data.Values;
       }).error(function () {
-        CommonService.showAlert("博绿网", "验证码获取失败!",'login');
+        CommonService.showAlert("博绿网", "验证码获取失败!", 'login');
       })
     }
     $scope.loginSubmit = function () {
       AccountService.login($scope.user).success(function (data) {
-       localStorage.setItem('token', data.Values);
+        localStorage.setItem('token', data.Values);
       }).error(function () {
-        CommonService.showAlert("博绿网", "登录失败!",'login');
+        CommonService.showAlert("博绿网", "登录失败!", 'login');
       })
 
     }
@@ -286,18 +286,81 @@ angular.module('starter.controllers', [])
     CommonService.searchModal($scope);
 
   })
-  .controller('SellGoodCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  .controller('SellGoodCtrl', function ($scope, $rootScope, $state, CommonService) {
+    $scope.supplierList = $rootScope.supplierList;
+    $scope.selectSupplier = function (item) {
+      $rootScope.supplierListFirst = item;
+      console.log(item);
+      $state.go("selldetails");
+    }
     CommonService.searchModal($scope);
 
   })
   //卖货下单
-  .controller('SellDetailsCtrl', function ($scope, $rootScope, CommonService,SellService) {
-    //根据经纬度获取最近N个供应商
-    SellService.getListLongAndLat().success(function () {
-
+  .controller('SellDetailsCtrl', function ($scope, $rootScope, CommonService, SellService) {
+    CommonService.ionicLoadingShow();
+    $scope.sellDetails = [];
+    angular.forEach($rootScope.sellprodsList, function (item) {
+      if (item.checked == true) {
+        $scope.sellDetails.push(item);
+      }
     })
-    $scope.sellgoodssubmit = function () {
-      CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellorderdetails')
+    //根据经纬度获取最近N个供应商
+    $scope.supplierListParams = {
+      currentPage: 1,
+      pageSize: 5,
+      Longitude: localStorage.getItem("longitude") || 4.333,
+      Latitude: localStorage.getItem("latitude") || 3.3456,
+      buff: 5
+    }
+    SellService.getListLongAndLat($scope.supplierListParams).success(function (data) {
+      $rootScope.supplierList = data.Values.data_list;
+      $rootScope.supplierListFirst = $rootScope.supplierList[0];
+    }).finally(function () {
+      CommonService.ionicLoadingHide()
+    })
+
+    $scope.itemnum = [];//卖货数量
+    $scope.sellgoodssubmit = function () {//提交卖货订单
+      CommonService.ionicLoadingShow();
+      $scope.Details = [];//收货明细数据数组
+      angular.forEach($scope.sellDetails, function (item, index) {
+        var items = {};//收货明细json数据
+        items.ProdID = item.PID;//产品编号
+        items.ProdName = item.PName;//产品名称
+        items.Unit = item.PUID;//计算单位ID
+        items.Num = $scope.itemnum[index].sellnum;//输入数量
+        items.SaleClass = item.PUSaleType;//销售分类ID
+        var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
+        if (item.PriType == 1) {
+          angular.forEach(item.Prices, function (itemprice, index) {
+            if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
+              referenceprice = item.Prices[index].Price;
+            }
+          })
+        } else {
+          referenceprice = item.Prices[0].Price;
+        }
+        items.Price = referenceprice;//参考价格
+        $scope.Details.push(items)
+      })
+      //提交卖货订单数据
+      $scope.sellDatas = {
+        FromUser: '7BF8D79B-9228-445A-AB69-887BF4BC4C5B',//供应商账号
+        ToUser: $rootScope.supplierListFirst.LogID,//供应商账号
+        TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
+        FromAddr: 0,//发货地址ID
+        ToAddr: 0,//收货地址ID
+        Account: 0,//收款账号ID
+        Details: $scope.Details//收货明细
+      }
+
+      SellService.addOrderDetails($scope.sellDatas).success(function () {
+        CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellorderdetails')
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
+      })
+
     }
 
   })
@@ -306,15 +369,19 @@ angular.module('starter.controllers', [])
 
   })
   //我要卖货
-  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService,MainService) {
-    //获取行情报价
+  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
+    //获取卖货列表
+    CommonService.ionicLoadingShow();
     MainService.getProds().success(function (data) {
       $rootScope.sellprods = data.Values;
-      $scope.devList=[];
+      $rootScope.sellprodsList = [];
       angular.forEach(data.Values, function (item) {
-        $scope.devList.push({id:item.PID,name:item.PName,checked:false});
+        item.checked = false;
+        $scope.sellprodsList.push(item);
       })
 
+    }).finally(function () {
+      CommonService.ionicLoadingHide();
     })
 
   })

@@ -116,7 +116,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('tab', {
         url: '/tab',
         abstract: true,
-        cache: false,
         templateUrl: 'templates/tabs.html',
         controller: 'TabCtrl'
       })
