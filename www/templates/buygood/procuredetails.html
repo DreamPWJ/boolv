@@ -7,6 +7,7 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 发布采购单</h1>
   </ion-nav-title>
+  <form name="procuredetails">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list" ng-repeat="item in buyDetails">
       <a ng-click="toggle(1)" class="item item-borderless"  hide-show>
@@ -15,12 +16,12 @@
       <div ng-hide="showme1">
         <label class="item item-input">
           <span class="input-label"> 数量 :</span>
-          <input type="number" ng-model="itemnum[$index].sellnum" >
+          <input type="number" ng-model="itemnumprice[$index].buynum"  required>
           <span class="item-note input-right-1">台</span>
         </label>
         <label class="item item-input border-bottom-none">
           <span class="input-label"> 价格 :</span>
-          <input type="number" ng-model="itemnum[$index].sellnum" >
+          <input type="number" ng-model="itemnumprice[$index].buyprice" required>
           <span class="item-note input-right-1">元/台</span>
         </label>
       </div>
@@ -29,6 +30,7 @@
 
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image"  ng-href="#/releaseprocureorder">提交</a>
+    <a  ng-disabled="!procuredetails.$valid" class="button button-calm full-image"  ng-href="#/releaseprocureorder">提交</a>
   </div>
+  </form>
 </ion-view>

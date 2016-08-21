@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
 
     $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');
   })
-  .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $http, BooLv, $ionicLoading, CommonService) {
+  .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $ionicLoading, CommonService) {
 
 
   })
@@ -36,7 +36,7 @@ angular.module('starter.controllers', [])
       //获取行情报价
       MainService.getProds().success(function (data) {
         $scope.prods = data.Values;
-        sessionStorage.setItem("getProds",JSON.stringify(data.Values));//行情报价数据复用
+        sessionStorage.setItem("getProds", JSON.stringify(data.Values));//行情报价数据复用
       })
       //获取交易公告
       $scope.listNewsParams = {
@@ -84,20 +84,20 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('StartCtrl', function ($scope, $state, $rootScope, $http, BooLv, CommonService) {
+  .controller('StartCtrl', function ($scope, $state, $rootScope, CommonService) {
     $scope.tomain = function () {
       $state.go('tab.main');
     }
   })
-  .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, BooLv, $http, $state, CommonService) {
+  .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, $state, CommonService) {
 
   })
 
-  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, CommonService) {
 
 
   })
-  .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, BooLv, $http, $state, CommonService, MainService) {
+  .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var Id = $stateParams.Id;
     MainService.getNews(Id).success(function (data) {
@@ -111,7 +111,7 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, BooLv, $http, $state, CommonService, MainService) {
+  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var Id = $stateParams.Id;
     MainService.getNews(Id).success(function (data) {
@@ -158,7 +158,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('LoginCtrl', function ($scope, $rootScope, BooLv, $state, CommonService, AccountService) {
+  .controller('LoginCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
 
     $scope.user = {};//提前定义用户对象
     $scope.sendCode = function () {
@@ -170,7 +170,8 @@ angular.module('starter.controllers', [])
     }
     $scope.loginSubmit = function () {
       AccountService.login($scope.user).success(function (data) {
-        localStorage.setItem('token', data.Values);
+        localStorage.setItem('usertoken', data.Values);
+        $state.go("tab.main")
       }).error(function () {
         CommonService.showAlert("博绿网", "登录失败!", 'login');
       })
@@ -178,7 +179,7 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SearchOrderCtrl', function ($scope, BooLv, $http, $rootScope, CommonService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
+  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
     $scope.slideChanged = function (index) {
       $ionicTabsDelegate.select(index);
     };
@@ -196,54 +197,54 @@ angular.module('starter.controllers', [])
     CommonService.searchModal($scope);
 
   })
-  .controller('ProcureOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-pay.html')
 
     $scope.procureorderdetailssubmit = function () {
       CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', 'procureorderdetails', 'procureorderdetails')
     }
   })
-  .controller('SupplyOrderPlanCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-stockup.html');
 
   })
-  .controller('EnteringNumCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('EnteringNumCtrl', function ($scope, $rootScope, CommonService) {
     $scope.enteringnumsubmit = function () {
       CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', '')
     }
   })
-  .controller('SupplyOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('SupplyOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-order.html');
   })
-  .controller('ExamineGoodsOrderCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService) {
     $scope.examinegoodsordersubmit = function () {
       CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
     }
 
   })
 
-  .controller('DeiverOrderDetailsCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-payorder.html');
 
   })
-  .controller('EvaluateCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('EvaluateCtrl', function ($scope, $rootScope, CommonService) {
     $scope.evaluatestar = function (index) {
       $scope.star = index;
     }
     ;
   })
-  .controller('NewsCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('NewsCtrl', function ($scope, $rootScope, CommonService) {
 
 
   })
-  .controller('DeliverListCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('DeliverListCtrl', function ($scope, $rootScope, CommonService) {
 
   })
-  .controller('DeliverDetailsCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('DeliverDetailsCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-order.html');
 
   })
-  .controller('DeliverGoodsCtrl', function ($scope, BooLv, $http, $rootScope, CommonService) {
+  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService) {
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -260,11 +261,11 @@ angular.module('starter.controllers', [])
       CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'sellorderdetails', 'deliverlist')
     }
   })
-  .controller('SupplyGoodCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  .controller('SupplyGoodCtrl', function ($scope, $rootScope, CommonService) {
 
 
   })
-  .controller('SupplyPlanCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('SupplyPlanCtrl', function ($scope, CommonService) {
 
 
   })
@@ -273,14 +274,22 @@ angular.module('starter.controllers', [])
     //获取买货选择产品列表
     $rootScope.buyprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
     $rootScope.buyprodsList = [];
-    angular.forEach( $rootScope.buyprods, function (item) {
+    angular.forEach($rootScope.buyprods, function (item) {
       item.checked = false;
       $scope.buyprodsList.push(item);
     })
-
+    //检查是否复选框选中
+    $scope.checkChecded = function () {
+      $scope.ischecked = false;
+      angular.forEach($scope.buyprodsList, function (item) {
+        if (item.checked) {
+          $scope.ischecked = true;
+        }
+      })
+    }
   })
   //买货发布采购单
-  .controller('ProcureDetailsCtrl', function ($scope, $rootScope, CommonService) {
+  .controller('ProcureDetailsCtrl', function ($scope, $rootScope, CommonService, BuyService) {
     $scope.buyDetails = [];
     angular.forEach($rootScope.buyprodsList, function (item) {
       if (item.checked == true) {
@@ -288,51 +297,53 @@ angular.module('starter.controllers', [])
       }
     })
 
-    $scope.itemnum = [];//买货数量
+    $scope.itemnumprice = [];//买货数量和价格
     $scope.buygoodssubmit = function () {//提交买货订单
-      CommonService.ionicLoadingShow();
+      /*   CommonService.ionicLoadingShow();*/
       $scope.Details = [];//收货明细数据数组
-      angular.forEach($scope.sellDetails, function (item, index) {
+      angular.forEach($scope.buyDetails, function (item, index) {
         var items = {};//收货明细json数据
         items.ProdID = item.PID;//产品编号
         items.ProdName = item.PName;//产品名称
         items.Unit = item.PUID;//计算单位ID
-        items.Num = $scope.itemnum[index].sellnum;//输入数量
+        items.Num = $scope.itemnumprice[index].buynum;//输入数量
+        items.Price = $scope.itemnumprice[index].buyprice;//采购价格
         items.SaleClass = item.PUSaleType;//销售分类ID
-        var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
-        if (item.PriType == 1) {
-          angular.forEach(item.Prices, function (itemprice, index) {
-            if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
-              referenceprice = item.Prices[index].Price;
-            }
-          })
-        } else {
-          referenceprice = item.Prices[0].Price;
-        }
-        items.Price = referenceprice;//参考价格
         $scope.Details.push(items)
       })
       //提交买货订单数据
       $scope.buyDatas = {
-        FromUser: '7BF8D79B-9228-445A-AB69-887BF4BC4C5B',//供应商账号
-        ToUser: $rootScope.supplierListFirst.LogID,//供应商账号
+        FromUser: localStorage.getItem('usertoken'),//下单人
         TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
-        FromAddr: 0,//发货地址ID
         ToAddr: 0,//收货地址ID
-        Account: 0,//收款账号ID
+        Cycle: 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
 
     }
 
   })
-  .controller('ReleaseProcureOrderCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  //收货地址选择提交采购单
+  .controller('ReleaseProcureOrderCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+    CommonService.ionicLoadingShow()
+    $scope.params = {
+      page: 1,
+      size: 10,
+      userid: localStorage.getItem("usertoken")
+    }
+    //获取用户常用地址
+    AccountService.getAddrlist($scope.params).success(function (data) {
+      $rootScope.addrlist = data.Values.data_list;
+      $scope.addrlistFirst = data.Values.data_list[0]
+    }).finally(function () {
+      CommonService.ionicLoadingHide()
+    })
     $scope.releaseprocureordersubmit = function () {
       CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
     }
 
   })
-  .controller('BuyGoodCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  .controller('BuyGoodCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.searchModal($scope);
 
   })
@@ -396,8 +407,8 @@ angular.module('starter.controllers', [])
       })
       //提交卖货订单数据
       $scope.sellDatas = {
-        FromUser: '7BF8D79B-9228-445A-AB69-887BF4BC4C5B',//供应商账号
-        ToUser: $rootScope.supplierListFirst.LogID,//供应商账号
+        FromUser: localStorage.getItem('usertoken'),//供应商账号
+        ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
         TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
         FromAddr: 0,//发货地址ID
         ToAddr: 0,//收货地址ID
@@ -414,32 +425,39 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, BooLv, $http, CommonService) {
+  .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-order.html');
 
   })
   //我要卖货
   .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService) {
     //获取卖货列表
-      $rootScope.sellprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
-      $rootScope.sellprodsList = [];
-      angular.forEach( $rootScope.sellprods, function (item) {
-        item.checked = false;
-        $scope.sellprodsList.push(item);
+    $rootScope.sellprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
+    $rootScope.sellprodsList = [];
+    angular.forEach($rootScope.sellprods, function (item) {
+      item.checked = false;
+      $scope.sellprodsList.push(item);
+    })
+    //检查是否复选框选中
+    $scope.checkChecded = function () {
+      $scope.ischecked = false;
+      angular.forEach($scope.sellprodsList, function (item) {
+        if (item.checked) {
+          $scope.ischecked = true;
+        }
       })
+    }
+  })
+  .controller('CheckGoodCtrl', function ($scope, CommonService) {
 
 
   })
-  .controller('CheckGoodCtrl', function ($scope, BooLv, $http, CommonService) {
-
-
-  })
-  .controller('CheckDetailsCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('CheckDetailsCtrl', function ($scope, CommonService) {
 
 
   })
 
-  .controller('EnteringCheckCtrl', function ($scope, $state, BooLv, $http, CommonService) {
+  .controller('EnteringCheckCtrl', function ($scope, $state, CommonService) {
 
     $scope.toaddproduct = function () {
       $state.go("addproduct")
@@ -450,38 +468,55 @@ angular.module('starter.controllers', [])
     }
   })
 
-  .controller('AddProductCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('AddProductCtrl', function ($scope, CommonService) {
 
   })
-  .controller('SupplyDetailsCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('SupplyDetailsCtrl', function ($scope, CommonService) {
 
 
   })
-  .controller('ReleaseSupplyCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('ReleaseSupplyCtrl', function ($scope, CommonService) {
     $scope.supplysubmit = function () {
       CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
     }
 
   })
-  .controller('AddDealAddressCtrl', function ($scope, BooLv, $http, CommonService) {
+  //添加地址
+  .controller('AddDealAddressCtrl', function ($scope, CommonService, AccountService) {
+    CommonService.ionicLoadingShow();
+    $scope.addrinfo = {};
+    $scope.addrcode = '210100';
+    AccountService.getArea($scope.addrcode).success(function (data) {
+      $scope.addrarea = data.Values;
+    }).finally(function () {
+      CommonService.ionicLoadingHide();
+    })
     $scope.dealaddresssubmit = function () {
+      console.log($scope.addrinfo);
+      /*      CommonService.ionicLoadingShow();
+       AccountService.setAddr($scope.addrinfo).success(function (data) {
+
+       }).finally(function () {
+       CommonService.ionicLoadingHide();
+       })*/
       CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress')
     }
 
   })
-  .controller('DealAddressCtrl', function ($scope, BooLv, $http, CommonService) {
+  //地址详细列表
+  .controller('DealAddressCtrl', function ($scope, $rootScope, CommonService) {
+    $scope.addrlist = $rootScope.addrlist;
+
+  })
+  .controller('SignListCtrl', function ($scope, CommonService) {
 
 
   })
-  .controller('SignListCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('SignDetailsCtrl', function ($scope, CommonService) {
 
 
   })
-  .controller('SignDetailsCtrl', function ($scope, BooLv, $http, CommonService) {
-
-
-  })
-  .controller('SignCtrl', function ($scope, BooLv, $http, CommonService) {
+  .controller('SignCtrl', function ($scope, CommonService) {
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -497,37 +532,37 @@ angular.module('starter.controllers', [])
       CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
     }
   })
-  .controller('AccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('AccountInfoCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('AccountInfoCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('ApplyProviderCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService) {
 
     $scope.applyprovidersubmit = function () {
       CommonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
     }
   })
-  .controller('MyAvanceCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('MyAvanceCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('DavanceDetailsCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('DavanceDetailsCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService) {
 
     $scope.applyadvancesubmit = function () {
       CommonService.showConfirm('', '<p>恭喜您！您的预收款申请提交成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭', 'davancedetails')
     }
   })
-  .controller('CollectionAccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('AddBankAccountCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('AddBankAccountCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('MyCreditCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('MyCreditCtrl', function ($scope, $rootScope, $state, CommonService) {
 
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('mycredit'));
@@ -553,13 +588,13 @@ angular.module('starter.controllers', [])
     myChart.setOption(option, true);
 
   })
-  .controller('SettingCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('UpdateUserCtrl', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('UpdateUserCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('MyPopover', function ($scope, $rootScope, BooLv, $http, $state, CommonService) {
+  .controller('MyPopover', function ($scope, $rootScope, $state, CommonService) {
     $scope.paymentsubmit = function () {
       CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', '')
     }

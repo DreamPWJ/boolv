@@ -288,7 +288,7 @@ angular.module('starter.services', [])
       });
       return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
     },
-    login: function (user) {
+    login: function (user) { //登录
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise
       promise = $http({
@@ -298,6 +298,46 @@ angular.module('starter.services', [])
           mobile: user.username,
           code: user.password
         }
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    getAddrlist: function (params) {//获取用户常用地址
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/user/get_addrlist/"+params.page+"/"+params.size+"/"+params.userid,
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    setAddr: function (datas) {//增加修改用户常用地址
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/set_addr",
+        data:datas
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    getArea: function (code) {//查询地区列表
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/user/get_area/"+code,
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -330,6 +370,24 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/SaleOrder/AddOrder_Details",
+          data:datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  })
+  .service('BuyService', function ($q, $http, BooLv) {//买货服务
+    return {
+      addBuyOrderDetails: function (datas) { //提交买货订单
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/BuyOrder/AddBuyOrder_Details",
           data:datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了

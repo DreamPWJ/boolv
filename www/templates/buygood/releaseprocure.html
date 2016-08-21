@@ -14,13 +14,13 @@
       </a>
       <li class="item item-checkbox " collection-repeat="item in buyprodsList"  >
         <label class="checkbox checkbox-calm" >
-          <input type="checkbox" ng-model="item.checked"   required  ng-checked="item.checked">
+          <input type="checkbox" ng-model="item.checked"   ng-click="checkChecded()"   ng-checked="item.checked">
         </label>
         {{item.PName}}
       </li>
     </ul>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class="button button-calm full-image" ng-href="#/procuredetails">下一步</a>
+    <a ng-disabled="!ischecked" class="button button-calm full-image" ng-href="#/procuredetails">下一步</a>
   </div>
 </ion-view>
