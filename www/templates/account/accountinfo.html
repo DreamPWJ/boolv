@@ -11,20 +11,20 @@
   <ion-content overflow-scroll="false" class="stable-bg account ">
     <div class="list margin-top-1px ">
       <a ng-href="" class="item item-avatar item-icon-right  item-borderless">
-        <img src="img/head.jpg" class="border-radius-50" alt="">
+        <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="">
         <p>头像</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="#/updateuser" class="item item-icon-right">
-        <h2>昵称 <span class="item-note">张三</span></h2>
+        <h2>昵称 <span class="item-note">{{userinfo.nickname}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="" class="item item-icon-right">
-        <h2>手机号码 <span class="item-note">1895654215</span></h2>
+        <h2>手机号码 <span class="item-note">{{userinfo.mobile}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="" class="item item-icon-right border-bottom-none">
-        <h2>会员类型 <span class="item-note">普通会员</span></h2>
+        <h2>会员类型 <span class="item-note">{{userinfo.typename}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
 
@@ -35,11 +35,11 @@
 
 
       <a ng-href="#/updateuser" class="item item-icon-right item-borderless">
-        <h2>性别 <span class="item-note">男</span></h2>
+        <h2>性别 <span class="item-note">{{userinfo.sex==0?'保密':(userinfo.sex==1?'男':'女')}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="#/updateuser" class="item item-icon-right border-bottom-none">
-        <h2>地区 <span class="item-note">广东 深圳</span></h2>
+        <h2>地区 <span class="item-note">{{userinfo.areaname}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
     </div>

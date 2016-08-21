@@ -12,15 +12,16 @@
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="stable-bg">
     <ion-list class="list-borderless">
-      <ion-item  ng-href="#/releasesupply"  ng-repeat="item in addrlist">
+      <div  ng-click="selectAddress(item)" ng-repeat="item in addrlist">
+      <ion-item >
         <h2><strong>收货人 :</strong> {{item.username}}</h2>
         <h2><strong>手机:</strong> {{item.mobile}}</h2>
         <h2><strong>地址 :</strong> {{item.addr}}</h2>
         <ion-option-button class="button-energized" ng-click="">默认</ion-option-button>
         <ion-option-button class="button-assertive" ng-click="">删除</ion-option-button>
       </ion-item>
-      <p class="padding-top"></p>
-
+      <p></p>
+      </div>
 
     </ion-list>
 

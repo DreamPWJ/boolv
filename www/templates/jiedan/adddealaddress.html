@@ -25,10 +25,8 @@
           <div class="input-label">
             请选择省
           </div>
-          <select required>
-            <option>北京</option>
-            <option>上海</option>
-            <option>广东</option>
+          <select ng-model="addrinfoother.province" required  ng-change="selectProvince(addrinfoother.province)">
+            <option  value="{{item.code}}" ng-repeat="item in addrareaprovince">{{item.name}}</option>
           </select>
         </label>
         <p class="padding-top"></p>
@@ -36,8 +34,8 @@
           <div class="input-label">
             请选择市
           </div>
-          <select ng-model="addrinfo.city" required>
-            <option value="{{item.code}}" ng-repeat="item in addrarea">{{item.name}}</option>
+          <select ng-model="addrinfoother.city" required  ng-change="selectCity(addrinfoother.city)">
+            <option value="{{item.code}}" ng-repeat="item in addrareacity">{{item.name}}</option>
           </select>
         </label>
         <p class="padding-top"></p>
@@ -45,10 +43,8 @@
           <div class="input-label">
             请选择县
           </div>
-          <select required>
-            <option>北京</option>
-            <option>上海</option>
-            <option>广东</option>
+          <select ng-model="addrinfoother.county" required   >
+            <option   value="{{item.code}}"   ng-repeat="item in addrareacounty">{{item.name}}</option>
           </select>
         </label>
 
@@ -61,7 +57,7 @@
         <p class="padding-top"></p>
         <div class="item item-checkbox item-borderless checkbox-balanced">
           <label class="checkbox">
-            <input type="checkbox" ng-model="addrinfo.status">
+            <input type="checkbox" ng-model="addrinfoother.isstatus">
           </label>
           是否默认
         </div>

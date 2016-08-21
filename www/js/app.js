@@ -138,6 +138,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'StartCtrl'
 
       })
+      //实时报价
       .state('currenttimeoffer', {
         url: '/currenttimeoffer',
         templateUrl: 'templates/maindetails/currenttimeoffer.html',
@@ -156,6 +157,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'CompanyTrendsCtrl'
 
       })
+      //我的账号
       .state('tab.account', {
         url: '/account',
         cache: false,
@@ -167,6 +169,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      //账号信息
       .state('accountinfo', {
         url: '/accountinfo',
         cache: false,
@@ -264,6 +267,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'DeliverGoodsCtrl'
 
       })
+      //接单供货计划
       .state('supplygood', {
         url: '/supplygood',
         templateUrl: 'templates/jiedan/supplygood.html',
@@ -287,15 +291,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ReleaseSupplyCtrl'
 
       })
+      //添加地址
       .state('adddealaddress', {
         url: '/adddealaddress',
         templateUrl: 'templates/jiedan/adddealaddress.html',
         controller: 'AddDealAddressCtrl'
 
       })
+      //地址详细列表
       .state('dealaddress', {
         url: '/dealaddress',
-
         templateUrl: 'templates/jiedan/dealaddress.html',
         controller: 'DealAddressCtrl'
 
@@ -320,6 +325,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ProcureDetailsCtrl'
 
       })
+      //收货地址选择提交采购单
       .state('releaseprocureorder', {
         url: '/releaseprocureorder',
         templateUrl: 'templates/buygood/releaseprocureorder.html',
