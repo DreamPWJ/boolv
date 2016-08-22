@@ -1,21 +1,21 @@
 angular.module('starter.controllers', [])
   .config(function ($httpProvider) {
     //$http模块POST请求类型编码转换 统一配置
-/*    $httpProvider.defaults.transformRequest = function (obj) {
-      var str = [];
-      for (var p in obj) {
-        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]))
-      }
-      return str.join("&")
-    }
+    /*    $httpProvider.defaults.transformRequest = function (obj) {
+     var str = [];
+     for (var p in obj) {
+     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]))
+     }
+     return str.join("&")
+     }
 
-    $httpProvider.defaults.headers.post = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
+     $httpProvider.defaults.headers.post = {
+     'Content-Type': 'application/x-www-form-urlencoded'
+     }
 
-    $httpProvider.defaults.headers.put = {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }*/
+     $httpProvider.defaults.headers.put = {
+     'Content-Type': 'application/x-www-form-urlencoded'
+     }*/
 
     $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');
   })
@@ -261,17 +261,17 @@ angular.module('starter.controllers', [])
     }
   })
   //接单供货计划订单列表以及详情
-  .controller('SupplyGoodCtrl', function ($scope, $rootScope, CommonService,SupplyService) {
+  .controller('SupplyGoodCtrl', function ($scope, $rootScope, CommonService, SupplyService) {
     CommonService.ionicLoadingShow();
-    $scope.params={
-      currentPage:1,//当前页码
-      pageSize:10,//每页条数
-      ID:'',//编码 ,等于空时取所有
-      No:'',//订单号，模糊匹配
-      User:'',//买家账号
-      Type:'',//交易方式 0-物流配送1-送货上门2-上门回收
-      Status:0,//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
-      Expiration:1//非过期时间 是否取非过期时间 1是 0否
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 10,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//买家账号
+      Type: '',//交易方式 0-物流配送1-送货上门2-上门回收
+      Status: 0,//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
+      Expiration: 1//非过期时间 是否取非过期时间 1是 0否
     }
     //接单供货计划订单列表以及详情
     SupplyService.getToPage($scope.params).success(function (data) {
@@ -314,8 +314,7 @@ angular.module('starter.controllers', [])
     })
 
     $scope.itemnumprice = [];//买货数量和价格
-    $scope.buygoodssubmit = function () {//提交买货订单
-      /*   CommonService.ionicLoadingShow();*/
+    $rootScope.buygoodssubmit = function () {//提交买货订单
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (item, index) {
         var items = {};//收货明细json数据
@@ -331,10 +330,15 @@ angular.module('starter.controllers', [])
       $scope.buyDatas = {
         FromUser: localStorage.getItem('usertoken'),//下单人
         TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
-        ToAddr: 0,//收货地址ID
+        ToAddr: $rootScope.addrlistFirst.id,//收货地址ID
         Cycle: 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
+        BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
+          console.log(data)
+        CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
+      })
+
 
     }
 
@@ -354,9 +358,7 @@ angular.module('starter.controllers', [])
     }).finally(function () {
       CommonService.ionicLoadingHide()
     })
-    $scope.releaseprocureordersubmit = function () {
-      CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
-    }
+
 
   })
   .controller('BuyGoodCtrl', function ($scope, $rootScope, CommonService) {
@@ -521,7 +523,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-     //增加地址方法
+    //增加地址方法
     $scope.dealaddresssubmit = function () {
       CommonService.ionicLoadingShow();
       //选择县级查询当前记录
@@ -530,11 +532,11 @@ angular.module('starter.controllers', [])
           $scope.addrareacountyone = item;
         }
       })
-        $scope.addrinfo.id = 0;//传入id 则是修改地址
-        $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
-        $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
-        $scope.addrinfo.addrcode = $scope.addrareacountyone.code,	//地区编码
-        $scope.addrinfo.areaname=$scope.addrareacountyone.mergername, // 地区全称
+      $scope.addrinfo.id = 0;//传入id 则是修改地址
+      $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
+      $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
+      $scope.addrinfo.addrcode = $scope.addrareacountyone.code,	//地区编码
+        $scope.addrinfo.areaname = $scope.addrareacountyone.mergername, // 地区全称
         $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0,	//是否默认0-否，1-是
         $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode,	//邮政编码
         $scope.addrinfo.lat = $scope.addrareacountyone.lat, 	//纬度
@@ -552,7 +554,7 @@ angular.module('starter.controllers', [])
 
   })
   //地址详细列表
-  .controller('DealAddressCtrl', function ($scope,$state ,$rootScope, CommonService) {
+  .controller('DealAddressCtrl', function ($scope, $state, $rootScope, CommonService) {
     $scope.addrlist = $rootScope.addrlist;
     $scope.selectAddress = function (item) {
       $rootScope.addrlistFirst = item;
