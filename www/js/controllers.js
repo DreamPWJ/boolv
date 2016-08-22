@@ -168,15 +168,23 @@ angular.module('starter.controllers', [])
       })
     }
     $scope.loginSubmit = function () {
+      CommonService.ionicLoadingShow();
       AccountService.login($scope.user).success(function (data) {
         localStorage.setItem('usertoken', data.Values);
-        $state.go("tab.main")
+
       }).error(function () {
         CommonService.showAlert("博绿网", "登录失败!", 'login');
+      }).then(function () {
+        $scope.userid = localStorage.getItem("usertoken");
+        AccountService.getUserInfo($scope.userid).success(function (data) {
+          localStorage.setItem('user', JSON.stringify(data.Values));
+          $state.go("tab.main")
+        }).finally(function () {
+          CommonService.ionicLoadingHide();
+        })
       })
 
     }
-
   })
   .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
     $scope.slideChanged = function (index) {
@@ -262,6 +270,11 @@ angular.module('starter.controllers', [])
   })
   //接单供货计划订单列表以及详情
   .controller('SupplyGoodCtrl', function ($scope, $rootScope, CommonService, SupplyService) {
+    //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
+    if (JSON.parse(localStorage.getItem("user")).grade != 5) {
+      CommonService.showAlert("非供货商没有权限供货");
+    }
+
     CommonService.ionicLoadingShow();
     $scope.params = {
       currentPage: 1,//当前页码
@@ -270,12 +283,13 @@ angular.module('starter.controllers', [])
       No: '',//订单号，模糊匹配
       User: '',//买家账号
       Type: '',//交易方式 0-物流配送1-送货上门2-上门回收
-      Status: 0,//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
+      Status: 4,//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
       Expiration: 1//非过期时间 是否取非过期时间 1是 0否
     }
     //接单供货计划订单列表以及详情
     SupplyService.getToPage($scope.params).success(function (data) {
-
+      $scope.supplylist = data.Values;
+      console.log(data.Values);
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
@@ -334,8 +348,8 @@ angular.module('starter.controllers', [])
         Cycle: 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
-        BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
-          console.log(data)
+      BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
+        console.log(data)
         CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
       })
 
@@ -596,10 +610,35 @@ angular.module('starter.controllers', [])
   .controller('AccountInfoCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService) {
-
+  //申请成为供应商
+  .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+    $scope.addrinfo={};
+    $scope.addrcode = '0';
+    AccountService.getArea($scope.addrcode).success(function (data) {
+      $scope.addrarea = data.Values;
+      console.log(data.Values);
+    })
+    //选择县级查询当前记录
+    angular.forEach($scope.addrarea, function (item) {
+      if (item.code == $scope.addrinfo.county) {
+        $scope.addrareaone = item;
+      }
+    })
     $scope.applyprovidersubmit = function () {
-      CommonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
+      $scope.datas = {
+        userid: localStorage.getItem("usertoken"),		//用户id
+        username: JSON.parse(localStorage.getItem("user")).username,	//姓名
+        mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
+        addrcode: $scope.addrareaone.code,	//地区编码
+        addr: $scope.addrareaone.mergername,	//地址
+        quantity: $scope.addrinfo.num, 	//供货量
+        prodclass: ""	//供货品类（多个以逗号隔开）
+
+      }
+      AccountService.applySupply($scope.datas).success(function (data) {
+        CommonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
+      })
+
     }
   })
   .controller('MyAvanceCtrl', function ($scope, $rootScope, $state, CommonService) {

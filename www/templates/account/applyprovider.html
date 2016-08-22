@@ -12,20 +12,26 @@
   <ion-nav-title>
     <h1 class="title "> <img id="logo" src="img/logo.png" alt=""/> 申请成为供应商</h1>
   </ion-nav-title>
-
+  <form name="applyprovider">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <div class="list margin-top-1px ">
       <label class="item item-input item-borderless">
         <span class="input-label"> 月供应量:</span>
-        <input type="text" placeholder="（单位 : 台）">
+        <input type="text"  ng-model="addrinfo.num" placeholder="（单位 : 台）" required/>
       </label>
-      <a ng-href="" class="item  border-bottom-none">
-        <h2>供货地区 :<span class="item-note">广东  深圳</span></h2>
-      </a>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          供货地区
+        </div>
+        <select ng-model="addrinfo.county" required   >
+          <option   value="{{item.code}}"   ng-repeat="item in addrarea">{{item.name}}</option>
+        </select>
+      </label>
     </div>
 
   </ion-content>
   <div class="padding light-bg  bottom-0">
-    <button class="button button-calm full-image " ng-click="applyprovidersubmit()">提交申请</button>
+    <button ng-disabled="!applyprovider.$valid" class="button button-calm full-image " ng-click="applyprovidersubmit()">提交申请</button>
   </div>
+  </form>
 </ion-view>
