@@ -274,17 +274,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'SupplyGoodCtrl'
 
       })
+      //接单供货计划详情
       .state('supplydetails', {
-        url: '/supplydetails',
+        url: '/supplydetails/:item',
         templateUrl: 'templates/jiedan/supplydetails.html',
         controller: 'SupplyDetailsCtrl'
       })
+      //供货计划填写
       .state('supplyplan', {
-        url: '/supplyplan',
+        url: '/supplyplan/:item',
         templateUrl: 'templates/jiedan/supplyplan.html',
         controller: 'SupplyPlanCtrl'
 
       })
+      //提交供货计划选择地址
       .state('releasesupply', {
         url: '/releasesupply',
         templateUrl: 'templates/jiedan/releasesupply.html',
@@ -390,6 +393,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/sign/sign.html',
         controller: 'SignCtrl'
       })
+      //申请成为供应商
       .state('applyprovider', {
         url: '/applyprovider',
         templateUrl: 'templates/account/applyprovider.html',

@@ -14,18 +14,42 @@
   </ion-nav-title>
   <form name="applyprovider">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
-    <div class="list margin-top-1px ">
-      <label class="item item-input item-borderless">
-        <span class="input-label"> 月供应量:</span>
-        <input type="text"  ng-model="addrinfo.num" placeholder="（单位 : 台）" required/>
+    <div class="list list-borderless">
+      <label class="item item-input ">
+        <span class="input-label"> 月供应量</span>
+        <input type="number"  ng-model="addrinfo.num" placeholder="（单位 : 台）" required/>
       </label>
+      <p class="padding-top"></p>
       <label class="item item-input item-select">
         <div class="input-label">
-          供货地区
+          供货省
+        </div>
+        <select ng-model="addrinfo.province" required  ng-change="selectProvince(addrinfo.province)">
+          <option  value="{{item.code}}" ng-repeat="item in addrareaprovince">{{item.name}}</option>
+        </select>
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          供货市
+        </div>
+        <select ng-model="addrinfo.city" required  ng-change="selectCity(addrinfo.city)">
+          <option value="{{item.code}}" ng-repeat="item in addrareacity">{{item.name}}</option>
+        </select>
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          供货县
         </div>
         <select ng-model="addrinfo.county" required   >
-          <option   value="{{item.code}}"   ng-repeat="item in addrarea">{{item.name}}</option>
+          <option   value="{{item.code}}"   ng-repeat="item in addrareacounty">{{item.name}}</option>
         </select>
+      </label>
+      <p class="padding-top"></p>
+      <label class="item item-input ">
+        <span class="input-label"> 详细地址</span>
+        <input type="text"  ng-model="addrinfo.address"  required/>
       </label>
     </div>
 

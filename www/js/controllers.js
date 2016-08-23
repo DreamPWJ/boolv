@@ -171,17 +171,16 @@ angular.module('starter.controllers', [])
       CommonService.ionicLoadingShow();
       AccountService.login($scope.user).success(function (data) {
         localStorage.setItem('usertoken', data.Values);
-
+        $state.go("tab.main")
       }).error(function () {
         CommonService.showAlert("博绿网", "登录失败!", 'login');
       }).then(function () {
         $scope.userid = localStorage.getItem("usertoken");
         AccountService.getUserInfo($scope.userid).success(function (data) {
           localStorage.setItem('user', JSON.stringify(data.Values));
-          $state.go("tab.main")
-        }).finally(function () {
-          CommonService.ionicLoadingHide();
         })
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
       })
 
     }
@@ -288,15 +287,16 @@ angular.module('starter.controllers', [])
     }
     //接单供货计划订单列表以及详情
     SupplyService.getToPage($scope.params).success(function (data) {
-      $scope.supplylist = data.Values;
-      console.log(data.Values);
+      $scope.supplylist = data.Values.data_list;
+      console.log(data.Values.data_list);
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
 
   })
-  .controller('SupplyPlanCtrl', function ($scope, CommonService) {
-
+  //供货计划填写
+  .controller('SupplyPlanCtrl', function ($scope, CommonService, $stateParams) {
+    $scope.supplyDetails = JSON.parse($stateParams.item);
 
   })
   //买货选择产品
@@ -503,13 +503,35 @@ angular.module('starter.controllers', [])
   .controller('AddProductCtrl', function ($scope, CommonService) {
 
   })
-  .controller('SupplyDetailsCtrl', function ($scope, CommonService) {
-
+  //接单供货计划详情
+  .controller('SupplyDetailsCtrl', function ($scope, CommonService, $stateParams) {
+    $scope.supplyDetails = JSON.parse($stateParams.item);
 
   })
-  .controller('ReleaseSupplyCtrl', function ($scope, CommonService) {
+  //提交供货计划选择地址
+  .controller('ReleaseSupplyCtrl', function ($scope, CommonService, AccountService, SupplyService) {
+    $scope.params = {
+      page: 1,
+      size: 10,
+      userid: localStorage.getItem("usertoken")
+    }
+    //获取用户常用地址
+    AccountService.getAddrlist($scope.params).success(function (data) {
+      $scope.addrlist = data.Values.data_list;
+      $scope.addrliststatus = [];
+      angular.forEach($scope.addrlist, function (item) {
+        if (item.status == 1) {
+          $scope.addrliststatus.push(item);
+        }
+      })
+    })
     $scope.supplysubmit = function () {
-      CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
+      //提交供货计划
+      $scope.datas = {};
+      SupplyService.addSupplyPlan($scope.datas).success(function (data) {
+        CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
+      })
+
     }
 
   })
@@ -612,27 +634,42 @@ angular.module('starter.controllers', [])
   })
   //申请成为供应商
   .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    $scope.addrinfo={};
+    $scope.addrinfo = {};
     $scope.addrcode = '0';
+    //选择省级
     AccountService.getArea($scope.addrcode).success(function (data) {
-      $scope.addrarea = data.Values;
-      console.log(data.Values);
+      $scope.addrareaprovince = data.Values;
     })
-    //选择县级查询当前记录
-    angular.forEach($scope.addrarea, function (item) {
-      if (item.code == $scope.addrinfo.county) {
-        $scope.addrareaone = item;
-      }
-    })
+    //选择省级联查询市
+    $scope.selectProvince = function (addrcode) {
+      AccountService.getArea(addrcode).success(function (data) {
+        $scope.addrareacity = data.Values;
+      })
+    }
+    //选择市级联查询县级
+    $scope.selectCity = function (addrcode) {
+      AccountService.getArea(addrcode).success(function (data) {
+        $scope.addrareacounty = data.Values;
+      })
+    }
+
     $scope.applyprovidersubmit = function () {
+      //选择县级查询当前记录
+      angular.forEach($scope.addrareacounty, function (item) {
+        if (item.code == $scope.addrinfo.county) {
+          $scope.addrareaone = item;
+        }
+      })
       $scope.datas = {
         userid: localStorage.getItem("usertoken"),		//用户id
         username: JSON.parse(localStorage.getItem("user")).username,	//姓名
         mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
         addrcode: $scope.addrareaone.code,	//地区编码
-        addr: $scope.addrareaone.mergername,	//地址
+        addr: $scope.addrinfo.address,	//详细地址
         quantity: $scope.addrinfo.num, 	//供货量
-        prodclass: ""	//供货品类（多个以逗号隔开）
+        prodclass: "",//供货品类（多个以逗号隔开）
+        lat: $scope.addrareaone.lat,	//纬度
+        lng: $scope.addrareaone.lng	//经度
 
       }
       AccountService.applySupply($scope.datas).success(function (data) {
