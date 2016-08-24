@@ -243,14 +243,37 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('DeliverListCtrl', function ($scope, $rootScope, CommonService) {
-
+  //发货列表
+  .controller('DeliverListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 5,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+      FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
+      Status: 2,//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
+      ordertype: '',//类型 1卖货单2供货单
+      Type: '' //0-物流配送1-送货上门2-上门回收
+    };
+    DeliverService.getSaleSupply($scope.params).success(function (data) {
+      $scope.deliverlist = data.Values;
+      console.log(data.Values);
+      //订单状态(卖货单)
+      $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+      //订单状态(供货单)
+      $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+    })
   })
-  .controller('DeliverDetailsCtrl', function ($scope, $rootScope, CommonService) {
+  //发货详情
+  .controller('DeliverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
 
   })
-  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService) {
+  //提交发货信息
+  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+    $scope.deliverinfo = {};//发货信息获取
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -263,8 +286,47 @@ angular.module('starter.controllers', [])
 
     $scope.delivergoods();
 
+    //提交发货
     $scope.delivergoodssubmit = function () {
-      CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'sellorderdetails', 'deliverlist')
+
+      //提交发货详细数据
+      $scope.details = [];
+      var ordeType = $rootScope.deliverDetails.OrdeType;
+      angular.forEach(ordeType == 1 ? $rootScope.deliverDetails.Details : $rootScope.deliverDetails.SpO_Details, function (item) {
+        var items = {};
+        items.ProdID = item.ProdID;
+        items.ProdName = item.ProdName;
+        items.Unit = item.Unit;
+        items.Num = item.Num;
+        items.Price = item.Price;
+        items.SaleClass = item.SaleClass;
+        $scope.details.push(items);
+      })
+      //提交发货数据
+      $scope.datas = {
+        User: $rootScope.deliverDetails.ToUser,//订单所对应的会员账号
+        OrderType: ordeType,//类型 1卖货单2供货单
+        OrderNo: $rootScope.deliverDetails.No,//卖货单/供货单订单号
+        TradeType: $scope.goodtype - 1,//交易方式 0-物流配送1-送货上门2-上门回收
+        ExpName: "",//物流名称
+        ExpNo: "",//物流单号
+        Number: $scope.deliverinfo.Number,//件数
+        Weight: $scope.deliverinfo.Weight,//总重量
+        Cost: '',//送货费或提货费
+        ExpCost: '',//到付物流费
+        Imgs: [{  //上传图片集合
+          PicAddr: "images/001/2016080114431320160414174515r1.jpg",
+          PicDes: "拍照照片！"
+        }],
+        Details: $scope.details //发货明细
+
+      }
+
+      DeliverService.addFaHuo($scope.datas).success(function (data) {
+        console.log(data);
+        CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'sellorderdetails', 'deliverlist');
+      })
+
     }
   })
   //接单供货计划订单列表以及详情
@@ -288,15 +350,15 @@ angular.module('starter.controllers', [])
     //接单供货计划订单列表以及详情
     SupplyService.getToPage($scope.params).success(function (data) {
       $scope.supplylist = data.Values.data_list;
-      console.log(data.Values.data_list);
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
 
   })
   //供货计划填写
-  .controller('SupplyPlanCtrl', function ($scope, CommonService, $stateParams) {
-    $scope.supplyDetails = JSON.parse($stateParams.item);
+  .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, $stateParams) {
+    $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    $rootScope.supplyinfo = [];//供货信息填写信息
 
   })
   //买货选择产品
@@ -397,6 +459,7 @@ angular.module('starter.controllers', [])
         $scope.sellDetails.push(item);
       }
     })
+    CommonService.getLocation();
     //根据经纬度获取最近N个供应商
     $scope.supplierListParams = {
       currentPage: 1,
@@ -504,12 +567,21 @@ angular.module('starter.controllers', [])
 
   })
   //接单供货计划详情
-  .controller('SupplyDetailsCtrl', function ($scope, CommonService, $stateParams) {
+  .controller('SupplyDetailsCtrl', function ($scope, CommonService, $stateParams, SupplyService) {
     $scope.supplyDetails = JSON.parse($stateParams.item);
+    CommonService.getLocation();
+    $scope.params = {
+      longt: localStorage.getItem("longitude") || 116.4854800,//当前经度
+      lat: localStorage.getItem("latitude") || 39.9484000,//胆怯纬度
+      user: $scope.supplyDetails.FromUser //对应的会员对应的会员(一般为买家)
+    }
+    SupplyService.getRange($scope.params).success(function (data) {
+      $scope.distance = data.Values;
+    })
 
   })
   //提交供货计划选择地址
-  .controller('ReleaseSupplyCtrl', function ($scope, CommonService, AccountService, SupplyService) {
+  .controller('ReleaseSupplyCtrl', function ($scope, $rootScope, CommonService, AccountService, SupplyService) {
     $scope.params = {
       page: 1,
       size: 10,
@@ -526,9 +598,33 @@ angular.module('starter.controllers', [])
       })
     })
     $scope.supplysubmit = function () {
+
+      //供货计划明细数组
+      $scope.details = [];
+
+      angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
+        var items = {};//提交供货计划明细json数据
+        items.ProdID = item.ProdID, // 产品编号
+          items.ProdName = item.ProdName , // 产品名称
+          items.SaleClass = item.SaleClass , // 销售分类ID
+          items.Unit = item.Unit, // 计算单位ID
+          items.Num = $rootScope.supplyinfo[index].num, //数量
+          items.Price = item.Price//采购单价
+        $scope.details.push(items)
+      })
       //提交供货计划
-      $scope.datas = {};
+      $scope.datas = {
+        BONo: $rootScope.supplyDetails.No,//买货(采购)单号（待供货接口获取（BuyOrder/GetToPage））
+        ToUser: $rootScope.supplyDetails.FromUser,//买货单(采购)账号（待供货接口获取）
+        SupCycle: $rootScope.supplyDetails.SurplusCycle,//剩余供货周期（待供货接口获取）
+        FromUser: localStorage.getItem("usertoken"),//供货人账号
+        SupCount: $rootScope.supplyinfo.SupCount,//供货次数
+        SupNum: $rootScope.supplyinfo.SupNum,//平均供货周期
+        Details: $scope.details// 供货计划明细（BuyOrder/GetToPage））
+      };
+
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
+        console.log(data);
         CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
       })
 

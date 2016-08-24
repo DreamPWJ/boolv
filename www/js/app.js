@@ -248,19 +248,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'SearchCtrl'
 
       })
+      //发货列表
       .state('deliverlist', {
         url: '/deliverlist',
         templateUrl: 'templates/delivergoods/deliverlist.html',
         controller: 'DeliverListCtrl'
 
       })
+      //发货详情
       .state('deliverdetails', {
-        url: '/deliverdetails',
+        url: '/deliverdetails/:item',
         cache: false,
         templateUrl: 'templates/delivergoods/deliverdetails.html',
         controller: 'DeliverDetailsCtrl'
 
       })
+      //提交发货信息
       .state('delivergoods', {
         url: '/delivergoods',
         templateUrl: 'templates/delivergoods/delivergoods.html',

@@ -16,7 +16,7 @@
       <div ng-hide="showme1">
         <label class="item item-input ">
           <span class="input-label"> 申请供货数量  </span>
-          <input type="number" placeholder="剩余供货量{{item.SurplusNum+item.UName}}" required  />
+          <input type="number"  ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SurplusNum+item.UName}}" required  />
         </label>
 
       </div>
@@ -25,7 +25,7 @@
     <div class="list list-borderless">
       <label class="item item-input">
         <span class="input-label"> 供货次数  </span>
-        <input type="number" placeholder="(单位 : 天)">
+        <input type="number" ng-model="supplyinfo.SupCount" placeholder="(单位 : 天)">
       </label>
 
     </div>
@@ -33,13 +33,13 @@
     <div class="list list-borderless">
       <label class="item item-input">
         <span class="input-label"> 平均供货周期  </span>
-        <input type="number" placeholder="(单位 : 天; 不能大于总周期)">
+        <input type="number" ng-model="supplyinfo.SupNum" placeholder="(单位 : 天; 不能大于总周期)">
       </label>
 
     </div>
     <div class="list list-borderless">
       <a ng-href="" class="item text-center border-bottom-1">
-        <strong>供货总周期 : 30天</strong>
+        <strong>供货总周期 : {{supplyDetails.Cycle==0?'无期限':supplyDetails.Cycle+'天'}}</strong>
       </a>
       <a ng-href="" class="item text-center">
         <strong>预计物流费 : 500元</strong>
@@ -48,7 +48,7 @@
 
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a  ng-disabled="!supplyplan.$valid" class="button button-calm full-image  " ng-href="#/releasesupply">下一步</a>
+    <a  ng-disabled="!supplyplan.$valid" class="button button-calm full-image" ng-href="#/releasesupply">下一步</a>
   </div>
   </form>
 </ion-view>

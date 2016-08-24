@@ -15,22 +15,22 @@
       <a ng-click="recover()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">上门回收</a>
     </div>
   </div>
+  <form  name="deliver">
   <ion-content overflow-scroll="false" class="stable-bg  has-subheader  has-button-footer">
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数</span>
-        <input type="text" placeholder="(单位 : 件)">
+        <input type="text" placeholder="(单位 : 件)" ng-model="deliverinfo.Number" required/>
       </label>
       <label class="item item-input">
         <span class="input-label"> 重量</span>
-        <input type="text" placeholder="(单位 : 公斤)">
+        <input type="text" placeholder="(单位 : 公斤)" ng-model="deliverinfo.Weight" required>
       </label>
       <label ng-show="goodtype==null||goodtype==1" class="item item-input item-select">
         <div class="input-label">
           物流公司
         </div>
-        <select>
-          <option></option>
+        <select ng-model="deliverinfo.ExpName">
           <option>物流公司1</option>
           <option>物流公司2</option>
           <option>物流公司3</option>
@@ -38,14 +38,14 @@
       </label>
       <label ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right" ng-click="barcodeScanner()">
         <span class="input-label"> 物流单号</span>
-        <input type="text" placeholder="点击右侧图标扫描" readonly style="background-color: #fff;">
+        <input type="text" placeholder="点击右侧图标扫描" ng-model="deliverinfo.ExpNo" readonly style="background-color: #fff;">
         <i class="icon ion-qr-scanner"></i>
       </label>
 
-      <label ng-show="goodtype==2" class="item item-input item-icon-right">
+<!--  <label ng-show="goodtype==2" class="item item-input item-icon-right">
         <span class="input-label"> 车牌号码</span>
-        <input type="text" placeholder="">
-      </label>
+        <input type="text" placeholder=""  >
+      </label>-->
       <a ng-href="" ng-show="goodtype==3" class="item item-icon-right">
         <h2>发货人 : 张三</h2>
         <p>手机 : 18256546554</p>
@@ -62,6 +62,7 @@
 
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <button class="button button-calm full-image " ng-click="delivergoodssubmit()">提交</button>
+    <button ng-disabled="!deliver.$valid" class="button button-calm full-image " ng-click="delivergoodssubmit()">提交</button>
   </div>
+    </form>
 </ion-view>
