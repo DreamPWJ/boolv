@@ -258,7 +258,6 @@ angular.module('starter.controllers', [])
     };
     DeliverService.getSaleSupply($scope.params).success(function (data) {
       $scope.deliverlist = data.Values;
-      console.log(data.Values);
       //订单状态(卖货单)
       $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
       //订单状态(供货单)
@@ -272,7 +271,7 @@ angular.module('starter.controllers', [])
 
   })
   //提交发货信息
-  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService,AccountService) {
     $scope.deliverinfo = {};//发货信息获取
     $scope.delivery = function () {
       $scope.goodtype = 1;
@@ -285,7 +284,17 @@ angular.module('starter.controllers', [])
     }
 
     $scope.delivergoods();
-
+    $scope.takePicture = function () {
+     CommonService.takePicture();
+    }
+    //查询物流快递
+    $scope.params={
+      code:'',
+      name:''
+    }
+    AccountService.getExpresses($scope.params).success(function (data) {
+      $scope.expresses=data.Values;
+    })
     //提交发货
     $scope.delivergoodssubmit = function () {
 
@@ -323,7 +332,6 @@ angular.module('starter.controllers', [])
       }
 
       DeliverService.addFaHuo($scope.datas).success(function (data) {
-        console.log(data);
         CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'sellorderdetails', 'deliverlist');
       })
 
@@ -411,7 +419,6 @@ angular.module('starter.controllers', [])
         Details: $scope.Details//收货明细
       }
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
-        console.log(data)
         CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
       })
 
@@ -451,7 +458,7 @@ angular.module('starter.controllers', [])
 
   })
   //卖货下单
-  .controller('SellDetailsCtrl', function ($scope, $rootScope, CommonService, SellService) {
+  .controller('SellDetailsCtrl', function ($scope, $rootScope, CommonService, SellService, AccountService) {
     CommonService.ionicLoadingShow();
     $scope.sellDetails = [];
     angular.forEach($rootScope.sellprodsList, function (item) {
@@ -498,23 +505,48 @@ angular.module('starter.controllers', [])
         }
         items.Price = referenceprice;//参考价格
         $scope.Details.push(items)
-      })
-      //提交卖货订单数据
-      $scope.sellDatas = {
-        FromUser: localStorage.getItem('usertoken'),//供应商账号
-        ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
-        TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
-        FromAddr: 0,//发货地址ID
-        ToAddr: 0,//收货地址ID
-        Account: 0,//收款账号ID
-        Details: $scope.Details//收货明细
+      });
+      //获取当前用户地址id和银行账号id
+      $scope.params = {
+        page: 1,
+        size: 10,
+        userid: localStorage.getItem("usertoken")
       }
+      //获取用户常用地址
+      AccountService.getAddrlist($scope.params).success(function (data) {
+        $scope.addrliststatus = [];
+        angular.forEach(data.Values.data_list, function (item) {
+          if (item.status == 1) {
+            $scope.addrliststatus.push(item);
+          }
+        })
+      }).then(function () {
+        //查询用户银行信息
+        AccountService.getUserBanklist($scope.params).success(function (data) {
+          $scope.userbankliststatus = [];
+          angular.forEach(data.Values.data_list, function (item) {
+            if (item.isdefault == 1) {
+              $scope.userbankliststatus.push(item);
+            }
+          })
+        }).then(function () {
+          //提交卖货订单数据
+          $scope.sellDatas = {
+            FromUser: localStorage.getItem('usertoken'),//供应商账号
+            ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
+            TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
+            FromAddr: $rootScope.supplierListFirst.AddrID,//发货地址ID
+            ToAddr: $scope.addrliststatus[0].id,//收货地址ID
+            Account: $scope.userbankliststatus[0].id,//收款账号ID
+            Details: $scope.Details//收货明细
+          }
 
-      SellService.addOrderDetails($scope.sellDatas).success(function (data) {
-        console.log(data);
-        CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellorderdetails')
-      }).finally(function () {
-        CommonService.ionicLoadingHide();
+          SellService.addOrderDetails($scope.sellDatas).success(function (data) {
+            CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellorderdetails')
+          }).finally(function () {
+            CommonService.ionicLoadingHide();
+          })
+        })
       })
 
     }
@@ -569,6 +601,7 @@ angular.module('starter.controllers', [])
   //接单供货计划详情
   .controller('SupplyDetailsCtrl', function ($scope, CommonService, $stateParams, SupplyService) {
     $scope.supplyDetails = JSON.parse($stateParams.item);
+    console.log($scope.supplyDetails);
     CommonService.getLocation();
     $scope.params = {
       longt: localStorage.getItem("longitude") || 116.4854800,//当前经度
@@ -624,7 +657,6 @@ angular.module('starter.controllers', [])
       };
 
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
-        console.log(data);
         CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
       })
 
@@ -674,9 +706,8 @@ angular.module('starter.controllers', [])
         $scope.addrinfo.lat = $scope.addrareacountyone.lat, 	//纬度
         $scope.addrinfo.lon = $scope.addrareacountyone.lng, 	//经度
         $scope.addrinfo.addrtype = 0	//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
-      console.log($scope.addrinfo);
+
       AccountService.setAddr($scope.addrinfo).success(function (data) {
-        console.log(data);
         CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress')
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -786,10 +817,53 @@ angular.module('starter.controllers', [])
       CommonService.showConfirm('', '<p>恭喜您！您的预收款申请提交成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭', 'davancedetails')
     }
   })
-  .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, CommonService) {
-
+  //收款银行账号列表
+  .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+    $scope.params = {
+      page: 1,//页码
+      size: 5,//条数
+      userid: localStorage.getItem("usertoken")//用户id
+    }
+    $scope.getUserBanklist=function () {
+      AccountService.getUserBanklist($scope.params).success(function (data) {
+        $scope.userbanklist = data.Values;
+      })
+    }
+    $scope.getUserBanklist();
+    //删除银行账号
+    $scope.delUserBank = function (bankId) {
+      $scope.delparams = {
+        id: bankId,//银行id
+        userid: localStorage.getItem("usertoken")//用户id
+      }
+      AccountService.delUserBank($scope.delparams).success(function (data) {
+        $scope.getUserBanklist();//刷新
+      })
+    }
   })
-  .controller('AddBankAccountCtrl', function ($scope, $rootScope, $state, CommonService) {
+  //增加收款银行账号
+  .controller('AddBankAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+     //查询银行名称
+    AccountService.getBankName({name:''}).success(function (data) {
+      $scope.bankName=data.Values;
+    })
+    //增加收款银行账号信息
+    $scope.bankinfo = {};
+    $scope.addUserBank = function () {
+      $scope.datas = {
+        id: 0, 	// id
+        bankname: $scope.bankinfo.bankname,	//银行名称
+        userid: localStorage.getItem("usertoken"),	//用户id
+        branchname: $scope.bankinfo.branchname,	//支行名称
+        accountno: $scope.bankinfo.accountno,	//银行帐号
+        accountname: $scope.bankinfo.accountname,	//开户人名称
+        isdefault: $scope.bankinfo.isdefault ? 1 : 0, 	//是否默认0-	否（默认值）1-	是
+        remark: ""	//备注
+      }
+           AccountService.addUserBank($scope.datas).success(function (data) {
+           $state.go('collectionaccount');
+      })
+    }
 
   })
   .controller('MyCreditCtrl', function ($scope, $rootScope, $state, CommonService) {

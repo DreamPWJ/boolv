@@ -11,50 +11,18 @@
     <a class="button icon ion-plus no-border" ng-href="#/addbankaccount"></a>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="stable-bg ">
-    <div class="list list-borderless">
-      <a ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
+    <ion-list class="list list-borderless">
+      <div ng-repeat="item in userbanklist.data_list">
+      <ion-item ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
+        <h2><strong>收款人 : </strong>{{item.accountname}}</h2>
+        <h2><strong>账号 : </strong>{{item.accountno}}</h2>
+        <h2><strong>银行 : </strong>{{item.bankname}}</h2>
+        <ion-option-button class="button-assertive" ng-click="delUserBank(item.id)">删除</ion-option-button>
         <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
-      <p class="padding-top"></p>
-      <a ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
-      <p class="padding-top"></p>
-      <a ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
-      <p class="padding-top"></p>
-      <a ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
-      <p class="padding-top"></p>
-      <a ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
-      <p class="padding-top"></p>
-      <a ng-href="#/davancedetails" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
-      <p class="padding-top"></p>
-   </div>
+      </ion-item>
+      <p></p>
+      </div>
+   </ion-list>
   </ion-content>
 
 </ion-view>

@@ -38,3 +38,9 @@
 #userlogin .button[disabled]{
   opacity: 0.8;
 }
+
+.bankname{
+  padding-left: 2rem;
+  height: 1rem;
+  line-height: 1rem;
+}

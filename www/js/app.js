@@ -417,11 +417,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/applyadvance.html',
         controller: 'ApplyAdvancesCtrl'
       })
+      //收款银行账号列表
       .state('collectionaccount', {
         url: '/collectionaccount',
+        cache:false,
         templateUrl: 'templates/account/collectionaccount.html',
         controller: 'CollectionAccountCtrl'
       })
+      //增加收款银行账号
       .state('addbankaccount', {
         url: '/addbankaccount',
         templateUrl: 'templates/account/addbankaccount.html',

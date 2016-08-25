@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading,AccountService) {
     return {
       showAlert: function (title, template, stateurl) {
         // 一个提示对话框
@@ -108,6 +108,7 @@ angular.module('starter.services', [])
         };
 
         $cordovaCamera.getPicture(options).then(function (imageUrl) {
+          AccountService.addFilenames({filenames:'Receipt'});
 
         }, function (err) {
           // An error occured. Show a message to the user
@@ -238,6 +239,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Prod/GetProds",
+          params:{GrpIDList:'1,5'}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -378,8 +380,104 @@ angular.module('starter.services', [])
         deferred.reject(err);// 声明执行失败，即服务器返回错误
       });
       return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    }
+    },
+    getUserBanklist: function (params) {//查询用户银行信息
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/user/get_userbanklist/"+params.page+'/'+params.size+'/'+params.userid,
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    addUserBank: function (datas) {//添加、修改用户银行信息
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/add_userbank",
+        data: datas,
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    delUserBank: function (params) {//删除银行信息
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'DELETE',
+        url: BooLv.api + "/user/del_userbank/"+params.id+'/'+params.userid,
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    getBankName: function (params) {//查询银行名称
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/BankName/GetBankName",
+        params:{
+          Name:params.name
+        }
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    getExpresses: function (params) {//查询物流快递
+    var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+    var promise = deferred.promise;
+    promise = $http({
+      method: 'GET',
+      url: BooLv.api + "/Expresses/GetExpresses",
+      params:{
+        code:params.code,
+        name:params.name
+      }
+    }).success(function (data) {
+      deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+    }).error(function (err) {
+      deferred.reject(err);// 声明执行失败，即服务器返回错误
+    });
+    return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+  },
+  addFilenames: function (params) {//上传附件
+    var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+    var promise = deferred.promise;
+    promise = $http({
+      method: 'POST',
+      url: BooLv.api + "/UploadImg/Add/"+params.filenames, //Filenames:上传附件根目录文件夹名称发货，签收，验货统一用Receipt这个名称  会员头像用User这个名称
+      headers: {
+        'Content-Type': undefined
+      },
+      transformRequest: function (data) {
+        var formData = new FormData();
+        formData.append(data);
+        return formData;
+      }
+  }).success(function (data) {
+       alert(JSON.stringify(data))
+      deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+    }).error(function (err) {
+      alert(JSON.stringify(err))
+      deferred.reject(err);// 声明执行失败，即服务器返回错误
+    });
+    return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
   }
+}
 })
   .service('SellService', function ($q, $http, BooLv) {//卖货服务
     return {
