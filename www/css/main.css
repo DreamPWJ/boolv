@@ -73,7 +73,8 @@
 
 .jiedan-time {
   position: absolute;
-  right: 22px;
+  margin-top: 2px;
+  right: 1px;
 }
 
 #searhorder .tab-item-active {
