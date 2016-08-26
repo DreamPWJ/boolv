@@ -43,10 +43,16 @@
         },
         "com.telerik.plugins.nativepagetransitions": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+        },
+        "cordova-plugin-file": {
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         }
     }
