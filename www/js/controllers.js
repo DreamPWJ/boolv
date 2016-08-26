@@ -24,7 +24,9 @@ angular.module('starter.controllers', [])
 
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService) {
-    CommonService.ionicLoadingShow()
+    CommonService.ionicLoadingShow();
+
+    $scope.getMainData=function () {
     //登录授权
     MainService.authLogin().success(function (data) {
       localStorage.setItem('token', data.Values)
@@ -61,9 +63,13 @@ angular.module('starter.controllers', [])
       })
 
     }).finally(function () {
-      CommonService.ionicLoadingHide()
+      CommonService.ionicLoadingHide();
+      $scope.$broadcast('scroll.refreshComplete');
     })
 
+    }
+
+    $scope.getMainData();
     CommonService.ionicPopover($scope, 'my-popover.html');
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {

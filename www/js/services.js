@@ -108,7 +108,7 @@ angular.module('starter.services', [])
         };
 
         $cordovaCamera.getPicture(options).then(function (imageUrl) {
-          AccountService.addFilenames({filenames:'Receipt'});
+          AccountService.addFilenames({filenames:'Receipt'},imageUrl);
 
         }, function (err) {
           // An error occured. Show a message to the user
@@ -281,7 +281,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  }).service('AccountService', function ($q, $http, BooLv) {
+  }).service('AccountService', function ($q, $http, BooLv,$cordovaFileTransfer) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -454,28 +454,23 @@ angular.module('starter.services', [])
     });
     return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
   },
-  addFilenames: function (params) {//上传附件
-    var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-    var promise = deferred.promise;
-    promise = $http({
-      method: 'POST',
-      url: BooLv.api + "/UploadImg/Add/"+params.filenames, //Filenames:上传附件根目录文件夹名称发货，签收，验货统一用Receipt这个名称  会员头像用User这个名称
-      headers: {
-        'Content-Type': undefined
-      },
-      transformRequest: function (data) {
-        var formData = new FormData();
-        formData.append(data);
-        return formData;
-      }
-  }).success(function (data) {
-       alert(JSON.stringify(data))
-      deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-    }).error(function (err) {
-      alert(JSON.stringify(err))
-      deferred.reject(err);// 声明执行失败，即服务器返回错误
-    });
-    return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+  addFilenames: function (params,imageUrl) {//上传附件
+    //图片上传upImage（图片路径）
+    //http://ngcordova.com/docs/plugins/fileTransfer/  资料地址
+
+    var url = BooLv.api + "/UploadImg/Add/" + params.filenames;//Filenames:上传附件根目录文件夹名称发货，签收，验货统一用Receipt这个名称  会员头像用User这个名称
+    var options = {
+      fileKey: "file",//相当于form表单项的name属性
+      fileName: imageUrl.substr(imageUrl.lastIndexOf('/') + 1),
+      mimeType: "image/jpeg"
+    };
+    $cordovaFileTransfer.upload(url, imageUrl, options)
+      .then(function (result) {
+      }, function (err) {
+
+      }, function (progress) {
+        // constant progress updates
+      });
   }
 }
 })
