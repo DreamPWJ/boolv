@@ -92,7 +92,7 @@ angular.module('starter.services', [])
         $ionicLoading.hide();
       },
       //调用摄像头和相册
-      takePicture: function (type,filenames) {
+      takePicture: function ($scope,type,filenames) {
         //$cordovaCamera.cleanup();
         var options = {
           quality: 100,//相片质量0-100
@@ -108,7 +108,7 @@ angular.module('starter.services', [])
         };
 
         $cordovaCamera.getPicture(options).then(function (imageUrl) {
-          AccountService.addFilenames({filenames:filenames},imageUrl);
+          AccountService.addFilenames($scope,{filenames:filenames},imageUrl);
 
         }, function (err) {
           // An error occured. Show a message to the user
@@ -116,7 +116,7 @@ angular.module('starter.services', [])
         });
       },
       //扫一扫
-      barcodeScanner: function () {
+      barcodeScanner: function ($scope) {
         /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
         document.addEventListener("deviceready", function () {
           $cordovaBarcodeScanner
@@ -128,6 +128,13 @@ angular.module('starter.services', [])
                 //通过默认浏览器打开
                 window.open(barcodeData.text, '_system', 'location=yes');
               } else {
+                if($scope.deliverinfo){
+                  $scope.deliverinfo.ExpNo=barcodeData.text;//发货
+                }
+                if($scope.signinfo){
+                  $scope.signinfo.ExpNo=barcodeData.text;//验收
+                }
+                
                 $cordovaToast.showShortCenter('扫一扫信息', barcodeData.text);
               }
             }, function (error) {
@@ -174,11 +181,11 @@ angular.module('starter.services', [])
           }
         });
       },
-      uploadActionSheet: function () {
+      uploadActionSheet: function ($scope,filename) {
         CommonService=this;
         $ionicActionSheet.show({
           cssClass: 'action-s',
-          titleText: '<p>上传头像</p>',
+          titleText: '<p>上传照片</p>',
           buttons: [
             {text:  '<p>图库</p>'},
             {text: ' <p>拍照</p>'},
@@ -189,9 +196,9 @@ angular.module('starter.services', [])
           },
           buttonClicked: function (index) {
             switch (index) {
-              case 0:CommonService.takePicture(0,'User')
+              case 0:CommonService.takePicture($scope,0,filename)
                 break;
-              case 1:CommonService.takePicture(1,'User')
+              case 1:CommonService.takePicture($scope,1,filename)
                 break;
               default:
                 break;
@@ -533,7 +540,7 @@ angular.module('starter.services', [])
     });
     return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
   },
-  addFilenames: function (params,imageUrl) {//上传附件
+  addFilenames: function ($scope,params,imageUrl) {//上传附件
     AccountService=this;
     //图片上传upImage（图片路径）
     //http://ngcordova.com/docs/plugins/fileTransfer/  资料地址
@@ -552,6 +559,9 @@ angular.module('starter.services', [])
             figure:JSON.parse(result.response).Des
           }
           AccountService.modifyFigure(figurparams);
+        }
+        if(params.filenames=='Receipt'){
+          $scope.Imgs.PicAddr=JSON.parse(result.response).Des;
         }
         console.log("success="+result.response);
       }, function (err) {
@@ -659,9 +669,9 @@ angular.module('starter.services', [])
       }
     }
   })
-  .service('DeliverService', function ($q, $http, BooLv) {//发货服务
+  .service('DeliverService', function ($q, $http, BooLv) {//发货 签收 验货 服务
     return {
-      getSaleSupply: function (params) { //获取待发货单（卖货/供货接口）列表分页列接口）
+      getSaleSupply: function (params) { //发货 签收 验货  获取待发货单（卖货/供货接口）列表分页列接口）
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({

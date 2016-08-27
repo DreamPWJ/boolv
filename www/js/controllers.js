@@ -85,7 +85,6 @@ angular.module('starter.controllers', [])
     }
 
 
-
   })
   .controller('StartCtrl', function ($scope, $state, $rootScope, CommonService) {
     $scope.tomain = function () {
@@ -293,6 +292,7 @@ angular.module('starter.controllers', [])
   //提交发货信息
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
     $scope.deliverinfo = {};//发货信息获取
+    $scope.Imgs = [];//图片信息数组
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -304,9 +304,15 @@ angular.module('starter.controllers', [])
     }
 
     $scope.delivergoods();
-    $scope.takePicture = function () {
-      CommonService.takePicture(1,'Receipt');
+    //扫描物流单号
+    $scope.barcodeScanner = function () {
+      CommonService.barcodeScanner($scope);
     }
+    //上传照片
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'Receipt');
+    }
+
     //查询物流快递
     $scope.params = {
       code: '',
@@ -315,6 +321,24 @@ angular.module('starter.controllers', [])
     AccountService.getExpresses($scope.params).success(function (data) {
       $scope.expresses = data.Values;
     })
+
+    //获取收货人地址
+    $scope.addparams = {
+      page: 1,
+      size: 5,
+      userid: $rootScope.deliverDetails.ToUser,
+    }
+    //获取用户常用地址
+    AccountService.getAddrlist($scope.addparams).success(function (data) {
+      $scope.addrliststatus = [];
+      angular.forEach(data.Values.data_list, function (item) {
+        if (item.status == 1) {
+          $scope.addrliststatus.push(item);
+        }
+      })
+    })
+
+
     //提交发货
     $scope.delivergoodssubmit = function () {
 
@@ -337,21 +361,22 @@ angular.module('starter.controllers', [])
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.deliverDetails.No,//卖货单/供货单订单号
         TradeType: $scope.goodtype - 1,//交易方式 0-物流配送1-送货上门2-上门回收
-        ExpName: "",//物流名称
-        ExpNo: "",//物流单号
+        ExpName: $scope.deliverinfo.ExpName,//物流名称
+        ExpNo: $scope.deliverinfo.ExpNo,//物流单号
         Number: $scope.deliverinfo.Number,//件数
         Weight: $scope.deliverinfo.Weight,//总重量
         Cost: '',//送货费或提货费
         ExpCost: '',//到付物流费
         Imgs: [{  //上传图片集合
-          PicAddr: "images/001/2016080114431320160414174515r1.jpg",
-          PicDes: "拍照照片！"
+          PicAddr: $scope.Imgs.PicAddr,
+          PicDes: "拍照图库照片！"
         }],
         Details: $scope.details //发货明细
 
       }
 
       DeliverService.addFaHuo($scope.datas).success(function (data) {
+        console.log(JSON.stringify(data));
         CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'sellorderdetails', 'deliverlist');
       })
 
@@ -595,8 +620,26 @@ angular.module('starter.controllers', [])
       })
     }
   })
-  .controller('CheckGoodCtrl', function ($scope, CommonService) {
-
+  //验货列表
+  .controller('CheckGoodCtrl', function ($scope,$rootScope, CommonService,DeliverService) {
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 5,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+      FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
+      Status: 4,//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
+      ordertype: '',//类型 1卖货单2供货单
+      Type: '' //0-物流配送1-送货上门2-上门回收
+    };
+    DeliverService.getSaleSupply($scope.params).success(function (data) {
+      $scope.deliverlist = data.Values;
+      //订单状态(卖货单)
+      $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+      //订单状态(供货单)
+      $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+    })
 
   })
   .controller('CheckDetailsCtrl', function ($scope, CommonService) {
@@ -744,15 +787,35 @@ angular.module('starter.controllers', [])
       $state.go("releaseprocureorder");
     }
   })
-  .controller('SignListCtrl', function ($scope, CommonService) {
-
+  //签收列表
+  .controller('SignListCtrl', function ($scope, $rootScope, CommonService,DeliverService) {
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 5,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+      FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
+      Status: 3,//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
+      ordertype: '',//类型 1卖货单2供货单
+      Type: '' //0-物流配送1-送货上门2-上门回收
+    };
+    DeliverService.getSaleSupply($scope.params).success(function (data) {
+      $scope.deliverlist = data.Values;
+      //订单状态(卖货单)
+      $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+      //订单状态(供货单)
+      $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+    })
 
   })
-  .controller('SignDetailsCtrl', function ($scope, CommonService) {
-
+  .controller('SignDetailsCtrl', function ($scope, $rootScope,$stateParams,CommonService) {
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);
 
   })
-  .controller('SignCtrl', function ($scope, CommonService) {
+  .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
+    $scope.signinfo = {};//签收信息获取
+    $scope.Imgs = [];//图片信息数组
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -764,9 +827,70 @@ angular.module('starter.controllers', [])
     }
 
     $scope.delivery();
-    $scope.signsubmit = function () {
-      CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
+    //扫描物流单号
+    $scope.barcodeScanner = function () {
+      CommonService.barcodeScanner($scope);
     }
+    //上传照片
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'Receipt');
+    }
+
+    //查询物流快递
+    $scope.params = {
+      code: '',
+      name: ''
+    }
+    AccountService.getExpresses($scope.params).success(function (data) {
+      $scope.expresses = data.Values;
+    })
+
+
+    //签收提交
+    $scope.signsubmit = function () {
+
+      //提交签收详细数据
+      $scope.details = [];
+
+      var ordeType = $rootScope.deliverDetails.OrdeType;
+      angular.forEach(ordeType == 1 ? $rootScope.deliverDetails.Details : $rootScope.deliverDetails.SpO_Details, function (item) {
+        var items = {};
+        items.ProdID = item.ProdID;
+        items.ProdName = item.ProdName;
+        items.Unit = item.Unit;
+        items.Num = item.Num;
+        items.Price = item.Price;
+        items.SaleClass = item.SaleClass;
+        $scope.details.push(items);
+      })
+      //提交签收数据
+      $scope.datas = {
+        User: $rootScope.deliverDetails.FromUser,//订单所对应的会员账号
+        OrderType: ordeType,//类型 1卖货单2供货单
+        OrderNo: $rootScope.deliverDetails.No,//卖货单/供货单订单号
+        TradeType: $scope.goodtype - 1,//交易方式 0-物流配送1-送货上门2-上门回收
+        ExpName: $scope.signinfo.ExpName,//物流名称
+        ExpNo: $scope.signinfo.ExpNo,//物流单号
+        Number: $scope.signinfo.Number,//件数
+        Weight: $scope.signinfo.Weight,//总重量
+        Cost: $scope.signinfo.Cost,//送货费或提货费
+        ExpCost: $scope.signinfo.ExpCost,//到付物流费
+        Imgs: [{  //上传图片集合
+          PicAddr: $scope.Imgs.PicAddr,
+          PicDes: "拍照图库照片！"
+        }],
+        Details: $scope.details //发货明细
+
+      }
+
+      DeliverService.addFaHuo($scope.datas).success(function (data) {
+
+        CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
+      })
+
+    }
+
+
   })
   //我的账号
   .controller('AccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
@@ -921,10 +1045,10 @@ angular.module('starter.controllers', [])
 
   })
   //修改用户头像图片
-  .controller('UploadHeadrCtrl', function ($scope, $rootScope,$stateParams, $state, CommonService) {
-    $scope.figureurl=$stateParams.figure;
+  .controller('UploadHeadrCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService) {
+    $scope.figureurl = $stateParams.figure;
     $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet();
+      CommonService.uploadActionSheet($scope, 'User');
     }
   })
   //修改用户信息

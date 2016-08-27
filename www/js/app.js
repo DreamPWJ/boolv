@@ -366,6 +366,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/sellgood/sellorderdetails.html',
         controller: 'SellOrderDetailsCtrl'
       })
+      //验货列表
       .state('checkgood', {
         url: '/checkgood',
         templateUrl: 'templates/checkgood/checkgood.html',
@@ -386,13 +387,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/addproduct.html',
         controller: 'AddProductCtrl'
       })
+      //签收列表
       .state('signlist', {
         url: '/signlist',
         templateUrl: 'templates/sign/signlist.html',
         controller: 'SignListCtrl'
       })
       .state('signdetails', {
-        url: '/signdetails',
+        url: '/signdetails/:item',
         templateUrl: 'templates/sign/signdetails.html',
         controller: 'SignDetailsCtrl'
       })

@@ -10,61 +10,18 @@
 
 
   <ion-content class="stable-bg" overflow-scroll="false">
+
     <div class="list margin-top-1px">
-    <a ng-href="#checkdetails" class="item ">
-      <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM   <i
-        class="icon ion-ios-arrow-right"></i></span></h2>
-      <p>卖货人 :张三</p>
-      <p>手机号 :1893394533</p>
-      <p>卖货品类 :拆解机 、二手手机 、电池</p>
-      <p>订单状态 :已验货</p>
 
-    </a>
-    <a ng-href="#checkdetails" class="item ">
-      <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM   <i
-        class="icon ion-ios-arrow-right"></i></span></h2>
-      <p>卖货人 :张三</p>
-      <p>手机号 :1893394533</p>
-      <p>卖货品类 :拆解机 、二手手机 、电池</p>
-      <p>订单状态 :已验货</p>
-
-    </a>
-    <a ng-href="#checkdetails" class="item ">
-      <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM   <i
-        class="icon ion-ios-arrow-right"></i></span></h2>
-      <p>卖货人 :张三</p>
-      <p>手机号 :1893394533</p>
-      <p>卖货品类 :拆解机 、二手手机 、电池</p>
-      <p>订单状态 :已验货</p>
-
-    </a>
-    <a ng-href="#checkdetails" class="item ">
-      <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM   <i
-        class="icon ion-ios-arrow-right"></i></span></h2>
-      <p>卖货人 :张三</p>
-      <p>手机号 :1893394533</p>
-      <p>卖货品类 :拆解机 、二手手机 、电池</p>
-      <p>订单状态 :已验货</p>
-
-    </a>
-    <a ng-href="#checkdetails" class="item ">
-      <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM   <i
-        class="icon ion-ios-arrow-right"></i></span></h2>
-      <p>卖货人 :张三</p>
-      <p>手机号 :1893394533</p>
-      <p>卖货品类 :拆解机 、二手手机 、电池</p>
-      <p>订单状态 :已验货</p>
-
-    </a>
-    <a ng-href="#checkdetails" class="item ">
-      <h2>订单号: CG3934038403848 <span class="item-note">16/06/22 10:55AM   <i
-        class="icon ion-ios-arrow-right"></i></span></h2>
-      <p>卖货人 :张三</p>
-      <p>手机号 :1893394533</p>
-      <p>卖货品类 :拆解机 、二手手机 、电池</p>
-      <p>订单状态 :已验货</p>
-
-    </a>
+      <a ng-href="#/checkdetails/{{item}}" class="item" ng-repeat="item in deliverlist.data_list">
+        <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  <i
+          class="icon ion-ios-arrow-right"></i></span></h2>
+        <p>{{item.OrdeType==1?'卖货人 :':'供货人 : '}} {{item.Username}}</p>
+        <p>手机号 : {{item.Usermotel}}</p>
+        <p>{{item.OrdeType==1?'卖货':'供货'}}品类 :  <span ng-repeat="items in item.OrdeType==1?item.Details:item.SpO_Details"> {{items.ProdName}} </span> </p>
+        <p ng-if="item.OrdeType==1">订单状态 : <span>{{sellStatus[item.Status+1]}}</span></p>
+        <p ng-if="item.OrdeType==2">订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>
+      </a>
     </div>
   </ion-content>
 </ion-view>
