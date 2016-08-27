@@ -75,6 +75,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       if (window.cordova && window.cordova.InAppBrowser) {
         window.open = window.cordova.InAppBrowser.open;
       }
+
+      //启动极光推送服务
+/*      window.plugins.jPushPlugin.init();*/
+      //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
+      //window.plugins.jPushPlugin.setDebugMode(true);
     });
   })
 
@@ -231,9 +236,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/evaluate.html',
         controller: 'EvaluateCtrl'
       })
+      //通知消息列表
       .state('tab.news', {
         url: '/news',
-        cache: false,
         nativeTransitions: null,
         views: {
           'tab-news': {
@@ -440,10 +445,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/setting.html',
         controller: 'SettingCtrl'
       })
+      //修改用户信息
       .state('updateuser', {
-        url: '/updateuser',
+        url: '/updateuser/:type/:value',
         templateUrl: 'templates/account/updateuser.html',
         controller: 'UpdateUserCtrl'
+      })
+      //修改用户头像图片
+      .state('uploadhead', {
+        url: '/uploadhead/:figure',
+        templateUrl: 'templates/account/uploadhead.html',
+        controller: 'UploadHeadrCtrl'
+      })
+      //解绑手机
+      .state('cancelmobile', {
+        url: '/cancelmobile',
+        templateUrl: 'templates/account/cancelmobile.html',
+        controller: 'CancelMobileCtrl'
       })
     ;
 // if none of the above states are matched, use this as the fallback

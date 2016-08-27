@@ -26,46 +26,46 @@ angular.module('starter.controllers', [])
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService) {
     CommonService.ionicLoadingShow();
 
-    $scope.getMainData=function () {
-    //登录授权
-    MainService.authLogin().success(function (data) {
-      localStorage.setItem('token', data.Values)
-    }).then(function () {
-      //获取广告图
-      MainService.getAdMsg().success(function (data) {
-        $scope.adImg = data.Values;
-      })
-      //获取行情报价
-      MainService.getProds().success(function (data) {
-        $scope.prods = data.Values;
-        sessionStorage.setItem("getProds", JSON.stringify(data.Values));//行情报价数据复用
-      })
-      //获取交易公告
-      $scope.listNewsParams = {
-        currentPage: 1,
-        pageSize: 5,
-        ID: 0,
-        Keyword: '',
-        IsNew: 1,
-        IsRed: 1,
-        GrpCode: '002'
-      }
-      MainService.getListNews($scope.listNewsParams).success(function (data) {
-        $scope.listNews = data.Values;
-
+    $scope.getMainData = function () {
+      //登录授权
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem('token', data.Values)
       }).then(function () {
-        //获取公司公告
-        $scope.listNewsParams.GrpCode = '003';
-        MainService.getListNews($scope.listNewsParams).success(function (data) {
-          $scope.listCompanyNews = data.Values;
-
+        //获取广告图
+        MainService.getAdMsg().success(function (data) {
+          $scope.adImg = data.Values;
         })
-      })
+        //获取行情报价
+        MainService.getProds().success(function (data) {
+          $scope.prods = data.Values;
+          sessionStorage.setItem("getProds", JSON.stringify(data.Values));//行情报价数据复用
+        })
+        //获取交易公告
+        $scope.listNewsParams = {
+          currentPage: 1,
+          pageSize: 5,
+          ID: 0,
+          Keyword: '',
+          IsNew: 1,
+          IsRed: 1,
+          GrpCode: '002'
+        }
+        MainService.getListNews($scope.listNewsParams).success(function (data) {
+          $scope.listNews = data.Values;
 
-    }).finally(function () {
-      CommonService.ionicLoadingHide();
-      $scope.$broadcast('scroll.refreshComplete');
-    })
+        }).then(function () {
+          //获取公司公告
+          $scope.listNewsParams.GrpCode = '003';
+          MainService.getListNews($scope.listNewsParams).success(function (data) {
+            $scope.listCompanyNews = data.Values;
+
+          })
+        })
+
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
+        $scope.$broadcast('scroll.refreshComplete');
+      })
 
     }
 
@@ -83,16 +83,13 @@ angular.module('starter.controllers', [])
     $rootScope.barcodeScanner = function () {
       CommonService.barcodeScanner();
     }
-    //拍照
-    $rootScope.takePicture = function () {
-      CommonService.takePicture();
-    }
+
 
 
   })
   .controller('StartCtrl', function ($scope, $state, $rootScope, CommonService) {
     $scope.tomain = function () {
-      $state.go('tab.main');
+      $state.go('tab.main', {reload: true});
     }
   })
   .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, $state, CommonService) {
@@ -245,9 +242,26 @@ angular.module('starter.controllers', [])
     }
     ;
   })
-  .controller('NewsCtrl', function ($scope, $rootScope, CommonService) {
+  //通知消息列表
+  .controller('NewsCtrl', function ($scope, $rootScope, CommonService, NewsService) {
+    $scope.params = {
+      page: 1,//页码
+      size: 10,//条数
+      userid: localStorage.getItem("usertoken")//用户id
+    }
+    NewsService.getNewsList($scope.params).success(function (data) {
+      $scope.newsList = data.Values;
+    })
 
+    $scope.updateNewsLook = function (look, id) { //设置已读未读
+      $scope.lookparams = {
+        look: look,//页码
+        ids: id
+      }
+      NewsService.updateNewsLook($scope.lookparams).success(function (data) {
 
+      })
+    }
   })
   //发货列表
   .controller('DeliverListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
@@ -277,7 +291,7 @@ angular.module('starter.controllers', [])
 
   })
   //提交发货信息
-  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService,AccountService) {
+  .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
     $scope.deliverinfo = {};//发货信息获取
     $scope.delivery = function () {
       $scope.goodtype = 1;
@@ -291,15 +305,15 @@ angular.module('starter.controllers', [])
 
     $scope.delivergoods();
     $scope.takePicture = function () {
-     CommonService.takePicture();
+      CommonService.takePicture(1,'Receipt');
     }
     //查询物流快递
-    $scope.params={
-      code:'',
-      name:''
+    $scope.params = {
+      code: '',
+      name: ''
     }
     AccountService.getExpresses($scope.params).success(function (data) {
-      $scope.expresses=data.Values;
+      $scope.expresses = data.Values;
     })
     //提交发货
     $scope.delivergoodssubmit = function () {
@@ -759,6 +773,7 @@ angular.module('starter.controllers', [])
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;
+      console.log(data.Values);
     })
   })
   //账号信息
@@ -830,7 +845,7 @@ angular.module('starter.controllers', [])
       size: 5,//条数
       userid: localStorage.getItem("usertoken")//用户id
     }
-    $scope.getUserBanklist=function () {
+    $scope.getUserBanklist = function () {
       AccountService.getUserBanklist($scope.params).success(function (data) {
         $scope.userbanklist = data.Values;
       })
@@ -849,9 +864,9 @@ angular.module('starter.controllers', [])
   })
   //增加收款银行账号
   .controller('AddBankAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-     //查询银行名称
-    AccountService.getBankName({name:''}).success(function (data) {
-      $scope.bankName=data.Values;
+    //查询银行名称
+    AccountService.getBankName({name: ''}).success(function (data) {
+      $scope.bankName = data.Values;
     })
     //增加收款银行账号信息
     $scope.bankinfo = {};
@@ -866,8 +881,8 @@ angular.module('starter.controllers', [])
         isdefault: $scope.bankinfo.isdefault ? 1 : 0, 	//是否默认0-	否（默认值）1-	是
         remark: ""	//备注
       }
-           AccountService.addUserBank($scope.datas).success(function (data) {
-           $state.go('collectionaccount');
+      AccountService.addUserBank($scope.datas).success(function (data) {
+        $state.go('collectionaccount');
       })
     }
 
@@ -901,7 +916,39 @@ angular.module('starter.controllers', [])
   .controller('SettingCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
-  .controller('UpdateUserCtrl', function ($scope, $rootScope, $state, CommonService) {
+  //解绑手机
+  .controller('CancelMobileCtrl', function ($scope, $rootScope, $state, CommonService) {
+
+  })
+  //修改用户头像图片
+  .controller('UploadHeadrCtrl', function ($scope, $rootScope,$stateParams, $state, CommonService) {
+    $scope.figureurl=$stateParams.figure;
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet();
+    }
+  })
+  //修改用户信息
+  .controller('UpdateUserCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, AccountService) {
+    $scope.type = $stateParams.type;
+    $scope.value = $stateParams.value;
+    ;
+    $scope.user = {};
+    $scope.updateUser = function () {
+      $scope.params = {
+        userid: localStorage.getItem("usertoken"),
+        sex: $scope.user.sex,
+        nickname: $scope.user.nickname
+      }
+      if ($scope.type == 'nickname') { //修改昵称
+        AccountService.modifyNickname($scope.params).success(function (data) {
+          $state.go('tab.account');
+        })
+      } else if ($scope.type == 'sex') {//修改性别
+        AccountService.modifySex($scope.params).success(function (data) {
+          $state.go('tab.account');
+        })
+      }
+    }
 
   })
   .controller('MyPopover', function ($scope, $rootScope, $state, CommonService) {

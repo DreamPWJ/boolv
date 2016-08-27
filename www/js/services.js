@@ -92,12 +92,12 @@ angular.module('starter.services', [])
         $ionicLoading.hide();
       },
       //调用摄像头和相册
-      takePicture: function () {
+      takePicture: function (type,filenames) {
         //$cordovaCamera.cleanup();
         var options = {
           quality: 100,//相片质量0-100
           destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-          sourceType: Camera.PictureSourceType.CAMERA,             //从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
+          sourceType:type==0?Camera.PictureSourceType.PHOTOLIBRARY:Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
           allowEdit: false,                                        //在选择之前允许修改截图
           encodingType:Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
           targetWidth: 500,                                        //照片宽度
@@ -108,15 +108,13 @@ angular.module('starter.services', [])
         };
 
         $cordovaCamera.getPicture(options).then(function (imageUrl) {
-          AccountService.addFilenames({filenames:'Receipt'},imageUrl);
+          AccountService.addFilenames({filenames:filenames},imageUrl);
 
         }, function (err) {
           // An error occured. Show a message to the user
 
         });
-
-      }
-      ,
+      },
       //扫一扫
       barcodeScanner: function () {
         /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
@@ -166,9 +164,34 @@ angular.module('starter.services', [])
           buttonClicked: function (index) {
             switch (index) {
               case 0:
-
                 break;
               case 1:
+                break;
+              default:
+                break;
+            }
+            return true;
+          }
+        });
+      },
+      uploadActionSheet: function () {
+        CommonService=this;
+        $ionicActionSheet.show({
+          cssClass: 'action-s',
+          titleText: '<p>上传头像</p>',
+          buttons: [
+            {text:  '<p>图库</p>'},
+            {text: ' <p>拍照</p>'},
+          ],
+          cancelText: '<p>取消</p>',
+          cancel: function () {
+            return true;
+          },
+          buttonClicked: function (index) {
+            switch (index) {
+              case 0:CommonService.takePicture(0,'User')
+                break;
+              case 1:CommonService.takePicture(1,'User')
                 break;
               default:
                 break;
@@ -281,7 +304,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  }).service('AccountService', function ($q, $http, BooLv,$cordovaFileTransfer) {
+  }).service('AccountService', function ($q, $http, BooLv,$cordovaFileTransfer,$state) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -307,6 +330,62 @@ angular.module('starter.services', [])
           mobile: user.username,
           code: user.password
         }
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    modifySex: function (params) { //修改性别
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/modify_sex/"+params.userid+'/'+params.sex
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    modifyFigure: function (params) { //修改头像
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/modify_figure/"+params.userid,
+        params:{figure:params.figure} //头像地址，调用上传图片接口获得地址
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        $state.go('tab.account');
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    modifyNickname: function (params) { //修改用户昵称
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/modify_nickname/"+params.userid,
+        params:{nickname:params.nickname}
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    modifyMobile: function (datas) { //修改手机号码
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/modify_mobile",
+        data:datas
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -455,6 +534,7 @@ angular.module('starter.services', [])
     return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
   },
   addFilenames: function (params,imageUrl) {//上传附件
+    AccountService=this;
     //图片上传upImage（图片路径）
     //http://ngcordova.com/docs/plugins/fileTransfer/  资料地址
 
@@ -466,8 +546,16 @@ angular.module('starter.services', [])
     };
     $cordovaFileTransfer.upload(url, imageUrl, options)
       .then(function (result) {
+        if(params.filenames=='User'){
+          var figurparams={
+            userid:localStorage.getItem("usertoken"),
+            figure:JSON.parse(result.response).Des
+          }
+          AccountService.modifyFigure(figurparams);
+        }
+        console.log("success="+result.response);
       }, function (err) {
-
+        console.log("err="+err.response);
       }, function (progress) {
         // constant progress updates
       });
@@ -602,6 +690,51 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
+  })
+  .service('NewsService', function ($q, $http, BooLv) {//通知消息服务
+    return {
+      setDeviceInfo: function (datas) { //提交设备信息到服务器
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/push/set",
+          data:datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getNewsList: function (params) { //获取通知数据
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/push/get/"+params.page+'/'+params.size+'/'+params.userid,
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      updateNewsLook: function (params) { //新闻设置已读未读
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/push/look/"+params.look,
+        params:{ids:params.ids}
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    }
+  }
   })
   .service('EncodingService', function () {
     return {

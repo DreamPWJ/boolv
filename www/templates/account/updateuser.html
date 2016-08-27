@@ -5,17 +5,30 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 修改用户</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 修改用户信息</h1>
   </ion-nav-title>
-
+  <form name="updateuser">
   <ion-content overflow-scroll="false" class="stable-bg ">
-    <div class="list list-borderless ">
-      <label  class="item item-input">
-        <input type="text" placeholder="张三">
+    <div class="list list-borderless padding-top">
+      <label  ng-if="type=='nickname'"  class="item item-input">
+        <input type="text" ng-model="user.nickname" placeholder="{{value}}" required>
           <i class="icon  ion-close-circled padding-right"></i>
+      </label>
+      <label ng-if="type=='sex'"  class="item item-input item-select" >
+        <div class="input-label">
+          性别
+        </div>
+        <select   ng-model="user.sex" required>
+          <option value="0">保密</option>
+          <option value="1">男</option>
+          <option value="2">女</option>
+        </select>
       </label>
     </div>
 
   </ion-content>
-
+  <div class="padding light-bg  bottom-0">
+    <button ng-disabled="!updateuser.$valid" class="button button-calm full-image " ng-click="updateUser()" >保存</button>
+  </div>
+  </form>
 </ion-view>
