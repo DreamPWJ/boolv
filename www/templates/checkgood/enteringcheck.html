@@ -7,7 +7,7 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 录入验货数据</h1>
   </ion-nav-title>
-
+  <form name="checkgood">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
@@ -17,7 +17,7 @@
       <div ng-hide="showme1">
         <label class="item item-input">
           <span class="input-label">合格数量</span>
-          <input type="number" placeholder="(单位:台)">
+          <input type="number" placeholder="(单位:台)" required/>
         </label>
         <label class="item item-input">
           <span class="input-label">不合格数量</span>
@@ -31,30 +31,13 @@
     </div>
 
     <div class="list">
-      <a ng-click="toggle(2)" hide-show class="item item-borderless ">
-        <h2><strong>电池</strong><span class="item-note"><i
-          class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></h2>
-      </a>
-      <div ng-hide="showme2">
-        <label class="item item-input">
-          <span class="input-label">合格数量</span>
-          <input type="number" placeholder="(单位:台)">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">不合格数量</span>
-          <input type="number" placeholder="(单位:台)">
-        </label>
-        <label class="item item-input border-bottom-none">
-          <span class="input-label">不合格价格</span>
-          <input type="number" placeholder="(单位:元/台)">
-        </label>
-        <p class="padding-top"></p>
+
         <label ng-click="toaddproduct()" class="item item-input item-icon-right item-borderless">
           <span class="input-label"> 添加产品:</span>
           <i class="icon ion-android-add calm"></i>
         </label>
         <p class="padding-top"></p>
-        <label class="item item-input item-icon-right item-borderless" ng-click="takePicture()">
+        <label class="item item-input item-icon-right item-borderless" ng-click="uploadActionSheet()">
           <span class="input-label"> 上传照片:</span>
           <i class="icon ion-android-add calm"></i>
         </label>
@@ -65,6 +48,7 @@
   </ion-content>
 
   <div class="padding light-bg  bottom-0">
-    <button class="button button-calm full-image " ng-click="checkgoodssubmit()">提交</button>
+    <button ng-disabled="!checkgood.$valid"  class="button button-calm full-image " ng-click="checkgoodssubmit()">提交</button>
   </div>
+  </form>
 </ion-view>

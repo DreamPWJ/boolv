@@ -134,7 +134,7 @@ angular.module('starter.services', [])
                 if($scope.signinfo){
                   $scope.signinfo.ExpNo=barcodeData.text;//验收
                 }
-                
+
                 $cordovaToast.showShortCenter('扫一扫信息', barcodeData.text);
               }
             }, function (error) {
@@ -691,6 +691,34 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/FaHuo/AddFaHuo",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addSign: function (datas) { //提交签收信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+          promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/Sign/AddSign",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addYanhuo: function (datas) { //验货信息
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/Yanhuo/AddYanhuo",
           data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了

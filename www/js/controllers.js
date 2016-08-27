@@ -642,19 +642,54 @@ angular.module('starter.controllers', [])
     })
 
   })
-  .controller('CheckDetailsCtrl', function ($scope, CommonService) {
-
+  //验货列表详情
+  .controller('CheckDetailsCtrl', function ($scope, $rootScope,$stateParams,CommonService) {
+    $rootScope.checkDetails = JSON.parse($stateParams.item);
 
   })
-
-  .controller('EnteringCheckCtrl', function ($scope, $state, CommonService) {
-
+  //录入验货数据
+  .controller('EnteringCheckCtrl', function ($scope,$rootScope, $state, CommonService,DeliverService) {
+    $scope.checkinfo = {};//验货信息获取
+    $scope.Imgs=[];//图片数组
     $scope.toaddproduct = function () {
       $state.go("addproduct")
     }
 
+    //上传照片
+    $scope.uploadActionSheet = function () {
+      CommonService.uploadActionSheet($scope, 'Receipt');
+    }
     $scope.checkgoodssubmit = function () {
-      CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
+      //提交验货详细数据
+      $scope.details = [];
+      var ordeType = $rootScope.checkDetails.OrdeType;
+      angular.forEach(ordeType == 1 ? $rootScope.checkDetails.Details : $rootScope.checkDetails.SpO_Details, function (item) {
+        var items = {};
+        items.ProdID = item.ProdID;
+        items.ProdName = item.ProdName;
+        items.Unit = item.Unit;
+        items.Num = item.Num;
+        items.Price = item.Price;
+        items.SaleClass = item.SaleClass;
+        items.Status= item.Status;//（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
+        $scope.details.push(items);
+      })
+      //提交验货数据
+      $scope.datas = {
+        AddUser: $rootScope.checkDetails.FromUser,//添加人账号 AddUser (SaleOrder/GetSaleSupply接口中对应的 FromUser）
+        OrderType: ordeType,//类型 1卖货单2供货单
+        OrderNo: $rootScope.checkDetails.No,//卖货单/供货单订单号
+        Imgs: [{  //上传图片集合
+          PicAddr: $scope.Imgs.PicAddr,
+          PicDes: "拍照图库照片！"
+        }],
+        Details: $scope.details //验货明细
+
+      }
+      DeliverService.addYanhuo($scope.datas).success(function (data) {
+        CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
+      })
+
     }
   })
 
@@ -810,7 +845,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('SignDetailsCtrl', function ($scope, $rootScope,$stateParams,CommonService) {
-    $rootScope.deliverDetails = JSON.parse($stateParams.item);
+    $rootScope.signDetails = JSON.parse($stateParams.item);
 
   })
   .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
@@ -849,20 +884,7 @@ angular.module('starter.controllers', [])
     //签收提交
     $scope.signsubmit = function () {
 
-      //提交签收详细数据
-      $scope.details = [];
-
       var ordeType = $rootScope.deliverDetails.OrdeType;
-      angular.forEach(ordeType == 1 ? $rootScope.deliverDetails.Details : $rootScope.deliverDetails.SpO_Details, function (item) {
-        var items = {};
-        items.ProdID = item.ProdID;
-        items.ProdName = item.ProdName;
-        items.Unit = item.Unit;
-        items.Num = item.Num;
-        items.Price = item.Price;
-        items.SaleClass = item.SaleClass;
-        $scope.details.push(items);
-      })
       //提交签收数据
       $scope.datas = {
         User: $rootScope.deliverDetails.FromUser,//订单所对应的会员账号
@@ -878,13 +900,11 @@ angular.module('starter.controllers', [])
         Imgs: [{  //上传图片集合
           PicAddr: $scope.Imgs.PicAddr,
           PicDes: "拍照图库照片！"
-        }],
-        Details: $scope.details //发货明细
+        }]
 
       }
 
-      DeliverService.addFaHuo($scope.datas).success(function (data) {
-
+      DeliverService.addSign($scope.datas).success(function (data) {
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
       })
 

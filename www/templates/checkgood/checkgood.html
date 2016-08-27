@@ -16,7 +16,7 @@
       <a ng-href="#/checkdetails/{{item}}" class="item" ng-repeat="item in deliverlist.data_list">
         <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  <i
           class="icon ion-ios-arrow-right"></i></span></h2>
-        <p>{{item.OrdeType==1?'卖货人 :':'供货人 : '}} {{item.Username}}</p>
+        <p>{{item.OrdeType==1?'卖货人 :':'供货人 : '}} {{item.FromUsername}}</p>
         <p>手机号 : {{item.Usermotel}}</p>
         <p>{{item.OrdeType==1?'卖货':'供货'}}品类 :  <span ng-repeat="items in item.OrdeType==1?item.Details:item.SpO_Details"> {{items.ProdName}} </span> </p>
         <p ng-if="item.OrdeType==1">订单状态 : <span>{{sellStatus[item.Status+1]}}</span></p>

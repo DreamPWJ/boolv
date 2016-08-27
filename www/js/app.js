@@ -372,11 +372,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/checkgood.html',
         controller: 'CheckGoodCtrl'
       })
+      //验货列表详情
       .state('checkdetails', {
-        url: '/checkdetails',
+        url: '/checkdetails/:item',
         templateUrl: 'templates/checkgood/checkdetails.html',
         controller: 'CheckDetailsCtrl'
       })
+      //录入验货数据
       .state('enteringcheck', {
         url: '/enteringcheck',
         templateUrl: 'templates/checkgood/enteringcheck.html',
