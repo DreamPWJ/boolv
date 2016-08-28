@@ -621,7 +621,7 @@ angular.module('starter.controllers', [])
     }
   })
   //验货列表
-  .controller('CheckGoodCtrl', function ($scope,$rootScope, CommonService,DeliverService) {
+  .controller('CheckGoodCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -643,14 +643,14 @@ angular.module('starter.controllers', [])
 
   })
   //验货列表详情
-  .controller('CheckDetailsCtrl', function ($scope, $rootScope,$stateParams,CommonService) {
+  .controller('CheckDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.checkDetails = JSON.parse($stateParams.item);
 
   })
   //录入验货数据
-  .controller('EnteringCheckCtrl', function ($scope,$rootScope, $state, CommonService,DeliverService) {
+  .controller('EnteringCheckCtrl', function ($scope, $rootScope, $state, CommonService, DeliverService) {
     $scope.checkinfo = {};//验货信息获取
-    $scope.Imgs=[];//图片数组
+    $scope.Imgs = [];//图片数组
     $scope.toaddproduct = function () {
       $state.go("addproduct")
     }
@@ -671,7 +671,7 @@ angular.module('starter.controllers', [])
         items.Num = item.Num;
         items.Price = item.Price;
         items.SaleClass = item.SaleClass;
-        items.Status= item.Status;//（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
+        items.Status = item.Status;//（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         $scope.details.push(items);
       })
       //提交验货数据
@@ -815,15 +815,37 @@ angular.module('starter.controllers', [])
 
   })
   //地址详细列表
-  .controller('DealAddressCtrl', function ($scope, $state, $rootScope, CommonService) {
-    $scope.addrlist = $rootScope.addrlist;
-    $scope.selectAddress = function (item) {
-      $rootScope.addrlistFirst = item;
-      $state.go("releaseprocureorder");
+  .controller('DealAddressCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
+    if ($rootScope.addrlist) {
+      $scope.addrlist = $rootScope.addrlist;
+      $scope.selectAddress = function (item) {
+        $rootScope.addrlistFirst = item;
+        $state.go("releaseprocureorder");
+      }
     }
+    $scope.params = {
+      page: 1,
+      size: 10,
+      userid: localStorage.getItem("usertoken")
+    }
+    //获取用户常用地址
+    AccountService.getAddrlist($scope.params).success(function (data) {
+      $scope.addrlist = data.Values.data_list;
+    })
+    //删除用户常用地址
+    $scope.deleteAddr = function (addrid,index) {
+      $scope.delparams = {
+        id: addrid,
+        userid: localStorage.getItem("usertoken")
+      }
+      AccountService.deleteAddr($scope.delparams).success(function (data) {
+        $scope.addrlist.splice(index,1)
+      })
+    }
+
   })
   //签收列表
-  .controller('SignListCtrl', function ($scope, $rootScope, CommonService,DeliverService) {
+  .controller('SignListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -844,7 +866,7 @@ angular.module('starter.controllers', [])
     })
 
   })
-  .controller('SignDetailsCtrl', function ($scope, $rootScope,$stateParams,CommonService) {
+  .controller('SignDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.signDetails = JSON.parse($stateParams.item);
 
   })
@@ -970,16 +992,78 @@ angular.module('starter.controllers', [])
 
     }
   })
-  .controller('MyAvanceCtrl', function ($scope, $rootScope, $state, CommonService) {
+  //我的预收款列表
+  .controller('MyAvanceCtrl', function ($scope, $rootScope, CommonService, ApplyAdvanceService) {
 
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 5,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//单号
+      RelateNo: 0,//关联单号
+      User: localStorage.getItem("usertoken")//申请人
+    }
+    ApplyAdvanceService.getApplyPayment($scope.params).success(function (data) {
+      $scope.applylist = data.Values;
+      $scope.applystatus = ['关闭/取消', '未审核', '审核未通过', '审核通过', '款已到账', '款已还完', '已完成'];
+    })
   })
-  .controller('DavanceDetailsCtrl', function ($scope, $rootScope, $state, CommonService) {
-
+  //获取还款记录列表
+  .controller('DavanceDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
+    $rootScope.applaydetails=JSON.parse($stateParams.item);
   })
-  .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService) {
+  //还款提交
+  .controller('RepaymentCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService) {
+    $scope.applaydetails=$rootScope.applaydetails;
+    $scope.repaymentinfo={};
 
+    $scope.repaymentMoney=function () {
+      //计算还款金额   应还金额=本金金额*服务费比率*贷款周期+本金金额
+      $scope.repayMoney=$scope.repaymentinfo.Money*$scope.applaydetails.FuWu/100*$scope.applaydetails.Cycle+$scope.repaymentinfo.Money;
+      //提交还款记录数据
+      $scope.datas={
+        RelateNo: 0,//关联单号
+        User: localStorage.getItem("usertoken"),//还款人
+        Money: $scope.repayMoney,//还款金额
+        Remark: "还款完毕"//备注
+      }
+      ApplyAdvanceService.addRepayment($scope.datas).success(function (data) {
+        CommonService.showAlert('', '<p>恭喜您！还款成功！</p>')
+      })
+    }
+  })
+  //申请预收款
+  .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService, AccountService) {
+    $scope.applyinfo = {}
+    //查询用户银行信息
+    $scope.params = {
+      page: 1,
+      size: 5,
+      userid: localStorage.getItem("usertoken")
+    }
+    AccountService.getUserBanklist($scope.params).success(function (data) {
+      $scope.userbankliststatus = [];
+      angular.forEach(data.Values.data_list, function (item) {
+        if (item.isdefault == 1) {
+          $scope.userbankliststatus.push(item);
+        }
+      })
+    })
     $scope.applyadvancesubmit = function () {
-      CommonService.showConfirm('', '<p>恭喜您！您的预收款申请提交成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭', 'davancedetails')
+      $scope.datas = {
+        RelateNo: 0,//关联单号
+        User: localStorage.getItem("usertoken"),//申请人
+        BankID: $scope.userbankliststatus[0].id,//银行ID
+        Money: $scope.applyinfo.Money,//申请金额
+        Cycle: $scope.applyinfo.Cycle,//货款周期（天）
+        RepaymentType: 1,//还款方式1.等额本金2.等额本息
+        FuWu: 3,//服务费比例
+        Remark: "第一次申请"//备注
+      }
+      ApplyAdvanceService.applyPayment($scope.datas).success(function (data) {
+        CommonService.showConfirm('', '<p>恭喜您！您的预收款申请提交成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭', 'myadvance')
+      })
+
     }
   })
   //收款银行账号列表

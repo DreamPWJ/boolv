@@ -427,6 +427,19 @@ angular.module('starter.services', [])
       });
       return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
     },
+    deleteAddr: function (params) {//删除常用地址
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/del_addr/"+params.id+"/"+params.userid
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
     getArea: function (code) {//查询地区列表
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise
@@ -729,6 +742,66 @@ angular.module('starter.services', [])
       }
     }
   })
+  .service('ApplyAdvanceService', function ($q, $http, BooLv) {//申请预收款服务
+    return {
+      applyPayment: function (datas) { //申请预收款
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/Payment/ApplyPayment",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getApplyPayment: function (params) { //获取申请预收款列表
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Payment/GetToPage",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addRepayment: function (datas) { //提交还款记录
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/Payment/Repayment",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getRepayment: function (params) { //获取还款记录列表
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Payment/GetPageRepayment",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }})
+
   .service('NewsService', function ($q, $http, BooLv) {//通知消息服务
     return {
       setDeviceInfo: function (datas) { //提交设备信息到服务器

@@ -10,29 +10,9 @@
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <div class="list margin-top-1px ">
-      <a ng-href="#/davancedetails" class="item ">
-        <h2>18000</h2>
-        <p>2016-06-23 审核 <span class="item-note">审核通过 <i class="icon ion-ios-arrow-right"></i></span></p>
-      </a>
-      <a ng-href="#/davancedetails" class="item ">
-        <h2>18000</h2>
-        <p>2016-06-23 审核 <span class="item-note">审核通过 <i class="icon ion-ios-arrow-right"></i></span></p>
-      </a>
-      <a ng-href="#/davancedetails" class="item ">
-        <h2>18000</h2>
-        <p>2016-06-23 审核 <span class="item-note">审核通过 <i class="icon ion-ios-arrow-right"></i></span></p>
-      </a>
-      <a ng-href="#/davancedetails" class="item ">
-        <h2>18000</h2>
-        <p>2016-06-23 审核 <span class="item-note">审核通过 <i class="icon ion-ios-arrow-right"></i></span></p>
-      </a>
-      <a ng-href="#/davancedetails" class="item ">
-        <h2>18000</h2>
-        <p>2016-06-23 审核 <span class="item-note">审核通过 <i class="icon ion-ios-arrow-right"></i></span></p>
-      </a>
-      <a ng-href="#/davancedetails" class="item ">
-        <h2>18000</h2>
-        <p>2016-06-23 审核 <span class="item-note">审核通过 <i class="icon ion-ios-arrow-right"></i></span></p>
+      <a ng-href="#/davancedetails/{{item}}" class="item " ng-repeat="item in applylist.data_list">
+        <h2><strong>{{item.Money|currency:'￥'}}</strong></h2>
+        <p>{{item.AddTime | date:'yyyy-MM-dd HH:mm'}} 申请 <span class="item-note">{{applystatus[item.Status+1]}} <i class="icon ion-ios-arrow-right"></i></span></p>
       </a>
     </div>
 

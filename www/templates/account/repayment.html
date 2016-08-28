@@ -1,0 +1,36 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 还款</h1>
+  </ion-nav-title>
+  <form name="repayment">
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+      <div class="list  ">
+        <label class="item item-input item-borderless">
+          <span class="input-label">本金金额</span>
+          <input type="number" placeholder="应还本金{{applaydetails.Money|currency:''}}元" ng-model="repaymentinfo.Money" required/>
+        </label>
+
+        <a class="item ">
+          <h2 style="color:#444;">服务费 <span class="item-note dark font-size-1">{{applaydetails.FuWu}}%</span></h2>
+        </a>
+        <a class="item ">
+          <h2 style="color:#444;">借款周期
+            <span class="item-note dark font-size-1">{{applaydetails.Cycle}}天</span></h2>
+        </a>
+        <p class="item item-divider item-borderless">应还金额=本金金额*{{applaydetails.FuWu}}%*{{applaydetails.Cycle}}+本金金额</p>
+        <a class="item item-borderless">
+          <h2 style="color:#444;">应还金额
+            <span class="item-note dark font-size-1" ng-model="repaymentinfo.repayMoney">{{repaymentinfo.Money*applaydetails.FuWu/100*applaydetails.Cycle+repaymentinfo.Money|currency:''}}</span></h2>
+        </a>
+      </div>
+    </ion-content>
+    <div class="padding light-bg  bottom-0">
+      <button class="button button-calm full-image " ng-disabled="!repayment.$valid" ng-click="repaymentMoney()">确认还款</button>
+    </div>
+  </form>
+</ion-view>

@@ -312,6 +312,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //地址详细列表
       .state('dealaddress', {
         url: '/dealaddress',
+        cache:false,
         templateUrl: 'templates/jiedan/dealaddress.html',
         controller: 'DealAddressCtrl'
 
@@ -411,21 +412,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/applyprovider.html',
         controller: 'ApplyProviderCtrl'
       })
-      .state('myadvance', {
-        url: '/myadvance',
-        templateUrl: 'templates/account/myadvance.html',
-        controller: 'MyAvanceCtrl'
-      })
-      .state('davancedetails', {
-        url: '/davancedetails',
-        templateUrl: 'templates/account/davancedetails.html',
-        controller: 'DavanceDetailsCtrl'
-      })
+      //申请预收款
       .state('applyadvance', {
         url: '/applyadvance',
         templateUrl: 'templates/account/applyadvance.html',
         controller: 'ApplyAdvancesCtrl'
       })
+      //我的预收款列表
+      .state('myadvance', {
+        url: '/myadvance',
+        templateUrl: 'templates/account/myadvance.html',
+        controller: 'MyAvanceCtrl'
+      })
+       //获取还款记录列表
+      .state('davancedetails', {
+        url: '/davancedetails/:item',
+        templateUrl: 'templates/account/davancedetails.html',
+        controller: 'DavanceDetailsCtrl'
+      })
+      //还款提交
+      .state('repayment', {
+        url: '/repayment',
+        templateUrl: 'templates/account/repayment.html',
+        controller: 'RepaymentCtrl'
+      })
+
       //收款银行账号列表
       .state('collectionaccount', {
         url: '/collectionaccount',
@@ -467,6 +478,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/cancelmobile.html',
         controller: 'CancelMobileCtrl'
       })
+
     ;
 // if none of the above states are matched, use this as the fallback
 
