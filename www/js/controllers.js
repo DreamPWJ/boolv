@@ -187,7 +187,81 @@ angular.module('starter.controllers', [])
 
     }
   })
-  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
+  //查单列表
+  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService,SupplyService, DeliverService,$ionicTabsDelegate, $ionicSlideBoxDelegate) {
+    //查单(卖货订单)获取卖货单列表参数
+    $scope.sellparams = {
+      currentPage: 1,//当前页码
+      pageSize: 10,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//下单人账号
+      Type: '',//0-物流配送1-送货上门2-上门回收
+      Status: '',//0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款
+      FromUser: ''//供货人
+    }
+    //查单(卖货订单)获取卖货单列表
+    SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
+      $scope.saleorderlist = data.Values;
+      //订单状态(卖货单)
+      $rootScope.saleorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
+    })
+    //查单(买货订单)获取买货单列表参数
+    $scope.buyparams = {
+      currentPage: 1,//当前页码
+      pageSize: 10,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//买家账号
+      Type: '',//0-物流配送1-送货上门2-上门回收
+      Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
+      Expiration: ''//过期时间 是否取非过期时间 1是 0否
+    }
+    //查单(买货订单)获取买货单列表
+    SupplyService.getToPage($scope.buyparams).success(function (data) {
+      $scope.buyorderlist = data.Values;
+      //订单状态(买货单)
+      $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金','已收到定金','备货中','备货完成','已结款','已返定金','已成交','已评价'];
+    })
+    //查单(供货订单)获取供货单列表参数
+    $scope.supplyparams = {
+      currentPage: 1,//当前页码
+      pageSize: 10,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//下单人账号
+      Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
+      BONo:'',//买货单号 关联买货单号
+      ToUser:''//买货人 关联买货单人
+    }
+    //查单(供货订单)获取供货单列表
+    SearchOrderService.getSupplyPlanList($scope.supplyparams).success(function (data) {
+      $scope.supplyorderlist = data.Values;
+      console.log( $scope.supplyorderlist);
+      //订单状态(供货单)
+      $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中','供货完成'];
+    })
+    //查单(收货订单)获取收货单列表参数
+    $scope.collectparams = {
+      currentPage: 1,//当前页码
+      pageSize: 10,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+      FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
+      Status: '',//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
+      ordertype: '',//类型 1卖货单2供货单
+      Type: '' //0-物流配送1-送货上门2-上门回收
+    }
+    //查单(收货订单)获取收货单列表
+    DeliverService.getSaleSupply($scope.collectparams).success(function (data) {
+      $scope.collectorderlist = data.Values;
+      //订单状态(卖货单)
+      $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+      //订单状态(供货单)
+      $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+    })
+
     $scope.slideChanged = function (index) {
       $ionicTabsDelegate.select(index);
     };
@@ -205,14 +279,16 @@ angular.module('starter.controllers', [])
     CommonService.searchModal($scope);
 
   })
-  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
+  //查单买货详情
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams,CommonService) {
     CommonService.ionicPopover($scope, 'my-pay.html')
 
     $scope.procureorderdetailssubmit = function () {
       CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', 'procureorderdetails', 'procureorderdetails')
     }
   })
-  .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, CommonService) {
+  //查单供货详情
+  .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-stockup.html');
 
   })
@@ -230,8 +306,8 @@ angular.module('starter.controllers', [])
     }
 
   })
-
-  .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
+  //查单收货单详情
+  .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-payorder.html');
 
   })
@@ -376,7 +452,6 @@ angular.module('starter.controllers', [])
       }
 
       DeliverService.addFaHuo($scope.datas).success(function (data) {
-        console.log(JSON.stringify(data));
         CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'sellorderdetails', 'deliverlist');
       })
 
@@ -597,8 +672,11 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
+  //查单卖货详情
+  .controller('SellOrderDetailsCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
+    $rootScope.deliverDetails=JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
+
 
   })
   //我要卖货
@@ -699,7 +777,6 @@ angular.module('starter.controllers', [])
   //接单供货计划详情
   .controller('SupplyDetailsCtrl', function ($scope, CommonService, $stateParams, SupplyService) {
     $scope.supplyDetails = JSON.parse($stateParams.item);
-    console.log($scope.supplyDetails);
     CommonService.getLocation();
     $scope.params = {
       longt: localStorage.getItem("longitude") || 116.4854800,//当前经度
@@ -833,13 +910,13 @@ angular.module('starter.controllers', [])
       $scope.addrlist = data.Values.data_list;
     })
     //删除用户常用地址
-    $scope.deleteAddr = function (addrid,index) {
+    $scope.deleteAddr = function (addrid, index) {
       $scope.delparams = {
         id: addrid,
         userid: localStorage.getItem("usertoken")
       }
       AccountService.deleteAddr($scope.delparams).success(function (data) {
-        $scope.addrlist.splice(index,1)
+        $scope.addrlist.splice(index, 1)
       })
     }
 
@@ -939,7 +1016,6 @@ angular.module('starter.controllers', [])
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;
-      console.log(data.Values);
     })
   })
   //账号信息
@@ -1010,18 +1086,18 @@ angular.module('starter.controllers', [])
   })
   //获取还款记录列表
   .controller('DavanceDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    $rootScope.applaydetails=JSON.parse($stateParams.item);
+    $rootScope.applaydetails = JSON.parse($stateParams.item);
   })
   //还款提交
   .controller('RepaymentCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService) {
-    $scope.applaydetails=$rootScope.applaydetails;
-    $scope.repaymentinfo={};
+    $scope.applaydetails = $rootScope.applaydetails;
+    $scope.repaymentinfo = {};
 
-    $scope.repaymentMoney=function () {
+    $scope.repaymentMoney = function () {
       //计算还款金额   应还金额=本金金额*服务费比率*贷款周期+本金金额
-      $scope.repayMoney=$scope.repaymentinfo.Money*$scope.applaydetails.FuWu/100*$scope.applaydetails.Cycle+$scope.repaymentinfo.Money;
+      $scope.repayMoney = $scope.repaymentinfo.Money * $scope.applaydetails.FuWu / 100 * $scope.applaydetails.Cycle + $scope.repaymentinfo.Money;
       //提交还款记录数据
-      $scope.datas={
+      $scope.datas = {
         RelateNo: 0,//关联单号
         User: localStorage.getItem("usertoken"),//还款人
         Money: $scope.repayMoney,//还款金额

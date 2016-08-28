@@ -14,21 +14,21 @@
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
-        <h2><strong>订单号 : </strong>GF201615484878787877<span class="item-note"><i
+        <h2><strong>订单号 : </strong>{{deliverDetails.No}}<span class="item-note"><i
           class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></h2>
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>回收商 : 张三</h2>
+          <h2>回收商 : {{deliverDetails.Username}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>手机号码 : 1899994948</h2>
+          <h2>手机号码 : {{deliverDetails.Usermotel}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>订单状态 : 已验货</h2>
+          <h2>订单状态 : {{saleorderStatus[deliverDetails.Status+1]}}</h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
-          <h2>下单时间 : 2016-06-23</h2>
+          <h2>下单时间 : {{deliverDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
         </a>
       </div>
     </div>
@@ -39,14 +39,8 @@
         <strong>卖货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
-        <a ng-href="" class="item">
-          <h2>拆解机 : 10000台</h2>
-        </a>
-        <a ng-href="" class="item border-bottom-none">
-          <h2>二手手机 : 10000台</h2>
-        </a>
-        <a ng-href="" class="item border-bottom-none">
-          <h2>电池 : 10000块</h2>
+        <a ng-href="" class="item" ng-repeat="item in deliverDetails.Details">
+          <h2>{{item.ProdName}} : {{item.Num+item.UName}}</h2>
         </a>
       </div>
     </div>

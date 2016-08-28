@@ -9,7 +9,7 @@
   <ion-content overflow-scroll="false" class="stable-bg account ">
     <div class="list padding-top list-borderless">
       <a nav-direction=forward  ng-href="#/accountinfo" class="item item-avatar ">
-        <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="">
+        <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
         <h2>{{userinfo.username}}</h2>
         <p>信用等级: <i class="icon ion-star "></i>
           <i class="icon ion-star "></i>

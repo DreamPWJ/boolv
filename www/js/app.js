@@ -191,20 +191,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
-
+       //查单列表
       .state('searchorder', {
         url: '/searchorder',
         templateUrl: 'templates/searchorder.html',
         controller: 'SearchOrderCtrl'
       })
+      //查单买货详情
       .state('procureorderdetails', {
-        url: '/procureorderdetails',
+        url: '/procureorderdetails/:item',
         cache: false,
         templateUrl: 'templates/searchorder/procureorderdetails.html',
         controller: 'ProcureOrderDetailsCtrl'
       })
+      //查单供货详情
       .state('supplyorderplan', {
-        url: '/supplyorderplan',
+        url: '/supplyorderplan/:item',
         cache: false,
         templateUrl: 'templates/searchorder/supplyorderplan.html',
         controller: 'SupplyOrderPlanCtrl'
@@ -225,8 +227,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/examinegoodsorder.html',
         controller: 'ExamineGoodsOrderCtrl'
       })
+      //查单收货单详情
       .state('deiverorderdetails', {
-        url: '/deiverorderdetails',
+        url: '/deiverorderdetails/:item',
         cache: false,
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
@@ -361,9 +364,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/sellgood/selldetails.html',
         controller: 'SellDetailsCtrl'
       })
+      //查单卖货详情
       .state('sellorderdetails', {
-        url: '/sellorderdetails',
-        cache: false,
+        url: '/sellorderdetails/:item',
         templateUrl: 'templates/sellgood/sellorderdetails.html',
         controller: 'SellOrderDetailsCtrl'
       })
