@@ -121,5 +121,15 @@
         },
         "is_top_level": false,
         "variables": {}
+    },
+    "jpush-phonegap-plugin": {
+        "source": {
+            "type": "registry",
+            "id": "jpush-phonegap-plugin"
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "fcac61b28987384d6f2a6ace"
+        }
     }
 }

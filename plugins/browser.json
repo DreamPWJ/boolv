@@ -8,52 +8,56 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "phonegap-plugin-barcodescanner": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-wechat": {
             "WECHATAPPID": "wxb396622c9dcee881",
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "com.telerik.plugins.nativepagetransitions": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.boolv.trading"
+        },
+        "jpush-phonegap-plugin": {
+            "API_KEY": "fcac61b28987384d6f2a6ace",
             "PACKAGE_NAME": "com.ionicframework.boolv969171"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         }
     }
 }
