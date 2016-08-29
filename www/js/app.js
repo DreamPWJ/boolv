@@ -77,7 +77,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
 
       //启动极光推送服务
-/*      window.plugins.jPushPlugin.init();*/
+      window.plugins.jPushPlugin.init();
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
     });
