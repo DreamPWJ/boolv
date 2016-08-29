@@ -18,13 +18,13 @@ angular.module('starter.controllers', [])
      }*/
     //服务注册到$httpProvider.interceptors中
     $httpProvider.interceptors.push('authInterceptor');
- /*   $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
+    /*   $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $ionicLoading, CommonService) {
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService) {
     CommonService.ionicLoadingShow();
 
     $scope.getMainData = function () {
@@ -63,6 +63,17 @@ angular.module('starter.controllers', [])
           })
         })
 
+        //提交设备信息到服务器
+        $scope.datas = {
+          registration_id: "fawffeae121155",	//极光注册id
+          user: localStorage.getItem("usertoken"),	//用户id,没登录为空
+          mobile: JSON.stringify(localStorage.getItem("user")).mobile,	//手机号码
+          alias: "",	//设备别名
+          device: 0	//设备类型:0-android,1-ios
+        }
+        NewsService.setDeviceInfo().success(function (data) {
+          console.log(data);
+        })
       }).finally(function () {
         CommonService.ionicLoadingHide();
         $scope.$broadcast('scroll.refreshComplete');
@@ -189,7 +200,7 @@ angular.module('starter.controllers', [])
     }
   })
   //查单列表
-  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService,SupplyService, DeliverService,$ionicTabsDelegate, $ionicSlideBoxDelegate) {
+  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
     //查单(卖货订单)获取卖货单列表参数
     $scope.sellparams = {
       currentPage: 1,//当前页码
@@ -222,7 +233,7 @@ angular.module('starter.controllers', [])
     SupplyService.getToPage($scope.buyparams).success(function (data) {
       $scope.buyorderlist = data.Values;
       //订单状态(买货单)
-      $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金','已收到定金','备货中','备货完成','已结款','已返定金','已成交','已评价'];
+      $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
     })
     //查单(供货订单)获取供货单列表参数
     $scope.supplyparams = {
@@ -232,15 +243,15 @@ angular.module('starter.controllers', [])
       No: '',//订单号，模糊匹配
       User: '',//下单人账号
       Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
-      BONo:'',//买货单号 关联买货单号
-      ToUser:''//买货人 关联买货单人
+      BONo: '',//买货单号 关联买货单号
+      ToUser: ''//买货人 关联买货单人
     }
     //查单(供货订单)获取供货单列表
     SearchOrderService.getSupplyPlanList($scope.supplyparams).success(function (data) {
       $scope.supplyorderlist = data.Values;
-      console.log( $scope.supplyorderlist);
+      console.log($scope.supplyorderlist);
       //订单状态(供货单)
-      $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中','供货完成'];
+      $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中', '供货完成'];
     })
     //查单(收货订单)获取收货单列表参数
     $scope.collectparams = {
@@ -281,7 +292,7 @@ angular.module('starter.controllers', [])
 
   })
   //查单买货详情
-  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams,CommonService) {
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-pay.html')
 
     $scope.procureorderdetailssubmit = function () {
@@ -289,7 +300,7 @@ angular.module('starter.controllers', [])
     }
   })
   //查单供货详情
-  .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
+  .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-stockup.html');
 
   })
@@ -308,7 +319,7 @@ angular.module('starter.controllers', [])
 
   })
   //查单收货单详情
-  .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
+  .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-payorder.html');
 
   })
@@ -485,9 +496,28 @@ angular.module('starter.controllers', [])
 
   })
   //供货计划填写
-  .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, $stateParams) {
+  .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     $rootScope.supplyinfo = [];//供货信息填写信息
+
+    //根据距离及产品明细数量得到参考物流费用
+    $scope.calculateExpressesCost = function () {
+      $scope.details = [];
+      angular.forEach($rootScope.supplyDetails.Details, function (item,index) {
+        var items = {};
+        items.Num = $rootScope.supplyinfo[index].num;
+        items.SaleClass = item.SaleClass;
+        $scope.details.push(items);
+      })
+      $scope.datas = {
+        Distance: $rootScope.distance.replace('Km',''),
+        pDetail: $scope.details
+      }
+
+      SupplyService.addExpressesCost($scope.datas).success(function (data) {
+        $scope.expressesCost = data.Values
+      })
+    }
 
   })
   //买货选择产品
@@ -674,8 +704,8 @@ angular.module('starter.controllers', [])
 
   })
   //查单卖货详情
-  .controller('SellOrderDetailsCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
-    $rootScope.deliverDetails=JSON.parse($stateParams.item);
+  .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
 
 
@@ -776,8 +806,9 @@ angular.module('starter.controllers', [])
 
   })
   //接单供货计划详情
-  .controller('SupplyDetailsCtrl', function ($scope, CommonService, $stateParams, SupplyService) {
+  .controller('SupplyDetailsCtrl', function ($scope,$rootScope, CommonService, $stateParams, SupplyService) {
     $scope.supplyDetails = JSON.parse($stateParams.item);
+
     CommonService.getLocation();
     $scope.params = {
       longt: localStorage.getItem("longitude") || 116.4854800,//当前经度
@@ -785,7 +816,11 @@ angular.module('starter.controllers', [])
       user: $scope.supplyDetails.FromUser //对应的会员对应的会员(一般为买家)
     }
     SupplyService.getRange($scope.params).success(function (data) {
-      $scope.distance = data.Values;
+      $rootScope.distance = data.Values;
+    })
+
+    SupplyService.getExpressesPrice().success(function (data) {
+      $scope.expressesPrice = data.Values;
     })
 
   })
