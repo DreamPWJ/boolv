@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading,AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
       showAlert: function (title, template, stateurl) {
         // 一个提示对话框
@@ -92,23 +92,23 @@ angular.module('starter.services', [])
         $ionicLoading.hide();
       },
       //调用摄像头和相册
-      takePicture: function ($scope,type,filenames) {
+      takePicture: function ($scope, type, filenames) {
         //$cordovaCamera.cleanup();
         var options = {
           quality: 100,//相片质量0-100
           destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-          sourceType:type==0?Camera.PictureSourceType.PHOTOLIBRARY:Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
+          sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
           allowEdit: false,                                        //在选择之前允许修改截图
-          encodingType:Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
+          encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
           targetWidth: 500,                                        //照片宽度
           targetHeight: 500,                                       //照片高度
-          mediaType:0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
-          cameraDirection:0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
+          mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
+          cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
           saveToPhotoAlbum: true                                   //保存进手机相册
         };
 
         $cordovaCamera.getPicture(options).then(function (imageUrl) {
-          AccountService.addFilenames($scope,{filenames:filenames},imageUrl);
+          AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
 
         }, function (err) {
           // An error occured. Show a message to the user
@@ -128,11 +128,11 @@ angular.module('starter.services', [])
                 //通过默认浏览器打开
                 window.open(barcodeData.text, '_system', 'location=yes');
               } else {
-                if($scope.deliverinfo){
-                  $scope.deliverinfo.ExpNo=barcodeData.text;//发货
+                if ($scope.deliverinfo) {
+                  $scope.deliverinfo.ExpNo = barcodeData.text;//发货
                 }
-                if($scope.signinfo){
-                  $scope.signinfo.ExpNo=barcodeData.text;//验收
+                if ($scope.signinfo) {
+                  $scope.signinfo.ExpNo = barcodeData.text;//验收
                 }
 
                 $cordovaToast.showShortCenter('扫一扫信息', barcodeData.text);
@@ -181,13 +181,13 @@ angular.module('starter.services', [])
           }
         });
       },
-      uploadActionSheet: function ($scope,filename) {
-        CommonService=this;
+      uploadActionSheet: function ($scope, filename) {
+        CommonService = this;
         $ionicActionSheet.show({
           cssClass: 'action-s',
           titleText: '<p>上传照片</p>',
           buttons: [
-            {text:  '<p>图库</p>'},
+            {text: '<p>图库</p>'},
             {text: ' <p>拍照</p>'},
           ],
           cancelText: '<p>取消</p>',
@@ -196,9 +196,11 @@ angular.module('starter.services', [])
           },
           buttonClicked: function (index) {
             switch (index) {
-              case 0:CommonService.takePicture($scope,0,filename)
+              case 0:
+                CommonService.takePicture($scope, 0, filename)
                 break;
-              case 1:CommonService.takePicture($scope,1,filename)
+              case 1:
+                CommonService.takePicture($scope, 1, filename)
                 break;
               default:
                 break;
@@ -269,7 +271,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Prod/GetProds",
-          params:{GrpIDList:'1,5'}
+          params: {GrpIDList: '1,5'}
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -311,7 +313,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  }).service('AccountService', function ($q, $http, BooLv,$cordovaFileTransfer,$state) {
+  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -349,7 +351,7 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/user/modify_sex/"+params.userid+'/'+params.sex
+        url: BooLv.api + "/user/modify_sex/" + params.userid + '/' + params.sex
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -362,8 +364,8 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/user/modify_figure/"+params.userid,
-        params:{figure:params.figure} //头像地址，调用上传图片接口获得地址
+        url: BooLv.api + "/user/modify_figure/" + params.userid,
+        params: {figure: params.figure} //头像地址，调用上传图片接口获得地址
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         $state.go('tab.account');
@@ -377,8 +379,8 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/user/modify_nickname/"+params.userid,
-        params:{nickname:params.nickname}
+        url: BooLv.api + "/user/modify_nickname/" + params.userid,
+        params: {nickname: params.nickname}
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -392,7 +394,7 @@ angular.module('starter.services', [])
       promise = $http({
         method: 'POST',
         url: BooLv.api + "/user/modify_mobile",
-        data:datas
+        data: datas
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -432,7 +434,7 @@ angular.module('starter.services', [])
       var promise = deferred.promise
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/user/del_addr/"+params.id+"/"+params.userid
+        url: BooLv.api + "/user/del_addr/" + params.id + "/" + params.userid
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -485,7 +487,7 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'GET',
-        url: BooLv.api + "/user/get_userbanklist/"+params.page+'/'+params.size+'/'+params.userid,
+        url: BooLv.api + "/user/get_userbanklist/" + params.page + '/' + params.size + '/' + params.userid,
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -512,7 +514,7 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'DELETE',
-        url: BooLv.api + "/user/del_userbank/"+params.id+'/'+params.userid,
+        url: BooLv.api + "/user/del_userbank/" + params.id + '/' + params.userid,
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -526,8 +528,8 @@ angular.module('starter.services', [])
       promise = $http({
         method: 'GET',
         url: BooLv.api + "/BankName/GetBankName",
-        params:{
-          Name:params.name
+        params: {
+          Name: params.name
         }
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -537,53 +539,53 @@ angular.module('starter.services', [])
       return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
     },
     getExpresses: function (params) {//查询物流快递
-    var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-    var promise = deferred.promise;
-    promise = $http({
-      method: 'GET',
-      url: BooLv.api + "/Expresses/GetExpresses",
-      params:{
-        code:params.code,
-        name:params.name
-      }
-    }).success(function (data) {
-      deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-    }).error(function (err) {
-      deferred.reject(err);// 声明执行失败，即服务器返回错误
-    });
-    return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-  },
-  addFilenames: function ($scope,params,imageUrl) {//上传附件
-    AccountService=this;
-    //图片上传upImage（图片路径）
-    //http://ngcordova.com/docs/plugins/fileTransfer/  资料地址
-
-    var url = BooLv.api + "/UploadImg/Add/" + params.filenames;//Filenames:上传附件根目录文件夹名称发货，签收，验货统一用Receipt这个名称  会员头像用User这个名称
-    var options = {
-      fileKey: "file",//相当于form表单项的name属性
-      fileName: imageUrl.substr(imageUrl.lastIndexOf('/') + 1),
-      mimeType: "image/jpeg"
-    };
-    $cordovaFileTransfer.upload(url, imageUrl, options)
-      .then(function (result) {
-        if(params.filenames=='User'){
-          var figurparams={
-            userid:localStorage.getItem("usertoken"),
-            figure:JSON.parse(result.response).Des
-          }
-          AccountService.modifyFigure(figurparams);
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/Expresses/GetExpresses",
+        params: {
+          code: params.code,
+          name: params.name
         }
-        if(params.filenames=='Receipt'){
-          $scope.Imgs.PicAddr=JSON.parse(result.response).Des;
-        }
-        console.log("success="+result.response);
-      }, function (err) {
-        console.log("err="+err.response);
-      }, function (progress) {
-        // constant progress updates
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
       });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    addFilenames: function ($scope, params, imageUrl) {//上传附件
+      AccountService = this;
+      //图片上传upImage（图片路径）
+      //http://ngcordova.com/docs/plugins/fileTransfer/  资料地址
+
+      var url = BooLv.api + "/UploadImg/Add/" + params.filenames;//Filenames:上传附件根目录文件夹名称发货，签收，验货统一用Receipt这个名称  会员头像用User这个名称
+      var options = {
+        fileKey: "file",//相当于form表单项的name属性
+        fileName: imageUrl.substr(imageUrl.lastIndexOf('/') + 1),
+        mimeType: "image/jpeg"
+      };
+      $cordovaFileTransfer.upload(url, imageUrl, options)
+        .then(function (result) {
+          if (params.filenames == 'User') {
+            var figurparams = {
+              userid: localStorage.getItem("usertoken"),
+              figure: JSON.parse(result.response).Des
+            }
+            AccountService.modifyFigure(figurparams);
+          }
+          if (params.filenames == 'Receipt') {
+            $scope.Imgs.PicAddr = JSON.parse(result.response).Des;
+          }
+          console.log("success=" + result.response);
+        }, function (err) {
+          console.log("err=" + err.response);
+        }, function (progress) {
+          // constant progress updates
+        });
+    }
   }
-}
 })
   .service('SellService', function ($q, $http, BooLv) {//卖货服务
     return {
@@ -742,7 +744,7 @@ angular.module('starter.services', [])
       addSign: function (datas) { //提交签收信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
-          promise = $http({
+        promise = $http({
           method: 'POST',
           url: BooLv.api + "/Sign/AddSign",
           data: datas
@@ -827,7 +829,8 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
-    }})
+    }
+  })
   .service('SearchOrderService', function ($q, $http, BooLv) {//查单接口服务
     return {
       getSaleOrderList: function (params) { //查单(卖货订单)获取卖货单列表
@@ -836,7 +839,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/SaleOrder/GetToPage",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -850,7 +853,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/SaleOrder/Update_Status",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -864,7 +867,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Yanhuo/GetPageSale",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -878,7 +881,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Yanhuo/Update_StatusSale",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -892,7 +895,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Yanhuo/Update_StatusSaleDetails",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -906,7 +909,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/Yanhuo/AddReturn",
-          data:datas
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -920,7 +923,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/Yanhuo/AddSaleTrade",
-          data:datas
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -934,7 +937,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/BuyOrder/Update_Status",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -948,7 +951,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/SupplyPlan/GetToPage",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -962,7 +965,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/SupplyPlan/Update_Status",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -976,7 +979,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/SupplyPlan/AddSOD",
-          data:datas
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -990,7 +993,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/SupplyPlan/GetPageSupply",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1004,7 +1007,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Yanhuo/GetPageBuy",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1018,7 +1021,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Yanhuo/Update_StatusBuy",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1032,7 +1035,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Yanhuo/Update_StatusBuyDetails",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1046,7 +1049,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/Yanhuo/AddSupTrade",
-          data:datas
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1060,7 +1063,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Evaluate/GetEvaluate",
-          params:params
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1074,7 +1077,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/Evaluate/Add",
-          data:datas
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1088,7 +1091,35 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/Statement/Add",
-          data:datas
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getPageFaHuo: function (params) { //查单 获取发货信息列表及详情
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/FaHuo/GetPageFaHuo",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getPageSign: function (params) { //查单 获取签收信息列表及详情
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Sign/GetPageSign",
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1097,7 +1128,6 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-
   })
   .service('NewsService', function ($q, $http, BooLv) {//通知消息服务
     return {
@@ -1107,7 +1137,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'POST',
           url: BooLv.api + "/push/set",
-          data:datas
+          data: datas
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1120,7 +1150,7 @@ angular.module('starter.services', [])
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BooLv.api + "/push/get/"+params.page+'/'+params.size+'/'+params.userid,
+          url: BooLv.api + "/push/get/" + params.page + '/' + params.size + '/' + params.userid,
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -1129,36 +1159,36 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       updateNewsLook: function (params) { //新闻设置已读未读
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise;
-      promise = $http({
-        method: 'POST',
-        url: BooLv.api + "/push/look/"+params.look,
-        params:{ids:params.ids}
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    }
-  }
-  })
-.factory('authInterceptor', function($rootScope){//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
-  return {
-    request: function(config){
-      config.headers = config.headers || {};
-      var token=localStorage.getItem('token');
-      if(token){
-        config.headers.authorization =token;
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/push/look/" + params.look,
+          params: {ids: params.ids}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
-      return config;
-    },
-    responseError: function(response){
-      // ...
     }
-  };
-})
+  })
+  .factory('authInterceptor', function ($rootScope) {//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
+    return {
+      request: function (config) {
+        config.headers = config.headers || {};
+        var token = localStorage.getItem('token');
+        if (token) {
+          config.headers.authorization = token;
+        }
+        return config;
+      },
+      responseError: function (response) {
+        // ...
+      }
+    };
+  })
   .service('EncodingService', function () {
     return {
       md5: function (str) {
