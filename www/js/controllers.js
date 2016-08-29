@@ -16,8 +16,9 @@ angular.module('starter.controllers', [])
      $httpProvider.defaults.headers.put = {
      'Content-Type': 'application/x-www-form-urlencoded'
      }*/
-
-    $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+    //服务注册到$httpProvider.interceptors中
+    $httpProvider.interceptors.push('authInterceptor');
+ /*   $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
   })
   .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $ionicLoading, CommonService) {
 

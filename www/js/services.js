@@ -1144,6 +1144,21 @@ angular.module('starter.services', [])
     }
   }
   })
+.factory('authInterceptor', function($rootScope){//设置请求头信息的地方是$httpProvider.interceptors。也就是为请求或响应注册一个拦截器。使用这种方式首先需要定义一个服务
+  return {
+    request: function(config){
+      config.headers = config.headers || {};
+      var token=localStorage.getItem('token');
+      if(token){
+        config.headers.authorization =token;
+      }
+      return config;
+    },
+    responseError: function(response){
+      // ...
+    }
+  };
+})
   .service('EncodingService', function () {
     return {
       md5: function (str) {
