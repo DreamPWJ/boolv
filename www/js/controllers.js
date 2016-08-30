@@ -312,7 +312,27 @@ angular.module('starter.controllers', [])
   .controller('SupplyOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
     CommonService.ionicPopover($scope, 'my-order.html');
   })
-  .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService) {
+  // 查单审核验货单列表
+  .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 5,//编码 ,等于空时取所有
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      OrderNo: '',//卖货单号
+      AddUser: '',//添加人
+      Status: '',//1-待审核/验货完成2-已审核
+      YhUser: ''//验货人
+    }
+    SearchOrderService.getYanhuoList($scope.params).success(function (data) {
+      $scope.yanhuolist=data.Values.data_list;
+      $scope.yanhuolistDetails=[];
+      angular.forEach($scope.yanhuolist[0].Details,function (item) {
+        item.checked=true;
+        $scope.yanhuolistDetails.push(item)
+      })
+
+    })
     $scope.examinegoodsordersubmit = function () {
       CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
     }
@@ -503,14 +523,14 @@ angular.module('starter.controllers', [])
     //根据距离及产品明细数量得到参考物流费用
     $scope.calculateExpressesCost = function () {
       $scope.details = [];
-      angular.forEach($rootScope.supplyDetails.Details, function (item,index) {
+      angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
         var items = {};
         items.Num = $rootScope.supplyinfo[index].num;
         items.SaleClass = item.SaleClass;
         $scope.details.push(items);
       })
       $scope.datas = {
-        Distance: $rootScope.distance.replace('Km',''),
+        Distance: $rootScope.distance.replace('Km', ''),
         pDetail: $scope.details
       }
 
@@ -806,7 +826,7 @@ angular.module('starter.controllers', [])
 
   })
   //接单供货计划详情
-  .controller('SupplyDetailsCtrl', function ($scope,$rootScope, CommonService, $stateParams, SupplyService) {
+  .controller('SupplyDetailsCtrl', function ($scope, $rootScope, CommonService, $stateParams, SupplyService) {
     $scope.supplyDetails = JSON.parse($stateParams.item);
 
     CommonService.getLocation();

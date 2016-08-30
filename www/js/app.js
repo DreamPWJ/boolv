@@ -222,6 +222,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/supplyorderdetails.html',
         controller: 'SupplyOrderDetailsCtrl'
       })
+     // 查单审核验货单列表
       .state('examinegoodsorder', {
         url: '/examinegoodsorder',
         templateUrl: 'templates/searchorder/examinegoodsorder.html',

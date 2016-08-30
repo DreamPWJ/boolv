@@ -11,16 +11,16 @@
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
-        <h2><strong>订单号 : </strong>GF201615484878787877<span class="item-note"><i
+        <h2><strong>订单号 : </strong>{{yanhuolist[0].No}}<span class="item-note"><i
           class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></h2>
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>验收人 : 老王</h2>
+          <h2>验收人 : {{yanhuolist[0].YhUser}}</h2>
         </a>
 
         <a ng-href="" class="item border-bottom-none">
-          <h2>验货时间 : 2016-06-23</h2>
+          <h2>验货时间 : {{yanhuolist[0].AddTime | date:'yyyy-MM-dd HH:mm'}}</h2>
         </a>
       </div>
     </div>
@@ -31,23 +31,11 @@
         <strong>卖货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
-        <li class="item item-checkbox ">
+        <li class="item item-checkbox " ng-repeat="item in yanhuolistDetails">
           <label class="checkbox checkbox-calm">
-            <input type="checkbox">
+            <input type="checkbox" ng-model="item.checked" ng-checked="item.checked">
           </label>
-          拆解机 : 10000台
-        </li>
-        <li class="item item-checkbox ">
-          <label class="checkbox checkbox-calm">
-            <input type="checkbox">
-          </label>
-          二手手机 : 10000台
-        </li>
-        <li class="item item-checkbox ">
-          <label class="checkbox checkbox-calm">
-            <input type="checkbox">
-          </label>
-          电池 : 10000块
+          {{item.ProdName}} : {{item.Num + item.UName}}
         </li>
 
       </div>
