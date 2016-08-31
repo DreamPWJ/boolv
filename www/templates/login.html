@@ -19,7 +19,7 @@
             <span class="input-label icon ion-unlocked "> 验证码</span>
             <input type="number" ng-model="user.password"  required>
         </label>
-        <button class="authcode"  ng-click="sendCode()" >获取验证码</button>
+        <button class="authcode" ng-disabled="paraclass"  ng-click="sendCode()" >{{paracont}}</button>
         <ion-checkbox class="checkbox-calm" ng-checked="true" >
           同意登录协议
         </ion-checkbox>

@@ -1,6 +1,13 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera,$ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
+      platformPrompt:function(msg,stateurl){
+        if($ionicPlatform.is('android') || $ionicPlatform.is('ios')){
+          $cordovaToast.showLongCenter(msg);
+        }else{
+          this.showAlert("博绿网", msg,stateurl);
+        }
+      },
       showAlert: function (title, template, stateurl) {
         // 一个提示对话框
         var alertPopup = $ionicPopup.alert({
@@ -221,6 +228,13 @@ angular.module('starter.services', [])
             }
           );
         }
+      },
+      isLogin: function () {//判断是否登录
+       if(localStorage.getItem("usertoken")){
+         return true;
+       }else {
+         return false;
+       }
       }
     }
   })

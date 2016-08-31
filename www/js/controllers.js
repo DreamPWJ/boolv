@@ -26,7 +26,6 @@ angular.module('starter.controllers', [])
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService) {
     CommonService.ionicLoadingShow();
-
     $scope.getMainData = function () {
       //登录授权
       MainService.authLogin().success(function (data) {
@@ -171,23 +170,39 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('LoginCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('LoginCtrl', function ($scope, $rootScope, $state,$ionicHistory, $interval,CommonService, AccountService) {
 
     $scope.user = {};//提前定义用户对象
+    $scope.paracont = "获取验证码"; //初始发送按钮中的文字
+    $scope.paraclass = false; //控制验证码的disable
     $scope.sendCode = function () {
+      //60s倒计时
+      $scope.counDown();
       AccountService.sendCode($scope.user.username).success(function (data) {
-        $scope.user.password = data.Values;
+        $scope.user.passwordcode = data.Values;
       }).error(function () {
-        CommonService.showAlert("博绿网", "验证码获取失败!", 'login');
+        CommonService.platformPrompt("验证码获取失败!",'login');
       })
     }
     $scope.loginSubmit = function () {
+      if($scope.user.passwordcode!=$scope.user.password){
+        CommonService.platformPrompt("输入验证码不正确",'login');
+        return;
+      }
       CommonService.ionicLoadingShow();
       AccountService.login($scope.user).success(function (data) {
+        if(data.Key!=200){
+          CommonService.platformPrompt("登录失败!",'login');
+          return;
+        }
         localStorage.setItem('usertoken', data.Values);
-        $state.go("tab.main")
+        if ($ionicHistory) {
+          $ionicHistory.goBack();
+        } else {
+          $state.go("tab.main");
+        }
       }).error(function () {
-        CommonService.showAlert("博绿网", "登录失败!", 'login');
+        CommonService.platformPrompt("登录失败!",'login');
       }).then(function () {
         $scope.userid = localStorage.getItem("usertoken");
         AccountService.getUserInfo($scope.userid).success(function (data) {
@@ -198,6 +213,22 @@ angular.module('starter.controllers', [])
       })
 
     }
+    //60s倒计时
+    $scope.counDown = function () {
+      var second = 60,
+      timePromise = undefined;
+      timePromise = $interval(function () {
+        if (second <= 0) {
+          $interval.cancel(timePromise);
+          $scope.paracont = "重发验证码";
+          $scope.paraclass = false;
+        } else {
+          $scope.paraclass = true;
+          $scope.paracont = second + "秒后可重发";
+          second--;
+        }
+      }, 1000, 100);
+    };
   })
   //查单列表
   .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
@@ -490,7 +521,11 @@ angular.module('starter.controllers', [])
     }
   })
   //接单供货计划订单列表以及详情
-  .controller('SupplyGoodCtrl', function ($scope, $rootScope, CommonService, SupplyService) {
+  .controller('SupplyGoodCtrl', function ($scope,$state, $rootScope, CommonService, SupplyService) {
+     if(!localStorage.getItem("user")){
+       $state.go('login');
+       return;
+     }
     //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
     if (JSON.parse(localStorage.getItem("user")).grade != 5) {
       CommonService.showAlert("非供货商没有权限供货");
