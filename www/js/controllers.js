@@ -170,7 +170,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('LoginCtrl', function ($scope, $rootScope, $state,$ionicHistory, $interval,CommonService, AccountService) {
+  .controller('LoginCtrl', function ($scope, $rootScope, $state, $ionicHistory, $interval, CommonService, AccountService) {
 
     $scope.user = {};//提前定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
@@ -181,18 +181,18 @@ angular.module('starter.controllers', [])
       AccountService.sendCode($scope.user.username).success(function (data) {
         $scope.user.passwordcode = data.Values;
       }).error(function () {
-        CommonService.platformPrompt("验证码获取失败!",'login');
+        CommonService.platformPrompt("验证码获取失败!", 'login');
       })
     }
     $scope.loginSubmit = function () {
-      if($scope.user.passwordcode!=$scope.user.password){
-        CommonService.platformPrompt("输入验证码不正确",'login');
+      if ($scope.user.passwordcode != $scope.user.password) {
+        CommonService.platformPrompt("输入验证码不正确", 'login');
         return;
       }
       CommonService.ionicLoadingShow();
       AccountService.login($scope.user).success(function (data) {
-        if(data.Key!=200){
-          CommonService.platformPrompt("登录失败!",'login');
+        if (data.Key != 200) {
+          CommonService.platformPrompt("登录失败!", 'login');
           return;
         }
         localStorage.setItem('usertoken', data.Values);
@@ -202,7 +202,7 @@ angular.module('starter.controllers', [])
           $state.go("tab.main");
         }
       }).error(function () {
-        CommonService.platformPrompt("登录失败!",'login');
+        CommonService.platformPrompt("登录失败!", 'login');
       }).then(function () {
         $scope.userid = localStorage.getItem("usertoken");
         AccountService.getUserInfo($scope.userid).success(function (data) {
@@ -216,7 +216,7 @@ angular.module('starter.controllers', [])
     //60s倒计时
     $scope.counDown = function () {
       var second = 60,
-      timePromise = undefined;
+        timePromise = undefined;
       timePromise = $interval(function () {
         if (second <= 0) {
           $interval.cancel(timePromise);
@@ -345,6 +345,7 @@ angular.module('starter.controllers', [])
   })
   // 查单审核验货单列表
   .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
+
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//编码 ,等于空时取所有
@@ -356,17 +357,61 @@ angular.module('starter.controllers', [])
       YhUser: ''//验货人
     }
     SearchOrderService.getYanhuoList($scope.params).success(function (data) {
-      $scope.yanhuolist=data.Values.data_list;
-      $scope.yanhuolistDetails=[];
-      angular.forEach($scope.yanhuolist[0].Details,function (item) {
-        item.checked=true;
-        $scope.yanhuolistDetails.push(item)
+      $scope.yanhuolist = data.Values.data_list;
+      $scope.yanhuolistDetails = [];
+      angular.forEach($scope.yanhuolist, function (item) {
+        angular.forEach(item.Details, function (items) {
+          items.checked = false;
+          $scope.yanhuolistDetails.push(items)
+        })
       })
 
     })
-    $scope.examinegoodsordersubmit = function () {
-      CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+    //检查是否复选框选中
+    $scope.checkChecded = function () {
+      $scope.ischecked = false;
+      angular.forEach($scope.yanhuolistDetails, function (item) {
+        if (item.checked) {
+          $scope.ischecked = true;
+        }
+      })
     }
+    //确认交易
+    $scope.examinegoodsordersubmit = function () {
+      //查单(卖货订单)提交卖货交易信息
+      $scope.details = [];
+      angular.forEach($scope.yanhuolistDetails, function (item) {
+        var items = {};//提交卖货交易信息明细json数据
+        if (item.checked) {  //选择选中的
+          items.ProdID = item.ProdID, // 产品编号
+            items.ProdName = item.ProdName , // 产品名称
+            items.SaleClass = item.SaleClass , // 销售分类ID
+            items.Unit = item.Unit, // 计算单位ID
+            items.Num = item.Num, //数量
+            items.Price = item.Price//采购单价
+          $scope.details.push(items)
+        }
+      })
+      /*   走卖货时：收货人是之前的卖货人，退货人录供货人
+       走供货时：收货人是之前的供货人，退货人录买货人*/
+      $scope.datas = {
+        FromUser: localStorage.getItem("usertoken"),//卖货人
+        ToUser: $scope.yanhuolist[0].AddUser,//收货人
+        RelateNo: "",//关联单号
+        Details: $scope.details
+      }
+
+      /*      SearchOrderService.addSaleTrade($scope.datas).success(function (data) {
+       CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+       })
+       //查单(卖货订单)修改卖货验货状态
+       $scope.params={
+       }
+       SearchOrderService.updateSaleOrderYanhuoStatus($scope.params).success(function (data) {
+       })*/
+
+    }
+
 
   })
   //查单收货单详情
@@ -521,11 +566,11 @@ angular.module('starter.controllers', [])
     }
   })
   //接单供货计划订单列表以及详情
-  .controller('SupplyGoodCtrl', function ($scope,$state, $rootScope, CommonService, SupplyService) {
-     if(!localStorage.getItem("user")){
-       $state.go('login');
-       return;
-     }
+  .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService) {
+    if (!localStorage.getItem("user")) {
+      $state.go('login');
+      return;
+    }
     //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
     if (JSON.parse(localStorage.getItem("user")).grade != 5) {
       CommonService.showAlert("非供货商没有权限供货");
