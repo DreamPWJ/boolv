@@ -235,6 +235,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
       })
+      //添加评论页面
       .state('evaluate', {
         url: '/evaluate',
         templateUrl: 'templates/searchorder/evaluate.html',

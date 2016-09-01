@@ -21,15 +21,16 @@
           <i class="icon ion-star calm"></i>
           <i class="icon ion-star "></i></p>
       </a>
-      <ion-item  class="item-borderless item-divider">服务态度 </ion-item>
+      <p></p>
+    <!--  <ion-item  class="item-borderless item-divider">服务态度 </ion-item>
       <ion-radio ng-model="manner" ng-value="'A'" >满意</ion-radio>
       <ion-radio ng-model="manner" ng-value="'B'">一般</ion-radio>
       <ion-radio ng-model="manner" ng-value="'C'" class="border-bottom-none" >不满意</ion-radio>
       <ion-item  class="item-borderless item-divider">服务效率 </ion-item>
       <ion-radio ng-model="efficiency" ng-value="'A'" >满意</ion-radio>
       <ion-radio ng-model="efficiency" ng-value="'B'">一般</ion-radio>
-      <ion-radio ng-model="efficiency" ng-value="'C'" class="border-bottom-none" >不满意</ion-radio>
-      <ion-item>综合评分  <span class="padding-left  evaluate-star">  <i class="icon ion-star  " ng-class="{true:'calm',false:'grey'}[star>=1]" ng-click="evaluatestar(1)"></i>
+      <ion-radio ng-model="efficiency" ng-value="'C'" class="border-bottom-none" >不满意</ion-radio>-->
+      <ion-item  ng-repeat="item in evaluatelist">{{item.Name}}  <span class="padding-left  evaluate-star">  <i class="icon ion-star  " ng-class="{true:'calm',false:'grey'}[star>=1]" ng-click="evaluatestar(1)"></i>
         <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=2]" ng-click="evaluatestar(2)"></i>
         <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=3]" ng-click="evaluatestar(3)"></i>
         <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=4]" ng-click="evaluatestar(4)"></i>
@@ -40,7 +41,7 @@
 
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <a class=" button button-balanced  full-image" ng-click="$ionicGoBack()">提交评价</a>
+    <a class=" button button-balanced  full-image" ng-click="submitevalute()">提交评价</a>
   </div>
 
 </ion-view>
