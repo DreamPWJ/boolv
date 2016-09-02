@@ -1,5 +1,6 @@
 angular.module('starter.controllers', [])
   .config(function ($httpProvider) {
+    //发货录入Fromuser，签收，验货录user，审核验货，及退货录Fromuser
     //$http模块POST请求类型编码转换 统一配置
     /*    $httpProvider.defaults.transformRequest = function (obj) {
      var str = [];
@@ -34,6 +35,7 @@ angular.module('starter.controllers', [])
         //获取广告图
         MainService.getAdMsg().success(function (data) {
           $scope.adImg = data.Values;
+          console.log($scope.adImg);
         })
         //获取行情报价
         MainService.getProds().success(function (data) {
@@ -966,7 +968,7 @@ angular.module('starter.controllers', [])
       })
       //提交验货数据
       $scope.datas = {
-        AddUser: $rootScope.checkDetails.FromUser,//添加人账号 AddUser (SaleOrder/GetSaleSupply接口中对应的 FromUser）
+        AddUser: localStorage.getItem("usertoken"),//添加人账号 AddUser
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.checkDetails.No,//卖货单/供货单订单号
         Imgs: [{  //上传图片集合
@@ -1203,7 +1205,7 @@ angular.module('starter.controllers', [])
       var ordeType = $rootScope.deliverDetails.OrdeType;
       //提交签收数据
       $scope.datas = {
-        User: $rootScope.deliverDetails.FromUser,//订单所对应的会员账号
+        User: localStorage.getItem('usertoken'),//订单所对应的会员账号
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.deliverDetails.No,//卖货单/供货单订单号
         TradeType: $scope.goodtype - 1,//交易方式 0-物流配送1-送货上门2-上门回收
@@ -1269,7 +1271,7 @@ angular.module('starter.controllers', [])
       })
       $scope.datas = {
         userid: localStorage.getItem("usertoken"),		//用户id
-        username: JSON.parse(localStorage.getItem("user")).username,	//姓名
+        username: $scope.addrinfo.username,	//姓名
         mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
         addrcode: $scope.addrareaone.code,	//地区编码
         addr: $scope.addrinfo.address,	//详细地址
