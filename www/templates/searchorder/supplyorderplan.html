@@ -14,24 +14,24 @@
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
-        <h2><strong>订单号 : </strong>GF201615484878787877<span class="item-note"><i
+        <h2><strong>订单号 : </strong>{{supplyDetails.No}}<span class="item-note"><i
           class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></h2>
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>采购商家 : 张三</h2>
+          <h2>采购商家 : {{supplyDetails.Tousername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>供货周期(余/总) : 30/50天</h2>
+          <h2>供货周期(余/总) : {{supplyDetails.SupCycle}}/{{supplyDetails.SupNum}}天</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>总供货量(余/总) : 1500000/250000000台</h2>
+          <h2>总供货量(余/总) : {{supplyDetails.SupSum}}/{{supplyDetails.NumSum}}台</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>订单状态 : 已审核</h2>
+          <h2>订单状态 : {{supplyorderStatus[supplyDetails.Status+1]}}</h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
-          <h2>下单时间 : 2016-06-23</h2>
+          <h2>下单时间 : {{supplyDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
         </a>
       </div>
     </div>
@@ -43,45 +43,19 @@
                                                   ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
-        <a ng-href="" class="item">
-          <h2>拆解机 供货量(余/总): 1500/250000台</h2>
-          <p>供货次数(余/总): 3/5次</p>
-          <p>单次供货量:100000台</p>
+        <a ng-href="" class="item" ng-repeat="item in supplyDetails.Details">
+          <h2>{{item.ProdName}} <!--供货量(余/总): {{supplyDetails.SupSum}}/{{supplyDetails.NumSum+item.UName}}--></h2>
+          <p>剩余供货次数: {{supplyDetails.SupCount}}次</p>
+          <p>单次供货量: {{item.SupNum+item.UName}}</p>
         </a>
-        <a ng-href="" class="item border-bottom-none">
-          <h2>二手手机 供货量(余/总): 1500/250000台</h2>
-          <p>供货次数(余/总): 3/5次</p>
-          <p>单次供货量:100000台</p>
-        </a>
-        <a ng-href="" class="item border-bottom-none">
-          <h2>电池 供货量(余/总): 1500/250000台</h2>
-          <p>供货次数(余/总): 3/5次</p>
-          <p>单次供货量:100000台</p>
-        </a>
-        <a ng-href="" class="item">
-          <h2>拆解机 供货量(余/总): 1500/250000台</h2>
-          <p>供货次数(余/总): 3/5次</p>
-          <p>单次供货量:100000台</p>
-        </a>
-        <a ng-href="" class="item border-bottom-none">
-          <h2>二手手机 供货量(余/总): 1500/250000台</h2>
-          <p>供货次数(余/总): 3/5次</p>
-          <p>单次供货量:100000台</p>
-        </a>
-        <a ng-href="" class="item border-bottom-none">
-          <h2>电池 供货量(余/总): 1500/250000台</h2>
-          <p>供货次数(余/总): 3/5次</p>
-          <p>单次供货量:100000台</p>
-        </a>
+
       </div>
     </div>
 
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-40 button button-balanced " ng-href="#/enteringnum">备货</a>
-    <a class="col-40  button button-calm " ng-href="#/supplyorderdetails">供货记录</a>
+    <a class="col-40 button button-balanced " ng-href="#/enteringnum/{{supplyDetails}}">备货</a>
+    <a class="col-40  button button-calm " ng-href="#/supplyorderlist">供货记录</a>
   </div>
-  <script id="my-supplyorderplan-popover.html" type="text/ng-template">
 
-  </script>
 </ion-view>

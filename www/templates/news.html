@@ -4,9 +4,10 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false"  class="stable-bg ">
+    <ion-refresher on-refresh="newslist()" pulling-text="下拉更新"></ion-refresher>
    <ion-list class="margin-top-1px">
      <ion-item ng-href="" ng-repeat="item in newsList.data_list">
-       <h2 ><i class="icon ion-ios-circle-filled calm" ></i>{{item.title}} <span CLASS="item-note">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>
+       <h2 ><i class="icon ion-ios-circle-filled calm" ></i> {{item.title}} <span class="item-note right-1">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>
        <h4><i class="icon ion-email calm"></i>  提示信息：{{item.look==0?'未读':'已读'}}  </h4>
        <p style="padding-left: 0.8rem; white-space: normal;">{{item.content}}</p>
        <ion-option-button class="button-balanced" ng-click="updateNewsLook(item.look,item.id)">{{item.look==1?'未读':'已读'}} </ion-option-button>

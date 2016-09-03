@@ -211,13 +211,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/supplyorderplan.html',
         controller: 'SupplyOrderPlanCtrl'
       })
+      //查单供货计划备货录入
       .state('enteringnum', {
-        url: '/enteringnum',
+        url: '/enteringnum/:item',
         templateUrl: 'templates/searchorder/enteringnum.html',
         controller: 'EnteringNumCtrl'
       })
+      //供货记录单列表
+      .state('supplyorderlist', {
+        url: '/supplyorderlist',
+        templateUrl: 'templates/searchorder/supplyorderlist.html',
+        controller: 'SupplyOrderListCtrl'
+      })
+       //供货单详情
       .state('supplyorderdetails', {
-        url: '/supplyorderdetails',
+        url: '/supplyorderdetails/:item',
         cache: false,
         templateUrl: 'templates/searchorder/supplyorderdetails.html',
         controller: 'SupplyOrderDetailsCtrl'

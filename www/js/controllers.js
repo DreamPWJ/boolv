@@ -63,18 +63,21 @@ angular.module('starter.controllers', [])
 
           })
         })
-
-        //提交设备信息到服务器
-        $scope.datas = {
-          registration_id: "fawffeae121155",	//极光注册id
-          user: localStorage.getItem("usertoken"),	//用户id,没登录为空
-          mobile: JSON.stringify(localStorage.getItem("user")).mobile,	//手机号码
-          alias: "",	//设备别名
-          device: 0	//设备类型:0-android,1-ios
-        }
-        NewsService.setDeviceInfo().success(function (data) {
-          console.log(data);
+        window.plugins.jPushPlugin.getRegistrationID(function (data) {
+          $scope.jPushRegistrationID = data;
+          //提交设备信息到服务器
+          $scope.datas = {
+            registration_id: $scope.jPushRegistrationID,	//极光注册id
+            user: localStorage.getItem("usertoken"),	//用户id,没登录为空
+            mobile: JSON.stringify(localStorage.getItem("user")).mobile,	//手机号码
+            alias: "",	//设备别名
+            device: 0	//设备类型:0-android,1-ios
+          }
+          NewsService.setDeviceInfo().success(function (data) {
+            console.log(data);
+          })
         })
+
       }).finally(function () {
         CommonService.ionicLoadingHide();
         $scope.$broadcast('scroll.refreshComplete');
@@ -325,39 +328,138 @@ angular.module('starter.controllers', [])
 
   })
   //查单买货详情
-  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService,SearchOrderService) {
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, SearchOrderService) {
     $rootScope.buyDetails = JSON.parse($stateParams.item);
     console.log($rootScope.buyDetails);
     CommonService.ionicPopover($scope, 'my-pay.html');
     //支付定金
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
-      $scope.paymoney=function () {
+      $scope.paymoney = function () {
         //查单(买货订单)修改买货订单状态
-        $scope.params={
-          No:$rootScope.buyDetails.No,//订单号
-          User:$rootScope.buyDetails.FromUser,//下单人账号
-          Status:3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+        $scope.params = {
+          No: $rootScope.buyDetails.No,//订单号
+          User: $rootScope.buyDetails.FromUser,//下单人账号
+          Status: 3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
         }
         SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
+          CommonService.platformPrompt('定金支付成功');
           console.log(data);
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails',$scope.paymoney)
+      CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails', $scope.paymoney)
     }
 
   })
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
+    $rootScope.supplyDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-stockup.html');
+    console.log($rootScope.supplyDetails);
 
   })
-  .controller('EnteringNumCtrl', function ($scope, $rootScope, CommonService) {
+  //查单供货计划备货录入
+  .controller('EnteringNumCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService,SearchOrderService) {
+    $rootScope.deliverDetails= JSON.parse($stateParams.item)
+    console.log($rootScope.deliverDetails);
+    $scope.supplyinfo = [];//供货信息
+    $scope.params = {
+      page: 1,
+      size: 10,
+      userid: localStorage.getItem("usertoken")
+    }
+    //获取发货用户常用地址ID
+    AccountService.getAddrlist($scope.params).success(function (data) {
+      $scope.addrlist = data.Values.data_list;
+      $scope.addrliststatus = [];
+      angular.forEach($scope.addrlist, function (item) {
+        if (item.status == 1) {
+          $scope.addrliststatus.push(item);
+        }
+      })
+    })
+    $scope.toAddrparams = {
+      page: 1,
+      size: 10,
+      userid: $rootScope.deliverDetails.ToUser
+    }
+    //获取收货用户常用地址ID
+    AccountService.getAddrlist($scope.toAddrparams).success(function (data) {
+      $scope.toAddraddrlist = data.Values.data_list;
+      $scope.toAddraddrliststatus = [];
+      angular.forEach($scope.toAddraddrlist, function (item) {
+        if (item.status == 1) {
+          $scope.toAddraddrliststatus.push(item);
+        }
+      })
+    })
+    //查询用户银行信息
+    AccountService.getUserBanklist($scope.params).success(function (data) {
+      $scope.userbankliststatus = [];
+      angular.forEach(data.Values.data_list, function (item) {
+        if (item.isdefault == 1) {
+          $scope.userbankliststatus.push(item);
+        }
+      })
+    })
     $scope.enteringnumsubmit = function () {
-      CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', '')
+      //供货计划明细数组
+      $scope.details = [];
+      angular.forEach($rootScope.deliverDetails.Details, function (item, index) {
+        var items = {};//提交供货计划明细json数据
+        items.ProdID = item.ProdID, // 产品编号
+          items.ProdName = item.ProdName , // 产品名称
+          items.SaleClass = item.SaleClass , // 销售分类ID
+          items.Unit = item.Unit, // 计算单位ID
+          items.Num = $scope.supplyinfo[index].num, //数量
+          items.Price = item.Price//采购单价
+        $scope.details.push(items)
+      })
+      //提交供货计划
+      $scope.datas = {
+        SPNo: "",//供货计划单号
+        BONo: $rootScope.deliverDetails.No,//采购单号
+        ToUser: $rootScope.deliverDetails.FromUser,//买货单(采购)账号（待供货接口获取）
+        FromUser: localStorage.getItem("usertoken"),//供货人账号
+        FromAddr: $scope.addrliststatus[0].id,//发货地址ID
+        ToAddr: $scope.toAddraddrliststatus[0].id,//收货地址ID
+        TradeType: 0,//0-物流配送1-送货上门3-上门回收：TradeType
+        Account: $scope.userbankliststatus[0].id,//收款账号ID
+        Details: $scope.details// 供货明细
+      };
+
+      SearchOrderService.addSearchOrderSupplyPlan($scope.datas).success(function (data) {
+        console.log(data);
+        CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', '')
+      })
+
     }
   })
-  .controller('SupplyOrderDetailsCtrl', function ($scope, $rootScope, CommonService) {
+  //供货记录单列表
+  .controller('SupplyOrderListCtrl', function ($scope, $rootScope, CommonService,SearchOrderService) {
+
+    $scope.params = {
+      currentPage: 1,//当前页码
+      pageSize: 5,//每页条数
+      ID: '',//编码 ,等于空时取所有
+      No: '',//订单号，模糊匹配
+      User: '',//下单人账号
+      Status: '',//订单状态0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
+      BONo: '',//关联买货单号
+      ToUser: '' ,//关联买货单人
+      SPNo:'',//供货计划单
+    };
+    //查单(供货订单)获取供货单列表
+    SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
+      $scope.supplylist = data.Values;
+
+      //订单状态(供货单)
+      $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+    })
+  })
+  //供货单详情
+  .controller('SupplyOrderDetailsCtrl', function ($scope, $rootScope,$stateParams, CommonService) {
+    $rootScope.supplyDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
   })
   // 查单审核验货单列表
@@ -517,6 +619,8 @@ angular.module('starter.controllers', [])
   //查单收货单详情
   .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-payorder.html');
+    $rootScope.collectGoodDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.collectGoodDetails);
 
   })
   //添加评论页面
@@ -555,31 +659,46 @@ angular.module('starter.controllers', [])
           User: $scope.yanhuolist[0].AddUser,//下单人账号
           OrderType: 1,//1代表卖货单2代表供货单
         }
-        SearchOrderService.updateSaleOrderStatus($scope.params).success(function (data) {
-          console.log(data);
-        })
+        var flag = 0;
+        if (flag == 1) {
+          //查单(卖货订单)修改卖货/供货订单状态
+          SearchOrderService.updateSaleOrderStatus($scope.params).success(function (data) {
+            console.log(data);
+          })
+        } else if (flag == 2) {
+          //查单(供货订单)修改供货计划状态
+          SearchOrderService.updateSupplyPlanStatus($scope.params).success(function (data) {
+            console.log(data);
+          })
+        }
       })
 
     }
   })
   //通知消息列表
-  .controller('NewsCtrl', function ($scope, $rootScope, CommonService, NewsService) {
-    $scope.params = {
-      page: 1,//页码
-      size: 10,//条数
-      userid: localStorage.getItem("usertoken")//用户id
+  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService) {
+    $scope.newslist = function () {
+      $scope.params = {
+        page: 1,//页码
+        size: 10,//条数
+        userid: localStorage.getItem("usertoken")//用户id
+      }
+      NewsService.getNewsList($scope.params).success(function (data) {
+        $scope.newsList = data.Values;
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+      })
     }
-    NewsService.getNewsList($scope.params).success(function (data) {
-      $scope.newsList = data.Values;
-    })
 
+    $scope.newslist();
     $scope.updateNewsLook = function (look, id) { //设置已读未读
       $scope.lookparams = {
         look: look,//页码
         ids: id
       }
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
-
+        console.log(data);
+        $scope.newslist();
       })
     }
   })
@@ -1528,26 +1647,36 @@ angular.module('starter.controllers', [])
 
   })
   .controller('MyPopover', function ($scope, $rootScope, $state, CommonService, SearchOrderService) {
-     //支付定金
+    //支付定金
     $scope.paymentsubmit = function () {
       $rootScope.procureorderdetailssubmit();
     }
     //关闭订单修改状态
     $scope.closeordersubmit = function () {
 
-      $scope.ordersubmit=function () {
-        //查单(卖货订单)修改卖货/供货订单状态
+      $scope.ordersubmit = function () {
         $scope.closeordersparams = {
           No: $scope.yanhuolist[0].No,//订单号
           Status: -1,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
           User: $scope.yanhuolist[0].AddUser,//下单人账号
           OrderType: 1,//1代表卖货单2代表供货单
         }
-        SearchOrderService.updateSaleOrderStatus($scope.closeordersparams).success(function (data) {
-          console.log(data);
-        })
+        var flag = 0;
+        if (flag == 1) {
+          //查单(卖货订单)修改卖货/供货订单状态
+          SearchOrderService.updateSaleOrderStatus($scope.closeordersparams).success(function (data) {
+            console.log(data);
+          })
+        } else if (flag == 2) {
+          //查单(供货订单)修改供货计划状态
+          SearchOrderService.updateSupplyPlanStatus($scope.closeordersparams).success(function (data) {
+            console.log(data);
+          })
+        }
+
+
       }
-      CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', '',$scope.ordersubmit)
+      CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', '', $scope.ordersubmit)
     }
     $scope.paytopaymentsubmit = function () {
       CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', '')

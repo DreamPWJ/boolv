@@ -10,30 +10,19 @@
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <div class="list  ">
-      <label class="item item-input item-borderless">
-        <span class="input-label">拆解机</span>
-        <input type="number" placeholder="剩余供货量40000台">
+      <label class="item item-input " ng-repeat="item in deliverDetails.Details">
+        <span class="input-label">{{item.ProdName}}</span>
+        <input type="number" ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SupNum+item.UName}}">
       </label>
 
-      <label class="item item-input ">
-        <span class="input-label">不合格拆解机</span>
-        <input type="number" placeholder="剩余供货量40000台">
-      </label>
-      <label class="item item-input ">
-        <span class="input-label">二手手机</span>
-        <input type="number" placeholder="剩余供货量40000台">
-      </label>
-      <label class="item item-input border-bottom-none">
-        <span class="input-label">电池</span>
-        <input type="number" placeholder="剩余供货量40000公斤">
-      </label>
+
       <a ng-href="" class="item item-divider">
         <p>选择收款账户</p>
       </a>
       <a ng-href="#/collectionaccount" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>张三</h2>
-        <h2><strong>账号 : </strong>**********88963</h2>
-        <h2><strong>银行 : </strong>中国平安银行</h2>
+        <h2><strong>收款人 : </strong>{{userbankliststatus[0].accountname}}</h2>
+        <h2><strong>账号 : </strong>{{userbankliststatus[0].accountno}}</h2>
+        <h2><strong>银行 : </strong>{{userbankliststatus[0].bankname}}</h2>
         <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
       </a>
     </div>

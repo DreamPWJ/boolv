@@ -1092,7 +1092,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      addSupplyPlan: function (datas) { //查单(供货订单)提交供货单
+      addSearchOrderSupplyPlan: function (datas) { //查单(供货订单)提交供货单
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
