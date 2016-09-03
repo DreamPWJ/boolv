@@ -325,12 +325,27 @@ angular.module('starter.controllers', [])
 
   })
   //查单买货详情
-  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    CommonService.ionicPopover($scope, 'my-pay.html')
-
-    $scope.procureorderdetailssubmit = function () {
-      CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', 'procureorderdetails', 'procureorderdetails')
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService,SearchOrderService) {
+    $rootScope.buyDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.buyDetails);
+    CommonService.ionicPopover($scope, 'my-pay.html');
+    //支付定金
+    $rootScope.procureorderdetailssubmit = function () {
+      //支付定金确认
+      $scope.paymoney=function () {
+        //查单(买货订单)修改买货订单状态
+        $scope.params={
+          No:$rootScope.buyDetails.No,//订单号
+          User:$rootScope.buyDetails.FromUser,//下单人账号
+          Status:3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+        }
+        SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
+          console.log(data);
+        })
+      }
+      CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails',$scope.paymoney)
     }
+
   })
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
@@ -378,9 +393,8 @@ angular.module('starter.controllers', [])
         }
       })
     }
-    //确认交易
-    $scope.examinegoodsordersubmit = function () {
-      //查单(卖货订单)提交卖货交易信息
+    //数据组织复用方法
+    $scope.datareuse = function () {
       $scope.details = [];
       $scope.detailsmore = [];//更多字段的信息
       $scope.IDList = [];//已选明细编号数组：ID
@@ -402,10 +416,7 @@ angular.module('starter.controllers', [])
         }
 
       })
-      if($scope.IDList.length==0){//没有满足条件详细数据
-        CommonService.platformPrompt('订单都已经修改状态');
-        return;
-      }
+
       /*  走卖货时：收货人是之前的卖货人，退货人录供货人
        走供货时：收货人是之前的供货人，退货人录买货人 走卖货时，卖货人要操作这个单的下单，发货，审核验货，退货，取消订单，供商人要操作这个单的签收，验货;
        走供货时，供货人要操作这个单的下单，发货，审核验货，退货，取消订单，买货人要操作这个单的签收，验货;
@@ -418,59 +429,90 @@ angular.module('starter.controllers', [])
       }
       console.log("1==========");
       console.log($scope.datas);
+    }
+
+    //复用修改订单状态的函数集合
+    $scope.funcreuse = function (status) {
+      //查单(卖货订单)修改卖货验货明细产品状态
+      $scope.paramsdetails = {
+        IDList: $scope.IDList.join(','),//编号，多个用,隔开
+        Status: status,//订单状态0-待确认1-已退货2-暂存3-已成交
+        YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
+      }
+      console.log("3==========");
+      console.log($scope.paramsdetails);
+      //这个明细不是默认值后下次就不能修改状态了 如一条明细是退货了，就不能改成成交了
+      SearchOrderService.updateStatusSaleDetails($scope.paramsdetails).success(function (data) {
+        console.log("4==========");
+        console.log(data);
+      }).then(function () {
+        console.log("5==========" + $scope.isAllUpdate);
+        if ($scope.isAllUpdate) {//明细都执行完了再改主表状态 要查看明细的那个状态是不是默认状态，只有全部不是默认状态时，才会执行9.4，9.2的接口 因为可能是我今天只审核了一条明细，第二天再审核一条明细
+          //查单(卖货订单)修改卖货验货状态
+          $scope.yanhuoparams = {
+            No: $scope.yanhuolist[0].No,//订单号
+            Status: 2,//订单状态0-验货中1-待审核/验货完成2-已审核
+            YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
+          }
+          console.log("6==========");
+          console.log($scope.yanhuoparams);
+          SearchOrderService.updateSaleOrderYanhuoStatus($scope.yanhuoparams).success(function (data) {
+            console.log("7==========");
+            console.log(data);
+          })
+
+          //查单(卖货订单)修改卖货/供货订单状态
+          $scope.supplyparams = {
+            No: $scope.yanhuolist[0].No,//订单号
+            Status: 5,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+            User: $scope.yanhuolist[0].AddUser,//下单人账号
+            OrderType: 1,//1代表卖货单2代表供货单
+
+          }
+          console.log("8==========");
+          console.log($scope.supplyparams);
+          SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
+            console.log("9==========");
+            console.log(data);
+          })
+        }
+      })
+    }
+    //确认交易
+    $scope.examinegoodsordersubmit = function () {
+      //查单(卖货订单)提交卖货交易信息
+      $scope.datareuse();
+      if ($scope.IDList.length == 0) {//没有满足条件详细数据
+        CommonService.platformPrompt('订单都已经修改状态');
+        return;
+      }
       SearchOrderService.addSaleTrade($scope.datas).success(function (data) {
         console.log("2==========");
         console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
       }).then(function () {
-        //查单(卖货订单)修改卖货验货明细产品状态
-        $scope.paramsdetails = {
-          IDList: $scope.IDList.join(','),//编号，多个用,隔开
-          Status: 3,//订单状态0-待确认1-已退货2-暂存3-已成交
-          YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
-        }
-        console.log("3==========");
-        console.log($scope.paramsdetails);
-        //这个明细不是默认值后下次就不能修改状态了 如一条明细是退货了，就不能改成成交了
-        SearchOrderService.updateStatusSaleDetails($scope.paramsdetails).success(function (data) {
-          console.log("4==========");
-          console.log(data);
-        }).then(function () {
-          console.log("5=========="+$scope.isAllUpdate);
-          if ($scope.isAllUpdate) {//明细都执行完了再改主表状态 要查看明细的那个状态是不是默认状态，只有全部不是默认状态时，才会执行9.4，9.2的接口 因为可能是我今天只审核了一条明细，第二天再审核一条明细
-            //查单(卖货订单)修改卖货验货状态
-            $scope.yanhuoparams = {
-              No: $scope.yanhuolist[0].No,//订单号
-              Status: 2,//订单状态0-验货中1-待审核/验货完成2-已审核
-              YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
-            }
-            console.log("6==========");
-            console.log($scope.yanhuoparams);
-            SearchOrderService.updateSaleOrderYanhuoStatus($scope.yanhuoparams).success(function (data) {
-              console.log("7==========");
-              console.log(data);
-            })
-
-            //查单(卖货订单)修改卖货/供货订单状态
-            $scope.supplyparams = {
-              No: $scope.yanhuolist[0].No,//订单号
-              Status: 5,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
-              User: $scope.yanhuolist[0].AddUser,//下单人账号
-              OrderType: 1,//1代表卖货单2代表供货单
-
-            }
-            console.log("8==========");
-            console.log($scope.supplyparams);
-            SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
-              console.log("9==========");
-              console.log(data);
-            })
-          }
-        })
-
+        $scope.funcreuse(3)
       })
     }
 
+
+    //审核验货单退货
+    $scope.salesreturn = function () {
+      //查单(卖货订单)提交退货信息
+      $scope.datareuse();
+      $scope.datas.ordertype = 1;//退货类别 1卖货验货 2供货验货
+      if ($scope.IDList.length == 0) {//没有满足条件详细数据
+        CommonService.platformPrompt('订单都已经修改状态');
+        return;
+      }
+      SearchOrderService.addReturn($scope.datas).success(function (data) {
+        console.log("2==========");
+        console.log(data);
+        CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+      }).then(function () {
+        $scope.funcreuse(1)
+      })
+    }
   })
   //查单收货单详情
   .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
@@ -478,24 +520,24 @@ angular.module('starter.controllers', [])
 
   })
   //添加评论页面
-  .controller('EvaluateCtrl', function ($scope, $rootScope, CommonService,SearchOrderService) {
+  .controller('EvaluateCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
     $scope.evaluatestar = function (index) {
       $scope.star = index;
     };
     //查单 获取评论属性
-    $scope.params={
-      id:'',//编码 ,等于空时取所有
-      Group:1,//所属分组，等于空时取所有
-      IsValid:1,//是否有效 (1:有效0:无效)
-      IsShow:1//是否显示 1:显示0:不显示
+    $scope.params = {
+      id: '',//编码 ,等于空时取所有
+      Group: 1,//所属分组，等于空时取所有
+      IsValid: 1,//是否有效 (1:有效0:无效)
+      IsShow: 1//是否显示 1:显示0:不显示
     }
     SearchOrderService.getEvaluate($scope.params).success(function (data) {
-      $scope.evaluatelist=data.Values;
+      $scope.evaluatelist = data.Values;
     })
     //提交评论
-    $scope.submitevalute=function () {
+    $scope.submitevalute = function () {
       //查单 添加评价
-      $scope.datas={
+      $scope.datas = {
         OrderId: "BO20160816170017896",//订单号
         OrderType: 2,//订单类型1-卖货单2-买货单3-供货单
         EIID: "1,2,3",//评价属性ID（多个用逗号隔开）
@@ -505,6 +547,17 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.addEvaluate($scope.datas).success(function (data) {
         CommonService.showAlert('', '<p>恭喜您！评价成功！</p>', '');
+      }).then(function () {
+        //查单(卖货订单)修改卖货/供货订单状态
+        $scope.params = {
+          No: $scope.yanhuolist[0].No,//订单号
+          Status: 10,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+          User: $scope.yanhuolist[0].AddUser,//下单人账号
+          OrderType: 1,//1代表卖货单2代表供货单
+        }
+        SearchOrderService.updateSaleOrderStatus($scope.params).success(function (data) {
+          console.log(data);
+        })
       })
 
     }
@@ -1474,13 +1527,27 @@ angular.module('starter.controllers', [])
     }
 
   })
-  .controller('MyPopover', function ($scope, $rootScope, $state, CommonService) {
-
+  .controller('MyPopover', function ($scope, $rootScope, $state, CommonService, SearchOrderService) {
+     //支付定金
     $scope.paymentsubmit = function () {
-      CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', '')
+      $rootScope.procureorderdetailssubmit();
     }
+    //关闭订单修改状态
     $scope.closeordersubmit = function () {
-      CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', '')
+
+      $scope.ordersubmit=function () {
+        //查单(卖货订单)修改卖货/供货订单状态
+        $scope.closeordersparams = {
+          No: $scope.yanhuolist[0].No,//订单号
+          Status: -1,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+          User: $scope.yanhuolist[0].AddUser,//下单人账号
+          OrderType: 1,//1代表卖货单2代表供货单
+        }
+        SearchOrderService.updateSaleOrderStatus($scope.closeordersparams).success(function (data) {
+          console.log(data);
+        })
+      }
+      CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', '',$scope.ordersubmit)
     }
     $scope.paytopaymentsubmit = function () {
       CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', '')

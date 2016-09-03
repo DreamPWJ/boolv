@@ -1,11 +1,11 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera,$ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
-      platformPrompt:function(msg,stateurl){
-        if($ionicPlatform.is('android') || $ionicPlatform.is('ios')){
+      platformPrompt: function (msg, stateurl) {
+        if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
           $cordovaToast.showLongCenter(msg);
-        }else{
-          this.showAlert("博绿网", msg,stateurl);
+        } else {
+          this.showAlert("博绿网", msg, stateurl);
         }
       },
       showAlert: function (title, template, stateurl) {
@@ -26,7 +26,7 @@ angular.module('starter.services', [])
 
         });
       },
-      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl) {
+      showConfirm: function (title, template, okText, cancelText, stateurl, closeurl, confirmfunction) {
         var confirmPopup = $ionicPopup.confirm({
           cssClass: "show-confirm",
           title: '<strong>' + title + '</strong>',
@@ -39,8 +39,12 @@ angular.module('starter.services', [])
 
         confirmPopup.then(function (res) {
           if (res) {
-            $state.go(stateurl);
-            $ionicViewSwitcher.nextDirection("forward");//前进画效果
+            if (stateurl != '') {
+              $state.go(stateurl);
+              $ionicViewSwitcher.nextDirection("forward");//前进画效果
+            } else {
+              confirmfunction();
+            }
           } else {
             $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl)
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
@@ -230,11 +234,11 @@ angular.module('starter.services', [])
         }
       },
       isLogin: function () {//判断是否登录
-       if(localStorage.getItem("usertoken")){
-         return true;
-       }else {
-         return false;
-       }
+        if (localStorage.getItem("usertoken")) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   })
@@ -806,6 +810,77 @@ angular.module('starter.services', [])
           method: 'POST',
           url: BooLv.api + "/Yanhuo/AddYanhuo",
           data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getGoodTypeList: function (params) { //发货 签收 验货  获取产品类别
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/QueJian/GetGroup",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getQueJianList: function (params) { //发货 签收 验货  查询缺件信息分页列
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/QueJian/GetListQueJian",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      addQJ: function (datas) { //提交卖货/供货验货扣款记录
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/QueJian/AddQJ",
+          data: datas
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      getPageSQueJian: function (params) { //发货 签收 验货 查询卖货验货扣款记录分页列
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/QueJian/GetPageSQueJian",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+      ,
+      getPageBQueJian: function (params) { //发货 签收 验货 查询供货验货扣款记录分页列
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/QueJian/GetPageBQueJian",
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
