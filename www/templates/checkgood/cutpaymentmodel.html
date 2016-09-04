@@ -1,0 +1,29 @@
+<ion-modal-view >
+  <ion-header-bar class="bar bar-header bar-calm">
+    <h1 class="title icon ion-search"> 扣款项列表</h1>
+    <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
+  </ion-header-bar>
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" >
+   <ion-list>
+     <ion-item class="item-input item-select item-stable">
+       <span class="input-label">扣款项列表</span>
+       <select  ng-model="cutpaymentinfo.goodtype"  ng-change="selectGoodType(cutpaymentinfo.goodtype)">
+         <option value="{{item.GID}}"  ng-repeat="item in goodTypeList">{{item.GName}}</option>
+       </select>
+     </ion-item>
+     <ion-item class="item-icon-right" ng-repeat="item in queJianList">{{item.Name}}
+      <i ng-if="cutpaymentinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
+      <i ng-if="cutpaymentinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
+   </ion-item>
+
+   </ion-list>
+
+  </ion-content>
+  <div class="light-bg bottom-0">
+    <div class="row row-no-padding">
+      <div class="col-66   gongxiang" >共 :  <span class="calm" ng-bind="cutpaymentinfo.num"></span>  项</div>
+      <button class="button button-calm full-image col-34" ng-click="modal.hide()" >选好了</button>
+    </div>
+
+  </div>
+</ion-modal-view>

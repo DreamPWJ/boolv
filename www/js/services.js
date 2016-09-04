@@ -52,9 +52,9 @@ angular.module('starter.services', [])
         });
       },
 
-      searchModal: function ($scope) {
+      searchModal: function ($scope,templateurl) {
         //点击搜索跳转搜索modal
-        $ionicModal.fromTemplateUrl('templates/search.html', {
+        $ionicModal.fromTemplateUrl(templateurl, {
           scope: $scope,
           animation: 'slide-in-up'
         }).then(function (modal) {
@@ -239,6 +239,20 @@ angular.module('starter.services', [])
         } else {
           return false;
         }
+      },
+      getStateName:function(){    //得到上一个路由名称方法
+        var stateName = "";
+        if($ionicHistory.backView() && $ionicHistory.backView().stateName!="tab.account"){
+          stateName =  $ionicHistory.backView().stateName;
+        }
+        if(stateName){
+          $ionicHistory.goBack();
+        }else{
+          $state.go("tab.main",{} ,{reload:true});
+        }
+      },
+      stateReload: function (stateurl) {//路由跳转刷新
+        $state.go(stateurl,{} ,{reload:true});
       }
     }
   })

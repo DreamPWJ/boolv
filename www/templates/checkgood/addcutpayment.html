@@ -1,0 +1,33 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 添加扣款项</h1>
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-plus no-border" ng-click="modal.show()">
+    </button>
+  </ion-nav-buttons>
+  <form action="addcutpayment">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+    <ion-list>
+      <ion-item class="item-icon-right">
+        <strong>添加扣款项</strong>
+        <i class="icon ion-plus calm " ng-click="modal.show()"></i>
+      </ion-item>
+      <p></p>
+      <ion-item class="item-input item-borderless">
+        <span class="input-label">扣款总金额</span>
+        <input type="text" placeholder="(单位 : 元)"  ng-model="cutpaymentinfo.totalmoney" required/>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+  <div class="padding light-bg bottom-0">
+    <button  ng-disabled="!addcutpayment.$valid" class="button button-calm full-image" ng-click="submitCutPayMent()" >提交</button>
+  </div>
+  </form>
+</ion-view>

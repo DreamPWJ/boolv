@@ -201,11 +201,7 @@ angular.module('starter.controllers', [])
           return;
         }
         localStorage.setItem('usertoken', data.Values);
-        if ($ionicHistory) {
-          $ionicHistory.goBack();
-        } else {
-          $state.go("tab.main");
-        }
+        CommonService.getStateName();   //跳转页面
       }).error(function () {
         CommonService.platformPrompt("登录失败!", 'login');
       }).then(function () {
@@ -395,7 +391,7 @@ angular.module('starter.controllers', [])
       //滑动的索引和速度
       $ionicSlideBoxDelegate.slide(index)
     }
-    CommonService.searchModal($scope);
+    CommonService.searchModal($scope,'templates/search.html');
 
   })
   //查单买货详情
@@ -960,6 +956,7 @@ angular.module('starter.controllers', [])
         look: look,//页码
         ids: id
       }
+      console.log($scope.lookparams);
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
         console.log(data);
         $scope.newslist(0);
@@ -968,6 +965,11 @@ angular.module('starter.controllers', [])
   })
   //发货列表
   .controller('DeliverListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+    //是否登录
+    if(!CommonService.isLogin()){
+      $state.go("login");
+      return;
+    }
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -998,6 +1000,10 @@ angular.module('starter.controllers', [])
     //被评价人的ID
     $rootScope.evaluateFromUser=$rootScope.deliverDetails.FromUser
 
+  })
+  //添加发货清单
+  .controller('AddDeliverListCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
+    CommonService.searchModal($scope,'templates/search.html');
   })
   //提交发货信息
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
@@ -1093,8 +1099,9 @@ angular.module('starter.controllers', [])
   })
   //接单供货计划订单列表以及详情
   .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService) {
-    if (!localStorage.getItem("user")) {
-      $state.go('login');
+    //是否登录
+    if(!CommonService.isLogin()){
+      $state.go("login");
       return;
     }
     //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
@@ -1176,6 +1183,11 @@ angular.module('starter.controllers', [])
 
     $scope.itemnumprice = [];//买货数量和价格
     $rootScope.buygoodssubmit = function () {//提交买货订单
+      //是否登录
+      if(!CommonService.isLogin()){
+        $state.go("login");
+        return;
+      }
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (item, index) {
         var items = {};//收货明细json数据
@@ -1222,7 +1234,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('BuyGoodCtrl', function ($scope, $rootScope, CommonService) {
-    CommonService.searchModal($scope);
+    CommonService.searchModal($scope,'templates/search.html');
 
   })
   .controller('SellGoodCtrl', function ($scope, $rootScope, $state, CommonService) {
@@ -1231,7 +1243,7 @@ angular.module('starter.controllers', [])
       $rootScope.supplierListFirst = item;
       $state.go("selldetails");
     }
-    CommonService.searchModal($scope);
+    CommonService.searchModal($scope,'templates/search.html');
 
   })
   //卖货下单
@@ -1261,6 +1273,11 @@ angular.module('starter.controllers', [])
 
     $scope.itemnum = [];//卖货数量
     $scope.sellgoodssubmit = function () {//提交卖货订单
+      //是否登录
+      if(!CommonService.isLogin()){
+        $state.go("login");
+        return;
+      }
       CommonService.ionicLoadingShow();
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.sellDetails, function (item, index) {
@@ -1309,9 +1326,9 @@ angular.module('starter.controllers', [])
         }).then(function () {
           //提交卖货订单数据
           $scope.sellDatas = {
-            FromUser: localStorage.getItem('usertoken'),//供应商账号
-            ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
-            TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
+            FromUser: $rootScope.supplierListFirst.LogID,//供应商账号
+            ToUser:localStorage.getItem('usertoken') ,//回收商账号
+            TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
             FromAddr: $rootScope.supplierListFirst.AddrID,//发货地址ID
             ToAddr: $scope.addrliststatus[0].id,//收货地址ID
             Account: $scope.userbankliststatus[0].id,//收款账号ID
@@ -1361,6 +1378,11 @@ angular.module('starter.controllers', [])
   })
   //验货列表
   .controller('CheckGoodCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+    //是否登录
+    if(!CommonService.isLogin()){
+      $state.go("login");
+      return;
+    }
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -1386,6 +1408,85 @@ angular.module('starter.controllers', [])
     $rootScope.checkDetails = JSON.parse($stateParams.item);
 
   })
+  //添加扣款项
+  .controller('AddCutPaymentCtrl', function ($scope, $rootScope, $stateParams, CommonService,DeliverService) {
+    $scope.cutpaymentinfo={};//扣款信息
+    $scope.cutpaymentinfo.isAdd=[];
+    $scope.cutpaymentinfo.isMinus=[];
+    $scope.cutpaymentinfo.num=0;//选中数量
+    CommonService.searchModal($scope,'templates/checkgood/cutpaymentmodel.html')
+    //发货 签收 验货  获取产品类别
+    $scope.params={
+      IDList:'',//产品类别ID，多个用,隔开
+      Name:'',//产品类别名称
+      PIDList:'',//产品ID，多个用,隔开
+      Node:''//验货订单号
+    }
+    DeliverService.getGoodTypeList($scope.params).success(function (data) {
+      $scope.goodTypeList=data.Values;
+    })
+   //选择扣款项列表的产品类别 查询缺件信息
+    $scope.selectGoodType=function (goodtypeid) {
+      //发货 签收 验货  查询缺件信息分页列
+      $scope.paramsquejian={
+        currentPage:1,//当前页码
+        pageSize:10,//每页条数
+        ID:'',//编码 ,等于空时取所有
+        Type:'',//所属类型0-产品类别1-产品2-销售分类
+        TypeValue:goodtypeid,//类型所对应的值（产品类别ID）
+        Name:''//缺件属性名
+      }
+      DeliverService.getQueJianList($scope.paramsquejian).success(function (data) {
+        $scope.queJianList=data.Values.data_list;
+        angular.forEach($scope.queJianList,function (item,index) {
+          $scope.cutpaymentinfo.isAdd[index]=true;
+          $scope.cutpaymentinfo.isMinus[index]=false;
+
+        })
+        console.log($scope.queJianList);
+
+      })
+    }
+
+     //添加缺件
+    $scope.addQueJian=function (index,item) {
+      $scope.cutpaymentinfo.isAdd[index]=false;
+      $scope.cutpaymentinfo.isMinus[index]=true;
+      $scope.cutpaymentinfo.num++;
+    }
+    //取消添加的缺件
+    $scope.minusQueJian=function (index,item) {
+      $scope.cutpaymentinfo.isAdd[index]=true;
+      $scope.cutpaymentinfo.isMinus[index]=false;
+      $scope.cutpaymentinfo.num--;
+    }
+    //添加扣款项 提交
+    $scope.submitCutPayMent=function () {
+      //提交卖货/供货验货扣款记录
+      $scope.details = [];
+      angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
+        var items = {};
+        items.User = localStorage.getItem("usertoken");//操作人
+        items.QJID = item.QJID;//缺件属性表编号
+        items.QJName = item.QJName;//缺件属性表名称
+        items.QJTypeValue = item.QJTypeValue;//缺件属性类型所对应的值
+        items.Num = item.Num;//数量/重量
+        items.Price = item.Price;//扣款金额
+        $scope.details.push(items);
+      })
+      $scope.datas = {
+        OrderType: $rootScope.checkDetails.OrdeType,//订单类型1-卖货单2-供货出库单
+        Node: $rootScope.checkDetails.OrderNo,//订单号
+        Debit: $scope.cutpaymentinfo.totalmoney,//扣款总金额
+        Details: $scope.details//卖货/供货验货扣款记录
+      }
+
+/*      DeliverService.addQJ($scope.datas).success(function (data) {
+
+      })*/
+    }
+  })
+
   //录入验货数据
   .controller('EnteringCheckCtrl', function ($scope, $rootScope, $state, CommonService, DeliverService) {
     $scope.checkinfo = {};//验货信息获取
@@ -1505,7 +1606,7 @@ angular.module('starter.controllers', [])
 
   })
   //添加地址
-  .controller('AddDealAddressCtrl', function ($scope, CommonService, AccountService) {
+  .controller('AddDealAddressCtrl', function ($scope,$state, CommonService, AccountService) {
     CommonService.ionicLoadingShow();
     $scope.addrinfo = {};
     $scope.addrinfoother = {};
@@ -1537,10 +1638,10 @@ angular.module('starter.controllers', [])
           $scope.addrareacountyone = item;
         }
       })
-      $scope.addrinfo.id = 0;//传入id 则是修改地址
-      $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
-      $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
-      $scope.addrinfo.addrcode = $scope.addrareacountyone.code,	//地区编码
+        $scope.addrinfo.id = 0;//传入id 则是修改地址
+        $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
+        $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
+        $scope.addrinfo.addrcode = $scope.addrareacountyone.code,	//地区编码
         $scope.addrinfo.areaname = $scope.addrareacountyone.mergername, // 地区全称
         $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0,	//是否默认0-否，1-是
         $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode,	//邮政编码
@@ -1549,7 +1650,10 @@ angular.module('starter.controllers', [])
         $scope.addrinfo.addrtype = 0	//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
 
       AccountService.setAddr($scope.addrinfo).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress')
+        $scope.dealaddress=function () {
+          $state.go('dealaddress',{},{reload:true})
+        }
+        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', '','',$scope.dealaddress)
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -1589,6 +1693,11 @@ angular.module('starter.controllers', [])
   })
   //签收列表
   .controller('SignListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+    //是否登录
+    if(!CommonService.isLogin()){
+      $state.go("login");
+      return;
+    }
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -1679,6 +1788,11 @@ angular.module('starter.controllers', [])
   })
   //我的账号
   .controller('AccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+    //是否登录
+    if(!CommonService.isLogin()){
+      $state.go("login");
+      return;
+    }
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;
@@ -1852,7 +1966,7 @@ angular.module('starter.controllers', [])
         remark: ""	//备注
       }
       AccountService.addUserBank($scope.datas).success(function (data) {
-        $state.go('collectionaccount');
+        $state.go('collectionaccount',{},{reload:true});
       })
     }
 

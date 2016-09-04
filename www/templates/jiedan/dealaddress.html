@@ -14,7 +14,7 @@
     <ion-list class="list-borderless">
       <div  ng-click="selectAddress(item)" ng-repeat="item in addrlist">
       <ion-item >
-        <h2><strong>收货人 :</strong> {{item.username}}</h2>
+        <h2><strong>收货人 :</strong> {{item.username}} <span ng-if="item.status==1" class="right-1  balanced"> ● 默认</span></h2>
         <h2><strong>手机:</strong> {{item.mobile}}</h2>
         <h2><strong>地址 :</strong> {{item.addr}}</h2>
         <ion-option-button class="button-energized" ng-click="">默认</ion-option-button>

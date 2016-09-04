@@ -293,6 +293,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'DeliverDetailsCtrl'
 
       })
+      //添加发货清单
+      .state('adddeliverlist', {
+        url: '/adddeliverlist',
+        templateUrl: 'templates/delivergoods/adddeliverlist.html',
+        controller: 'AddDeliverListCtrl'
+      })
       //提交发货信息
       .state('delivergoods', {
         url: '/delivergoods',
@@ -398,12 +404,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/checkgood.html',
         controller: 'CheckGoodCtrl'
       })
+
       //验货列表详情
       .state('checkdetails', {
         url: '/checkdetails/:item',
         templateUrl: 'templates/checkgood/checkdetails.html',
         controller: 'CheckDetailsCtrl'
       })
+
+      //添加扣款项
+      .state('addcutpayment', {
+        url: '/addcutpayment',
+        templateUrl: 'templates/checkgood/addcutpayment.html',
+        controller: 'AddCutPaymentCtrl'
+      })
+      //添加扣款项模板
+      .state('cutpaymentmodel', {
+        url: '/cutpaymentmodel',
+        templateUrl: 'templates/checkgood/cutpaymentmodel.html',
+        controller: 'AddCutPaymentCtrl'
+      })
+
       //录入验货数据
       .state('enteringcheck', {
         url: '/enteringcheck',
