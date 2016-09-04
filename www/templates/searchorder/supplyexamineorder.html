@@ -1,0 +1,53 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 审核验货单</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+    <div class="list" ng-repeat="item in yanhuolist">
+      <a ng-click="toggle(1)" hide-show class="item item-borderless "  >
+        <h2><strong>订单号 : </strong>{{item.No}}<span class="item-note"><i
+          class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span></h2>
+      </a>
+      <div ng-hide="showme1">
+        <a ng-href="" class="item ">
+          <h2>验收人 : {{item.Username}}</h2>
+        </a>
+        <a ng-href="" class="item border-bottom-none">
+          <h2>验货时间 : {{item.AddTime | date:'yyyy-MM-dd HH:mm'}}</h2>
+        </a>
+      </div>
+
+      <div class="list padding-top">
+        <a ng-click="toggle(2)" hide-show class="item item-borderless">
+          <strong>{{item.OrdeType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        </a>
+        <div ng-hide="showme2">
+          <!--      <li class="item item-divider item-checkbox item-checkbox-right text-right light-bg item-borderless" ng-click="checkAll()" >
+                  <label class="checkbox checkbox-calm">
+                    <input type="checkbox"  ng-model="allCheck"/>
+                  </label>
+                    全选
+                </li>-->
+          <li class="item item-checkbox item-checkbox-right " ng-repeat="item in yanhuolistDetails">
+            <label class="checkbox checkbox-calm">
+              <input type="checkbox" ng-model="item.checked" ng-checked="item.checked"  ng-click="checkChecded()" >
+            </label>
+            {{item.ProdName}} : {{item.Num + item.UName}}
+          </li>
+
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <div class="row row-horizontal-around padding light-bg bottom-0">
+    <a class="col-40 button button-balanced " ng-disabled="!ischecked" ng-click="examinegoodsordersubmit()">确认交易</a>
+    <a class="col-40  button button-calm " ng-disabled="!ischecked" ng-click="salesreturn()">退货</a>
+  </div>
+
+</ion-view>

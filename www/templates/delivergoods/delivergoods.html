@@ -44,7 +44,7 @@
         <span class="input-label"> 车牌号码</span>
         <input type="text" placeholder=""  >
       </label>-->
-      <a ng-href="" ng-show="goodtype==3" ng-repeat="item in addrliststatus" class="item item-icon-right">
+      <a ng-href="" ng-show="goodtype==3" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
         <h2>发货人 : {{item.username}}</h2>
         <p>手机 : {{item.mobile}}</p>
         <p>地址 : {{item.areaname+item.addr}}</p>

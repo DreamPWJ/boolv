@@ -230,11 +230,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/supplyorderdetails.html',
         controller: 'SupplyOrderDetailsCtrl'
       })
-     // 查单审核验货单列表
+     // 查单卖货单审核验货单列表
       .state('examinegoodsorder', {
         url: '/examinegoodsorder',
         templateUrl: 'templates/searchorder/examinegoodsorder.html',
         controller: 'ExamineGoodsOrderCtrl'
+      })
+      // 查单供货计划审核验货单列表
+      .state('supplyexamineorder', {
+        url: '/supplyexamineorder',
+        templateUrl: 'templates/searchorder/supplyexamineorder.html',
+        controller: 'SupplyExamineOrderCtrl'
       })
       //查单收货单详情
       .state('deiverorderdetails', {
@@ -242,6 +248,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         cache: false,
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
+      })
+      //签收详情页面
+      .state('signindetails', {
+        url: '/signindetails',
+        templateUrl: 'templates/searchorder/signindetails.html',
+        controller: 'SigninDetailsCtrl'
       })
       //添加评论页面
       .state('evaluate', {

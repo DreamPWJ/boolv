@@ -11,9 +11,9 @@
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list padding-top list-borderless">
       <a ng-href="" class="item item-thumbnail-left ">
-        <img src="img/head.jpg" class="border-radius-50" alt="">
-        <h2>张三</h2>
-        <p>18994985566 </p>
+        <img ng-src="{{evaluateuserinfo.figure}}" class="border-radius-50" alt="">
+        <h2>{{evaluateuserinfo.username}}</h2>
+        <p>{{evaluateuserinfo.mobile}} </p>
         <p>
           <i class="icon ion-star calm "></i>
           <i class="icon ion-star calm"></i>
@@ -30,11 +30,17 @@
       <ion-radio ng-model="efficiency" ng-value="'A'" >满意</ion-radio>
       <ion-radio ng-model="efficiency" ng-value="'B'">一般</ion-radio>
       <ion-radio ng-model="efficiency" ng-value="'C'" class="border-bottom-none" >不满意</ion-radio>-->
-      <ion-item  ng-repeat="item in evaluatelist">{{item.Name}}  <span class="padding-left  evaluate-star">  <i class="icon ion-star  " ng-class="{true:'calm',false:'grey'}[star>=1]" ng-click="evaluatestar(1)"></i>
-        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=2]" ng-click="evaluatestar(2)"></i>
-        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=3]" ng-click="evaluatestar(3)"></i>
-        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=4]" ng-click="evaluatestar(4)"></i>
-        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[star>=5]" ng-click="evaluatestar(5)"></i></span></ion-item>
+      <ion-item  ng-repeat="item in evaluatelist"  >{{item.Name}}  <span class="padding-left  evaluate-star" >
+        <i class="icon ion-star  " ng-class="{true:'calm',false:'grey'}[evaluateinfo.star[$index]>=1]" ng-click="evaluatestar($index,1)"></i>
+        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[evaluateinfo.star[$index]>=2]" ng-click="evaluatestar($index,2)"></i>
+        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[evaluateinfo.star[$index]>=3]" ng-click="evaluatestar($index,3)"></i>
+        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[evaluateinfo.star[$index]>=4]" ng-click="evaluatestar($index,4)"></i>
+        <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[evaluateinfo.star[$index]>=5]" ng-click="evaluatestar($index,5)"></i>
+      </span></ion-item>
+      <p></p>
+      <ion-item class="item-input">
+        <input type="text" ng-model="evaluateinfo.Memo" placeholder="评价内容">
+      </ion-item>
     </div>
 
 

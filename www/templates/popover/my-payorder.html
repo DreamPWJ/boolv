@@ -1,23 +1,23 @@
 <ion-popover-view style="height: 275px;" ng-controller="MyPopover">
   <ion-content overflow-scroll="false">
     <div class="list">
-      <a ng-click="paytopaymentsubmit()" class="item item-icon-left">
+      <a ng-click="paytopaymentsubmit()" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-social-usd assertive"></i>
         支付到付款
       </a>
-      <a ng-href="#/sign" class="item item-icon-left">
+      <a ng-href="#/sign" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-compose calm"></i>
         签收
       </a>
-      <a ng-href="#/enteringcheck" class="item item-icon-left">
+      <a ng-href="#/enteringcheck" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-search balanced"></i>
         验货
       </a>
-      <a ng-click="payfinalpaymenttsubmit()" class="item item-icon-left">
+      <a ng-click="payfinalpaymenttsubmit()" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-card assertive"></i>
         支付尾款
       </a>
-      <a ng-href="#/evaluate" class="item item-icon-left">
+      <a ng-href="#/evaluate" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-star energized"></i>
         评价
       </a>

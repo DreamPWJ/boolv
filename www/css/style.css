@@ -151,3 +151,11 @@
 .action-s p{
   color:  #11c1f3;
 }
+
+.list .item:first-child{
+  border: none;
+}
+
+.list .item:last-child{
+  border-bottom: none;
+}
