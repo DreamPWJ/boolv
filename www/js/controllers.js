@@ -964,7 +964,7 @@ angular.module('starter.controllers', [])
     }
   })
   //发货列表
-  .controller('DeliverListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+  .controller('DeliverListCtrl', function ($scope,$state, $rootScope, CommonService, DeliverService) {
     //是否登录
     if(!CommonService.isLogin()){
       $state.go("login");
@@ -1173,7 +1173,7 @@ angular.module('starter.controllers', [])
     }
   })
   //买货发布采购单
-  .controller('ProcureDetailsCtrl', function ($scope, $rootScope, CommonService, BuyService) {
+  .controller('ProcureDetailsCtrl', function ($scope,$state, $rootScope, CommonService, BuyService) {
     $scope.buyDetails = [];
     angular.forEach($rootScope.buyprodsList, function (item) {
       if (item.checked == true) {
@@ -1377,7 +1377,7 @@ angular.module('starter.controllers', [])
     }
   })
   //验货列表
-  .controller('CheckGoodCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+  .controller('CheckGoodCtrl', function ($scope,$state, $rootScope, CommonService, DeliverService) {
     //是否登录
     if(!CommonService.isLogin()){
       $state.go("login");
@@ -1692,7 +1692,7 @@ angular.module('starter.controllers', [])
 
   })
   //签收列表
-  .controller('SignListCtrl', function ($scope, $rootScope, CommonService, DeliverService) {
+  .controller('SignListCtrl', function ($scope, $state,$rootScope, CommonService, DeliverService) {
     //是否登录
     if(!CommonService.isLogin()){
       $state.go("login");
