@@ -264,6 +264,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //通知消息列表
       .state('tab.news', {
         url: '/news',
+        cache:false,
         nativeTransitions: null,
         views: {
           'tab-news': {
@@ -281,6 +282,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //发货列表
       .state('deliverlist', {
         url: '/deliverlist',
+        cache:false,
         templateUrl: 'templates/delivergoods/deliverlist.html',
         controller: 'DeliverListCtrl'
 
@@ -309,6 +311,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //接单供货计划
       .state('supplygood', {
         url: '/supplygood',
+        cache:false,
         templateUrl: 'templates/jiedan/supplygood.html',
         controller: 'SupplyGoodCtrl'
 
@@ -401,6 +404,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //验货列表
       .state('checkgood', {
         url: '/checkgood',
+        cache:false,
         templateUrl: 'templates/checkgood/checkgood.html',
         controller: 'CheckGoodCtrl'
       })
@@ -439,6 +443,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //签收列表
       .state('signlist', {
         url: '/signlist',
+        cache:false,
         templateUrl: 'templates/sign/signlist.html',
         controller: 'SignListCtrl'
       })
