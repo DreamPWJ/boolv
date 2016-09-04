@@ -95,7 +95,7 @@ angular.module('starter.services', [])
         $ionicLoading.show({
           template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner>',
           animation: 'fade-in',
-          showBackdrop: true
+          showBackdrop: false
 
         });
       },
@@ -361,7 +361,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state) {
+  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state,$cordovaToast) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -626,6 +626,7 @@ angular.module('starter.services', [])
           if (params.filenames == 'Receipt') {
             $scope.Imgs.PicAddr = JSON.parse(result.response).Des;
           }
+          $cordovaToast.showLongCenter("上传成功");
           console.log("success=" + result.response);
         }, function (err) {
           console.log("err=" + err.response);

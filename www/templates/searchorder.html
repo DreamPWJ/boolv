@@ -14,8 +14,9 @@
   <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" id="searchorder">
     <ion-slide>
       <ion-content overflow-scroll="false">
+        <ion-refresher on-refresh="getSaleOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
-          <a ng-href="#/sellorderdetails/{{item}}" class="item" ng-repeat="item in saleorderlist.data_list">
+          <a ng-href="#/sellorderdetails/{{item}}" class="item" ng-repeat="item in saleorderlist">
             <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></h2>
             <p>卖货人 : {{item.Fromusername}}</p>
             <p>手机号 : {{item.Fromusermotel}}</p>
@@ -23,41 +24,47 @@
             <p>订单状态 : <span>{{saleorderStatus[item.Status+1]}}</span></p>
           </a>
         </div>
+        <ion-infinite-scroll  on-infinite="getSaleOrderList()" ng-if="sellparamstotal > sellparamspage" immediate-check="false">
+        </ion-infinite-scroll>
       </ion-content>
     </ion-slide>
     <ion-slide>
       <ion-content overflow-scroll="false">
+        <ion-refresher on-refresh="buyOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
-          <a ng-href="#/procureorderdetails/{{item}}" class="item" ng-repeat="item in buyorderlist.data_list">
+          <a ng-href="#/procureorderdetails/{{item}}" class="item" ng-repeat="item in buyorderlist">
             <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></h2>
             <p>采购人 : {{item.Username}}</p>
             <p>手机号 : {{item.Usermotel}}</p>
             <p>采购品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></p>
             <p>订单状态 : <span>{{buyorderStatus[item.Status+1]}}</span></p>
           </a>
-
         </div>
+        <ion-infinite-scroll  on-infinite="buyOrderList()" ng-if="buyparamstotal > buyparamspage" immediate-check="false">
+        </ion-infinite-scroll>
       </ion-content>
     </ion-slide>
     <ion-slide>
       <ion-content overflow-scroll="false">
+        <ion-refresher on-refresh="getSupplyPlanList(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
-          <a ng-href="#/supplyorderplan/{{item}}" class="item" ng-repeat="item in supplyorderlist.data_list">
+          <a ng-href="#/supplyorderplan/{{item}}" class="item" ng-repeat="item in supplyorderlist">
             <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></h2>
             <p>供货人 : {{item.Username}}</p>
             <p>手机号 : {{item.Usermotel}}</p>
             <p>供货品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></p>
             <p>订单状态 : <span>{{supplyorderStatus[item.Status+1]}}</span></p>
           </a>
-
-
         </div>
+        <ion-infinite-scroll  on-infinite="getSupplyPlanList()" ng-if="supplyparamstotal > supplyparamspage" immediate-check="false">
+        </ion-infinite-scroll>
       </ion-content>
     </ion-slide>
     <ion-slide>
       <ion-content overflow-scroll="false">
+        <ion-refresher on-refresh="getSaleSupply(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
-          <a ng-href="#/deiverorderdetails/{{item}}" class="item" ng-repeat="item in collectorderlist.data_list">
+          <a ng-href="#/deiverorderdetails/{{item}}" class="item" ng-repeat="item in collectorderlist">
             <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></h2>
             <p>{{item.OrdeType==1?'卖货人 :':'供货人 : '}} {{item.Fromusername}}</p>
             <p>手机号 : {{item.Fromusermotel}}</p>
@@ -66,8 +73,9 @@
             <p ng-if="item.OrdeType==1">订单状态 : <span>{{collectsellStatus[item.Status+1]}}</span></p>
             <p ng-if="item.OrdeType==2">订单状态 : <span>{{collectsupplyStatus[item.Status+1]}}</span></p>
           </a>
-
         </div>
+        <ion-infinite-scroll  on-infinite="getSaleSupply()" ng-if="collectparamstotal > collectparamspage" immediate-check="false">
+        </ion-infinite-scroll>
       </ion-content>
     </ion-slide>
   </ion-slide-box>

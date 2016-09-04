@@ -237,82 +237,153 @@ angular.module('starter.controllers', [])
   })
   //查单列表
   .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
-    //查单(卖货订单)获取卖货单列表参数
-    $scope.sellparams = {
-      currentPage: 1,//当前页码
-      pageSize: 10,//每页条数
-      ID: '',//编码 ,等于空时取所有
-      No: '',//订单号，模糊匹配
-      User: '',//下单人账号
-      Type: '',//0-物流配送1-送货上门2-上门回收
-      Status: '',//0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款
-      FromUser: ''//供货人
+    $scope.saleorderlist=[];
+    $scope.sellparamspage=0;
+    $scope.sellparamstotal=1;
+    $scope.getSaleOrderList=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.sellparamspage=0;
+        $scope.saleorderlist=[];
+      }
+     $scope.sellparamspage++;
+     //查单(卖货订单)获取卖货单列表参数
+     $scope.sellparams = {
+       currentPage: $scope.sellparamspage,//当前页码
+       pageSize: 5,//每页条数
+       ID: '',//编码 ,等于空时取所有
+       No: '',//订单号，模糊匹配
+       User: '',//下单人账号
+       Type: '',//0-物流配送1-送货上门2-上门回收
+       Status: '',//0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款
+       FromUser: ''//供货人
+     }
+     //查单(卖货订单)获取卖货单列表
+     SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
+       angular.forEach(data.Values.data_list, function (item) {
+         $scope.saleorderlist.push(item);
+       })
+       $scope.sellparamstotal=data.Values.page_count;
+       //订单状态(卖货单)
+       $rootScope.saleorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
+     }).finally(function () {
+       $scope.$broadcast('scroll.refreshComplete');
+       $scope.$broadcast('scroll.infiniteScrollComplete');
+     })
+   }
+    $scope.getSaleOrderList();
+    $scope.buyorderlist=[];
+    $scope.buyparamspage=0;
+    $scope.buyparamstotal=1;
+    $scope.buyOrderList=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.buyparamspage=0;
+        $scope.buyorderlist=[];
+      }
+      $scope.buyparamspage++;
+      //查单(买货订单)获取买货单列表参数
+      $scope.buyparams = {
+        currentPage: $scope.buyparamspage,//当前页码
+        pageSize: 5,//每页条数
+        ID: '',//编码 ,等于空时取所有
+        No: '',//订单号，模糊匹配
+        User: '',//买家账号
+        Type: '',//0-物流配送1-送货上门2-上门回收
+        Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
+        Expiration: ''//过期时间 是否取非过期时间 1是 0否
+      }
+      //查单(买货订单)获取买货单列表
+      SupplyService.getToPage($scope.buyparams).success(function (data) {
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.buyorderlist.push(item);
+        })
+        $scope.buyparamstotal=data.Values.page_count;
+        //订单状态(买货单)
+        $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
+      }).finally(function () {
+          $scope.$broadcast('scroll.refreshComplete');
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        })
     }
-    //查单(卖货订单)获取卖货单列表
-    SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
-      $scope.saleorderlist = data.Values;
-      //订单状态(卖货单)
-      $rootScope.saleorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
-    })
-    //查单(买货订单)获取买货单列表参数
-    $scope.buyparams = {
-      currentPage: 1,//当前页码
-      pageSize: 10,//每页条数
-      ID: '',//编码 ,等于空时取所有
-      No: '',//订单号，模糊匹配
-      User: '',//买家账号
-      Type: '',//0-物流配送1-送货上门2-上门回收
-      Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
-      Expiration: ''//过期时间 是否取非过期时间 1是 0否
+    $scope.buyOrderList();
+
+    $scope.supplyorderlist=[];
+    $scope.supplyparamspage=0;
+    $scope.supplyparamstotal=1;
+    $scope.getSupplyPlanList=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.supplyparamspage=0;
+        $scope.supplyorderlist=[];
+      }
+      $scope.supplyparamspage++;
+      //查单(供货订单)获取供货单列表参数
+      $scope.supplyparams = {
+        currentPage: $scope.supplyparamspage,//当前页码
+        pageSize: 5,//每页条数
+        ID: '',//编码 ,等于空时取所有
+        No: '',//订单号，模糊匹配
+        User: '',//下单人账号
+        Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
+        BONo: '',//买货单号 关联买货单号
+        ToUser: ''//买货人 关联买货单人
+      }
+      //查单(供货订单)获取供货单列表
+      SearchOrderService.getSupplyPlanList($scope.supplyparams).success(function (data) {
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.supplyorderlist.push(item);
+        })
+        $scope.supplyparamstotal=data.Values.page_count;
+        //订单状态(供货单)
+        $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中', '供货完成'];
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
     }
-    //查单(买货订单)获取买货单列表
-    SupplyService.getToPage($scope.buyparams).success(function (data) {
-      $scope.buyorderlist = data.Values;
-      //订单状态(买货单)
-      $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
-    })
-    //查单(供货订单)获取供货单列表参数
-    $scope.supplyparams = {
-      currentPage: 1,//当前页码
-      pageSize: 10,//每页条数
-      ID: '',//编码 ,等于空时取所有
-      No: '',//订单号，模糊匹配
-      User: '',//下单人账号
-      Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
-      BONo: '',//买货单号 关联买货单号
-      ToUser: ''//买货人 关联买货单人
+    $scope.getSupplyPlanList();
+
+    $scope.collectorderlist=[];
+    $scope.collectparamspage=0;
+    $scope.collectparamstotal=1;
+    $scope.getSaleSupply=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.collectparamspage=0;
+        $scope.collectorderlist=[];
+      }
+      $scope.collectparamspage++;
+      //查单(收货订单)获取收货单列表参数
+      $scope.collectparams = {
+        currentPage: $scope.collectparamspage,//当前页码
+        pageSize: 5,//每页条数
+        ID: '',//编码 ,等于空时取所有
+        No: '',//订单号，模糊匹配
+        User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+        FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
+        Status: '',//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
+        ordertype: '',//类型 1卖货单2供货单
+        Type: '' //0-物流配送1-送货上门2-上门回收
+      }
+      //查单(收货订单)获取收货单列表
+      DeliverService.getSaleSupply($scope.collectparams).success(function (data) {
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.collectorderlist.push(item);
+        })
+        $scope.collectparamstotal=data.Values.page_count;
+        //订单状态(卖货单)
+        $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+        //订单状态(供货单)
+        $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+      }) .finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
     }
-    //查单(供货订单)获取供货单列表
-    SearchOrderService.getSupplyPlanList($scope.supplyparams).success(function (data) {
-      $scope.supplyorderlist = data.Values;
-      console.log($scope.supplyorderlist);
-      //订单状态(供货单)
-      $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中', '供货完成'];
-    })
-    //查单(收货订单)获取收货单列表参数
-    $scope.collectparams = {
-      currentPage: 1,//当前页码
-      pageSize: 10,//每页条数
-      ID: '',//编码 ,等于空时取所有
-      No: '',//订单号，模糊匹配
-      User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
-      FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
-      Status: '',//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
-      ordertype: '',//类型 1卖货单2供货单
-      Type: '' //0-物流配送1-送货上门2-上门回收
-    }
-    //查单(收货订单)获取收货单列表
-    DeliverService.getSaleSupply($scope.collectparams).success(function (data) {
-      $scope.collectorderlist = data.Values;
-      //订单状态(卖货单)
-      $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
-      //订单状态(供货单)
-      $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
-    })
+    $scope.getSaleSupply();
 
     $scope.slideChanged = function (index) {
       $ionicTabsDelegate.select(index);
     };
+
+
     /*    $scope.$on('$ionicView.afterEnter', function () {
      //等待视图加载完成的时候默认选中第一个菜单
      $ionicTabsDelegate._instances[1].select($ionicSlideBoxDelegate._instances[1].currentIndex());
@@ -836,7 +907,7 @@ angular.module('starter.controllers', [])
         //查单(卖货订单)修改卖货/供货订单状态
         $scope.params = {
           No: $rootScope.orderId,//订单号
-          Status: 10,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+          Status: 10,//状态值
           User: $rootScope.evaluateFromUser,//下单人账号
           OrderType:$rootScope.orderType==1?1:2,//1代表卖货单2代表供货单
         }
@@ -857,16 +928,29 @@ angular.module('starter.controllers', [])
   })
   //通知消息列表
   .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService) {
+    $scope.newsList=[];
+    $scope.page=0;
+    $scope.total=1;
     $scope.newslist = function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.page=0;
+        $scope.newsList=[];
+      }
+      $scope.page++;
       $scope.params = {
-        page: 1,//页码
-        size: 10,//条数
+        page: $scope.page,//页码
+        size: 5,//条数
         userid: localStorage.getItem("usertoken")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
-        $scope.newsList = data.Values;
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.newsList.push(item);
+        })
+        $scope.total=data.Values.page_count;
+        console.log(data);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
 
@@ -878,7 +962,7 @@ angular.module('starter.controllers', [])
       }
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
         console.log(data);
-        $scope.newslist();
+        $scope.newslist(0);
       })
     }
   })
@@ -1112,7 +1196,7 @@ angular.module('starter.controllers', [])
         Details: $scope.Details//收货明细
       }
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'procureorderdetails')
+        CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
 
 
@@ -1151,7 +1235,7 @@ angular.module('starter.controllers', [])
 
   })
   //卖货下单
-  .controller('SellDetailsCtrl', function ($scope, $rootScope, CommonService, SellService, AccountService) {
+  .controller('SellDetailsCtrl', function ($scope, $rootScope,$state,CommonService, SellService, AccountService) {
     CommonService.ionicLoadingShow();
     $scope.sellDetails = [];
     angular.forEach($rootScope.sellprodsList, function (item) {
@@ -1233,9 +1317,8 @@ angular.module('starter.controllers', [])
             Account: $scope.userbankliststatus[0].id,//收款账号ID
             Details: $scope.Details//收货明细
           }
-
           SellService.addOrderDetails($scope.sellDatas).success(function (data) {
-            CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'sellorderdetails')
+            CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder','')
           }).finally(function () {
             CommonService.ionicLoadingHide();
           })
@@ -1415,7 +1498,7 @@ angular.module('starter.controllers', [])
       };
 
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'supplyorderplan')
+        CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
 
     }
