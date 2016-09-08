@@ -234,11 +234,10 @@ angular.module('starter.services', [])
         }
       },
       isLogin: function () {//判断是否登录
-        if (localStorage.getItem("usertoken")) {
-          return true;
-        } else {
-          return false;
-        }
+        if (!localStorage.getItem("usertoken")) {
+          $state.go('login')
+          return ;
+         }
       },
       getStateName:function(){    //得到上一个路由名称方法
         var stateName = "";
@@ -311,7 +310,21 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-
+      //获取行情报价分页列表
+      getProdsList: function (restparams,params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Prod/GetPageProds/"+restparams.currentPage+'/'+restparams.pageSize,
+          params:params 
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       //获取交易公告
       getListNews: function (listNewsParams) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行

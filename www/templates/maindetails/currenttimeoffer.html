@@ -8,7 +8,8 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 实时报价</h1>
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="stable-bg">
-    <div class="list ">
+    <ion-refresher on-refresh="currentTimeOffer(0)" pulling-text="下拉更新"></ion-refresher>
+    <div class="list">
       <a ng-repeat="item in currentprods "  class="item item-thumbnail-left" ng-href="">
         <img src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
         <h2>{{item.PName}} <span class="calm">[按量报价]</span></h2>
@@ -20,6 +21,8 @@
       </a>
     </div>
      <p class="calm text-center">现在行情不错 , <a href="#/sellprocure" class="calm"> 我要卖货</a></p>
+    <ion-infinite-scroll  on-infinite="currentTimeOffer()" ng-if="total > currentPage"  immediate-check="false" >
+    </ion-infinite-scroll>
   </ion-content>
 
 </ion-view>

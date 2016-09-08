@@ -38,9 +38,26 @@ angular.module('starter.controllers', [])
           console.log($scope.adImg);
         })
         //获取行情报价
-        MainService.getProds().success(function (data) {
+   /*     MainService.getProds().success(function (data) {
           $scope.prods = data.Values;
           sessionStorage.setItem("getProds", JSON.stringify(data.Values));//行情报价数据复用
+        })*/
+        //获取行情报价分页列表
+
+        $scope.restProdsParams = {
+          currentPage: 1,
+          pageSize: 10,
+        }
+        $scope.ProdsParams = {
+          IDList:'',
+          prodname:'',//产品类别名
+          GrpIDList:'',//产品类别ID，多个用，隔开
+          IsTH:1,//是否为统货 0否1是
+          NoGrpIDList:''
+        }
+        MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
+          $scope.prods = data.Values;
+          sessionStorage.setItem("getProds", JSON.stringify(data.Values.data_list));//行情报价数据复用
         })
         //获取交易公告
         $scope.listNewsParams = {
@@ -111,8 +128,40 @@ angular.module('starter.controllers', [])
 
   })
   //实时报价
-  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, CommonService) {
-    $scope.currentprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
+  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, CommonService,MainService) {
+    //获取行情报价分页列表
+    $scope.currentprods=[];
+    $scope.currentPage=0;
+    $scope.total=1;
+    $scope.currentTimeOffer=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.currentPage=0;
+        $scope.currentprods=[];
+      }
+      $scope.currentPage++;
+      $scope.restProdsParams = {
+        currentPage: $scope.currentPage,
+        pageSize: 5,
+      }
+      $scope.ProdsParams = {
+        IDList:'',
+        prodname:'',//产品类别名
+        GrpIDList:'',//产品类别ID，多个用，隔开
+        IsTH:1,//是否为统货 0否1是
+        NoGrpIDList:''
+      }
+      MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.currentprods.push(item);
+        })
+        $scope.total=data.Values.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.currentTimeOffer();
+
   })
   .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
@@ -943,7 +992,6 @@ angular.module('starter.controllers', [])
           $scope.newsList.push(item);
         })
         $scope.total=data.Values.page_count;
-        console.log(data);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -966,10 +1014,7 @@ angular.module('starter.controllers', [])
   //发货列表
   .controller('DeliverListCtrl', function ($scope,$state, $rootScope, CommonService, DeliverService) {
     //是否登录
-    if(!CommonService.isLogin()){
-      $state.go("login");
-      return;
-    }
+    CommonService.isLogin()
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -1100,10 +1145,7 @@ angular.module('starter.controllers', [])
   //接单供货计划订单列表以及详情
   .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService) {
     //是否登录
-    if(!CommonService.isLogin()){
-      $state.go("login");
-      return;
-    }
+    CommonService.isLogin();
     //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
     if (JSON.parse(localStorage.getItem("user")).grade != 5) {
       CommonService.showAlert("非供货商没有权限供货");
@@ -1154,14 +1196,43 @@ angular.module('starter.controllers', [])
 
   })
   //买货选择产品
-  .controller('ReleaseProcureCtrl', function ($scope, $rootScope, CommonService) {
-    //获取买货选择产品列表
-    $rootScope.buyprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
-    $rootScope.buyprodsList = [];
-    angular.forEach($rootScope.buyprods, function (item) {
-      item.checked = false;
-      $scope.buyprodsList.push(item);
-    })
+  .controller('ReleaseProcureCtrl', function ($scope, $rootScope, CommonService,MainService) {
+    //获取行情报价分页列表
+    $rootScope.buyprodsList=[];
+    $scope.currentPage=0;
+    $scope.total=1;
+    $scope.releaseProcure=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.currentPage=0;
+        $rootScope.buyprodsList=[];
+      }
+      $scope.currentPage++;
+      $scope.restProdsParams = {
+        currentPage: $scope.currentPage,
+        pageSize: 5
+      }
+      $scope.ProdsParams = {
+        IDList:'',
+        prodname:'',//产品类别名
+        GrpIDList:'',//产品类别ID，多个用，隔开
+        IsTH:1,//是否为统货 0否1是
+        NoGrpIDList:''
+      }
+      MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
+        $rootScope.buyprodsList = [];
+        angular.forEach(data.Values.data_list, function (item) {
+          item.checked = false;
+          $rootScope.buyprodsList.push(item);
+        })
+        $scope.total=data.Values.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.releaseProcure();
+
+
     //检查是否复选框选中
     $scope.checkChecded = function () {
       $scope.ischecked = false;
@@ -1184,10 +1255,7 @@ angular.module('starter.controllers', [])
     $scope.itemnumprice = [];//买货数量和价格
     $rootScope.buygoodssubmit = function () {//提交买货订单
       //是否登录
-      if(!CommonService.isLogin()){
-        $state.go("login");
-        return;
-      }
+      CommonService.isLogin();
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (item, index) {
         var items = {};//收货明细json数据
@@ -1274,10 +1342,7 @@ angular.module('starter.controllers', [])
     $scope.itemnum = [];//卖货数量
     $scope.sellgoodssubmit = function () {//提交卖货订单
       //是否登录
-      if(!CommonService.isLogin()){
-        $state.go("login");
-        return;
-      }
+      CommonService.isLogin();
       CommonService.ionicLoadingShow();
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.sellDetails, function (item, index) {
@@ -1358,14 +1423,44 @@ angular.module('starter.controllers', [])
     $rootScope.evaluateFromUser=$rootScope.deliverDetails.FromUser
   })
   //我要卖货
-  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService) {
-    //获取卖货列表
-    $rootScope.sellprods = JSON.parse(sessionStorage.getItem("getProds"));//行情报价数据
-    $rootScope.sellprodsList = [];
-    angular.forEach($rootScope.sellprods, function (item) {
-      item.checked = false;
-      $scope.sellprodsList.push(item);
-    })
+  .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService,MainService) {
+    //获取行情报价分页列表
+    $rootScope.sellprodsList=[];
+    $scope.currentPage=0;
+    $scope.total=1;
+    $scope.sellProcure=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.currentPage=0;
+        $rootScope.sellprodsList=[];
+      }
+      $scope.currentPage++;
+      $scope.restProdsParams = {
+        currentPage: $scope.currentPage,
+        pageSize: 5
+      }
+      $scope.ProdsParams = {
+        IDList:'',
+        prodname:'',//产品类别名
+        GrpIDList:'',//产品类别ID，多个用，隔开
+        IsTH:1,//是否为统货 0否1是
+        NoGrpIDList:''
+      }
+      MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
+          angular.forEach(data.Values.data_list, function (item) {
+            item.checked = false;
+            $rootScope.sellprodsList.push(item);
+          })
+
+        $scope.total=data.Values.page_count;
+
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.sellProcure();
+
+
     //检查是否复选框选中
     $scope.checkChecded = function () {
       $scope.ischecked = false;
@@ -1379,10 +1474,7 @@ angular.module('starter.controllers', [])
   //验货列表
   .controller('CheckGoodCtrl', function ($scope,$state, $rootScope, CommonService, DeliverService) {
     //是否登录
-    if(!CommonService.isLogin()){
-      $state.go("login");
-      return;
-    }
+    CommonService.isLogin();
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -1694,10 +1786,7 @@ angular.module('starter.controllers', [])
   //签收列表
   .controller('SignListCtrl', function ($scope, $state,$rootScope, CommonService, DeliverService) {
     //是否登录
-    if(!CommonService.isLogin()){
-      $state.go("login");
-      return;
-    }
+    CommonService.isLogin();
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//每页条数
@@ -1789,10 +1878,7 @@ angular.module('starter.controllers', [])
   //我的账号
   .controller('AccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     //是否登录
-    if(!CommonService.isLogin()){
-      $state.go("login");
-      return;
-    }
+    CommonService.isLogin();
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;

@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button icon ion-android-person no-border" nav-direction=forward ng-href="#/login"></a>
+    <a class="button icon ion-android-person no-border" nav-direction=forward ui-sref="tab.account"></a>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 博绿网</h1>
@@ -57,7 +57,7 @@
         <strong>行情报价</strong>
         <span class="item-note">详情>></span>
       </a>
-      <a ng-repeat="item in prods | limitTo:5 "  class="item item-thumbnail-left" ng-href="#">
+      <a ng-repeat="item in prods.data_list | limitTo:5 "  class="item item-thumbnail-left" ng-href="#">
         <img  ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
         <h2>{{item.PName}} <span class="calm">[按量报价]</span></h2>
         <p>{{item.PIntrodu}} </p>
