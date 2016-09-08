@@ -12,13 +12,21 @@
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+    <ion-refresher on-refresh="addDeliverList(0)" pulling-text="下拉更新"></ion-refresher>
     <ion-list>
-      <ion-item class="item-button-right">
-        废旧手机
-        <button class="button button-calm button-small button-outline">添加产品</button>
-      </ion-item>
+      <div  ng-repeat="item in adddeliverList">
+        <ion-item class="item-button-right" >
+          {{item.PName}}
+          <button class="button button-calm button-small button-outline" ng-click="addproduct()" >添加产品</button>
+        </ion-item>
+        <ion-item class="item-input" ng-repeat="items in selectproductandnum">
+          <span class="input-label">{{items.Name}}</span>
+          <input type="text"  ng-model="items.num" >
+        </ion-item>
+        <p></p>
+      </div>
     </ion-list>
-
+    <ion-infinite-scroll  on-infinite="addDeliverList()" ng-if="total > currentPage"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
   <div class="padding light-bg bottom-0">
     <a class="button button-calm full-image" ng-href="#/delivergoods">下一步</a>

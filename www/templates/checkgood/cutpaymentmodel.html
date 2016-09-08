@@ -5,7 +5,7 @@
   </ion-header-bar>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg" >
    <ion-list>
-     <ion-item class="item-input item-select item-stable">
+     <ion-item class="item-input item-select ">
        <span class="input-label">扣款项列表</span>
        <select  ng-model="cutpaymentinfo.goodtype"  ng-change="selectGoodType(cutpaymentinfo.goodtype)">
          <option value="{{item.GID}}"  ng-repeat="item in goodTypeList">{{item.GName}}</option>

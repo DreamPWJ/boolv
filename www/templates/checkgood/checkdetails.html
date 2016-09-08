@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 收货单详情</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{checkDetails.OrdeType==1?'卖货':'供货'}}单详情</h1>
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
@@ -16,7 +16,7 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>卖货人 : {{checkDetails.FromUsername}}</h2>
+          <h2>{{checkDetails.OrdeType==1?'卖货':'供货'}}人 : {{checkDetails.FromUsername}}</h2>
         </a>
         <a ng-href="" class="item ">
           <h2 ng-if="checkDetails.OrdeType==1">订单状态 : <span>{{sellStatus[checkDetails.Status+1]}}</span></h2>

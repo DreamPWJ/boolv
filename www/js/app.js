@@ -301,6 +301,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/delivergoods/adddeliverlist.html',
         controller: 'AddDeliverListCtrl'
       })
+       //添加发货清单model
+      .state('delivergoodsmodel', {
+        url: '/delivergoodsmodel',
+        templateUrl: 'templates/delivergoods/delivergoodsmodel.html',
+        controller: 'AddDeliverListCtrl'
+      })
+        
       //提交发货信息
       .state('delivergoods', {
         url: '/delivergoods',

@@ -53,11 +53,10 @@ angular.module('starter.controllers', [])
           prodname:'',//产品类别名
           GrpIDList:'',//产品类别ID，多个用，隔开
           IsTH:1,//是否为统货 0否1是
-          NoGrpIDList:''
+          NoGrpIDList:''//其他类别
         }
         MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
           $scope.prods = data.Values;
-          sessionStorage.setItem("getProds", JSON.stringify(data.Values.data_list));//行情报价数据复用
         })
         //获取交易公告
         $scope.listNewsParams = {
@@ -141,14 +140,14 @@ angular.module('starter.controllers', [])
       $scope.currentPage++;
       $scope.restProdsParams = {
         currentPage: $scope.currentPage,
-        pageSize: 5,
+        pageSize: 10,
       }
       $scope.ProdsParams = {
         IDList:'',
         prodname:'',//产品类别名
         GrpIDList:'',//产品类别ID，多个用，隔开
         IsTH:1,//是否为统货 0否1是
-        NoGrpIDList:''
+        NoGrpIDList:''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
         angular.forEach(data.Values.data_list, function (item) {
@@ -531,6 +530,17 @@ angular.module('starter.controllers', [])
       })
     })
     $scope.enteringnumsubmit = function () {
+      if($scope.addrliststatus.length==0){
+        CommonService.platformPrompt('请先添加一个默认地址','adddealaddress')
+        $state.go('adddealaddress');
+      }
+      if($scope.userbankliststatus.length==0){
+        CommonService.platformPrompt('请先添加一个默认银行账户','addbankaccount')
+        $state.go('addbankaccount');
+      }
+      if($scope.toAddraddrliststatus.length==0){
+        CommonService.platformPrompt('获取收货用户常用地址失败');
+      }
       //供货计划明细数组
       $scope.details = [];
       angular.forEach($rootScope.deliverDetails.Details, function (item, index) {
@@ -1028,6 +1038,7 @@ angular.module('starter.controllers', [])
     };
     DeliverService.getSaleSupply($scope.params).success(function (data) {
       $scope.deliverlist = data.Values;
+      console.log(data.Values);
       //订单状态(卖货单)
       $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
       //订单状态(供货单)
@@ -1037,18 +1048,134 @@ angular.module('starter.controllers', [])
   //发货详情
   .controller('DeliverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.deliverDetails);
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
     $rootScope.orderId=$rootScope.deliverDetails.No;
     //订单类型
-    $rootScope.orderType=3;//订单类型1-卖货单2-买货单3-供货单
+    $rootScope.orderType=$rootScope.deliverDetails.OrdeType==1?1:3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser=$rootScope.deliverDetails.FromUser
 
   })
   //添加发货清单
-  .controller('AddDeliverListCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    CommonService.searchModal($scope,'templates/search.html');
+  .controller('AddDeliverListCtrl', function ($scope, $rootScope, $stateParams, CommonService,MainService,DeliverService) {
+
+    CommonService.searchModal($scope,'templates/delivergoods/delivergoodsmodel.html');
+
+    //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+    $rootScope.adddeliverList=[];
+    $scope.currentPage=0;
+    $scope.total=1;
+    $scope.addDeliverList=function () {
+      if(arguments!=[]&&arguments[0]==0){
+        $scope.currentPage=0;
+        $rootScope.adddeliverList=[];
+      }
+      $scope.currentPage++;
+      $scope.restProdsParams = {
+        currentPage: $scope.currentPage,
+        pageSize: 10
+      }
+      $scope.ProdsParams = {
+        IDList:'',
+        prodname:'',//产品类别名
+        GrpIDList:'',//产品类别ID，多个用，隔开
+        IsTH:0,//是否为统货 0否1是
+        NoGrpIDList:''//其他类别
+      }
+      MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
+        angular.forEach(data.Values.data_list, function (item) {
+          $rootScope.adddeliverList.push(item);
+        })
+        $scope.total=data.Values.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.addDeliverList();
+    //获取产品类别列表
+    $scope.getGoodTypeList=function () {
+      $scope.adddeliverinfo={};//扣款信息
+      $scope.adddeliverinfo.isAdd=[];
+      $scope.adddeliverinfo.isMinus=[];
+      $scope.adddeliverinfo.num=[];//填写数量
+      $scope.adddeliverinfo.selectnum=0;//选中数量
+      //发货 签收 验货  获取产品类别
+      $scope.params={
+        IDList:'',//产品类别ID，多个用,隔开
+        Name:'',//产品类别名称
+        PIDList:'',//产品ID，多个用,隔开
+        Node:'',//供货验货订单号
+        SYNode:'',//卖货验货订单号
+        SNode:$rootScope.deliverDetails.No,//发货单号
+        BNode:''//买货单号
+      }
+      DeliverService.getGoodTypeList($scope.params).success(function (data) {
+        $scope.goodTypeList=data.Values;
+
+      })
+    }
+    $scope.getGoodTypeList();
+    //选择列表的产品类别 查询缺件信息
+    $scope.selectGoodType=function (goodtypeid) {
+      //发货 签收 验货  查询缺件信息分页列
+      $scope.paramsquejian={
+        currentPage:1,//当前页码
+        pageSize:20,//每页条数
+        ID:'',//编码 ,等于空时取所有
+        Type:'',//所属类型0-产品类别1-产品2-销售分类
+        TypeValue:goodtypeid,//类型所对应的值（产品类别ID）
+        Name:''//缺件属性名
+      }
+      DeliverService.getQueJianList($scope.paramsquejian).success(function (data) {
+        console.log(data.Values);
+        if(data.Values){
+          $scope.queJianList=data.Values.data_list;
+        }else {
+          $scope.queJianList=[]
+        }
+
+        angular.forEach($scope.queJianList,function (item,index) {
+          $scope.adddeliverinfo.isAdd[index]=true;
+          $scope.adddeliverinfo.isMinus[index]=false;
+
+        })
+        console.log($scope.queJianList);
+
+      })
+    }
+    //选中的产品以及发货的数量
+    $scope.selectproduct=[];
+    //添加缺件
+    $scope.addQueJian=function (index,item) {
+      $scope.adddeliverinfo.isAdd[index]=false;
+      $scope.adddeliverinfo.isMinus[index]=true;
+      $scope.adddeliverinfo.selectnum++;
+      $scope.selectproduct.push(item)
+    }
+    //取消添加的缺件
+    $scope.minusQueJian=function (index,item) {
+      $scope.adddeliverinfo.isAdd[index]=true;
+      $scope.adddeliverinfo.isMinus[index]=false;
+      $scope.adddeliverinfo.selectnum--;
+      $scope.selectproduct.splice($scope.selectproduct.indexOf(item),1);
+    }
+    //添加产品
+    $scope.addproduct=function () {
+      $scope.openModal();
+    }
+     //选好了方法
+    $scope.selectaffirm=function () {
+      $scope.closeModal();
+      $scope.selectproductandnum=[];//增加数量信息
+      angular.forEach($scope.selectproduct,function (item,index) {
+        item.num=$scope.adddeliverinfo.num[index];
+        $scope.selectproductandnum.push(item)
+      })
+      console.log($scope.selectproductandnum);
+    }
   })
   //提交发货信息
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
@@ -1102,7 +1229,6 @@ angular.module('starter.controllers', [])
 
     //提交发货
     $scope.delivergoodssubmit = function () {
-
       //提交发货详细数据
       $scope.details = [];
       var ordeType = $rootScope.deliverDetails.OrdeType;
@@ -1209,17 +1335,16 @@ angular.module('starter.controllers', [])
       $scope.currentPage++;
       $scope.restProdsParams = {
         currentPage: $scope.currentPage,
-        pageSize: 5
+        pageSize: 10
       }
       $scope.ProdsParams = {
         IDList:'',
         prodname:'',//产品类别名
         GrpIDList:'',//产品类别ID，多个用，隔开
         IsTH:1,//是否为统货 0否1是
-        NoGrpIDList:''
+        NoGrpIDList:''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
-        $rootScope.buyprodsList = [];
         angular.forEach(data.Values.data_list, function (item) {
           item.checked = false;
           $rootScope.buyprodsList.push(item);
@@ -1379,6 +1504,11 @@ angular.module('starter.controllers', [])
             $scope.addrliststatus.push(item);
           }
         })
+        if($scope.addrliststatus.length==0){
+          CommonService.ionicLoadingHide();
+          CommonService.platformPrompt('请先添加一个默认地址','adddealaddress')
+          $state.go('adddealaddress');
+        }
       }).then(function () {
         //查询用户银行信息
         AccountService.getUserBanklist($scope.params).success(function (data) {
@@ -1388,6 +1518,11 @@ angular.module('starter.controllers', [])
               $scope.userbankliststatus.push(item);
             }
           })
+          if($scope.userbankliststatus.length==0){
+            CommonService.ionicLoadingHide();
+            CommonService.platformPrompt('请先添加一个默认银行账户','addbankaccount')
+            $state.go('addbankaccount');
+          }
         }).then(function () {
           //提交卖货订单数据
           $scope.sellDatas = {
@@ -1436,14 +1571,14 @@ angular.module('starter.controllers', [])
       $scope.currentPage++;
       $scope.restProdsParams = {
         currentPage: $scope.currentPage,
-        pageSize: 5
+        pageSize: 10
       }
       $scope.ProdsParams = {
         IDList:'',
         prodname:'',//产品类别名
         GrpIDList:'',//产品类别ID，多个用，隔开
         IsTH:1,//是否为统货 0否1是
-        NoGrpIDList:''
+        NoGrpIDList:''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams,$scope.ProdsParams).success(function (data) {
           angular.forEach(data.Values.data_list, function (item) {
@@ -1512,7 +1647,10 @@ angular.module('starter.controllers', [])
       IDList:'',//产品类别ID，多个用,隔开
       Name:'',//产品类别名称
       PIDList:'',//产品ID，多个用,隔开
-      Node:''//验货订单号
+      Node:'',//供货验货订单号
+      SYNode:'',//卖货验货订单号
+      SNode:'',//发货单号
+      BNode:''//买货单号
     }
     DeliverService.getGoodTypeList($scope.params).success(function (data) {
       $scope.goodTypeList=data.Values;
@@ -1992,6 +2130,10 @@ angular.module('starter.controllers', [])
       })
     })
     $scope.applyadvancesubmit = function () {
+      if($scope.userbankliststatus.length==0){
+        CommonService.platformPrompt('请先添加一个默认银行账户','addbankaccount')
+        $state.go('addbankaccount');
+      }
       $scope.datas = {
         RelateNo: 0,//关联单号
         User: localStorage.getItem("usertoken"),//申请人

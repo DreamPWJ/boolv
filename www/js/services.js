@@ -60,6 +60,24 @@ angular.module('starter.services', [])
         }).then(function (modal) {
           $scope.modal = modal;
         });
+        $scope.openModal = function() {
+          $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+          $scope.modal.hide();
+        };
+        //当我们用到模型时，清除它！
+        $scope.$on('$destroy', function() {
+          $scope.modal.remove();
+        });
+        // 当隐藏的模型时执行动作
+        $scope.$on('modal.hide', function() {
+          // 执行动作
+        });
+        // 当移动模型时执行动作
+        $scope.$on('modal.removed', function() {
+          // 执行动作
+        });
       }
       ,
       ionicPopover: function ($scope, templateUrl) {
@@ -317,7 +335,7 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/Prod/GetPageProds/"+restparams.currentPage+'/'+restparams.pageSize,
-          params:params 
+          params:params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
