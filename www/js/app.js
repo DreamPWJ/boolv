@@ -249,12 +249,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/deiverorderdetails.html',
         controller: 'DeiverOrderDetailsCtrl'
       })
+      //发货详情页面
+      .state('deiverdetails', {
+        url: '/deiverdetails',
+        templateUrl: 'templates/searchorder/deiverdetails.html',
+        controller: 'DeiverDetailsCtrl'
+      })
+
       //签收详情页面
       .state('signindetails', {
         url: '/signindetails',
         templateUrl: 'templates/searchorder/signindetails.html',
         controller: 'SigninDetailsCtrl'
       })
+
       //添加评论页面
       .state('evaluate', {
         url: '/evaluate',
@@ -307,7 +315,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/delivergoods/delivergoodsmodel.html',
         controller: 'AddDeliverListCtrl'
       })
-        
+
       //提交发货信息
       .state('delivergoods', {
         url: '/delivergoods',
@@ -473,18 +481,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //申请预收款
       .state('applyadvance', {
         url: '/applyadvance',
+        cache:false,
         templateUrl: 'templates/account/applyadvance.html',
         controller: 'ApplyAdvancesCtrl'
       })
       //我的预收款列表
       .state('myadvance', {
         url: '/myadvance',
+        cache:false,
         templateUrl: 'templates/account/myadvance.html',
         controller: 'MyAvanceCtrl'
       })
        //获取还款记录列表
       .state('davancedetails', {
         url: '/davancedetails/:item',
+        cache:false,
         templateUrl: 'templates/account/davancedetails.html',
         controller: 'DavanceDetailsCtrl'
       })
@@ -536,7 +547,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/cancelmobile.html',
         controller: 'CancelMobileCtrl'
       })
-
+      //绑定手机
+      .state('bindingmobile', {
+        url: '/bindingmobile/:oldphone',
+        templateUrl: 'templates/account/bindingmobile.html',
+        controller: 'BindingMobileCtrl'
+      })
     ;
 // if none of the above states are matched, use this as the fallback
 

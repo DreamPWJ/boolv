@@ -9,13 +9,15 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+    <ion-refresher on-refresh="getApplyPayment(0)" pulling-text="下拉更新"></ion-refresher>
     <div class="list margin-top-1px ">
-      <a ng-href="#/davancedetails/{{item}}" class="item " ng-repeat="item in applylist.data_list">
-        <h2><strong>{{item.Money|currency:'￥'}}</strong></h2>
+      <a ng-href="#/davancedetails/{{item}}" class="item " ng-repeat="item in applylist">
+        <h2><strong>{{item.Money|currency:''}}</strong></h2>
         <p>{{item.AddTime | date:'yyyy-MM-dd HH:mm'}} 申请 <span class="item-note">{{applystatus[item.Status+1]}} <i class="icon ion-ios-arrow-right"></i></span></p>
       </a>
     </div>
-
+    <ion-infinite-scroll  on-infinite="getApplyPayment()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
+  </ion-content>
   </ion-content>
   <div class="padding light-bg  bottom-0">
     <a class="button button-calm full-image " ng-href="#/applyadvance">申请预收款</a>

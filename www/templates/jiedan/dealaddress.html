@@ -11,6 +11,7 @@
     <a class="button icon ion-plus no-border" ng-href="#/adddealaddress"></a>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="stable-bg">
+    <ion-refresher on-refresh="getAddrlist(0)" pulling-text="下拉更新"></ion-refresher>
     <ion-list class="list-borderless">
       <div  ng-click="selectAddress(item)" ng-repeat="item in addrlist">
       <ion-item >
@@ -22,8 +23,7 @@
       </ion-item>
       <p></p>
       </div>
-
     </ion-list>
-
+    <ion-infinite-scroll  on-infinite="getAddrlist()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 </ion-view>

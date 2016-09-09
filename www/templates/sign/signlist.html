@@ -10,8 +10,9 @@
 
 
   <ion-content class="stable-bg" overflow-scroll="false">
+    <ion-refresher on-refresh="getSaleSupply(0)" pulling-text="下拉更新"></ion-refresher>
     <div class="list margin-top-1px">
-      <a ng-href="#/signdetails/{{item}}" class="item" ng-repeat="item in deliverlist.data_list">
+      <a ng-href="#/signdetails/{{item}}" class="item" ng-repeat="item in deliverlist">
         <h2>订单号: {{item.No}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  <i
           class="icon ion-ios-arrow-right"></i></span></h2>
         <p>{{item.OrdeType==1?'卖货人 :':'供货人 : '}} {{item.FromUsername}}</p>
@@ -21,5 +22,6 @@
         <p ng-if="item.OrdeType==2">订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>
       </a>
     </div>
+    <ion-infinite-scroll  on-infinite="getSaleSupply()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 </ion-view>

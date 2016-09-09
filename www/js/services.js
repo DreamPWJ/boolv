@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService,$interval) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -270,7 +270,22 @@ angular.module('starter.services', [])
       },
       stateReload: function (stateurl) {//路由跳转刷新
         $state.go(stateurl,{} ,{reload:true});
-      }
+      },
+      countDown : function ($scope) {//60s倒计时
+      var second = 60,
+        timePromise = undefined;
+        timePromise = $interval(function () {
+        if (second <= 0) {
+          $interval.cancel(timePromise);
+          $scope.paracont = "重发验证码";
+          $scope.paraclass = false;
+        } else {
+          $scope.paraclass = true;
+          $scope.paracont = second + "秒后可重发";
+          second--;
+        }
+      }, 1000, 100);
+    }
     }
   })
   .service('MainService', function ($q, $http, BooLv) { //主页服务定义
@@ -313,7 +328,7 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
-      //获取行情报价
+      //获取行情报价  废弃
       getProds: function () {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise

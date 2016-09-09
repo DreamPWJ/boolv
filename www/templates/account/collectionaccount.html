@@ -11,8 +11,9 @@
     <a class="button icon ion-plus no-border" ng-href="#/addbankaccount"></a>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="stable-bg ">
+    <ion-refresher on-refresh="getUserBanklist(0)" pulling-text="下拉更新"></ion-refresher>
     <ion-list class="list list-borderless">
-      <div ng-repeat="item in userbanklist.data_list">
+      <div ng-repeat="item in userbanklist">
       <ion-item ng-href="#/addbankaccount" class="item  item-icon-right item-borderless">
         <h2><strong>收款人 : </strong>{{item.accountname}}    <span ng-if="item.isdefault==1" class="right-1  balanced"> ● 默认</span></h2>
         <h2><strong>账号 : </strong>{{item.accountno}}</h2>
@@ -23,6 +24,7 @@
       <p></p>
       </div>
    </ion-list>
+    <ion-infinite-scroll  on-infinite="getUserBanklist()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 
 </ion-view>

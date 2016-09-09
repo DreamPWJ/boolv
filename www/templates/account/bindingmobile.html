@@ -5,14 +5,14 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 解绑手机</h1>
+    <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 绑定手机</h1>
   </ion-nav-title>
-  <form name="cancelmobile">
+  <form name="bindingmobile">
   <ion-content overflow-scroll="false" class="stable-bg">
 
       <div class="list">
         <label class="item item-input">
-          <span class="input-label icon ion-android-phone-portrait"> 原手机号</span>
+          <span class="input-label icon ion-android-phone-portrait"> 新手机号</span>
           <input type="text" ng-model="user.username"  required>
 
         </label>
@@ -21,11 +21,10 @@
           <input type="number" ng-model="user.password"  required>
         </label>
         <button class="authcode" ng-disabled="paraclass"  ng-click="sendCode()" >{{paracont}}</button>
-
       </div>
  </ion-content>
   <div class="padding light-bg  bottom-0">
-    <a ng-disabled="!cancelmobile.$valid" class="button button-calm full-image "  ng-click="cancelMobileSubmit()" >下一步</a>
+    <a ng-disabled="!bindingmobile.$valid" class="button button-calm full-image "  ng-click="bindingMobileSubmit()" >确认绑定</a>
   </div>
   </form>
 </ion-view>
