@@ -1147,14 +1147,14 @@ angular.module('starter.controllers', [])
   .controller('AddDeliverListCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService) {
 
     CommonService.searchModal($scope, 'templates/delivergoods/delivergoodsmodel.html');
-
+    $scope.adddeliverinfo = {};//扣款信息
+    $scope.adddeliverinfo.isAdd = [];
+    $scope.adddeliverinfo.isMinus = [];
+    $scope.adddeliverinfo.num = [];//填写数量
+    $scope.adddeliverinfo.selectnum = 0;//选中数量
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
-      $scope.adddeliverinfo = {};//扣款信息
-      $scope.adddeliverinfo.isAdd = [];
-      $scope.adddeliverinfo.isMinus = [];
-      $scope.adddeliverinfo.num = [];//填写数量
-      $scope.adddeliverinfo.selectnum = 0;//选中数量
+
       //发货 签收 验货  获取产品类别
       $scope.params = {
         IDList: '',//产品类别ID，多个用,隔开
@@ -1167,6 +1167,12 @@ angular.module('starter.controllers', [])
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
+        $scope.goodTypeList.push({'GID':'other','GName':'其它品类'});
+      }).then(function () {
+        $scope.params.SNode='';//全部数据
+        DeliverService.getGoodTypeList($scope.params).success(function (data) {
+          $scope.goodTypeListAll = data.Values;
+          })
       })
     }
     $scope.getGoodTypeList();
@@ -1176,7 +1182,14 @@ angular.module('starter.controllers', [])
     $scope.currentPage = 0;
     $scope.total = 1;
     $scope.addDeliverProduct = function (GrpIDList) {
-      if (arguments != [] && arguments[0] == 0) {
+
+      if(GrpIDList=='other'){//是否是其他类别
+        $scope.isotherproduct=true;
+      }else {
+        $scope.isotherproduct=false;
+      }
+
+      if(arguments.length!=0){
         $scope.currentPage = 0;
         $scope.adddeliverList = [];
       }
@@ -1185,42 +1198,40 @@ angular.module('starter.controllers', [])
         currentPage: $scope.currentPage,
         pageSize: 10
       }
+
       $scope.ProdsParams = {
         IDList: '',
         prodname: '',//产品类别名
-        GrpIDList: GrpIDList||'',//产品类别ID，多个用，隔开
+        GrpIDList:!$scope.isotherproduct?(GrpIDList||''):'',//产品类别ID，多个用，隔开
         IsTH: 0,//是否为统货 0否1是
-        NoGrpIDList: ''//其他类别
+        NoGrpIDList:$scope.isotherproduct?(GrpIDList||''):''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
-        if (data.Values.data_list.length!=0) {
-          angular.forEach(data.Values.data_list, function (item, index) {
+          angular.forEach(data.Values.data_list, function (item) {
             $scope.adddeliverList.push(item);
           })
-        } else {
-          $scope.adddeliverList = []
-        }
         angular.forEach($scope.adddeliverList, function (item, index) {
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
+           angular.forEach($rootScope.selectproductandnum,function (items) {
+                if(items.PID==item.PID){
+                  $scope.adddeliverinfo.isAdd[index] = false;
+                  $scope.adddeliverinfo.isMinus[index] = true;
+                  $scope.adddeliverinfo.num[index]=items.num;
+                }
+           })
         })
-        console.log(data.Values);
         $scope.total = data.Values.page_count;
-
       }).finally(function () {
-        $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
-    $scope.addDeliverProduct();
 
-    //选择列表的产品类别 查询缺件信息
+
+    //选择列表的产品类别
     $scope.selectGoodType = function (goodtypeid) {
       //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
-
       $scope.addDeliverProduct(goodtypeid);
-
     }
     //选中的产品以及发货的数量
     $scope.selectproduct = [];
@@ -1229,7 +1240,7 @@ angular.module('starter.controllers', [])
       $scope.adddeliverinfo.isAdd[index] = false;
       $scope.adddeliverinfo.isMinus[index] = true;
       $scope.adddeliverinfo.selectnum++;
-      $scope.selectproduct.push(item)
+      $scope.selectproduct.push(item);
     }
     //取消添加的缺件
     $scope.minusQueJian = function (index, item) {
@@ -1239,20 +1250,23 @@ angular.module('starter.controllers', [])
       $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
     }
     //添加产品
-    $scope.addproduct = function () {
+    $scope.addproduct = function (GID) {
       $scope.openModal();
+      $scope.selectGID=GID;
+      $scope.addDeliverProduct(GID);
     }
     //选好了方法
     $scope.selectaffirm = function () {
       $scope.closeModal();
-      $scope.selectproductandnum = [];//增加数量信息
-      angular.forEach($scope.selectproduct, function (item, index) {
-        item.num = $scope.adddeliverinfo.num[index];
-        $scope.selectproductandnum.push(item)
-      })
-      console.log($scope.selectproductandnum);
     }
-
+    //增加数量信息 重新组装数组
+    $scope.selectedproduct=function () {
+      $rootScope.selectproductandnum = [];//增加数量信息
+      angular.forEach($scope.selectproduct, function (item) {
+        item.num = $scope.adddeliverinfo.num[$scope.adddeliverList.indexOf(item)];
+        $rootScope.selectproductandnum.push(item)
+      })
+    }
 
   })
   //提交发货信息
@@ -1310,14 +1324,24 @@ angular.module('starter.controllers', [])
       //提交发货详细数据
       $scope.details = [];
       var ordeType = $rootScope.deliverDetails.OrdeType;
-      angular.forEach(ordeType == 1 ? $rootScope.deliverDetails.Details : $rootScope.deliverDetails.SpO_Details, function (item) {
+      angular.forEach($rootScope.selectproductandnum, function (item) {
         var items = {};
-        items.ProdID = item.ProdID;
-        items.ProdName = item.ProdName;
-        items.Unit = item.Unit;
-        items.Num = item.Num;
-        items.Price = item.Price;
-        items.SaleClass = item.SaleClass;
+        items.ProdID = item.PID;
+        items.ProdName = item.PName;
+        items.Unit = item.PUID;
+        items.Num = item.num;
+        var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
+        if (item.PriType == 1) {
+          angular.forEach(item.Prices, function (itemprice, index) {
+            if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
+              referenceprice = item.Prices[index].Price;
+            }
+          })
+        } else {
+          referenceprice = item.Prices[0].Price;
+        }
+        items.Price = referenceprice;//参考价格
+        items.SaleClass = item.PUSaleType;
         $scope.details.push(items);
       })
       //提交发货数据

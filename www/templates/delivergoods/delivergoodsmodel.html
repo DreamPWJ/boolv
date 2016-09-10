@@ -1,29 +1,27 @@
-<ion-modal-view >
-  <ion-header-bar class="bar bar-header bar-calm">
-    <h1 class="title icon ion-search"> 发货清单产品列表</h1>
+<ion-modal-view  >
+  <ion-header-bar class="bar bar-header bar-calm" scroll-top  ng-click="scrollTop()">
+    <h1 class="title icon ion-plus"> 发货产品清单</h1>
     <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
   </ion-header-bar>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg" >
-    <ion-refresher on-refresh="addDeliverProduct(0)" pulling-text="下拉更新"></ion-refresher>
    <ion-list>
      <ion-item class="item-input item-select ">
        <span class="input-label">产品列表</span>
        <select  ng-model="adddeliverinfo.goodtype"  ng-change="selectGoodType(adddeliverinfo.goodtype)">
-         <option value="">所有类别</option>
-         <option value="{{item.GID}}"  ng-repeat="item in goodTypeList">{{item.GName}}</option>
+         <option  value="">所有类别</option>
+         <option  ng-selected="selectGID==item.GID" value="{{item.GID}}"  ng-repeat="item in goodTypeListAll">{{item.GName}}</option>
        </select>
      </ion-item>
-     <ion-item class="item-icon-right" ng-repeat="item in adddeliverList">{{item.GrpName}}
+     <ion-item class="item-icon-right" ng-repeat="item in adddeliverList">{{item.PName}}
       <i ng-if="adddeliverinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
       <i ng-if="adddeliverinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
-       <label class=" item-input stable-bg"  ng-if="adddeliverinfo.isMinus[$index]">
-         <span class="input-label">{{item.GrpName}}</span>
-         <input type="number"  ng-model="adddeliverinfo.num[$index]" placeholder="数量">
+       <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[$index]">
+         <input type="number"  ng-model="adddeliverinfo.num[$index]" placeholder="{{item.PName}}数量" ng-blur="selectedproduct()"/>
        </label>
    </ion-item>
 
    </ion-list>
-    <!--<ion-infinite-scroll  on-infinite="addDeliverProduct()" ng-if="total > currentPage"  immediate-check="false">   </ion-infinite-scroll>-->
+    <ion-infinite-scroll  on-infinite="addDeliverProduct()" ng-if="total > currentPage"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
   <div class="light-bg bottom-0">
     <div class="row row-no-padding">

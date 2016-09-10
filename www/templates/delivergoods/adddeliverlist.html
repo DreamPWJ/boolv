@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
@@ -8,20 +8,20 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 添加发货清单</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-plus no-border"  ng-click="modal.show()">
+    <button class="button icon ion-plus no-border" ng-click="addproduct('')">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
 
     <ion-list>
-      <div  ng-repeat="item in goodTypeList">
-        <ion-item class="item-button-right" >
+      <div ng-repeat="item in goodTypeList">
+        <ion-item class="item-button-right">
           {{item.GName}}
-          <button class="button button-calm button-small button-outline" ng-click="addproduct()" >添加产品</button>
+          <button class="button button-calm button-small button-outline " ng-click="addproduct(item.GID)">添加产品</button>
         </ion-item>
-        <ion-item class="item-input" ng-repeat="items in selectproductandnum">
-          <span class="input-label">{{items.Name}}</span>
-          <input type="text"  ng-model="items.num" >
+        <ion-item class="item-input" ng-if="item.GID==items.GrpID" ng-repeat="items in selectproductandnum">
+          <span class="input-label">{{items.PName}}</span>
+          <input type="text" ng-model="items.num" readonly/>
         </ion-item>
         <p></p>
       </div>
