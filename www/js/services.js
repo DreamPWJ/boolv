@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService,$interval) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -52,7 +52,7 @@ angular.module('starter.services', [])
         });
       },
 
-      searchModal: function ($scope,templateurl) {
+      searchModal: function ($scope, templateurl) {
         //点击搜索跳转搜索modal
         $ionicModal.fromTemplateUrl(templateurl, {
           scope: $scope,
@@ -60,22 +60,22 @@ angular.module('starter.services', [])
         }).then(function (modal) {
           $scope.modal = modal;
         });
-        $scope.openModal = function() {
+        $scope.openModal = function () {
           $scope.modal.show();
         };
-        $scope.closeModal = function() {
+        $scope.closeModal = function () {
           $scope.modal.hide();
         };
         //当我们用到模型时，清除它！
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
           $scope.modal.remove();
         });
         // 当隐藏的模型时执行动作
-        $scope.$on('modal.hide', function() {
+        $scope.$on('modal.hide', function () {
           // 执行动作
         });
         // 当移动模型时执行动作
-        $scope.$on('modal.removed', function() {
+        $scope.$on('modal.removed', function () {
           // 执行动作
         });
       }
@@ -254,38 +254,23 @@ angular.module('starter.services', [])
       isLogin: function () {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
           $state.go('login')
-          return ;
-         }
-      },
-      getStateName:function(){    //得到上一个路由名称方法
-        var stateName = "";
-        if($ionicHistory.backView() && $ionicHistory.backView().stateName!="tab.account"){
-          stateName =  $ionicHistory.backView().stateName;
+          return;
         }
-        if(stateName){
+      },
+      getStateName: function () {    //得到上一个路由名称方法
+        var stateName = "";
+        if ($ionicHistory.backView() && $ionicHistory.backView().stateName != "tab.account") {
+          stateName = $ionicHistory.backView().stateName;
+        }
+        if (stateName) {
           $ionicHistory.goBack();
-        }else{
-          $state.go("tab.main",{} ,{reload:true});
+        } else {
+          $state.go("tab.main", {}, {reload: true});
         }
       },
       stateReload: function (stateurl) {//路由跳转刷新
-        $state.go(stateurl,{} ,{reload:true});
-      },
-      countDown : function ($scope) {//60s倒计时
-      var second = 60,
-        timePromise = undefined;
-        timePromise = $interval(function () {
-        if (second <= 0) {
-          $interval.cancel(timePromise);
-          $scope.paracont = "重发验证码";
-          $scope.paraclass = false;
-        } else {
-          $scope.paraclass = true;
-          $scope.paracont = second + "秒后可重发";
-          second--;
-        }
-      }, 1000, 100);
-    }
+        $state.go(stateurl, {}, {reload: true});
+      }
     }
   })
   .service('MainService', function ($q, $http, BooLv) { //主页服务定义
@@ -344,13 +329,13 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
       //获取行情报价分页列表
-      getProdsList: function (restparams,params) {
+      getProdsList: function (restparams, params) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
           method: 'GET',
-          url: BooLv.api + "/Prod/GetPageProds/"+restparams.currentPage+'/'+restparams.pageSize,
-          params:params
+          url: BooLv.api + "/Prod/GetPageProds/" + restparams.currentPage + '/' + restparams.pageSize,
+          params: params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
         }).error(function (err) {
@@ -421,7 +406,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state,$cordovaToast) {
+  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state, $cordovaToast, $interval) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -453,6 +438,21 @@ angular.module('starter.services', [])
         deferred.reject(err);// 声明执行失败，即服务器返回错误
       });
       return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    countDown: function ($scope) {//60s倒计时
+      var second = 60,
+        timePromise = undefined;
+      timePromise = $interval(function () {
+        if (second <= 0) {
+          $interval.cancel(timePromise);
+          $scope.paracont = "重发验证码";
+          $scope.paraclass = false;
+        } else {
+          $scope.paraclass = true;
+          $scope.paracont = second + "秒后可重发";
+          second--;
+        }
+      }, 1000, 100);
     },
     modifySex: function (params) { //修改性别
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行

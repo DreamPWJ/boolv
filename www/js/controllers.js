@@ -223,14 +223,17 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('LoginCtrl', function ($scope, $rootScope, $state, $ionicHistory, $interval, CommonService, AccountService) {
-
+  .controller('LoginCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService) {
+    //删除记住用户信息
+    localStorage.removeItem("usertoken");
+    localStorage.removeItem("user");
     $scope.user = {};//提前定义用户对象
+    $scope.agreedeal=true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.sendCode = function () {
       //60s倒计时
-      CommonService.countDown($scope);
+      AccountService.countDown($scope);
       AccountService.sendCode($scope.user.username).success(function (data) {
         $scope.user.passwordcode = data.Values;
       }).error(function () {
@@ -920,6 +923,7 @@ angular.module('starter.controllers', [])
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deiverList.push(item);
         })
+        console.log($scope.deiverList);
         $scope.total = data.Values.page_count;
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -1144,38 +1148,6 @@ angular.module('starter.controllers', [])
 
     CommonService.searchModal($scope, 'templates/delivergoods/delivergoodsmodel.html');
 
-    //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
-    $rootScope.adddeliverList = [];
-    $scope.currentPage = 0;
-    $scope.total = 1;
-    $scope.addDeliverList = function () {
-      if (arguments != [] && arguments[0] == 0) {
-        $scope.currentPage = 0;
-        $rootScope.adddeliverList = [];
-      }
-      $scope.currentPage++;
-      $scope.restProdsParams = {
-        currentPage: $scope.currentPage,
-        pageSize: 10
-      }
-      $scope.ProdsParams = {
-        IDList: '',
-        prodname: '',//产品类别名
-        GrpIDList: '',//产品类别ID，多个用，隔开
-        IsTH: 0,//是否为统货 0否1是
-        NoGrpIDList: ''//其他类别
-      }
-      MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
-        angular.forEach(data.Values.data_list, function (item) {
-          $rootScope.adddeliverList.push(item);
-        })
-        $scope.total = data.Values.page_count;
-      }).finally(function () {
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-      })
-    }
-    $scope.addDeliverList();
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
       $scope.adddeliverinfo = {};//扣款信息
@@ -1195,37 +1167,60 @@ angular.module('starter.controllers', [])
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-
       })
     }
     $scope.getGoodTypeList();
-    //选择列表的产品类别 查询缺件信息
-    $scope.selectGoodType = function (goodtypeid) {
-      //发货 签收 验货  查询缺件信息分页列
-      $scope.paramsquejian = {
-        currentPage: 1,//当前页码
-        pageSize: 20,//每页条数
-        ID: '',//编码 ,等于空时取所有
-        Type: '',//所属类型0-产品类别1-产品2-销售分类
-        TypeValue: goodtypeid,//类型所对应的值（产品类别ID）
-        Name: ''//缺件属性名
-      }
-      DeliverService.getQueJianList($scope.paramsquejian).success(function (data) {
-        console.log(data.Values);
-        if (data.Values) {
-          $scope.queJianList = data.Values.data_list;
-        } else {
-          $scope.queJianList = []
-        }
 
-        angular.forEach($scope.queJianList, function (item, index) {
+    //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+    $scope.adddeliverList = [];
+    $scope.currentPage = 0;
+    $scope.total = 1;
+    $scope.addDeliverProduct = function (GrpIDList) {
+      if (arguments != [] && arguments[0] == 0) {
+        $scope.currentPage = 0;
+        $scope.adddeliverList = [];
+      }
+      $scope.currentPage++;
+      $scope.restProdsParams = {
+        currentPage: $scope.currentPage,
+        pageSize: 10
+      }
+      $scope.ProdsParams = {
+        IDList: '',
+        prodname: '',//产品类别名
+        GrpIDList: GrpIDList||'',//产品类别ID，多个用，隔开
+        IsTH: 0,//是否为统货 0否1是
+        NoGrpIDList: ''//其他类别
+      }
+      MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
+        if (data.Values.data_list.length!=0) {
+          angular.forEach(data.Values.data_list, function (item, index) {
+            $scope.adddeliverList.push(item);
+          })
+        } else {
+          $scope.adddeliverList = []
+        }
+        angular.forEach($scope.adddeliverList, function (item, index) {
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
-
         })
-        console.log($scope.queJianList);
+        console.log(data.Values);
+        $scope.total = data.Values.page_count;
 
+      }).finally(function () {
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
       })
+    }
+    //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+    $scope.addDeliverProduct();
+
+    //选择列表的产品类别 查询缺件信息
+    $scope.selectGoodType = function (goodtypeid) {
+      //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+
+      $scope.addDeliverProduct(goodtypeid);
+
     }
     //选中的产品以及发货的数量
     $scope.selectproduct = [];
@@ -1257,6 +1252,8 @@ angular.module('starter.controllers', [])
       })
       console.log($scope.selectproductandnum);
     }
+
+
   })
   //提交发货信息
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
@@ -1360,7 +1357,7 @@ angular.module('starter.controllers', [])
     $scope.supplylist = [];
     $scope.page = 0;
     $scope.total = 1;
-    $scope.supplygoodList=function () {
+    $scope.supplygoodList = function () {
       if (arguments != [] && arguments[0] == 0) {
         $scope.page = 0;
         $scope.supplylist = [];
@@ -2014,7 +2011,7 @@ angular.module('starter.controllers', [])
     $scope.addrlist = [];
     $scope.page = 0;
     $scope.total = 1;
-    $scope.getAddrlist=function () {
+    $scope.getAddrlist = function () {
       if (arguments != [] && arguments[0] == 0) {
         $scope.page = 0;
         $scope.addrlist = [];
@@ -2433,6 +2430,29 @@ angular.module('starter.controllers', [])
     myChart.setOption(option, true);
 
   })
+  //帮助信息共用模板
+  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
+    CommonService.ionicLoadingShow();
+    var id = $stateParams.ID;
+    if (id == 11) {
+      $scope.title = '登录注册协议';
+    }
+    if (id == 12) {
+      $scope.title = '提升额度';
+    }
+    if (id == 13) {
+      $scope.title = '关于我们';
+    }
+    //获取帮助中心详情
+    $scope.params = {
+      ID: id
+    }
+    MainService.getHelpDetails($scope.params).success(function (data) {
+      $scope.helpdata = data.Values;
+    }).finally(function () {
+      CommonService.ionicLoadingHide();
+    })
+  })
   .controller('SettingCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
@@ -2443,7 +2463,7 @@ angular.module('starter.controllers', [])
     $scope.paraclass = false; //控制验证码的disable
     $scope.sendCode = function () {
       //60s倒计时
-      CommonService.countDown($scope);
+      AccountService.countDown($scope);
       AccountService.sendCode($scope.user.username).success(function (data) {
         $scope.user.passwordcode = data.Values;
       }).error(function () {
@@ -2468,7 +2488,7 @@ angular.module('starter.controllers', [])
     $scope.paraclass = false; //控制验证码的disable
     $scope.sendCode = function () {
       //60s倒计时
-      CommonService.countDown($scope);
+      AccountService.countDown($scope);
       AccountService.sendCode($scope.user.username).success(function (data) {
         $scope.user.passwordcode = data.Values;
       }).error(function () {
@@ -2504,7 +2524,7 @@ angular.module('starter.controllers', [])
   .controller('UpdateUserCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, AccountService) {
     $scope.type = $stateParams.type;
     $scope.value = $stateParams.value;
-    ;
+
     $scope.user = {};
     $scope.updateUser = function () {
       $scope.params = {

@@ -20,15 +20,18 @@
             <input type="number" ng-model="user.password"  required>
         </label>
         <button class="authcode" ng-disabled="paraclass"  ng-click="sendCode()" >{{paracont}}</button>
-        <ion-checkbox class="checkbox-calm" ng-checked="true" >
+        <ion-checkbox class="checkbox-calm" ng-model="agreedeal" ng-checked="true" >
           同意登录协议
         </ion-checkbox>
       </div>
       <div class="padding-horizontal">
-        <button class="button full-image button-balanced " ng-click="loginSubmit()" ng-disabled="!loginForm.$valid">登录
+        <button class="button full-image button-balanced " ng-click="loginSubmit()" ng-disabled="!(loginForm.$valid&&agreedeal)">登录
         </button>
       </div>
     </form>
+     <p class="text-right  padding"> <a class="light subdued icon ion-help-circled" ng-href="#/help/11" nav-direction=forward > 查看登录注册协议</a></p>
+
   </ion-content>
+<!--  <p class="fixed-bottom  text-center calm hide-on-keyboard-open">&copy;博绿网	</p>-->
 </ion-view>
 

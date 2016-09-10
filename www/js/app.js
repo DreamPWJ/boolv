@@ -513,6 +513,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/collectionaccount.html',
         controller: 'CollectionAccountCtrl'
       })
+
       //增加收款银行账号
       .state('addbankaccount', {
         url: '/addbankaccount',
@@ -523,6 +524,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/mycredit',
         templateUrl: 'templates/account/mycredit.html',
         controller: 'MyCreditCtrl'
+      })
+      //帮助信息共用模板
+      .state('help', {
+        url: '/help/:ID',
+        templateUrl: 'templates/account/help.html',
+        controller: 'HelpCtrl'
       })
       .state('setting', {
         url: '/setting',
