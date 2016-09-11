@@ -11,7 +11,7 @@
     <button class="button icon ion-plus no-border" ng-click="addcutpaymentbtn('')">
     </button>
   </ion-nav-buttons>
-  <form action="addcutpayment">
+
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <ion-list>
       <ion-item class="item-icon-right">
@@ -20,14 +20,23 @@
       </ion-item>
       <p></p>
       <ion-item class="item-input item-borderless">
-        <span class="input-label">扣款总金额</span>
-        <input type="text" placeholder="(单位 : 元)"  ng-model="cutpaymentinfo.totalmoney" required/>
+        <span class="input-label"><strong>扣款总金额</strong></span>
+        <input type="text" placeholder="(单位 : 元)"  ng-model="cutpaymentinfo.totalmoney"   required/>
       </ion-item>
     </ion-list>
 
+    <ion-list>
+      <ion-item class="item-divider">
+        扣款项明细
+      </ion-item>
+      <ion-item  ng-repeat="item in addcutpayment">
+        <h2>{{item.Name}}扣款数量 : {{item.num}}</h2>
+        <h2>{{item.Name}}扣款金额 : {{item.money}} 元</h2>
+      </ion-item>
+    </ion-list>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <button  ng-disabled="!addcutpayment.$valid" class="button button-calm full-image" ng-click="submitCutPayMent()" >提交</button>
+    <button  ng-disabled="!cutpaymentinfo.totalmoney" class="button button-calm full-image" ng-click="submitCutPayMent()" >提交</button>
   </div>
-  </form>
+
 </ion-view>

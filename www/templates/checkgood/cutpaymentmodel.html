@@ -15,8 +15,11 @@
       <ion-item class="item-icon-right" ng-repeat="item in queJianList">{{item.Name}}
         <i ng-if="cutpaymentinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
         <i ng-if="cutpaymentinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
+        <label class=" item-input stable-bg border-bottom-1px"  ng-if="cutpaymentinfo.isMinus[$index]">
+          <input type="number"  ng-model="cutpaymentinfo.num[item.ID]" placeholder="{{item.Name}}扣款数量 " ng-blur="selectedproduct()"/>
+        </label>
         <label class=" item-input stable-bg "  ng-if="cutpaymentinfo.isMinus[$index]">
-          <input type="number"  ng-model="cutpaymentinfo.num[item.PID]" placeholder="{{item.Name}}数量 " ng-blur="selectedproduct()"/>
+          <input type="number"   ng-model="cutpaymentinfo.money[item.ID]" placeholder="{{item.Name}}扣款金额 " ng-blur="selectedproduct()"/>
         </label>
       </ion-item>
 

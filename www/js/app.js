@@ -431,7 +431,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/checkdetails.html',
         controller: 'CheckDetailsCtrl'
       })
-
+      //添加验货清单
+      .state('addproduct', {
+        url: '/addproduct',
+        templateUrl: 'templates/checkgood/addproduct.html',
+        controller: 'AddProductCtrl'
+      })
+      //添加验货清单model
+      .state('checkgoodsmodel', {
+        url: '/checkgoodsmodel',
+        templateUrl: 'templates/checkgood/checkgoodsmodel.html',
+        controller: 'AddProductCtrl'
+      })
       //添加扣款项
       .state('addcutpayment', {
         url: '/addcutpayment',
@@ -451,18 +462,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/enteringcheck.html',
         controller: 'EnteringCheckCtrl'
       })
-      //添加验货清单
-      .state('addproduct', {
-        url: '/addproduct',
-        templateUrl: 'templates/checkgood/addproduct.html',
-        controller: 'AddProductCtrl'
-      })
-      //添加验货清单model
-      .state('checkgoodsmodel', {
-        url: '/checkgoodsmodel',
-        templateUrl: 'templates/checkgood/checkgoodsmodel.html',
-        controller: 'AddProductCtrl'
-      })
+ 
       //签收列表
       .state('signlist', {
         url: '/signlist',

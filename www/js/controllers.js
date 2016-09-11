@@ -228,7 +228,7 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("usertoken");
     localStorage.removeItem("user");
     $scope.user = {};//提前定义用户对象
-    $scope.agreedeal=true;//同意用户协议
+    $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
     $scope.sendCode = function () {
@@ -444,7 +444,7 @@ angular.module('starter.controllers', [])
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.buyDetails.FromUser;
     //订单状态
-    $rootScope.orderStatus=$rootScope.buyDetails.Status;
+    $rootScope.orderStatus = $rootScope.buyDetails.Status;
     //支付定金
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
@@ -478,7 +478,7 @@ angular.module('starter.controllers', [])
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.supplyDetails.FromUser;
     //订单状态
-    $rootScope.orderStatus=$rootScope.supplyDetails.Status;
+    $rootScope.orderStatus = $rootScope.supplyDetails.Status;
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService, SearchOrderService) {
@@ -604,7 +604,7 @@ angular.module('starter.controllers', [])
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser;
     //订单状态
-    $rootScope.orderStatus=$rootScope.deliverDetails.Status;
+    $rootScope.orderStatus = $rootScope.deliverDetails.Status;
   })
   // 查单卖货审核验货单列表
   .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
@@ -911,7 +911,7 @@ angular.module('starter.controllers', [])
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.collectGoodDetails.FromUser;
     //订单状态
-    $rootScope.orderStatus=$rootScope.collectGoodDetails.Status;
+    $rootScope.orderStatus = $rootScope.collectGoodDetails.Status;
 
   })
   //发货详情页面
@@ -1184,12 +1184,12 @@ angular.module('starter.controllers', [])
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        $scope.goodTypeList.push({'GID':'other','GName':'其它品类'});
+        $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
-        $scope.params.SNode='';//全部数据
+        $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $rootScope.goodTypeListAll = data.Values;
-          })
+        })
       })
     }
     $scope.getGoodTypeList();
@@ -1200,13 +1200,13 @@ angular.module('starter.controllers', [])
     $scope.total = 1;
     $scope.addDeliverProduct = function (GrpIDList) {
 
-      if(GrpIDList=='other'){//是否是其他类别
-        $scope.isotherproduct=true;
-      }else {
-        $scope.isotherproduct=false;
+      if (GrpIDList == 'other') {//是否是其他类别
+        $scope.isotherproduct = true;
+      } else {
+        $scope.isotherproduct = false;
       }
 
-      if(arguments.length!=0){
+      if (arguments.length != 0) {
         $scope.currentPage = 0;
         $scope.adddeliverList = [];
       }
@@ -1219,27 +1219,27 @@ angular.module('starter.controllers', [])
       $scope.ProdsParams = {
         IDList: '',
         prodname: '',//产品类别名
-        GrpIDList:!$scope.isotherproduct?(GrpIDList||''):'',//产品类别ID，多个用，隔开
+        GrpIDList: !$scope.isotherproduct ? (GrpIDList || '') : '',//产品类别ID，多个用，隔开
         IsTH: 0,//是否为统货 0否1是
-        NoGrpIDList:$scope.isotherproduct?(GrpIDList||''):''//其他类别
+        NoGrpIDList: $scope.isotherproduct ? (GrpIDList || '') : ''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
-          angular.forEach(data.Values.data_list, function (item) {
-            $scope.adddeliverList.push(item);
-          })
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.adddeliverList.push(item);
+        })
 
         angular.forEach($scope.adddeliverList, function (item, index) {
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
-           angular.forEach($rootScope.selectproductandnum,function (items) {
-                if(items.PID==item.PID){
-                  $scope.adddeliverinfo.isAdd[index] = false;
-                  $scope.adddeliverinfo.isMinus[index] = true;
-                  $scope.adddeliverinfo.num[index]=items.num;
-                }else {
-                  $scope.adddeliverinfo.num[index]='';
-                }
-           })
+          angular.forEach($rootScope.selectproductandnum, function (items) {
+            if (items.PID == item.PID) {
+              $scope.adddeliverinfo.isAdd[index] = false;
+              $scope.adddeliverinfo.isMinus[index] = true;
+              $scope.adddeliverinfo.num[index] = items.num;
+            } else {
+              $scope.adddeliverinfo.num[index] = '';
+            }
+          })
         })
         $scope.total = data.Values.page_count;
       }).finally(function () {
@@ -1272,31 +1272,31 @@ angular.module('starter.controllers', [])
     //添加产品
     $scope.addproduct = function (GID) {
       $scope.openModal();
-      $scope.selectGID=GID;
+      $scope.selectGID = GID;
       $scope.addDeliverProduct(GID);
     }
     //选好了方法
     $scope.selectaffirm = function () {
       $scope.selectedproduct();  //增加数量信息 重新组装数组
       //增加没有的商品类别
-      $scope.selectproductandnumother=[];
+      $scope.selectproductandnumother = [];
       //已有有的商品类别
-      $scope.hasselectproductandnum=[];
-      angular.forEach($rootScope.selectproductandnum,function (item) {
-          angular.forEach($scope.goodTypeList,function (items) {
-              if(items.GID==item.GrpID){
-                $scope.hasselectproductandnum.push(item);
-              }
-          })
+      $scope.hasselectproductandnum = [];
+      angular.forEach($rootScope.selectproductandnum, function (item) {
+        angular.forEach($scope.goodTypeList, function (items) {
+          if (items.GID == item.GrpID) {
+            $scope.hasselectproductandnum.push(item);
+          }
+        })
       })
       //求两个集合的差集
-      if($rootScope.selectproductandnum.length>$scope.hasselectproductandnum.length) {
+      if ($rootScope.selectproductandnum.length > $scope.hasselectproductandnum.length) {
         $scope.selectproductandnumother = CommonService.arrayMinus($rootScope.selectproductandnum, $scope.hasselectproductandnum);
-        }
+      }
       $scope.closeModal();//关闭modal
     }
     //增加数量信息 重新组装数组
-    $scope.selectedproduct=function () {
+    $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       console.log($scope.selectproduct);
       angular.forEach($scope.selectproduct, function (item) {
@@ -1306,12 +1306,12 @@ angular.module('starter.controllers', [])
     }
 
     //关闭modle清空数据
-    $scope.closeModalClear=function () {
+    $scope.closeModalClear = function () {
       $scope.closeModal();
       $rootScope.selectproductandnum = [];//清空数据
-      $scope.selectproductandnumother=[];//清空数据
-      $scope.selectproduct=[];
-      $scope.adddeliverinfo.selectnum=0;
+      $scope.selectproductandnumother = [];//清空数据
+      $scope.selectproduct = [];
+      $scope.adddeliverinfo.selectnum = 0;
     }
   })
   //提交发货信息
@@ -1401,10 +1401,10 @@ angular.module('starter.controllers', [])
         Weight: $scope.deliverinfo.Weight,//总重量
         Cost: '',//送货费或提货费
         ExpCost: '',//到付物流费
-        Imgs: [{  //上传图片集合
+        Imgs: [/*{  //上传图片集合
           PicAddr: $scope.Imgs.PicAddr,
           PicDes: "拍照图库照片！"
-        }],
+        }*/],
         Details: $scope.details //发货明细
 
       }
@@ -1719,7 +1719,7 @@ angular.module('starter.controllers', [])
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser;
     //订单状态
-    $rootScope.orderStatus=$rootScope.deliverDetails.Status;
+    $rootScope.orderStatus = $rootScope.deliverDetails.Status;
   })
   //我要卖货
   .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
@@ -1839,9 +1839,9 @@ angular.module('starter.controllers', [])
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        $scope.goodTypeList.push({'GID':'other','GName':'其它品类'});
+        $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
-        $scope.params.SNode='';//全部数据
+        $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $scope.goodTypeListAll = data.Values;
         })
@@ -1853,7 +1853,7 @@ angular.module('starter.controllers', [])
     $scope.currentPage = 0;
     $scope.total = 1;
     $scope.getQueJianList = function (goodtypeid) {
-      if(arguments.length!=0){
+      if (arguments.length != 0) {
         $scope.currentPage = 0;
         $scope.queJianList = [];
       }
@@ -1864,7 +1864,7 @@ angular.module('starter.controllers', [])
         pageSize: 10,//每页条数
         ID: '',//编码 ,等于空时取所有
         Type: '',//所属类型0-产品类别1-产品2-销售分类
-        TypeValue: goodtypeid||'',//类型所对应的值（产品类别ID）
+        TypeValue: goodtypeid || '',//类型所对应的值（产品类别ID）
         Name: ''//缺件属性名
       }
       DeliverService.getQueJianList($scope.paramsquejian).success(function (data) {
@@ -1875,13 +1875,15 @@ angular.module('starter.controllers', [])
         angular.forEach($scope.queJianList, function (item, index) {
           $scope.cutpaymentinfo.isAdd[index] = true;
           $scope.cutpaymentinfo.isMinus[index] = false;
-          angular.forEach($rootScope.addcutpayment,function (items) {
-            if(items.PID==item.PID){
+          angular.forEach($rootScope.addcutpayment, function (items) {
+            if (items.ID == item.ID) {
               $scope.cutpaymentinfo.isAdd[index] = false;
               $scope.cutpaymentinfo.isMinus[index] = true;
-              $scope.cutpaymentinfo.num[index]=items.num;
-            }else {
-              $scope.cutpaymentinfo.num[index]='';
+              $scope.cutpaymentinfo.num[index] = items.num;
+              $scope.cutpaymentinfo.money[index] = items.money;
+            } else {
+              $scope.cutpaymentinfo.num[index] = '';
+              $scope.cutpaymentinfo.money[index] = '';
             }
           })
         })
@@ -1915,71 +1917,103 @@ angular.module('starter.controllers', [])
     //添加扣款项
     $scope.addcutpaymentbtn = function (GID) {
       $scope.openModal();
-      $scope.selectGID=GID;
+      $scope.selectGID = GID;
       $scope.getQueJianList(GID);
     }
     //选好了方法
     $scope.selectaffirm = function () {
       $scope.selectedproduct();  //增加数量信息 重新组装数组
-      //增加没有的商品类别
-      $scope.selectproductandnumother=[];
-      //已有有的商品类别
-      $scope.hasselectproductandnum=[];
-      angular.forEach($rootScope.addcutpayment,function (item) {
-        angular.forEach($scope.goodTypeList,function (items) {
-          if(items.GID==item.GrpID){
-            $scope.hasselectproductandnum.push(item);
-          }
-        })
-      })
-      //求两个集合的差集
-      if($rootScope.addcutpayment.length>$scope.hasselectproductandnum.length){
-        $scope.selectproductandnumother=CommonService.arrayMinus($rootScope.addcutpayment,$scope.hasselectproductandnum);
-      }
-
       $scope.closeModal();//关闭modal
     }
     //增加数量信息 重新组装数组
-    $scope.selectedproduct=function () {
+    $scope.selectedproduct = function () {
       $rootScope.addcutpayment = [];//增加数量信息
+      $scope.cutpaymentinfo.totalmoney = 0;//扣款总金额
       angular.forEach($scope.selectproduct, function (item) {
-        item.num = $scope.cutpaymentinfo.num[item.PID];
+        item.num = $scope.cutpaymentinfo.num[item.ID];
+        item.money = $scope.cutpaymentinfo.money[item.ID];
         $rootScope.addcutpayment.push(item)
+        $scope.cutpaymentinfo.totalmoney += item.money;
       })
     }
 
     //关闭modle清空数据
-    $scope.closeModalClear=function () {
+    $scope.closeModalClear = function () {
       $scope.closeModal();
       $rootScope.addcutpayment = [];//清空数据
-      $scope.selectproductandnumother=[];//清空数据
-      $scope.selectproduct=[];
-      $scope.cutpaymentinfo.selectnum=0;
+      $scope.selectproduct = [];
+      $scope.cutpaymentinfo.selectnum = 0;
+      $scope.cutpaymentinfo.totalmoney = 0;//扣款总金额
     }
-    //添加扣款项 提交
+    //添加扣款项 提交  提交供货单
     $scope.submitCutPayMent = function () {
-      //提交卖货/供货验货扣款记录
-      $scope.details = [];
-      angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
+
+      //提交验货详细数据
+      $scope.addYanhuodetails = [];
+      var ordeType = $rootScope.checkDetails.OrdeType;
+      angular.forEach($rootScope.selectproductandnum, function (item) {
         var items = {};
-        items.User = localStorage.getItem("usertoken");//操作人
-        items.QJID = item.QJID;//缺件属性表编号
-        items.QJName = item.QJName;//缺件属性表名称
-        items.QJTypeValue = item.QJTypeValue;//缺件属性类型所对应的值
-        items.Num = item.Num;//数量/重量
-        items.Price = item.Price;//扣款金额
-        $scope.details.push(items);
+        items.ProdID = item.PID;
+        items.ProdName = item.PName;
+        items.Unit = item.PUID;
+        items.Num = item.num;
+        var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
+        if (item.PriType == 1) {
+          angular.forEach(item.Prices, function (itemprice, index) {
+            if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
+              referenceprice = item.Prices[index].Price;
+            }
+          })
+        } else {
+          referenceprice = item.Prices[0].Price;
+        }
+        items.Price = referenceprice;//参考价格
+        items.SaleClass = item.PUSaleType;
+        items.Status = 0;//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
+        $scope.addYanhuodetails.push(items);
       })
-      $scope.datas = {
-        OrderType: $rootScope.checkDetails.OrdeType,//订单类型1-卖货单2-供货出库单
-        Node: $rootScope.checkDetails.OrderNo,//订单号
-        Debit: $scope.cutpaymentinfo.totalmoney,//扣款总金额
-        Details: $scope.details//卖货/供货验货扣款记录
+
+      //提交验货数据
+      $scope.addYanhuodatas = {
+        AddUser: localStorage.getItem("usertoken"),//添加人账号 AddUser
+        OrderType: ordeType,//类型 1卖货单2供货单
+        OrderNo: $rootScope.checkDetails.No,//卖货单/供货单订单号
+        Imgs: [/*{  //上传图片集合
+          PicAddr: $scope.Imgs.PicAddr,
+          PicDes: "拍照图库照片！"
+        }*/],
+        Details: $scope.addYanhuodetails //验货明细
+
       }
 
-      /*      DeliverService.addQJ($scope.datas).success(function (data) {
+     DeliverService.addYanhuo($scope.addYanhuodatas).success(function (data) {
+       console.log(data);
+     }).then(function () {
+        //提交卖货/供货验货扣款记录
+        $scope.details = [];
+        angular.forEach($rootScope.addcutpayment, function (item, index) {
+          var items = {};
+          items.User = localStorage.getItem("usertoken");//操作人
+          items.QJID = item.ID;//缺件属性表编号
+          items.QJName = item.Name;//缺件属性表名称
+          items.QJTypeValue = item.TypeValue;//缺件属性类型所对应的值
+          items.Num = item.num;//数量/重量
+          items.Price = item.money;//扣款金额
+          $scope.details.push(items);
+        })
+        $scope.datas = {
+          OrderType: $rootScope.checkDetails.OrdeType,//订单类型1-卖货单2-供货出库单
+          Node: $rootScope.checkDetails.No,//订单号
+          Debit: $scope.cutpaymentinfo.totalmoney,//扣款总金额
+          Details: $scope.details//卖货/供货验货扣款记录
+        }
 
-       })*/
+        DeliverService.addQJ($scope.datas).success(function (data) {
+          console.log(data);
+          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
+        })
+      })
+
     }
   })
 
@@ -2029,7 +2063,7 @@ angular.module('starter.controllers', [])
     }
   })
   //添加验货清单
-  .controller('AddProductCtrl', function ($scope,  $rootScope, $stateParams, CommonService, MainService, DeliverService) {
+  .controller('AddProductCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService) {
     CommonService.searchModal($scope, 'templates/checkgood/checkgoodsmodel.html');
     $scope.adddeliverinfo = {};//扣款信息
     $scope.adddeliverinfo.isAdd = [];
@@ -2045,14 +2079,14 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.checkDetails.No,//发货单号
-        BNode: ''//买货单号
+        SNode: $rootScope.checkDetails.No ? $rootScope.checkDetails.No : '',//发货单号
+        BNode: $rootScope.orderId ? $rootScope.orderId : ''//买货单号
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        $scope.goodTypeList.push({'GID':'other','GName':'其它品类'});
+        $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
-        $scope.params.SNode='';//全部数据
+        $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $scope.goodTypeListAll = data.Values;
         })
@@ -2066,13 +2100,13 @@ angular.module('starter.controllers', [])
     $scope.total = 1;
     $scope.addDeliverProduct = function (GrpIDList) {
 
-      if(GrpIDList=='other'){//是否是其他类别
-        $scope.isotherproduct=true;
-      }else {
-        $scope.isotherproduct=false;
+      if (GrpIDList == 'other') {//是否是其他类别
+        $scope.isotherproduct = true;
+      } else {
+        $scope.isotherproduct = false;
       }
 
-      if(arguments.length!=0){
+      if (arguments.length != 0) {
         $scope.currentPage = 0;
         $scope.adddeliverList = [];
       }
@@ -2085,9 +2119,9 @@ angular.module('starter.controllers', [])
       $scope.ProdsParams = {
         IDList: '',
         prodname: '',//产品类别名
-        GrpIDList:!$scope.isotherproduct?(GrpIDList||''):'',//产品类别ID，多个用，隔开
+        GrpIDList: !$scope.isotherproduct ? (GrpIDList || '') : '',//产品类别ID，多个用，隔开
         IsTH: 0,//是否为统货 0否1是
-        NoGrpIDList:$scope.isotherproduct?(GrpIDList||''):''//其他类别
+        NoGrpIDList: $scope.isotherproduct ? (GrpIDList || '') : ''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
         angular.forEach(data.Values.data_list, function (item) {
@@ -2097,13 +2131,14 @@ angular.module('starter.controllers', [])
         angular.forEach($scope.adddeliverList, function (item, index) {
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
-          angular.forEach($rootScope.selectproductandnum,function (items) {
-            if(items.PID==item.PID){
+          angular.forEach($rootScope.selectproductandnum, function (items) {
+
+            if (items.PID == item.PID) {
               $scope.adddeliverinfo.isAdd[index] = false;
               $scope.adddeliverinfo.isMinus[index] = true;
-              $scope.adddeliverinfo.num[index]=items.num;
-            }else {
-              $scope.adddeliverinfo.num[index]='';
+              $scope.adddeliverinfo.num[index] = items.num;
+            } else {
+              $scope.adddeliverinfo.num[index] = '';
             }
           })
         })
@@ -2138,47 +2173,48 @@ angular.module('starter.controllers', [])
     //添加产品
     $scope.addproduct = function (GID) {
       $scope.openModal();
-      $scope.selectGID=GID;
+      $scope.selectGID = GID;
       $scope.addDeliverProduct(GID);
     }
     //选好了方法
     $scope.selectaffirm = function () {
       $scope.selectedproduct();  //增加数量信息 重新组装数组
       //增加没有的商品类别
-      $scope.selectproductandnumother=[];
+      $scope.selectproductandnumother = [];
       //已有有的商品类别
-      $scope.hasselectproductandnum=[];
-      angular.forEach($rootScope.selectproductandnum,function (item) {
-        angular.forEach($scope.goodTypeList,function (items) {
-          if(items.GID==item.GrpID){
+      $scope.hasselectproductandnum = [];
+      angular.forEach($rootScope.selectproductandnum, function (item) {
+        angular.forEach($scope.goodTypeList, function (items) {
+          if (items.GID == item.GrpID) {
             $scope.hasselectproductandnum.push(item);
           }
         })
       })
       //求两个集合的差集
-      if($rootScope.selectproductandnum.length>$scope.hasselectproductandnum.length){
-        $scope.selectproductandnumother=CommonService.arrayMinus($rootScope.selectproductandnum,$scope.hasselectproductandnum);
+      if ($rootScope.selectproductandnum.length > $scope.hasselectproductandnum.length) {
+        $scope.selectproductandnumother = CommonService.arrayMinus($rootScope.selectproductandnum, $scope.hasselectproductandnum);
       }
 
-      console.log($scope.selectproductandnumother);
+
       $scope.closeModal();//关闭modal
     }
     //增加数量信息 重新组装数组
-    $scope.selectedproduct=function () {
+    $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       angular.forEach($scope.selectproduct, function (item) {
         item.num = $scope.adddeliverinfo.num[item.PID];
         $rootScope.selectproductandnum.push(item)
       })
+      console.log($scope.selectproductandnum);
     }
 
     //关闭modle清空数据
-    $scope.closeModalClear=function () {
+    $scope.closeModalClear = function () {
       $scope.closeModal();
       $rootScope.selectproductandnum = [];//清空数据
-      $scope.selectproductandnumother=[];//清空数据
-      $scope.selectproduct=[];
-      $scope.adddeliverinfo.selectnum=0;
+      $scope.selectproductandnumother = [];//清空数据
+      $scope.selectproduct = [];
+      $scope.adddeliverinfo.selectnum = 0;
     }
   })
   //接单供货计划详情
