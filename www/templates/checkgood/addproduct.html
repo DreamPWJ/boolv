@@ -1,29 +1,42 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 添加产品</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 添加验货清单</h1>
   </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-plus no-border" ng-click="addproduct('')">
+    </button>
+  </ion-nav-buttons>
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
 
-  <ion-content overflow-scroll="false" class="stable-bg">
-        <ion-list>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-          <ion-item ng-href="#/enteringcheck">拆解机</ion-item>
-        </ion-list>
+    <ion-list>
+      <div ng-repeat="item in goodTypeList">
+        <ion-item class="item-button-right">
+          {{item.GName}}
+          <button class="button button-calm button-small button-outline " ng-click="addproduct(item.GID)">添加产品</button>
+        </ion-item>
+        <ion-item class="item-input" ng-if="item.GID==items.GrpID" ng-repeat="items in selectproductandnum">
+          <span class="input-label">{{items.PName}}</span>
+          <input type="text" ng-model="items.num+items.PUName" readonly/>
+        </ion-item>
+        <p></p>
+      </div>
+    </ion-list>
+    <ion-list>
+      <div ng-repeat="items in selectproductandnumother">
+        <ion-item class="item-input" >
+          <span class="input-label">{{items.PName}}</span>
+          <input type="text" ng-model="items.num+items.PUName" readonly/>
+        </ion-item>
+        <p></p>
+      </div>
+    </ion-list>
   </ion-content>
-
-
+  <div class="padding light-bg bottom-0">
+    <a class="button button-calm full-image" ng-disabled="!selectproductandnum" ng-href="#/addcutpayment">下一步</a>
+  </div>
 </ion-view>

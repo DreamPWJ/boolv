@@ -438,10 +438,13 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.buyDetails.No;
     //订单类型
+    $rootScope.OrdeType = $rootScope.buyDetails.OrdeType;//订单类型 1卖货单2供货单
+    //评价订单类型
     $rootScope.orderType = 2;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.buyDetails.FromUser;
-
+    //订单状态
+    $rootScope.orderStatus=$rootScope.buyDetails.Status;
     //支付定金
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
@@ -469,9 +472,13 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
     //订单类型
+    $rootScope.OrdeType = $rootScope.supplyDetails.OrdeType;//订单类型 1卖货单2供货单
+    //评价订单类型
     $rootScope.orderType = 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.supplyDetails.FromUser;
+    //订单状态
+    $rootScope.orderStatus=$rootScope.supplyDetails.Status;
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService, SearchOrderService) {
@@ -591,9 +598,13 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
     //订单类型
+    $rootScope.OrdeType = $rootScope.supplyDetails.OrdeType;//订单类型 1卖货单2供货单
+    //评价订单类型
     $rootScope.orderType = 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
-    $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser
+    $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser;
+    //订单状态
+    $rootScope.orderStatus=$rootScope.deliverDetails.Status;
   })
   // 查单卖货审核验货单列表
   .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
@@ -602,7 +613,7 @@ angular.module('starter.controllers', [])
       currentPage: 1,//当前页码
       pageSize: 5,//编码 ,等于空时取所有
       ID: '',//编码 ,等于空时取所有
-      No: '',//订单号，模糊匹配
+      No: $rootScope.orderId,//订单号，模糊匹配
       OrderNo: '',//卖货单号
       AddUser: '',//添加人
       Status: '',//1-待审核/验货完成2-已审核
@@ -747,7 +758,7 @@ angular.module('starter.controllers', [])
       currentPage: 1,//当前页码
       pageSize: 5,//编码 ,等于空时取所有
       ID: '',//编码 ,等于空时取所有
-      No: '',//订单号，模糊匹配
+      No: $rootScope.orderId,//订单号，模糊匹配
       OrderNo: '',//卖货单号
       AddUser: '',//添加人
       Status: '',//1-待审核/验货完成2-已审核
@@ -894,9 +905,13 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
     //订单类型
+    $rootScope.OrdeType = $rootScope.collectGoodDetails.OrdeType;//订单类型 1卖货单2供货单
+    //评价订单类型
     $rootScope.orderType = 2;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.collectGoodDetails.FromUser;
+    //订单状态
+    $rootScope.orderStatus=$rootScope.collectGoodDetails.Status;
 
   })
   //发货详情页面
@@ -915,8 +930,8 @@ angular.module('starter.controllers', [])
         currentPage: $scope.page,//当前页码
         pageSize: 5,//条数
         ID: '',//编码 ,等于空时取所有
-        No: '',//订单号，模糊匹配
-        OrderType: '',//类型 1卖货单2供货单
+        No: $rootScope.orderId,//订单号，模糊匹配
+        OrderType: $rootScope.OrdeType,//类型 1卖货单2供货单
         AddUser: ''//添加人
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
@@ -958,8 +973,8 @@ angular.module('starter.controllers', [])
         currentPage: $scope.page,//当前页码
         pageSize: 5,//条数
         ID: '',//编码 ,等于空时取所有
-        No: '',//订单号，模糊匹配
-        OrderType: '',//类型 1卖货单2供货单
+        No: $rootScope.orderId,//订单号，模糊匹配
+        OrderType: $rootScope.OrdeType,//类型 1卖货单2供货单
         AddUser: ''//添加人
       }
       SearchOrderService.getPageSign($scope.params).success(function (data) {
@@ -1138,6 +1153,8 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
     //订单类型
+    $rootScope.OrdeType = $rootScope.deliverDetails.OrdeType;//订单类型 1卖货单2供货单
+    //评价订单类型
     $rootScope.orderType = $rootScope.deliverDetails.OrdeType == 1 ? 1 : 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser
@@ -1171,7 +1188,7 @@ angular.module('starter.controllers', [])
       }).then(function () {
         $scope.params.SNode='';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
-          $scope.goodTypeListAll = data.Values;
+          $rootScope.goodTypeListAll = data.Values;
           })
       })
     }
@@ -1260,6 +1277,7 @@ angular.module('starter.controllers', [])
     }
     //选好了方法
     $scope.selectaffirm = function () {
+      $scope.selectedproduct();  //增加数量信息 重新组装数组
       //增加没有的商品类别
       $scope.selectproductandnumother=[];
       //已有有的商品类别
@@ -1272,8 +1290,9 @@ angular.module('starter.controllers', [])
           })
       })
       //求两个集合的差集
-      $scope.selectproductandnumother=CommonService.arrayMinus($rootScope.selectproductandnum,$scope.hasselectproductandnum);
-      debugger
+      if($rootScope.selectproductandnum.length>$scope.hasselectproductandnum.length) {
+        $scope.selectproductandnumother = CommonService.arrayMinus($rootScope.selectproductandnum, $scope.hasselectproductandnum);
+        }
       $scope.closeModal();//关闭modal
     }
     //增加数量信息 重新组装数组
@@ -1290,6 +1309,9 @@ angular.module('starter.controllers', [])
     $scope.closeModalClear=function () {
       $scope.closeModal();
       $rootScope.selectproductandnum = [];//清空数据
+      $scope.selectproductandnumother=[];//清空数据
+      $scope.selectproduct=[];
+      $scope.adddeliverinfo.selectnum=0;
     }
   })
   //提交发货信息
@@ -1691,9 +1713,13 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
     //订单类型
+    $rootScope.OrdeType = $rootScope.deliverDetails.OrdeType;//订单类型 1卖货单2供货单
+    //评价订单类型
     $rootScope.orderType = 1;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
-    $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser
+    $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser;
+    //订单状态
+    $rootScope.orderStatus=$rootScope.deliverDetails.Status;
   })
   //我要卖货
   .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
@@ -1795,55 +1821,140 @@ angular.module('starter.controllers', [])
     $scope.cutpaymentinfo = {};//扣款信息
     $scope.cutpaymentinfo.isAdd = [];
     $scope.cutpaymentinfo.isMinus = [];
-    $scope.cutpaymentinfo.num = 0;//选中数量
+    $scope.cutpaymentinfo.num = [];//填写数量
+    $scope.cutpaymentinfo.money = [];//填写金额
+    $scope.cutpaymentinfo.selectnum = 0;//选中数量
     CommonService.searchModal($scope, 'templates/checkgood/cutpaymentmodel.html')
-    //发货 签收 验货  获取产品类别
-    $scope.params = {
-      IDList: '',//产品类别ID，多个用,隔开
-      Name: '',//产品类别名称
-      PIDList: '',//产品ID，多个用,隔开
-      Node: '',//供货验货订单号
-      SYNode: '',//卖货验货订单号
-      SNode: '',//发货单号
-      BNode: ''//买货单号
+    //获取产品类别列表
+    $scope.getGoodTypeList = function () {
+      //发货 签收 验货  获取产品类别
+      $scope.params = {
+        IDList: '',//产品类别ID，多个用,隔开
+        Name: '',//产品类别名称
+        PIDList: '',//产品ID，多个用,隔开
+        Node: '',//供货验货订单号
+        SYNode: '',//卖货验货订单号
+        SNode: $rootScope.checkDetails.No,//发货单号
+        BNode: ''//买货单号
+      }
+      DeliverService.getGoodTypeList($scope.params).success(function (data) {
+        $scope.goodTypeList = data.Values;
+        $scope.goodTypeList.push({'GID':'other','GName':'其它品类'});
+      }).then(function () {
+        $scope.params.SNode='';//全部数据
+        DeliverService.getGoodTypeList($scope.params).success(function (data) {
+          $scope.goodTypeListAll = data.Values;
+        })
+      })
     }
-    DeliverService.getGoodTypeList($scope.params).success(function (data) {
-      $scope.goodTypeList = data.Values;
-    })
+    $scope.getGoodTypeList();
     //选择扣款项列表的产品类别 查询缺件信息
-    $scope.selectGoodType = function (goodtypeid) {
+    $scope.queJianList = [];
+    $scope.currentPage = 0;
+    $scope.total = 1;
+    $scope.getQueJianList = function (goodtypeid) {
+      if(arguments.length!=0){
+        $scope.currentPage = 0;
+        $scope.queJianList = [];
+      }
+      $scope.currentPage++;
       //发货 签收 验货  查询缺件信息分页列
       $scope.paramsquejian = {
-        currentPage: 1,//当前页码
+        currentPage: $scope.currentPage,//当前页码
         pageSize: 10,//每页条数
         ID: '',//编码 ,等于空时取所有
         Type: '',//所属类型0-产品类别1-产品2-销售分类
-        TypeValue: goodtypeid,//类型所对应的值（产品类别ID）
+        TypeValue: goodtypeid||'',//类型所对应的值（产品类别ID）
         Name: ''//缺件属性名
       }
       DeliverService.getQueJianList($scope.paramsquejian).success(function (data) {
-        $scope.queJianList = data.Values.data_list;
+        console.log(data);
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.queJianList.push(item);
+        })
         angular.forEach($scope.queJianList, function (item, index) {
           $scope.cutpaymentinfo.isAdd[index] = true;
           $scope.cutpaymentinfo.isMinus[index] = false;
-
+          angular.forEach($rootScope.addcutpayment,function (items) {
+            if(items.PID==item.PID){
+              $scope.cutpaymentinfo.isAdd[index] = false;
+              $scope.cutpaymentinfo.isMinus[index] = true;
+              $scope.cutpaymentinfo.num[index]=items.num;
+            }else {
+              $scope.cutpaymentinfo.num[index]='';
+            }
+          })
         })
-        console.log($scope.queJianList);
+        $scope.total = data.Values.page_count;
 
+      }).finally(function () {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-
+    //选择列表的产品类别
+    $scope.selectGoodType = function (goodtypeid) {
+      //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+      $scope.getQueJianList(goodtypeid);
+    }
+    //选中的产品以及发货的数量和价格
+    $scope.selectproduct = [];
     //添加缺件
     $scope.addQueJian = function (index, item) {
       $scope.cutpaymentinfo.isAdd[index] = false;
       $scope.cutpaymentinfo.isMinus[index] = true;
-      $scope.cutpaymentinfo.num++;
+      $scope.cutpaymentinfo.selectnum++;
+      $scope.selectproduct.push(item);
     }
     //取消添加的缺件
     $scope.minusQueJian = function (index, item) {
       $scope.cutpaymentinfo.isAdd[index] = true;
       $scope.cutpaymentinfo.isMinus[index] = false;
-      $scope.cutpaymentinfo.num--;
+      $scope.cutpaymentinfo.selectnum--;
+      $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
+    }
+    //添加扣款项
+    $scope.addcutpaymentbtn = function (GID) {
+      $scope.openModal();
+      $scope.selectGID=GID;
+      $scope.getQueJianList(GID);
+    }
+    //选好了方法
+    $scope.selectaffirm = function () {
+      $scope.selectedproduct();  //增加数量信息 重新组装数组
+      //增加没有的商品类别
+      $scope.selectproductandnumother=[];
+      //已有有的商品类别
+      $scope.hasselectproductandnum=[];
+      angular.forEach($rootScope.addcutpayment,function (item) {
+        angular.forEach($scope.goodTypeList,function (items) {
+          if(items.GID==item.GrpID){
+            $scope.hasselectproductandnum.push(item);
+          }
+        })
+      })
+      //求两个集合的差集
+      if($rootScope.addcutpayment.length>$scope.hasselectproductandnum.length){
+        $scope.selectproductandnumother=CommonService.arrayMinus($rootScope.addcutpayment,$scope.hasselectproductandnum);
+      }
+
+      $scope.closeModal();//关闭modal
+    }
+    //增加数量信息 重新组装数组
+    $scope.selectedproduct=function () {
+      $rootScope.addcutpayment = [];//增加数量信息
+      angular.forEach($scope.selectproduct, function (item) {
+        item.num = $scope.cutpaymentinfo.num[item.PID];
+        $rootScope.addcutpayment.push(item)
+      })
+    }
+
+    //关闭modle清空数据
+    $scope.closeModalClear=function () {
+      $scope.closeModal();
+      $rootScope.addcutpayment = [];//清空数据
+      $scope.selectproductandnumother=[];//清空数据
+      $scope.selectproduct=[];
+      $scope.cutpaymentinfo.selectnum=0;
     }
     //添加扣款项 提交
     $scope.submitCutPayMent = function () {
@@ -1917,9 +2028,158 @@ angular.module('starter.controllers', [])
 
     }
   })
+  //添加验货清单
+  .controller('AddProductCtrl', function ($scope,  $rootScope, $stateParams, CommonService, MainService, DeliverService) {
+    CommonService.searchModal($scope, 'templates/checkgood/checkgoodsmodel.html');
+    $scope.adddeliverinfo = {};//扣款信息
+    $scope.adddeliverinfo.isAdd = [];
+    $scope.adddeliverinfo.isMinus = [];
+    $scope.adddeliverinfo.num = [];//填写数量
+    $scope.adddeliverinfo.selectnum = 0;//选中数量
+    //获取产品类别列表
+    $scope.getGoodTypeList = function () {
+      //发货 签收 验货  获取产品类别
+      $scope.params = {
+        IDList: '',//产品类别ID，多个用,隔开
+        Name: '',//产品类别名称
+        PIDList: '',//产品ID，多个用,隔开
+        Node: '',//供货验货订单号
+        SYNode: '',//卖货验货订单号
+        SNode: $rootScope.checkDetails.No,//发货单号
+        BNode: ''//买货单号
+      }
+      DeliverService.getGoodTypeList($scope.params).success(function (data) {
+        $scope.goodTypeList = data.Values;
+        $scope.goodTypeList.push({'GID':'other','GName':'其它品类'});
+      }).then(function () {
+        $scope.params.SNode='';//全部数据
+        DeliverService.getGoodTypeList($scope.params).success(function (data) {
+          $scope.goodTypeListAll = data.Values;
+        })
+      })
+    }
+    $scope.getGoodTypeList();
 
-  .controller('AddProductCtrl', function ($scope, CommonService) {
+    //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+    $scope.adddeliverList = [];
+    $scope.currentPage = 0;
+    $scope.total = 1;
+    $scope.addDeliverProduct = function (GrpIDList) {
 
+      if(GrpIDList=='other'){//是否是其他类别
+        $scope.isotherproduct=true;
+      }else {
+        $scope.isotherproduct=false;
+      }
+
+      if(arguments.length!=0){
+        $scope.currentPage = 0;
+        $scope.adddeliverList = [];
+      }
+      $scope.currentPage++;
+      $scope.restProdsParams = {
+        currentPage: $scope.currentPage,
+        pageSize: 10
+      }
+
+      $scope.ProdsParams = {
+        IDList: '',
+        prodname: '',//产品类别名
+        GrpIDList:!$scope.isotherproduct?(GrpIDList||''):'',//产品类别ID，多个用，隔开
+        IsTH: 0,//是否为统货 0否1是
+        NoGrpIDList:$scope.isotherproduct?(GrpIDList||''):''//其他类别
+      }
+      MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.adddeliverList.push(item);
+        })
+
+        angular.forEach($scope.adddeliverList, function (item, index) {
+          $scope.adddeliverinfo.isAdd[index] = true;
+          $scope.adddeliverinfo.isMinus[index] = false;
+          angular.forEach($rootScope.selectproductandnum,function (items) {
+            if(items.PID==item.PID){
+              $scope.adddeliverinfo.isAdd[index] = false;
+              $scope.adddeliverinfo.isMinus[index] = true;
+              $scope.adddeliverinfo.num[index]=items.num;
+            }else {
+              $scope.adddeliverinfo.num[index]='';
+            }
+          })
+        })
+        $scope.total = data.Values.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+
+
+    //选择列表的产品类别
+    $scope.selectGoodType = function (goodtypeid) {
+      //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
+      $scope.addDeliverProduct(goodtypeid);
+    }
+    //选中的产品以及发货的数量
+    $scope.selectproduct = [];
+    //添加缺件
+    $scope.addQueJian = function (index, item) {
+      $scope.adddeliverinfo.isAdd[index] = false;
+      $scope.adddeliverinfo.isMinus[index] = true;
+      $scope.adddeliverinfo.selectnum++;
+      $scope.selectproduct.push(item);
+    }
+    //取消添加的缺件
+    $scope.minusQueJian = function (index, item) {
+      $scope.adddeliverinfo.isAdd[index] = true;
+      $scope.adddeliverinfo.isMinus[index] = false;
+      $scope.adddeliverinfo.selectnum--;
+      $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
+    }
+    //添加产品
+    $scope.addproduct = function (GID) {
+      $scope.openModal();
+      $scope.selectGID=GID;
+      $scope.addDeliverProduct(GID);
+    }
+    //选好了方法
+    $scope.selectaffirm = function () {
+      $scope.selectedproduct();  //增加数量信息 重新组装数组
+      //增加没有的商品类别
+      $scope.selectproductandnumother=[];
+      //已有有的商品类别
+      $scope.hasselectproductandnum=[];
+      angular.forEach($rootScope.selectproductandnum,function (item) {
+        angular.forEach($scope.goodTypeList,function (items) {
+          if(items.GID==item.GrpID){
+            $scope.hasselectproductandnum.push(item);
+          }
+        })
+      })
+      //求两个集合的差集
+      if($rootScope.selectproductandnum.length>$scope.hasselectproductandnum.length){
+        $scope.selectproductandnumother=CommonService.arrayMinus($rootScope.selectproductandnum,$scope.hasselectproductandnum);
+      }
+
+      console.log($scope.selectproductandnumother);
+      $scope.closeModal();//关闭modal
+    }
+    //增加数量信息 重新组装数组
+    $scope.selectedproduct=function () {
+      $rootScope.selectproductandnum = [];//增加数量信息
+      angular.forEach($scope.selectproduct, function (item) {
+        item.num = $scope.adddeliverinfo.num[item.PID];
+        $rootScope.selectproductandnum.push(item)
+      })
+    }
+
+    //关闭modle清空数据
+    $scope.closeModalClear=function () {
+      $scope.closeModal();
+      $rootScope.selectproductandnum = [];//清空数据
+      $scope.selectproductandnumother=[];//清空数据
+      $scope.selectproduct=[];
+      $scope.adddeliverinfo.selectnum=0;
+    }
   })
   //接单供货计划详情
   .controller('SupplyDetailsCtrl', function ($scope, $rootScope, CommonService, $stateParams, SupplyService) {

@@ -1,28 +1,32 @@
-<ion-modal-view >
-  <ion-header-bar class="bar bar-header bar-calm">
-    <h1 class="title icon ion-search"> 扣款项列表</h1>
-    <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
+<ion-modal-view  >
+  <ion-header-bar class="bar bar-header bar-calm" scroll-top  ng-click="scrollTop()">
+    <h1 class="title icon ion-plus"> 添加扣款项</h1>
+    <button class="button button-clear button-primary" ng-click="closeModalClear()">关闭</button>
   </ion-header-bar>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg" >
-   <ion-list>
-     <ion-item class="item-input item-select ">
-       <span class="input-label">扣款项列表</span>
-       <select  ng-model="cutpaymentinfo.goodtype"  ng-change="selectGoodType(cutpaymentinfo.goodtype)">
-         <option value="{{item.GID}}"  ng-repeat="item in goodTypeList">{{item.GName}}</option>
-       </select>
-     </ion-item>
-     <ion-item class="item-icon-right" ng-repeat="item in queJianList">{{item.Name}}
-      <i ng-if="cutpaymentinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
-      <i ng-if="cutpaymentinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
-   </ion-item>
+    <ion-list>
+      <ion-item class="item-input item-select ">
+        <span class="input-label">扣款项列表</span>
+        <select  ng-model="cutpaymentinfo.goodtype"  ng-change="selectGoodType(cutpaymentinfo.goodtype)">
+          <option  value="">所有类别</option>
+          <option   value="{{item.GID}}"  ng-repeat="item in goodTypeListAll">{{item.GName}}</option>
+        </select>
+      </ion-item>
+      <ion-item class="item-icon-right" ng-repeat="item in queJianList">{{item.Name}}
+        <i ng-if="cutpaymentinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
+        <i ng-if="cutpaymentinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
+        <label class=" item-input stable-bg "  ng-if="cutpaymentinfo.isMinus[$index]">
+          <input type="number"  ng-model="cutpaymentinfo.num[item.PID]" placeholder="{{item.Name}}数量 " ng-blur="selectedproduct()"/>
+        </label>
+      </ion-item>
 
-   </ion-list>
-
+    </ion-list>
+    <ion-infinite-scroll  on-infinite="getQueJianList()" ng-if="total > currentPage"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
   <div class="light-bg bottom-0">
     <div class="row row-no-padding">
-      <div class="col-66   gongxiang" >共 :  <span class="calm" ng-bind="cutpaymentinfo.num"></span>  项</div>
-      <button class="button button-calm full-image col-34" ng-click="modal.hide()" >选好了</button>
+      <div class="col-66   gongxiang" >共 :  <span class="calm" ng-bind="cutpaymentinfo.selectnum"></span>  项</div>
+      <button class="button button-calm full-image col-34" ng-click="selectaffirm()" >选好了</button>
     </div>
 
   </div>

@@ -413,6 +413,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //查单卖货详情
       .state('sellorderdetails', {
         url: '/sellorderdetails/:item',
+        cache:false,
         templateUrl: 'templates/sellgood/sellorderdetails.html',
         controller: 'SellOrderDetailsCtrl'
       })
@@ -450,9 +451,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/enteringcheck.html',
         controller: 'EnteringCheckCtrl'
       })
+      //添加验货清单
       .state('addproduct', {
         url: '/addproduct',
         templateUrl: 'templates/checkgood/addproduct.html',
+        controller: 'AddProductCtrl'
+      })
+      //添加验货清单model
+      .state('checkgoodsmodel', {
+        url: '/checkgoodsmodel',
+        templateUrl: 'templates/checkgood/checkgoodsmodel.html',
         controller: 'AddProductCtrl'
       })
       //签收列表
