@@ -10,19 +10,19 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "> <img id="logo" src="img/logo.png" alt=""/> 申请成为供应商</h1>
+    <h1 class="title "> <img id="logo" src="img/logo.png" alt=""/> 申请成为供货商</h1>
   </ion-nav-title>
   <form name="applyprovider">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <div class="list list-borderless">
       <label class="item item-input ">
         <span class="input-label"> 姓名</span>
-        <input type="text"  ng-model="addrinfo.username" placeholder="供应商姓名" required/>
+        <input type="text"  ng-model="addrinfo.username" placeholder="供货商姓名" required/>
       </label>
       <p></p>
       <label class="item item-input ">
         <span class="input-label"> 月供应量</span>
-        <input type="number"  ng-model="addrinfo.num" placeholder="（单位 : 台）" required/>
+        <input type="number"  ng-model="addrinfo.num" placeholder="（单位 : 台）" ng-pattern="/^[1-9]\d*(\.\d+)?$/" required/>
       </label>
       <p class="padding-top"></p>
       <label class="item item-input item-select">

@@ -379,14 +379,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ReleaseProcureCtrl'
 
       })
-      //买货发布采购单
+      //买货发布买货单
       .state('procuredetails', {
         url: '/procuredetails',
         templateUrl: 'templates/buygood/procuredetails.html',
         controller: 'ProcureDetailsCtrl'
 
       })
-      //收货地址选择提交采购单
+      //收货地址选择提交买货单
       .state('releaseprocureorder', {
         url: '/releaseprocureorder',
         templateUrl: 'templates/buygood/releaseprocureorder.html',
@@ -462,7 +462,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/checkgood/enteringcheck.html',
         controller: 'EnteringCheckCtrl'
       })
- 
+
       //签收列表
       .state('signlist', {
         url: '/signlist',
@@ -480,7 +480,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/sign/sign.html',
         controller: 'SignCtrl'
       })
-      //申请成为供应商
+      //申请成为供货商
       .state('applyprovider', {
         url: '/applyprovider',
         templateUrl: 'templates/account/applyprovider.html',

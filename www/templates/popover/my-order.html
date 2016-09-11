@@ -1,31 +1,31 @@
 <ion-popover-view style="height: 380px;" ng-controller="MyPopover">
   <ion-content overflow-scroll="false">
-    <div class="list">
-      <a ng-href="#/adddeliverlist"  ng-disabled="orderStatus!=2" class="item item-icon-left" nav-direction=forward>
+    <div id="myorder" class="list">
+      <a ng-href="#/adddeliverlist"  ng-if="orderStatus==2" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-arrow-up-c balanced"></i>
         发货
       </a>
-      <a ng-href="#/deiverdetails" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/deiverdetails" ng-if="orderStatus>2" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-android-train calm "></i>
         发货详情
       </a>
-      <a ng-href="#/signindetails" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/signindetails" ng-if="orderStatus>3" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-ios-search-strong assertive "></i>
         签收详情
       </a>
-      <a ng-href="#/examinegoodsorder" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/examinegoodsorder" ng-if="orderStatus>4" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-clipboard energized"></i>
         验货详情
       </a>
-      <a ng-href="#/evaluate" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/evaluate" ng-if="orderStatus>8" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-star calm"></i>
         评价
       </a>
-      <a ng-click="closeordersubmit()" class="item item-icon-left" nav-direction=forward>
+      <a ng-click="closeordersubmit()" ng-if="orderStatus<3" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-trash-a royal"></i>
         关闭订单
       </a>
-      <a ng-href="#/examinegoodsorder" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/examinegoodsorder" ng-if="orderStatus==5" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-reply assertive"></i>
         退货
       </a>

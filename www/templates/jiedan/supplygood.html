@@ -13,8 +13,8 @@
     <div class="list margin-top-1px">
       <a ng-href="#/supplydetails/{{item}}" class="item item-icon-right" ng-repeat="item in supplylist">
         <h2>订单号:{{item.No}} <span class="item-note jiedan-time">{{item.AddTime | date:'yyyy-MM-dd HH:mm'}}</span></h2>
-        <h2 class="col-80">采购品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></h2>
-        <p  class="text-wrap col-80">剩余供货量 : <span  ng-repeat="items in item.Details" >  {{items.ProdName+' : '+items.Num+' '+items.UName}} </span> </p>
+        <h2 class="col-80">买货品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></h2>
+        <p  class="text-wrap col-80">剩余供货量 : <span  ng-repeat="items in item.Details" >  {{items.ProdName+' : '+items.SurplusNum+' '+items.UName}} </span> </p>
 
         <i class="icon ion-ios-arrow-right jiedan-icon  calm" ></i>
       </a>

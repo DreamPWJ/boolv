@@ -19,7 +19,7 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>采购商家 : {{supplyDetails.Tousername}}</h2>
+          <h2>买货商家 : {{supplyDetails.Tousername}}</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>订单状态 : {{supplyStatus[supplyDetails.Status+1]}}</h2>
@@ -45,8 +45,9 @@
 
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-40 button button-balanced " ng-href="#/delivergoods">发货</a>
-    <a class="col-40  button button-calm " ng-href="#/supplyexamineorder">审核验收</a>
+    <a class="col-40 button button-balanced " ng-disabled="orderStatus!=2"  ng-href="#/delivergoods">发货</a>
+    <a ng-if="OrdeType==1" class="col-40  button button-calm " ng-disabled="orderStatus!=5" ng-href="#/supplyexamineorder">审核验收</a>
+    <a ng-if="OrdeType==2" class="col-40  button button-calm " ng-disabled="orderStatus!=6" ng-href="#/supplyexamineorder">审核验收</a>
   </div>
 
 </ion-view>

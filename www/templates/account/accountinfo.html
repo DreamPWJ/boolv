@@ -29,12 +29,12 @@
       </a>
 
 
-      <a ng-href="#/applyprovider" class="item stable-bg item-borderless">
-        <h2 class="calm text-right">申请成为供应商>></h2>
+      <a  ng-if="!isprovider" ng-href="#/applyprovider" class="item stable-bg item-borderless">
+        <h2 class="calm text-right">申请成为供货商>></h2>
       </a>
 
 
-      <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right item-borderless">
+      <a ng-href="#/updateuser/sex/{{userinfo.sex}}" class="item item-icon-right ">
         <h2>性别 <span class="item-note">{{userinfo.sex==0?'保密':(userinfo.sex==1?'男':'女')}}</span></h2>
         <i class="icon ion-ios-arrow-right"></i>
       </a>

@@ -388,7 +388,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+        User: localStorage.getItem("usertoken"),//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
         FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
         Status: '',//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         ordertype: '',//类型 1卖货单2供货单
@@ -460,7 +460,7 @@ angular.module('starter.controllers', [])
           console.log(data);
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的采购定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails', $scope.paymoney)
+      CommonService.showConfirm('', '<p>温馨提示:此订单的买货定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails', $scope.paymoney)
     }
 
   })
@@ -481,7 +481,7 @@ angular.module('starter.controllers', [])
     $rootScope.orderStatus = $rootScope.supplyDetails.Status;
   })
   //查单供货计划备货录入
-  .controller('EnteringNumCtrl', function ($scope, $rootScope, $stateParams, CommonService, AccountService, SearchOrderService) {
+  .controller('EnteringNumCtrl', function ($scope, $rootScope, $state,$stateParams, CommonService, AccountService, SearchOrderService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item)
     console.log($rootScope.deliverDetails);
     $scope.supplyinfo = [];//供货信息
@@ -545,14 +545,14 @@ angular.module('starter.controllers', [])
           items.SaleClass = item.SaleClass , // 销售分类ID
           items.Unit = item.Unit, // 计算单位ID
           items.Num = $scope.supplyinfo[index].num, //数量
-          items.Price = item.Price//采购单价
+          items.Price = item.Price//买货单价
         $scope.details.push(items)
       })
       //提交供货计划
       $scope.datas = {
         SPNo: "",//供货计划单号
-        BONo: $rootScope.deliverDetails.No,//采购单号
-        ToUser: $rootScope.deliverDetails.FromUser,//买货单(采购)账号（待供货接口获取）
+        BONo: $rootScope.deliverDetails.No,//买货单号
+        ToUser: $rootScope.deliverDetails.FromUser,//买货单(买货)账号（待供货接口获取）
         FromUser: localStorage.getItem("usertoken"),//供货人账号
         FromAddr: $scope.addrliststatus[0].id,//发货地址ID
         ToAddr: $scope.toAddraddrliststatus[0].id,//收货地址ID
@@ -607,14 +607,14 @@ angular.module('starter.controllers', [])
     $rootScope.orderStatus = $rootScope.deliverDetails.Status;
   })
   // 查单卖货审核验货单列表
-  .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
+  .controller('ExamineGoodsOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService,DeliverService) {
 
     $scope.params = {
       currentPage: 1,//当前页码
       pageSize: 5,//编码 ,等于空时取所有
       ID: '',//编码 ,等于空时取所有
-      No: $rootScope.orderId,//订单号，模糊匹配
-      OrderNo: '',//卖货单号
+      No: '',//订单号，模糊匹配
+      OrderNo: $rootScope.orderId,//卖货单号
       AddUser: '',//添加人
       Status: '',//1-待审核/验货完成2-已审核
       YhUser: ''//验货人
@@ -630,6 +630,31 @@ angular.module('starter.controllers', [])
       })
 
     })
+    //查询卖货验货扣款记录分页列
+    $scope.sellquejianList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getPageSQueJian=function () {
+      $scope.page++;
+      $scope.quejianparams = {
+        currentPage: $scope.page,//当前页码
+        pageSize: 5,//编码 ,等于空时取所有
+        ID: '',//编码 ,等于空时取所有
+        No: '',//订单号，模糊匹配
+        User: ''//添加人的值
+      }
+
+      DeliverService.getPageSQueJian($scope.quejianparams).success(function (data) {
+        console.log(data);
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.sellquejianList.push(item);
+        })
+        $scope.total = data.Values.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.getPageSQueJian();
     //检查是否复选框选中
     $scope.checkChecded = function () {
       $scope.ischecked = false;
@@ -653,7 +678,7 @@ angular.module('starter.controllers', [])
             items.SaleClass = item.SaleClass , // 销售分类ID
             items.Unit = item.Unit, // 计算单位ID
             items.Num = item.Num, //数量
-            items.Price = item.Price//采购单价
+            items.Price = item.Price//买货单价
           $scope.details.push(items);
           $scope.detailsmore.push(item);
           $scope.IDList.push(item.ID)
@@ -758,8 +783,8 @@ angular.module('starter.controllers', [])
       currentPage: 1,//当前页码
       pageSize: 5,//编码 ,等于空时取所有
       ID: '',//编码 ,等于空时取所有
-      No: $rootScope.orderId,//订单号，模糊匹配
-      OrderNo: '',//卖货单号
+      No: '',//订单号，模糊匹配
+      OrderNo: $rootScope.orderId,//卖货单号
       AddUser: '',//添加人
       Status: '',//1-待审核/验货完成2-已审核
       YhUser: ''//验货人
@@ -777,6 +802,31 @@ angular.module('starter.controllers', [])
       })
 
     })
+    //查询供货验货扣款记录分页列
+    $scope.supplyquejianList = [];
+    $scope.page = 0;
+    $scope.total = 1;
+    $scope.getPageBQueJian=function () {
+      $scope.page++;
+      $scope.quejianparams = {
+        currentPage: $scope.page,//当前页码
+        pageSize: 5,//编码 ,等于空时取所有
+        ID: '',//编码 ,等于空时取所有
+        No: '',//订单号，模糊匹配
+        User: ''//添加人的值
+      }
+
+      DeliverService.getPageBQueJian($scope.quejianparams).success(function (data) {
+        console.log(data);
+        angular.forEach(data.Values.data_list, function (item) {
+          $scope.supplyquejianList.push(item);
+        })
+        $scope.total = data.Values.page_count;
+      }).finally(function () {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      })
+    }
+    $scope.getPageBQueJian();
     //检查是否复选框选中
     $scope.checkChecded = function () {
       $scope.ischecked = false;
@@ -800,7 +850,7 @@ angular.module('starter.controllers', [])
             items.SaleClass = item.SaleClass , // 销售分类ID
             items.Unit = item.Unit, // 计算单位ID
             items.Num = item.Num, //数量
-            items.Price = item.Price//采购单价
+            items.Price = item.Price//买货单价
           $scope.details.push(items);
           $scope.detailsmore.push(item);
           $scope.IDList.push(item.ID)
@@ -1123,7 +1173,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+        User: localStorage.getItem("usertoken"),//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
         FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
         Status: 2,//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         ordertype: '',//类型 1卖货单2供货单
@@ -1361,6 +1411,9 @@ angular.module('starter.controllers', [])
           $scope.addrliststatus.push(item);
         }
       })
+      if ($scope.addrliststatus.length == 0) {
+        CommonService.platformPrompt('无法获取到收货人地址默认地址', '');
+      }
     })
 
 
@@ -1401,10 +1454,10 @@ angular.module('starter.controllers', [])
         Weight: $scope.deliverinfo.Weight,//总重量
         Cost: '',//送货费或提货费
         ExpCost: '',//到付物流费
-        Imgs: [/*{  //上传图片集合
+        Imgs: [{  //上传图片集合
           PicAddr: $scope.Imgs.PicAddr,
           PicDes: "拍照图库照片！"
-        }*/],
+        }],
         Details: $scope.details //发货明细
 
       }
@@ -1421,7 +1474,7 @@ angular.module('starter.controllers', [])
     CommonService.isLogin();
     //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
     if (JSON.parse(localStorage.getItem("user")).grade != 5) {
-      CommonService.showAlert("非供货商没有权限供货");
+      CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
     }
     $scope.supplylist = [];
     $scope.page = 0;
@@ -1528,7 +1581,7 @@ angular.module('starter.controllers', [])
       })
     }
   })
-  //买货发布采购单
+  //买货发布买货单
   .controller('ProcureDetailsCtrl', function ($scope, $state, $rootScope, CommonService, BuyService) {
     $scope.buyDetails = [];
     angular.forEach($rootScope.buyprodsList, function (item) {
@@ -1548,29 +1601,31 @@ angular.module('starter.controllers', [])
         items.ProdName = item.PName;//产品名称
         items.Unit = item.PUID;//计算单位ID
         items.Num = $scope.itemnumprice[index].buynum;//输入数量
-        items.Price = $scope.itemnumprice[index].buyprice;//采购价格
+        items.Price = $scope.itemnumprice[index].buyprice;//买货价格
         items.SaleClass = item.PUSaleType;//销售分类ID
         $scope.Details.push(items)
       })
       //提交买货订单数据
       $scope.buyDatas = {
         FromUser: localStorage.getItem('usertoken'),//下单人
-        TradeType: 1,//交易方式 0-物流配送1-送货上门2-上门回收
+        TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
         ToAddr: $rootScope.addrlistFirst.id,//收货地址ID
-        Cycle: 0,//供货周期（天） 0-无限期：Cycle
+        Cycle: $rootScope.buyCycle.day||0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
+      console.log($scope.buyDatas);
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！您的采购单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
+        CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
 
 
     }
 
   })
-  //收货地址选择提交采购单
-  .controller('ReleaseProcureOrderCtrl', function ($scope, $rootScope, CommonService, AccountService) {
-    CommonService.ionicLoadingShow()
+  //收货地址选择提交买货单
+  .controller('ReleaseProcureOrderCtrl', function ($scope,$state, $rootScope, CommonService, AccountService) {
+    CommonService.ionicLoadingShow();
+    $rootScope.buyCycle={}; //供货周期（天） 0-无限期：Cycle
     $scope.params = {
       page: 1,
       size: 10,
@@ -1579,7 +1634,11 @@ angular.module('starter.controllers', [])
     //获取用户常用地址
     AccountService.getAddrlist($scope.params).success(function (data) {
       $rootScope.addrlist = data.Values.data_list;
-      $rootScope.addrlistFirst = data.Values.data_list[0]
+      $rootScope.addrlistFirst = data.Values.data_list[0];
+      if ($scope.addrlist.length == 0) {
+        CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
+        $state.go('adddealaddress');
+      }
     }).finally(function () {
       CommonService.ionicLoadingHide()
     })
@@ -1609,7 +1668,7 @@ angular.module('starter.controllers', [])
       }
     })
     CommonService.getLocation();
-    //根据经纬度获取最近N个供应商
+    //根据经纬度获取最近N个供货商
     $scope.supplierListParams = {
       currentPage: 1,
       pageSize: 5,
@@ -1628,6 +1687,11 @@ angular.module('starter.controllers', [])
     $scope.sellgoodssubmit = function () {//提交卖货订单
       //是否登录
       CommonService.isLogin();
+      //是否有供货商信息
+      if(!$rootScope.supplierListFirst){
+        CommonService.platformPrompt('没有匹配的供货商信息', 'selldetails');
+        return;
+      }
       CommonService.ionicLoadingShow();
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.sellDetails, function (item, index) {
@@ -1686,11 +1750,11 @@ angular.module('starter.controllers', [])
         }).then(function () {
           //提交卖货订单数据
           $scope.sellDatas = {
-            FromUser: $rootScope.supplierListFirst.LogID,//供应商账号
-            ToUser: localStorage.getItem('usertoken'),//回收商账号
+            FromUser: localStorage.getItem('usertoken'),//供货商账号
+            ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
             TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
-            FromAddr: $rootScope.supplierListFirst.AddrID,//发货地址ID
-            ToAddr: $scope.addrliststatus[0].id,//收货地址ID
+            FromAddr:$scope.addrliststatus[0].id ,//发货地址ID
+            ToAddr: $rootScope.supplierListFirst.AddrID,//收货地址ID
             Account: $scope.userbankliststatus[0].id,//收款账号ID
             Details: $scope.Details//收货明细
           }
@@ -1788,7 +1852,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+        User: localStorage.getItem("usertoken"),//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
         FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
         Status: 4,//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         ordertype: '',//类型 1卖货单2供货单
@@ -2237,7 +2301,7 @@ angular.module('starter.controllers', [])
 
   })
   //提交供货计划选择地址
-  .controller('ReleaseSupplyCtrl', function ($scope, $rootScope, CommonService, AccountService, SupplyService) {
+  .controller('ReleaseSupplyCtrl', function ($scope, $state,$rootScope, CommonService, AccountService, SupplyService) {
     $scope.params = {
       page: 1,
       size: 10,
@@ -2246,6 +2310,10 @@ angular.module('starter.controllers', [])
     //获取用户常用地址
     AccountService.getAddrlist($scope.params).success(function (data) {
       $scope.addrlist = data.Values.data_list;
+      if ($scope.addrlist.length == 0) {
+        CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
+        $state.go('adddealaddress');
+      }
       $scope.addrliststatus = [];
       angular.forEach($scope.addrlist, function (item) {
         if (item.status == 1) {
@@ -2265,13 +2333,13 @@ angular.module('starter.controllers', [])
           items.SaleClass = item.SaleClass , // 销售分类ID
           items.Unit = item.Unit, // 计算单位ID
           items.Num = $rootScope.supplyinfo[index].num, //数量
-          items.Price = item.Price//采购单价
+          items.Price = item.Price//买货单价
         $scope.details.push(items)
       })
       //提交供货计划
       $scope.datas = {
-        BONo: $rootScope.supplyDetails.No,//买货(采购)单号（待供货接口获取（BuyOrder/GetToPage））
-        ToUser: $rootScope.supplyDetails.FromUser,//买货单(采购)账号（待供货接口获取）
+        BONo: $rootScope.supplyDetails.No,//买货(买货)单号（待供货接口获取（BuyOrder/GetToPage））
+        ToUser: $rootScope.supplyDetails.FromUser,//买货单(买货)账号（待供货接口获取）
         SupCycle: $rootScope.supplyDetails.SurplusCycle,//剩余供货周期（待供货接口获取）
         FromUser: localStorage.getItem("usertoken"),//供货人账号
         SupCount: $rootScope.supplyinfo.SupCount,//供货次数
@@ -2408,7 +2476,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
+        User: localStorage.getItem("usertoken"),//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
         FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
         Status: 3,//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         ordertype: '',//类型 1卖货单2供货单
@@ -2509,9 +2577,9 @@ angular.module('starter.controllers', [])
   })
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, $state, CommonService) {
-
+    $scope.isprovider=JSON.parse(localStorage.getItem("user")).grade ==5?true:false
   })
-  //申请成为供应商
+  //申请成为供货商
   .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.addrinfo = {};
     $scope.addrcode = '0';
@@ -2927,4 +2995,6 @@ angular.module('starter.controllers', [])
     $scope.payfinalpaymenttsubmit = function () {
       CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', '')
     }
+
+
   })

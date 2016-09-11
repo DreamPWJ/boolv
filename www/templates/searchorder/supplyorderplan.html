@@ -19,7 +19,7 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>采购商家 : {{supplyDetails.Tousername}}</h2>
+          <h2>买货商家 : {{supplyDetails.Tousername}}</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>供货周期(余/总) : {{supplyDetails.SupCycle}}/{{supplyDetails.SupNum}}天</h2>
@@ -54,7 +54,7 @@
 
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-40 button button-balanced " ng-href="#/enteringnum/{{supplyDetails}}">备货</a>
+    <a class="col-40 button button-balanced " ng-disabled="!(orderStatus==2||orderStatus==3)" ng-href="#/enteringnum/{{supplyDetails}}">备货</a>
     <a class="col-40  button button-calm " ng-href="#/supplyorderlist">供货记录</a>
   </div>
 

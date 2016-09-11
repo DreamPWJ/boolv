@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 采购单详情</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 买货单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
     <button class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
@@ -19,10 +19,10 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>采购人 : {{buyDetails.Username}}</h2>
+          <h2>买货人 : {{buyDetails.Username}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>预计采购总金额 : {{buyDetails.TotalPrice | currency:''}}元</h2>
+          <h2>预计买货总金额 : {{buyDetails.TotalPrice | currency:''}}元</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>订单状态 : {{buyorderStatus[buyDetails.Status+1]}}</h2>
@@ -36,7 +36,7 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>采购清单  <span class="item-note"><i class="icon ion-chevron-down"
+        <strong>买货清单  <span class="item-note"><i class="icon ion-chevron-down"
                                                   ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
@@ -49,7 +49,7 @@
 
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <button class="button button-calm full-image" ng-click="procureorderdetailssubmit()">支付定金</button>
+    <button class="button button-calm full-image"  ng-disabled="orderStatus!=2" ng-click="procureorderdetailssubmit()">支付定金</button>
   </div>
 
 </ion-view>

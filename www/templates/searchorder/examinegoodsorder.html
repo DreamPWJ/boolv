@@ -25,7 +25,7 @@
 
     <div class="list padding-top">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>{{item.OrdeType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        <strong>验货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
   <!--      <li class="item item-divider item-checkbox item-checkbox-right text-right light-bg item-borderless" ng-click="checkAll()" >
@@ -44,10 +44,20 @@
       </div>
     </div>
     </div>
+    <ion-list>
+      <ion-item>
+        <strong>扣款项(扣款总金额:  元)</strong>
+      </ion-item>
+      <ion-item class="row"  ng-repeat="item in sellquejianList">
+          <span class="col padding">{{item.QJName}} : {{item.Num}} 个</span>
+          <span class="col padding">金额 : {{item.Price}} 元</span>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll  on-infinite="getPageSQueJian()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
     <a class="col-40 button button-balanced " ng-disabled="!ischecked" ng-click="examinegoodsordersubmit()">确认交易</a>
-    <a class="col-40  button button-calm " ng-disabled="!ischecked" ng-click="salesreturn()">退货</a>
+    <a class="col-40  button button-calm " ng-disabled="!ischecked&&orderStatus!=5"  ng-click="salesreturn()">退货</a>
   </div>
 
 </ion-view>

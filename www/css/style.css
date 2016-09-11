@@ -61,8 +61,7 @@
   width: 10rem;
 }
 .platform-android .popover {
-  margin-top: 0;
-!important;
+  margin-top: 0!important;
   background-color: #ffffff !important;
 }
 
@@ -133,8 +132,7 @@
 /*修改覆盖弹出框默认样式*/
 .show-alert .popup, .show-confirm .popup {
   text-align: center;
-  background-color: #fff;
-!important;
+  background-color: #fff!important;
 }
 
 .show-alert .popup .popup-head, .show-confirm .popup .popup-head {
@@ -147,7 +145,7 @@
 }
 
 .item .text-wrap{
-  white-space: normal;!important;
+  white-space: normal!important;
 }
 
 /*修改覆盖ActionSheet框默认样式*/

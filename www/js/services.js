@@ -46,7 +46,7 @@ angular.module('starter.services', [])
               confirmfunction();
             }
           } else {
-            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl)
+            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl,{},{reload:true})
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
         });
@@ -253,6 +253,9 @@ angular.module('starter.services', [])
       },
       isLogin: function () {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
+            if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
+              $cordovaToast.showLongCenter("请您先登录 再继续操作");
+            }
           $state.go('login')
           return;
         }
@@ -728,7 +731,7 @@ angular.module('starter.services', [])
 })
   .service('SellService', function ($q, $http, BooLv) {//卖货服务
     return {
-      getListLongAndLat: function (params) { //根据经纬度获取最近N个供应商
+      getListLongAndLat: function (params) { //根据经纬度获取最近N个供货商
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
         promise = $http({
