@@ -1210,6 +1210,7 @@ angular.module('starter.controllers', [])
           angular.forEach(data.Values.data_list, function (item) {
             $scope.adddeliverList.push(item);
           })
+
         angular.forEach($scope.adddeliverList, function (item, index) {
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
@@ -1218,6 +1219,8 @@ angular.module('starter.controllers', [])
                   $scope.adddeliverinfo.isAdd[index] = false;
                   $scope.adddeliverinfo.isMinus[index] = true;
                   $scope.adddeliverinfo.num[index]=items.num;
+                }else {
+                  $scope.adddeliverinfo.num[index]='';
                 }
            })
         })
@@ -1257,17 +1260,37 @@ angular.module('starter.controllers', [])
     }
     //选好了方法
     $scope.selectaffirm = function () {
-      $scope.closeModal();
+      //增加没有的商品类别
+      $scope.selectproductandnumother=[];
+      //已有有的商品类别
+      $scope.hasselectproductandnum=[];
+      angular.forEach($rootScope.selectproductandnum,function (item) {
+          angular.forEach($scope.goodTypeList,function (items) {
+              if(items.GID==item.GrpID){
+                $scope.hasselectproductandnum.push(item);
+              }
+          })
+      })
+      //求两个集合的差集
+      $scope.selectproductandnumother=CommonService.arrayMinus($rootScope.selectproductandnum,$scope.hasselectproductandnum);
+      debugger
+      $scope.closeModal();//关闭modal
     }
     //增加数量信息 重新组装数组
     $scope.selectedproduct=function () {
       $rootScope.selectproductandnum = [];//增加数量信息
+      console.log($scope.selectproduct);
       angular.forEach($scope.selectproduct, function (item) {
-        item.num = $scope.adddeliverinfo.num[$scope.adddeliverList.indexOf(item)];
+        item.num = $scope.adddeliverinfo.num[item.PID];
         $rootScope.selectproductandnum.push(item)
       })
     }
 
+    //关闭modle清空数据
+    $scope.closeModalClear=function () {
+      $scope.closeModal();
+      $rootScope.selectproductandnum = [];//清空数据
+    }
   })
   //提交发货信息
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {

@@ -1,7 +1,7 @@
 <ion-modal-view  >
   <ion-header-bar class="bar bar-header bar-calm" scroll-top  ng-click="scrollTop()">
     <h1 class="title icon ion-plus"> 发货产品清单</h1>
-    <button class="button button-clear button-primary" ng-click="modal.hide()">关闭</button>
+    <button class="button button-clear button-primary" ng-click="closeModalClear()">关闭</button>
   </ion-header-bar>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg" >
    <ion-list>
@@ -16,7 +16,7 @@
       <i ng-if="adddeliverinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
       <i ng-if="adddeliverinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
        <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[$index]">
-         <input type="number"  ng-model="adddeliverinfo.num[$index]" placeholder="{{item.PName}}数量" ng-blur="selectedproduct()"/>
+         <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" ng-blur="selectedproduct()"/>
        </label>
    </ion-item>
 
