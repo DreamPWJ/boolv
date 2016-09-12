@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams,$ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService) {
     CommonService.ionicLoadingShow();
     $scope.getMainData = function () {
       //登录授权
@@ -36,6 +36,8 @@ angular.module('starter.controllers', [])
         MainService.getAdMsg().success(function (data) {
           $scope.adImg = data.Values;
           console.log($scope.adImg);
+          //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
+          $ionicSlideBoxDelegate.update()
         })
         //获取行情报价
         /*     MainService.getProds().success(function (data) {
@@ -116,7 +118,9 @@ angular.module('starter.controllers', [])
       CommonService.barcodeScanner();
     }
 
-
+    $scope.windowOpen=function(url){
+      CommonService.windowOpen(url)
+    }
   })
   .controller('StartCtrl', function ($scope, $state, $rootScope, CommonService) {
     $scope.tomain = function () {
@@ -1132,6 +1136,9 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("usertoken")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
+        if(data.Values==null){
+          CommonService.platformPrompt('暂无消息','');
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.newsList.push(item);
         })
@@ -1180,6 +1187,9 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
+        if(data.Values==null){
+          CommonService.platformPrompt('暂无订单信息','');
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
         })
@@ -1497,6 +1507,9 @@ angular.module('starter.controllers', [])
       }
       //接单供货计划订单列表以及详情
       SupplyService.getToPage($scope.params).success(function (data) {
+        if(data.Values==null){
+          CommonService.platformPrompt('暂无订单信息','');
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.supplylist.push(item);
         })
@@ -1859,6 +1872,9 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
+        if(data.Values==null){
+          CommonService.platformPrompt('暂无订单信息','');
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
         })
@@ -2483,6 +2499,9 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
+        if(data.Values==null){
+          CommonService.platformPrompt('暂无订单信息','');
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
         })

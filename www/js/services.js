@@ -3,7 +3,11 @@ angular.module('starter.services', [])
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-          $cordovaToast.showLongCenter(msg);
+          try{
+            $cordovaToast.showLongCenter(msg);
+          }catch (e){
+            this.showAlert("博绿网", msg, stateurl);
+          }
         } else {
           this.showAlert("博绿网", msg, stateurl);
         }
@@ -256,9 +260,9 @@ angular.module('starter.services', [])
       isLogin: function () {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
             if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-              $cordovaToast.showLongCenter("请您先登录 再继续操作");
+              this.platformPrompt("请您先登录",'login');
             }
-          $state.go('login')
+          $state.go('login');
           return;
         }
       },

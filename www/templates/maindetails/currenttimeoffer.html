@@ -11,9 +11,9 @@
     <ion-refresher on-refresh="currentTimeOffer(0)" pulling-text="下拉更新"></ion-refresher>
     <div class="list">
       <a ng-repeat="item in currentprods "  class="item item-thumbnail-left" ng-href="">
-        <img src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
+        <img ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
         <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span></h2>
-        <p>{{item.PIntrodu}} </p>
+        <p class="text-wrap"  style="height: 40px;" >{{item.PIntrodu}} </p>
 
         <p class="row row-no-padding" ng-repeat="itemp in item.Prices">
           <span ng-if="item.PriType==0" class="calm">不限量</span>
