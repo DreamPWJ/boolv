@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover,$rootScope, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -88,6 +88,8 @@ angular.module('starter.services', [])
         });
         $scope.openPopover = function ($event) {
           $scope.popover.show($event);
+          //动态计算popover高度
+          $rootScope.popoversize=document.querySelectorAll("#mypopover a").length*55+'px';
         };
         $scope.closePopover = function () {
           $scope.popover.hide();

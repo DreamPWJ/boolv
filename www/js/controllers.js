@@ -2956,6 +2956,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('MyPopover', function ($scope, $rootScope, $state, CommonService, SearchOrderService) {
+
     //支付定金
     $scope.paymentsubmit = function () {
       $rootScope.procureorderdetailssubmit();

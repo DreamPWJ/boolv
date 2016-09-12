@@ -100,8 +100,9 @@
   height: 100%;
 }
 
-#main-slide img {
-  height: 9rem;
+#main-slide .slider-slides,#main-slide  img.slider-slide {
+  width: 100%!important;
+  height: 9rem!important;
 }
 
 .slider-pager-page.active {

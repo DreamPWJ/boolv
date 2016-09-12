@@ -12,10 +12,8 @@
   <ion-content overflow-scroll="false" class="stable-bg">
     <ion-refresher on-refresh="getMainData()" pulling-text="下拉更新"></ion-refresher>
     <ion-slide-box does-continue="true" auto-play="true" slide-interval="2000" show-pager="true" id="main-slide">
-       <ion-slide ng-repeat="item in adImg"><img ng-src="{{item.ImgUrl}}" alt="首页轮播图" class="full-image"/>
+       <ion-slide ng-repeat="item in adImg"><a ng-href="item.Url"><img src="{{item.ImgUrl}}"  alt="首页轮播图" class="full-image"/></a>
        </ion-slide>
-<!--      <ion-slide><img ng-src="img/banner/banner1.jpg" alt="" class="full-image"/></ion-slide>
-      <ion-slide><img ng-src="img/banner/banner2.jpg" alt="" class="full-image"/></ion-slide>-->
     </ion-slide-box>
 
     <div class="row text-center light-bg  main-list">
@@ -59,9 +57,11 @@
       </a>
       <a ng-repeat="item in prods.data_list | limitTo:5 "  class="item item-thumbnail-left" ng-href="#">
         <img  ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
-        <h2>{{item.PName}} <span class="calm">[按量报价]</span></h2>
+        <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span></h2>
         <p>{{item.PIntrodu}} </p>
-        <p class="row row-no-padding" ng-repeat="itemp in item.Prices"><span class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>
+        <p class="row row-no-padding" ng-repeat="itemp in item.Prices">
+          <span ng-if="item.PriType==0" class="calm">不限量</span>
+          <span ng-if="item.PriType==1" class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>
           <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{item.PUName}}</span>
         </p>
         </p>

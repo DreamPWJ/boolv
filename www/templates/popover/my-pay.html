@@ -1,6 +1,6 @@
-<ion-popover-view style="height: 165px;" ng-controller="MyPopover">
+<ion-popover-view style="height: {{popoversize}};" ng-controller="MyPopover">
   <ion-content overflow-scroll="false">
-    <div class="list">
+    <div id="mypopover" class="list">
       <a ng-click="paymentsubmit()" ng-if="orderStatus==2" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-arrow-up-c balanced"></i>
         支付定金

@@ -8,7 +8,7 @@ configMod.constant("BooLv", {
   "debug": true,
   "api": "http://a.boolv.com",
   'siteUrl': "http://a.boolv.com",
-  'imgUrl': "http://a.boolv.com",
+  'imgUrl': "http://f.boolv.com",
   'version': '1.0.1'
 });
 
