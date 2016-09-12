@@ -77,7 +77,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
 
       //启动极光推送服务
-      window.plugins.jPushPlugin.init();
+        try{
+          window.plugins.jPushPlugin.init();
+        }catch (e){
+          console.log(e);
+        }
+
+
+
+
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
     });
@@ -194,6 +202,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        //查单列表
       .state('searchorder', {
         url: '/searchorder',
+        cache: false,
         templateUrl: 'templates/searchorder.html',
         controller: 'SearchOrderCtrl'
       })

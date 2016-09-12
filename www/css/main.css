@@ -100,10 +100,13 @@
   height: 100%;
 }
 
-#main-slide.slider , #main-slide.slider img{
+#main-slide.slider {
   height: 9rem !important;
 }
 
+#main-slide.slider img{
+  height: 8.6rem !important;
+}
 .slider-pager-page.active {
   color: #11c1f3;
 }

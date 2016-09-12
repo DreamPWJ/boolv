@@ -54,7 +54,7 @@
 
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-40 button button-balanced " ng-disabled="!(orderStatus==2||orderStatus==3)" ng-href="#/enteringnum/{{supplyDetails}}">备货</a>
+    <a class="col-40 button button-balanced " ng-disabled="!((orderStatus==2||orderStatus==3)&&isSupply)" ng-href="#/enteringnum/{{supplyDetails}}">备货</a>
     <a class="col-40  button button-calm " ng-href="#/supplyorderlist">供货记录</a>
   </div>
 

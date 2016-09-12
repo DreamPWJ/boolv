@@ -44,7 +44,7 @@ angular.module('starter.services', [])
         confirmPopup.then(function (res) {
           if (res) {
             if (stateurl != '') {
-              $state.go(stateurl);
+              $state.go(stateurl,{},{reload:true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
             } else {
               confirmfunction();
@@ -279,6 +279,10 @@ angular.module('starter.services', [])
       },
       stateReload: function (stateurl) {//路由跳转刷新
         $state.go(stateurl, {}, {reload: true});
+      },
+      windowOpen:function(url){
+        //通过默认浏览器打开
+        window.open(url, '_system', 'location=yes');
       },
       arrayMinus:function (a,b) {//求两个集合数组的差集
         function uniq(a) { // 去重复数据

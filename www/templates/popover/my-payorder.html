@@ -13,7 +13,7 @@
         <i class="icon ion-search balanced"></i>
         验货
       </a>
-      <a ng-click="payfinalpaymenttsubmit()"  ng-if="(OrdeType==2&&orderStatus==7)||(OrdeType==1&&(orderStatus==6||orderStatus==7))" class="item item-icon-left" nav-direction=forward>
+      <a ng-click="payfinalpaymentsubmit()"  ng-if="(OrdeType==2&&orderStatus==7)||(OrdeType==1&&(orderStatus==6||orderStatus==7))" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-card assertive"></i>
         {{OrdeType==1?"结算":"支付尾款"}}
       </a>
