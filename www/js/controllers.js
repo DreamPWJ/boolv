@@ -294,7 +294,7 @@ angular.module('starter.controllers', [])
         User: '',//下单人账号
         Type: '',//0-物流配送1-送货上门2-上门回收
         Status: '',//0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款
-        FromUser: ''//供货人
+        FromUser: localStorage.getItem("usertoken")//供货人
       }
       //查单(卖货订单)获取卖货单列表
       SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
@@ -325,7 +325,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//买家账号
+        User: localStorage.getItem("usertoken"),//买家账号
         Type: '',//0-物流配送1-送货上门2-上门回收
         Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
         Expiration: ''//过期时间 是否取非过期时间 1是 0否
