@@ -49,7 +49,7 @@
         },
         "jpush-phonegap-plugin": {
             "API_KEY": "fcac61b28987384d6f2a6ace",
-            "PACKAGE_NAME": "com.ionicframework.boolv969171"
+            "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.boolv.trading"
