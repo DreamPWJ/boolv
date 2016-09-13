@@ -130,9 +130,7 @@ angular.module('starter.controllers', [])
       $state.go('tab.main', {reload: true});
     }
   })
-  .controller('SearchCtrl', function ($scope, $rootScope, $ionicModal, $state, CommonService) {
 
-  })
   //实时报价
   .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, CommonService, MainService) {
     //获取行情报价分页列表
@@ -238,14 +236,20 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
+    $scope.checkphone=function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope,mobilephone);
+    }
     $scope.sendCode = function () {
+      if($scope.paraclass){ //按钮可用
       //60s倒计时
       AccountService.countDown($scope);
-      AccountService.sendCode($scope.user.username).success(function (data) {
-        $scope.user.passwordcode = data.Values;
-      }).error(function () {
-        CommonService.platformPrompt("验证码获取失败!", 'login');
-      })
+        AccountService.sendCode($scope.user.username).success(function (data) {
+          $scope.user.passwordcode = data.Values;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'login');
+        })
+      }
+
     }
     $scope.loginSubmit = function () {
       if ($scope.user.passwordcode != $scope.user.password) {
@@ -276,6 +280,15 @@ angular.module('starter.controllers', [])
   })
   //查单列表
   .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
+    //搜索订单号内容
+    $scope.search = {};//搜索内容
+    $scope.searchquery = function (searchcontent) {
+
+    }
     $scope.saleorderlist = [];
     $scope.sellparamspage = 0;
     $scope.sellparamstotal = 1;
@@ -360,7 +373,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//下单人账号
+        User: localStorage.getItem("usertoken"),//下单人账号
         Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
         BONo: '',//买货单号 关联买货单号
         ToUser: ''//买货人 关联买货单人
@@ -488,7 +501,7 @@ angular.module('starter.controllers', [])
     $rootScope.orderStatus = $rootScope.supplyDetails.Status;
 
     //是否供货   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了
-    $rootScope.isSupply=($rootScope.supplyDetails.NumSum!=$rootScope.supplyDetails.SupSum&&$rootScope.supplyDetails.WeightSum!=$rootScope.supplyDetails.SupWeight)?true:false;
+    $rootScope.isSupply = ($rootScope.supplyDetails.NumSum != $rootScope.supplyDetails.SupSum && $rootScope.supplyDetails.WeightSum != $rootScope.supplyDetails.SupWeight) ? true : false;
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService, SearchOrderService) {
@@ -538,13 +551,16 @@ angular.module('starter.controllers', [])
       if ($scope.addrliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
         $state.go('adddealaddress');
+        return;
       }
       if ($scope.userbankliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
         $state.go('addbankaccount');
+        return;
       }
       if ($scope.toAddraddrliststatus.length == 0) {
         CommonService.platformPrompt('获取收货用户常用地址失败');
+        return;
       }
       //供货计划明细数组
       $scope.details = [];
@@ -1171,7 +1187,9 @@ angular.module('starter.controllers', [])
   //发货列表
   .controller('DeliverListCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
     //是否登录
-    CommonService.isLogin();
+    if (!CommonService.isLogin()) {
+      return;
+    }
     $scope.deliverlist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -1429,6 +1447,7 @@ angular.module('starter.controllers', [])
       })
       if ($scope.addrliststatus.length == 0) {
         CommonService.platformPrompt('无法获取到收货人地址默认地址', '');
+        return;
       }
     })
 
@@ -1487,11 +1506,15 @@ angular.module('starter.controllers', [])
   //接单供货计划订单列表以及详情
   .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService) {
     //是否登录
-    CommonService.isLogin();
-    //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
-    if (JSON.parse(localStorage.getItem("user")).grade != 5) {
-      CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
+    if (!CommonService.isLogin()) {
+      return
+    } else {
+      //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
+      if (JSON.parse(localStorage.getItem("user")).grade != 5) {
+        CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
+      }
     }
+
     $scope.supplylist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -1506,7 +1529,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: '',//买家账号
+        User: localStorage.getItem("usertoken"),//供货人账号
         Type: '',//交易方式 0-物流配送1-送货上门2-上门回收
         Status: 4,//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
         Expiration: 1//非过期时间 是否取非过期时间 1是 0否
@@ -1612,7 +1635,9 @@ angular.module('starter.controllers', [])
     $scope.itemnumprice = [];//买货数量和价格
     $rootScope.buygoodssubmit = function () {//提交买货订单
       //是否登录
-      CommonService.isLogin();
+      if (!CommonService.isLogin()) {
+        return;
+      }
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (item, index) {
         var items = {};//收货明细json数据
@@ -1657,6 +1682,7 @@ angular.module('starter.controllers', [])
       if ($scope.addrlist.length == 0) {
         CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
         $state.go('adddealaddress');
+        return;
       }
     }).finally(function () {
       CommonService.ionicLoadingHide()
@@ -1687,12 +1713,13 @@ angular.module('starter.controllers', [])
       }
     })
     CommonService.getLocation();
+
     //根据经纬度获取最近N个供货商
     $scope.supplierListParams = {
       currentPage: 1,
       pageSize: 5,
-      Longitude: localStorage.getItem("longitude") || 4.333,
-      Latitude: localStorage.getItem("latitude") || 3.3456,
+      Longitude: localStorage.getItem("longitude") || '',
+      Latitude: localStorage.getItem("latitude") || '',
       buff: 5
     }
     SellService.getListLongAndLat($scope.supplierListParams).success(function (data) {
@@ -1705,7 +1732,9 @@ angular.module('starter.controllers', [])
     $scope.itemnum = [];//卖货数量
     $scope.sellgoodssubmit = function () {//提交卖货订单
       //是否登录
-      CommonService.isLogin();
+      if (!CommonService.isLogin()) {
+        return;
+      }
       //是否有供货商信息
       if (!$rootScope.supplierListFirst) {
         CommonService.platformPrompt('没有匹配的供货商信息', 'selldetails');
@@ -1751,6 +1780,7 @@ angular.module('starter.controllers', [])
           CommonService.ionicLoadingHide();
           CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
           $state.go('adddealaddress');
+          return;
         }
       }).then(function () {
         //查询用户银行信息
@@ -1765,6 +1795,7 @@ angular.module('starter.controllers', [])
             CommonService.ionicLoadingHide();
             CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
             $state.go('addbankaccount');
+            return;
           }
         }).then(function () {
           //提交卖货订单数据
@@ -1856,7 +1887,9 @@ angular.module('starter.controllers', [])
   //验货列表
   .controller('CheckGoodCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
     //是否登录
-    CommonService.isLogin();
+    if (!CommonService.isLogin()) {
+      return;
+    }
     $scope.deliverlist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -2308,9 +2341,10 @@ angular.module('starter.controllers', [])
     $scope.supplyDetails = JSON.parse($stateParams.item);
 
     CommonService.getLocation();
+
     $scope.params = {
-      longt: localStorage.getItem("longitude") || 116.4854800,//当前经度
-      lat: localStorage.getItem("latitude") || 39.9484000,//胆怯纬度
+      longt: localStorage.getItem("longitude") || '',//当前经度
+      lat: localStorage.getItem("latitude") || '',//胆怯纬度
       user: $scope.supplyDetails.FromUser //对应的会员对应的会员(一般为买家)
     }
     SupplyService.getRange($scope.params).success(function (data) {
@@ -2335,6 +2369,7 @@ angular.module('starter.controllers', [])
       if ($scope.addrlist.length == 0) {
         CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
         $state.go('adddealaddress');
+        return;
       }
       $scope.addrliststatus = [];
       angular.forEach($scope.addrlist, function (item) {
@@ -2423,28 +2458,28 @@ angular.module('starter.controllers', [])
       })
     }
     //修改地址信息
-    $scope.updateaddress=function (item) {
-      $rootScope.addressitem=item;
+    $scope.updateaddress = function (item) {
+      $rootScope.addressitem = item;
       $state.go('adddealaddress');
     }
 
   })
   //添加地址
-  .controller('AddDealAddressCtrl', function ($scope,$rootScope, $state, CommonService, AccountService) {
+  .controller('AddDealAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     CommonService.ionicLoadingShow();
     $scope.addrinfo = {};
     $scope.addrinfoother = {};
-    if($rootScope.addressitem&&$rootScope.addressitem.length!=0){//是否是修改信息
-      $scope.addressiteminfo=$rootScope.addressitem;
-      $scope.addrinfo.username=$scope.addressiteminfo.username;
-      $scope.addrinfo.mobile=$scope.addressiteminfo.mobile;
-      $scope.addrinfo.addr=$scope.addressiteminfo.addr;
-      $scope.addrinfoother.isstatus=$scope.addressiteminfo.status==1?true:false;
-      $rootScope.addressitem=[];
+    if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
+      $scope.addressiteminfo = $rootScope.addressitem;
+      $scope.addrinfo.username = $scope.addressiteminfo.username;
+      $scope.addrinfo.mobile = $scope.addressiteminfo.mobile;
+      $scope.addrinfo.addr = $scope.addressiteminfo.addr;
+      $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
+      $rootScope.addressitem = [];
     }
 
 
-    $scope.addrcode ='0';
+    $scope.addrcode = '0';
     AccountService.getArea($scope.addrcode).success(function (data) {
       $scope.addrareaprovince = data.Values;
     }).finally(function () {
@@ -2472,7 +2507,7 @@ angular.module('starter.controllers', [])
           $scope.addrareacountyone = item;
         }
       })
-      $scope.addrinfo.id = $scope.addressiteminfo?$scope.addressiteminfo.id:0;//传入id 则是修改地址
+      $scope.addrinfo.id = $scope.addressiteminfo ? $scope.addressiteminfo.id : 0;//传入id 则是修改地址
       $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
       $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
       $scope.addrinfo.addrcode = $scope.addrareacountyone.code,	//地区编码
@@ -2497,7 +2532,9 @@ angular.module('starter.controllers', [])
   //签收列表
   .controller('SignListCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
     //是否登录
-    CommonService.isLogin();
+    if (!CommonService.isLogin()) {
+      return;
+    }
     $scope.deliverlist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -2608,7 +2645,9 @@ angular.module('starter.controllers', [])
   //我的账号
   .controller('AccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     //是否登录
-    CommonService.isLogin();
+    if (!CommonService.isLogin(true)) {
+      return;
+    }
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;
@@ -2774,6 +2813,7 @@ angular.module('starter.controllers', [])
       if ($scope.userbankliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
         $state.go('addbankaccount');
+        return;
       }
       $scope.datas = {
         RelateNo: 0,//关联单号
@@ -2830,8 +2870,8 @@ angular.module('starter.controllers', [])
     }
 
     //修改收款银行账号
-    $scope.updatebank=function (item) {
-      $rootScope.bankitem=item;
+    $scope.updatebank = function (item) {
+      $rootScope.bankitem = item;
       $state.go('addbankaccount');
     }
   })
@@ -2840,14 +2880,14 @@ angular.module('starter.controllers', [])
 
     //增加收款银行账号信息
     $scope.bankinfo = {};
-    if($rootScope.bankitem&&$rootScope.bankitem.length!=0){ //修改银行信息
-      $scope.bankiteminfo=$rootScope.bankitem;
-      $scope.bankinfo.bankname=$scope.bankiteminfo.bankname;
-      $scope.bankinfo.accountno=$scope.bankiteminfo.accountno;
-      $scope.bankinfo.accountname=$scope.bankiteminfo.accountname;
-      $scope.bankinfo.branchname=$scope.bankiteminfo.branchname;
-      $scope.bankinfo.isdefault=$scope.bankiteminfo.isdefault==1?true:false;
-      $rootScope.bankitem=[];//清空数据
+    if ($rootScope.bankitem && $rootScope.bankitem.length != 0) { //修改银行信息
+      $scope.bankiteminfo = $rootScope.bankitem;
+      $scope.bankinfo.bankname = $scope.bankiteminfo.bankname;
+      $scope.bankinfo.accountno = $scope.bankiteminfo.accountno;
+      $scope.bankinfo.accountname = $scope.bankiteminfo.accountname;
+      $scope.bankinfo.branchname = $scope.bankiteminfo.branchname;
+      $scope.bankinfo.isdefault = $scope.bankiteminfo.isdefault == 1 ? true : false;
+      $rootScope.bankitem = [];//清空数据
 
     }
     //查询银行名称
@@ -2856,7 +2896,7 @@ angular.module('starter.controllers', [])
     })
     $scope.addUserBank = function () {
       $scope.datas = {
-        id:$scope.bankiteminfo?$scope.bankiteminfo.id: 0, 	// id
+        id: $scope.bankiteminfo ? $scope.bankiteminfo.id : 0, 	// id
         bankname: $scope.bankinfo.bankname,	//银行名称
         userid: localStorage.getItem("usertoken"),	//用户id
         branchname: $scope.bankinfo.branchname,	//支行名称
@@ -2928,14 +2968,19 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
+    $scope.checkphone=function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope,mobilephone);
+    }
     $scope.sendCode = function () {
-      //60s倒计时
-      AccountService.countDown($scope);
-      AccountService.sendCode($scope.user.username).success(function (data) {
-        $scope.user.passwordcode = data.Values;
-      }).error(function () {
-        CommonService.platformPrompt("验证码获取失败!", 'cancelmobile');
-      })
+      if($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
+        AccountService.sendCode($scope.user.username).success(function (data) {
+          $scope.user.passwordcode = data.Values;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'cancelmobile');
+        })
+      }
     }
     $scope.cancelMobileSubmit = function () {
       if ($scope.user.passwordcode != $scope.user.password) {
@@ -2953,32 +2998,36 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
+    $scope.checkphone=function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope,mobilephone);
+    }
     $scope.sendCode = function () {
-      //60s倒计时
-      AccountService.countDown($scope);
-      AccountService.sendCode($scope.user.username).success(function (data) {
-        $scope.user.passwordcode = data.Values;
-      }).error(function () {
-        CommonService.platformPrompt("验证码获取失败!", 'bindingmobile');
-      })
-    }
-    $scope.bindingMobileSubmit = function () {
-      if ($scope.user.passwordcode != $scope.user.password) {
-        CommonService.platformPrompt("输入验证码不正确", 'bindingmobile');
-        return;
+      if ($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
+        AccountService.sendCode($scope.user.username).success(function (data) {
+          $scope.user.passwordcode = data.Values;
+        }).error(function () {
+          CommonService.platformPrompt("验证码获取失败!", 'bindingmobile');
+        })
       }
-      //修改手机号码
-      $scope.datas = {
-        userid: localStorage.getItem("usertoken"),		//用户id
-        old_mobile: $scope.oldphone,		//旧用户手机号码
-        new_mobile: $scope.user.username,	//新用户号码
-        new_code: $scope.user.password	//短信验证码
+      $scope.bindingMobileSubmit = function () {
+        if ($scope.user.passwordcode != $scope.user.password) {
+          CommonService.platformPrompt("输入验证码不正确", 'bindingmobile');
+          return;
+        }
+        //修改手机号码
+        $scope.datas = {
+          userid: localStorage.getItem("usertoken"),		//用户id
+          old_mobile: $scope.oldphone,		//旧用户手机号码
+          new_mobile: $scope.user.username,	//新用户号码
+          new_code: $scope.user.password	//短信验证码
+        }
+        AccountService.modifyMobile($scope.datas).success(function (data) {
+          CommonService.platformPrompt('修改手机号成功', 'tab.account');
+        })
       }
-      AccountService.modifyMobile($scope.datas).success(function (data) {
-        CommonService.platformPrompt('修改手机号成功', 'tab.account');
-      })
     }
-
   })
   //修改用户头像图片
   .controller('UploadHeadrCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService) {
@@ -3048,7 +3097,7 @@ angular.module('starter.controllers', [])
     }
     $rootScope.paytopaymentsubmit = function () {
       //支付到付款按钮，付款后，调用修改状态的接口
-      $scope.paytopayments=function () {
+      $scope.paytopayments = function () {
         //查单(买货订单)修改买货订单状态
         $scope.params = {
           No: $rootScope.collectGoodDetails.No,//订单号
@@ -3060,12 +3109,12 @@ angular.module('starter.controllers', [])
           console.log(data);
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', '',$scope.paytopayments)
+      CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', '', $scope.paytopayments)
 
     }
     $rootScope.payfinalpaymentsubmit = function () {
       //结算活支付尾款按钮，结算活支付尾款后，调用修改状态的接口
-      $scope.payfinalpayment=function () {
+      $scope.payfinalpayment = function () {
         //查单(买货订单)修改买货订单状态
         $scope.params = {
           No: $rootScope.collectGoodDetails.No,//订单号
@@ -3077,7 +3126,7 @@ angular.module('starter.controllers', [])
           console.log(data);
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', '',$scope.payfinalpayment)
+      CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', '', $scope.payfinalpayment)
     }
 
 

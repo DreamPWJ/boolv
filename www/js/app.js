@@ -192,10 +192,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('login', {
         url: '/login',
         cache: false,
-        nativeTransitions: {
+/*        nativeTransitions: {
           "type": "flip",
           "direction": "up"
-        },
+        },*/
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
@@ -293,7 +293,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('search', {
         url: '/search',
         templateUrl: 'templates/search.html',
-        controller: 'SearchCtrl'
+        controller: 'SearchOrderCtrl'
 
       })
       //发货列表
@@ -360,19 +360,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ReleaseSupplyCtrl'
 
       })
-      //添加地址
-      .state('adddealaddress', {
-        url: '/adddealaddress',
-        templateUrl: 'templates/jiedan/adddealaddress.html',
-        controller: 'AddDealAddressCtrl'
 
-      })
       //地址详细列表
       .state('dealaddress', {
         url: '/dealaddress',
         cache:false,
         templateUrl: 'templates/jiedan/dealaddress.html',
         controller: 'DealAddressCtrl'
+
+      })
+
+      //添加地址
+      .state('adddealaddress', {
+        url: '/adddealaddress',
+        templateUrl: 'templates/jiedan/adddealaddress.html',
+        controller: 'AddDealAddressCtrl'
 
       })
       .state('buygood', {
@@ -391,6 +393,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货发布买货单
       .state('procuredetails', {
         url: '/procuredetails',
+        cache:false,
         templateUrl: 'templates/buygood/procuredetails.html',
         controller: 'ProcureDetailsCtrl'
 
@@ -416,6 +419,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //卖货下单
       .state('selldetails', {
         url: '/selldetails',
+        cache:false,
         templateUrl: 'templates/sellgood/selldetails.html',
         controller: 'SellDetailsCtrl'
       })

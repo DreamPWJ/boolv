@@ -4,7 +4,7 @@
   padding-top: 2rem;
 }
 #userlogin .list{
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 
@@ -20,13 +20,17 @@
   top: 3.2rem;
   right: 0.5rem;
   height: 40px;
-  background-color:#33cd5f;
+  background-color:rgba(51,205,95,1);
   border: none;
   color: #ffffff;
   z-index: 1000;
 }
-.authcode:hover{
-  background-color: #0fcd1a;
+.disabledauthcode{
+  background-color:rgba(51,205,95,0.6);
+
+}
+.authcode:active{
+  background-color: #33cd5f;
 }
 
 #mycredit{

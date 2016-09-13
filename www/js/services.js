@@ -1,11 +1,11 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover,$rootScope, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-          try{
+          try {
             $cordovaToast.showLongCenter(msg);
-          }catch (e){
+          } catch (e) {
             this.showAlert("博绿网", msg, stateurl);
           }
         } else {
@@ -44,13 +44,13 @@ angular.module('starter.services', [])
         confirmPopup.then(function (res) {
           if (res) {
             if (stateurl != '') {
-              $state.go(stateurl,{},{reload:true});
+              $state.go(stateurl, {}, {reload: true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
             } else {
               confirmfunction();
             }
           } else {
-            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl,{},{reload:true})
+            $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, {}, {reload: true})
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
         });
@@ -93,7 +93,7 @@ angular.module('starter.services', [])
         $scope.openPopover = function ($event) {
           $scope.popover.show($event);
           //动态计算popover高度
-          $rootScope.popoversize=document.querySelectorAll("#mypopover a").length*55+'px';
+          $rootScope.popoversize = document.querySelectorAll("#mypopover a").length * 55 + 'px';
         };
         $scope.closePopover = function () {
           $scope.popover.hide();
@@ -245,6 +245,7 @@ angular.module('starter.services', [])
         });
       },
       getLocation: function () { //获取当前经纬度
+        CommonService = this;
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             function (p) {
@@ -252,18 +253,25 @@ angular.module('starter.services', [])
               localStorage.setItem("longitude", p.coords.longitude);
             },
             function (e) {
-              var msg = e.code + "\n" + e.message;
+              CommonService.platformPrompt("获取地理位置失败")
             }
           );
         }
       },
-      isLogin: function () {//判断是否登录
+      isLogin: function (flag) {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
+          if (flag) {
             if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-              this.platformPrompt("请您先登录",'login');
+              this.platformPrompt("请您先登录", 'login');
             }
-          $state.go('login');
-          return;
+            $state.go('login');
+          } else {
+            this.showConfirm('博绿网', '请先登录博绿网', '登录', '关闭', 'login');
+            return;
+          }
+          return false;
+        } else {
+          return true;
         }
       },
       getStateName: function () {    //得到上一个路由名称方法
@@ -280,35 +288,36 @@ angular.module('starter.services', [])
       stateReload: function (stateurl) {//路由跳转刷新
         $state.go(stateurl, {}, {reload: true});
       },
-      windowOpen:function(url){
+      windowOpen: function (url) {
         //通过默认浏览器打开
         window.open(url, '_system', 'location=yes');
       },
-      arrayMinus:function (a,b) {//求两个集合数组的差集
+      arrayMinus: function (a, b) {//求两个集合数组的差集
         function uniq(a) { // 去重复数据
           var r = [];
-          for(var i = 0; i < a.length; i ++) {
+          for (var i = 0; i < a.length; i++) {
             var flag = true;
             var temp = a[i];
-            for(var j = 0; j < r.length; j ++) {
-              if(temp === r[j]) {
+            for (var j = 0; j < r.length; j++) {
+              if (temp === r[j]) {
                 flag = false;
                 break;
               }
             }
-            if(flag) {
+            if (flag) {
               r.push(temp);
             }
           }
           return r;
         }
+
         //求两个集合的差集
         var clone = a.slice(0);
-        for(var i = 0; i < b.length; i ++) {
+        for (var i = 0; i < b.length; i++) {
           var temp = b[i];
-          for(var j = 0; j < clone.length; j ++) {
-            if(temp === clone[j]) {
-              clone.splice(j,1);
+          for (var j = 0; j < clone.length; j++) {
+            if (temp === clone[j]) {
+              clone.splice(j, 1);
             }
           }
         }
@@ -489,14 +498,22 @@ angular.module('starter.services', [])
         if (second <= 0) {
           $interval.cancel(timePromise);
           $scope.paracont = "重发验证码";
-          $scope.paraclass = false;
-        } else {
           $scope.paraclass = true;
+        } else {
+          $scope.paraclass = false;
           $scope.paracont = second + "秒后可重发";
           second--;
         }
       }, 1000, 100);
     },
+   checkMobilePhone:function ($scope,mobilephone) {  //检查手机号
+    if(/^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/.test(mobilephone))
+    {
+      $scope.paraclass = true;
+    }else {
+      $scope.paraclass = false;
+    }
+  },
     modifySex: function (params) { //修改性别
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise;
