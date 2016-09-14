@@ -16,7 +16,7 @@
       <div ng-hide="showme1">
         <label class="item item-input">
           <span class="input-label"> 数量 :</span>
-          <input type="number" ng-model="itemnumprice[$index].buynum"  required>
+          <input type="number" ng-model="itemnumprice[$index].buynum"  ng-blur="checknumber(item.PUType,itemnumprice[$index].buynum)"  required>
           <span class="item-note input-right-1">{{item.PUName}}</span>
         </label>
         <label class="item item-input border-bottom-none">

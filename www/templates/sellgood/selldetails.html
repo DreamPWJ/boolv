@@ -15,7 +15,7 @@
       </a>
       <label class="item item-input" ng-repeat="item in sellDetails">
         <span class="input-label"> {{item.PName}} :</span>
-        <input type="number" ng-model="itemnum[$index].sellnum" required >
+        <input type="number" ng-model="itemnum[$index].sellnum"  ng-blur="checknumber(item.PUType,itemnum[$index].sellnum)" required >
         <span class="item-note input-right-1">{{item.PUName}}</span>
       </label>
 

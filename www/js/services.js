@@ -24,6 +24,8 @@ angular.module('starter.services', [])
         alertPopup.then(function (res) {
           if (stateurl == null || stateurl == '') {
             $ionicHistory.goBack();
+          } else if(stateurl=='close'){//不处理
+
           } else {
             $state.go(stateurl);
           }
@@ -46,6 +48,8 @@ angular.module('starter.services', [])
             if (stateurl != '') {
               $state.go(stateurl, {}, {reload: true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
+            }  if(stateurl=='close'){//不处理
+
             } else {
               confirmfunction();
             }
@@ -288,8 +292,8 @@ angular.module('starter.services', [])
       stateReload: function (stateurl) {//路由跳转刷新
         $state.go(stateurl, {}, {reload: true});
       },
-      windowOpen: function (url) {
-        //通过默认浏览器打开
+      windowOpen: function (url) {        //通过默认浏览器打开
+
         window.open(url, '_system', 'location=yes');
       },
       arrayMinus: function (a, b) {//求两个集合数组的差集
@@ -322,6 +326,13 @@ angular.module('starter.services', [])
           }
         }
         return uniq(clone);
+      },
+      regularVerification :function (reg,content) {//正则表达式验证
+          if(reg.test(content)){
+            return true;
+          }else {
+            return false;
+          }
       }
     }
   })

@@ -37,7 +37,10 @@ angular.module('starter.controllers', [])
           $scope.adImg = data.Values;
           console.log($scope.adImg);
           //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
-          $ionicSlideBoxDelegate.update()
+          $ionicSlideBoxDelegate.update();
+          //上面这句就是实现无限循环的关键，绑定了滑动框，
+          $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
+
         })
         //获取行情报价
         /*     MainService.getProds().success(function (data) {
@@ -341,7 +344,8 @@ angular.module('starter.controllers', [])
         User: localStorage.getItem("usertoken"),//买家账号
         Type: '',//0-物流配送1-送货上门2-上门回收
         Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
-        Expiration: ''//过期时间 是否取非过期时间 1是 0否
+        Expiration: '',//过期时间 是否取非过期时间 1是 0否
+        SurplusNum:'' //表示剩余供货量大于0，如果剩余供货量0，就不需要供货了
       }
       //查单(买货订单)获取买货单列表
       SupplyService.getToPage($scope.buyparams).success(function (data) {
@@ -1531,10 +1535,11 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//订单号，模糊匹配
-        User: localStorage.getItem("usertoken"),//供货人账号
+        User:'' ,//供货人账号 供货这里user可以为空 订单那里不能为空
         Type: '',//交易方式 0-物流配送1-送货上门2-上门回收
         Status: 4,//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
-        Expiration: 1//非过期时间 是否取非过期时间 1是 0否
+        Expiration: 1,//非过期时间 是否取非过期时间 1是 0否
+        SurplusNum:0 //表示剩余供货量大于0，如果剩余供货量0，就不需要供货了
       }
       //接单供货计划订单列表以及详情
       SupplyService.getToPage($scope.params).success(function (data) {
@@ -1634,7 +1639,16 @@ angular.module('starter.controllers', [])
         $scope.buyDetails.push(item);
       }
     })
+    //验证数量
+    $scope.checknumber=function (type,num) {
+      if(type==1){
+        if(!CommonService.regularVerification(/^[1-9]\d*$/,num)){
+          CommonService.platformPrompt("数量单位只能输入正整数",'close');
+          return;
+        }
+      }
 
+    }
     $scope.itemnumprice = [];//买货数量和价格
     $rootScope.buygoodssubmit = function () {//提交买货订单
       //是否登录
@@ -1748,13 +1762,23 @@ angular.module('starter.controllers', [])
           $scope.total = data.Values.page_count;
 
         }).finally(function () {
+          CommonService.ionicLoadingHide();
           $scope.$broadcast('scroll.refreshComplete');
           $scope.$broadcast('scroll.infiniteScrollComplete');
-          CommonService.ionicLoadingHide();
+
         })
       }
       $rootScope.getListLongAndLatSupplier();
+    //验证数量
+    $scope.checknumber=function (type,num) {
+      if(type==1){
+        if(!CommonService.regularVerification(/^[1-9]\d*$/,num)){
+          CommonService.platformPrompt("数量单位只能输入正整数",'close');
+          return;
+        }
+      }
 
+    }
       $scope.itemnum = [];//卖货数量
       $scope.sellgoodssubmit = function () {//提交卖货订单
         //是否登录
@@ -2545,10 +2569,10 @@ angular.module('starter.controllers', [])
         $scope.addrinfo.lat = $scope.addrareacountyone.lat, 	//纬度
         $scope.addrinfo.lon = $scope.addrareacountyone.lng, 	//经度
         $scope.addrinfo.addrtype = 0	//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
+        $scope.addrinfo.addr=$scope.addrareacountyone.mergername+$scope.addrinfo.addr;
       console.log($scope.addrinfo);
       AccountService.setAddr($scope.addrinfo).success(function (data) {
-
-        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress', '')
+        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress', '');
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -2935,7 +2959,7 @@ angular.module('starter.controllers', [])
         remark: ""	//备注
       }
       AccountService.addUserBank($scope.datas).success(function (data) {
-        $state.go('collectionaccount', {}, {reload: true});
+        CommonService.showConfirm('', '<p>恭喜您！</p><p>账户信息添加成功！</p>', '查看', '关闭', 'collectionaccount', '')
       })
     }
 
