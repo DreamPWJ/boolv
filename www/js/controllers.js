@@ -236,13 +236,13 @@ angular.module('starter.controllers', [])
     $scope.agreedeal = true;//同意用户协议
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
-    $scope.checkphone=function (mobilephone) {//检查手机号
-      AccountService.checkMobilePhone($scope,mobilephone);
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
     }
     $scope.sendCode = function () {
-      if($scope.paraclass){ //按钮可用
-      //60s倒计时
-      AccountService.countDown($scope);
+      if ($scope.paraclass) { //按钮可用
+        //60s倒计时
+        AccountService.countDown($scope);
         AccountService.sendCode($scope.user.username).success(function (data) {
           $scope.user.passwordcode = data.Values;
         }).error(function () {
@@ -501,7 +501,7 @@ angular.module('starter.controllers', [])
     $rootScope.orderStatus = $rootScope.supplyDetails.Status;
 
     //是否供货   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了
-    $rootScope.isSupply = ($rootScope.supplyDetails.NumSum != $rootScope.supplyDetails.SupSum && $rootScope.supplyDetails.WeightSum != $rootScope.supplyDetails.SupWeight) ? true : false;
+    $rootScope.isSupply = ($rootScope.supplyDetails.NumSum != $rootScope.supplyDetails.SupSum || $rootScope.supplyDetails.WeightSum != $rootScope.supplyDetails.SupWeight) ? true : false;
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService, SearchOrderService) {
@@ -1160,6 +1160,7 @@ angular.module('starter.controllers', [])
       NewsService.getNewsList($scope.params).success(function (data) {
         if (data.Values == null) {
           CommonService.platformPrompt('暂无消息', '');
+          return
         }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.newsList.push(item);
@@ -1213,6 +1214,7 @@ angular.module('starter.controllers', [])
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
           CommonService.platformPrompt('暂无订单信息', '');
+          return
         }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
@@ -1538,6 +1540,7 @@ angular.module('starter.controllers', [])
       SupplyService.getToPage($scope.params).success(function (data) {
         if (data.Values == null) {
           CommonService.platformPrompt('暂无订单信息', '');
+          return
         }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.supplylist.push(item);
@@ -1705,120 +1708,144 @@ angular.module('starter.controllers', [])
   })
   //卖货下单
   .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
-    CommonService.ionicLoadingShow();
-    $scope.sellDetails = [];
-    angular.forEach($rootScope.sellprodsList, function (item) {
-      if (item.checked == true) {
-        $scope.sellDetails.push(item);
-      }
-    })
-    CommonService.getLocation();
-
-    //根据经纬度获取最近N个供货商
-    $scope.supplierListParams = {
-      currentPage: 1,
-      pageSize: 5,
-      Longitude: localStorage.getItem("longitude") || '',
-      Latitude: localStorage.getItem("latitude") || '',
-      buff: 5
-    }
-    SellService.getListLongAndLat($scope.supplierListParams).success(function (data) {
-      $rootScope.supplierList = data.Values.data_list;
-      $rootScope.supplierListFirst = $rootScope.supplierList[0];
-    }).finally(function () {
-      CommonService.ionicLoadingHide()
-    })
-
-    $scope.itemnum = [];//卖货数量
-    $scope.sellgoodssubmit = function () {//提交卖货订单
-      //是否登录
-      if (!CommonService.isLogin()) {
-        return;
-      }
-      //是否有供货商信息
-      if (!$rootScope.supplierListFirst) {
-        CommonService.platformPrompt('没有匹配的供货商信息', 'selldetails');
-        return;
-      }
       CommonService.ionicLoadingShow();
-      $scope.Details = [];//收货明细数据数组
-      angular.forEach($scope.sellDetails, function (item, index) {
-        var items = {};//收货明细json数据
-        items.ProdID = item.PID;//产品编号
-        items.ProdName = item.PName;//产品名称
-        items.Unit = item.PUID;//计算单位ID
-        items.Num = $scope.itemnum[index].sellnum;//输入数量
-        items.SaleClass = item.PUSaleType;//销售分类ID
-        var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
-        if (item.PriType == 1) {
-          angular.forEach(item.Prices, function (itemprice, index) {
-            if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
-              referenceprice = item.Prices[index].Price;
-            }
-          })
-        } else {
-          referenceprice = item.Prices[0].Price;
+      $scope.sellDetails = [];
+      angular.forEach($rootScope.sellprodsList, function (item) {
+        if (item.checked == true) {
+          $scope.sellDetails.push(item);
         }
-        items.Price = referenceprice;//参考价格
-        $scope.Details.push(items)
-      });
-      //获取当前用户地址id和银行账号id
-      $scope.params = {
-        page: 1,
-        size: 10,
-        userid: localStorage.getItem("usertoken")
-      }
-      //获取用户常用地址
-      AccountService.getAddrlist($scope.params).success(function (data) {
-        $scope.addrliststatus = [];
-        angular.forEach(data.Values.data_list, function (item) {
-          if (item.status == 1) {
-            $scope.addrliststatus.push(item);
+      })
+      CommonService.getLocation();
+
+      //根据经纬度获取最近N个供货商
+      $rootScope.supplierList = [];
+      $scope.page = 0;
+      $scope.total = 1;
+      $rootScope.getListLongAndLatSupplier = function () {
+        if (arguments != [] && arguments[0] == 0) {
+          $scope.page = 0;
+          $rootScope.supplierList = [];
+        }
+        $scope.page++;
+        $scope.supplierListParams = {
+          currentPage: $scope.page,
+          pageSize: 5,
+          Longitude: localStorage.getItem("longitude"),//当前经度
+          Latitude: localStorage.getItem("latitude"),//当前纬度
+          buff: 1000  //取最远多少距离KG的距离
+        }
+
+        SellService.getListLongAndLat($scope.supplierListParams).success(function (data) {
+          if (data.Values == null) {
+            CommonService.platformPrompt('暂无附近供货商信息', '');
+            return;
           }
-        })
-        if ($scope.addrliststatus.length == 0) {
+          angular.forEach(data.Values.data_list, function (item) {
+            $rootScope.supplierList.push(item);
+          })
+
+          $rootScope.supplierListFirst = $rootScope.supplierList[0];
+          $scope.total = data.Values.page_count;
+
+        }).finally(function () {
+          $scope.$broadcast('scroll.refreshComplete');
+          $scope.$broadcast('scroll.infiniteScrollComplete');
           CommonService.ionicLoadingHide();
-          CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
-          $state.go('adddealaddress');
+        })
+      }
+      $rootScope.getListLongAndLatSupplier();
+
+      $scope.itemnum = [];//卖货数量
+      $scope.sellgoodssubmit = function () {//提交卖货订单
+        //是否登录
+        if (!CommonService.isLogin()) {
           return;
         }
-      }).then(function () {
-        //查询用户银行信息
-        AccountService.getUserBanklist($scope.params).success(function (data) {
-          $scope.userbankliststatus = [];
+        //是否有供货商信息
+        if (!$rootScope.supplierListFirst) {
+          CommonService.platformPrompt('没有匹配的供货商信息', 'selldetails');
+          return;
+        }
+        CommonService.ionicLoadingShow();
+        $scope.Details = [];//收货明细数据数组
+        angular.forEach($scope.sellDetails, function (item, index) {
+          var items = {};//收货明细json数据
+          items.ProdID = item.PID;//产品编号
+          items.ProdName = item.PName;//产品名称
+          items.Unit = item.PUID;//计算单位ID
+          items.Num = $scope.itemnum[index].sellnum;//输入数量
+          items.SaleClass = item.PUSaleType;//销售分类ID
+          var referenceprice;//参考价格  PriType=1    才会有多条，价格要根据数量区间来取 数量为0时，表示以上或以下
+          if (item.PriType == 1) {
+            angular.forEach(item.Prices, function (itemprice, index) {
+              if (parseInt(items.Num) >= parseInt(itemprice.PriNumMin) && parseInt(items.Num) <= parseInt(itemprice.PriNumMax)) {
+                referenceprice = item.Prices[index].Price;
+              }
+            })
+          } else {
+            referenceprice = item.Prices[0].Price;
+          }
+          items.Price = referenceprice;//参考价格
+          $scope.Details.push(items)
+        });
+        //获取当前用户地址id和银行账号id
+        $scope.params = {
+          page: 1,
+          size: 10,
+          userid: localStorage.getItem("usertoken")
+        }
+        //获取用户常用地址
+        AccountService.getAddrlist($scope.params).success(function (data) {
+          $scope.addrliststatus = [];
           angular.forEach(data.Values.data_list, function (item) {
-            if (item.isdefault == 1) {
-              $scope.userbankliststatus.push(item);
+            if (item.status == 1) {
+              $scope.addrliststatus.push(item);
             }
           })
-          if ($scope.userbankliststatus.length == 0) {
+          if ($scope.addrliststatus.length == 0) {
             CommonService.ionicLoadingHide();
-            CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
-            $state.go('addbankaccount');
+            CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
+            $state.go('adddealaddress');
             return;
           }
         }).then(function () {
-          //提交卖货订单数据
-          $scope.sellDatas = {
-            FromUser: localStorage.getItem('usertoken'),//供货商账号
-            ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
-            TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
-            FromAddr: $scope.addrliststatus[0].id,//发货地址ID
-            ToAddr: $rootScope.supplierListFirst.AddrID,//收货地址ID
-            Account: $scope.userbankliststatus[0].id,//收款账号ID
-            Details: $scope.Details//收货明细
-          }
-          SellService.addOrderDetails($scope.sellDatas).success(function (data) {
-            CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder', '')
-          }).finally(function () {
-            CommonService.ionicLoadingHide();
+          //查询用户银行信息
+          AccountService.getUserBanklist($scope.params).success(function (data) {
+            $scope.userbankliststatus = [];
+            angular.forEach(data.Values.data_list, function (item) {
+              if (item.isdefault == 1) {
+                $scope.userbankliststatus.push(item);
+              }
+            })
+            if ($scope.userbankliststatus.length == 0) {
+              CommonService.ionicLoadingHide();
+              CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
+              $state.go('addbankaccount');
+              return;
+            }
+          }).then(function () {
+            //提交卖货订单数据
+            $scope.sellDatas = {
+              FromUser: localStorage.getItem('usertoken'),//供货商账号
+              ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
+              TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
+              FromAddr: $scope.addrliststatus[0].id,//发货地址ID
+              ToAddr: $rootScope.supplierListFirst.AddrID,//收货地址ID
+              Account: $scope.userbankliststatus[0].id,//收款账号ID
+              Details: $scope.Details//收货明细
+            }
+            SellService.addOrderDetails($scope.sellDatas).success(function (data) {
+              CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder', '')
+            }).finally(function () {
+              CommonService.ionicLoadingHide();
+            })
           })
         })
-      })
+
+      }
 
     }
-
-  })
+  )
   //查单卖货详情
   .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);
@@ -1913,6 +1940,7 @@ angular.module('starter.controllers', [])
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
           CommonService.platformPrompt('暂无订单信息', '');
+          return;
         }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
@@ -2343,8 +2371,8 @@ angular.module('starter.controllers', [])
     CommonService.getLocation();
 
     $scope.params = {
-      longt: localStorage.getItem("longitude") || '',//当前经度
-      lat: localStorage.getItem("latitude") || '',//胆怯纬度
+      longt: localStorage.getItem("longitude"),//当前经度
+      lat: localStorage.getItem("latitude"),//当前纬度
       user: $scope.supplyDetails.FromUser //对应的会员对应的会员(一般为买家)
     }
     SupplyService.getRange($scope.params).success(function (data) {
@@ -2558,6 +2586,7 @@ angular.module('starter.controllers', [])
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
           CommonService.platformPrompt('暂无订单信息', '');
+          return
         }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
@@ -2968,11 +2997,11 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
-    $scope.checkphone=function (mobilephone) {//检查手机号
-      AccountService.checkMobilePhone($scope,mobilephone);
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
     }
     $scope.sendCode = function () {
-      if($scope.paraclass) { //按钮可用
+      if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
         AccountService.sendCode($scope.user.username).success(function (data) {
@@ -2998,8 +3027,8 @@ angular.module('starter.controllers', [])
     $scope.user = {};//提前定义用户对象
     $scope.paracont = "获取验证码"; //初始发送按钮中的文字
     $scope.paraclass = false; //控制验证码的disable
-    $scope.checkphone=function (mobilephone) {//检查手机号
-      AccountService.checkMobilePhone($scope,mobilephone);
+    $scope.checkphone = function (mobilephone) {//检查手机号
+      AccountService.checkMobilePhone($scope, mobilephone);
     }
     $scope.sendCode = function () {
       if ($scope.paraclass) { //按钮可用

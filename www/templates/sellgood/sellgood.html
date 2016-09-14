@@ -9,6 +9,7 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="stable-bg">
+    <ion-refresher on-refresh="getListLongAndLatSupplier(0)" pulling-text="下拉更新"></ion-refresher>
     <div class="list">
       <a ng-href="" class="item item-borderless">
         <strong>供货商列表 : </strong>
@@ -21,6 +22,7 @@
       </a>
 
     </div>
+    <ion-infinite-scroll  on-infinite="getListLongAndLatSupplier()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 
 </ion-view>

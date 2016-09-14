@@ -419,7 +419,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //卖货下单
       .state('selldetails', {
         url: '/selldetails',
-        cache:false,
         templateUrl: 'templates/sellgood/selldetails.html',
         controller: 'SellDetailsCtrl'
       })
