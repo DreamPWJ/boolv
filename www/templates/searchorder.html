@@ -13,7 +13,7 @@
 
   <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" id="searchorder">
     <ion-slide>
-      <ion-content overflow-scroll="false">
+      <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSaleOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
           <a ng-href="#/sellorderdetails/{{item}}" class="item" ng-repeat="item in saleorderlist">
@@ -29,7 +29,7 @@
       </ion-content>
     </ion-slide>
     <ion-slide>
-      <ion-content overflow-scroll="false">
+      <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="buyOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
           <a ng-href="#/procureorderdetails/{{item}}" class="item" ng-repeat="item in buyorderlist">
@@ -45,7 +45,7 @@
       </ion-content>
     </ion-slide>
     <ion-slide>
-      <ion-content overflow-scroll="false">
+      <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSupplyPlanList(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
           <a ng-href="#/supplyorderplan/{{item}}" class="item" ng-repeat="item in supplyorderlist">
@@ -62,7 +62,7 @@
       </ion-content>
     </ion-slide>
     <ion-slide>
-      <ion-content overflow-scroll="false">
+      <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSaleSupply(0)" pulling-text="下拉刷新"></ion-refresher>
         <div class="list margin-top-1px">
           <a ng-href="#/deiverorderdetails/{{item}}" class="item" ng-repeat="item in collectorderlist">
