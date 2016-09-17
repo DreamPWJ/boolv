@@ -13,8 +13,8 @@
     <div class="list list-borderless  light-bg text-center">
       <p class="item energized" style="font-size: 1.5rem;">
         {{applaydetails.Money|currency:'￥'}}
-      <p class="grey">款已到账 (元)</p>
-      <p class="grey">剩余还款周期 : {{applaydetails.Cycle}}天</p>
+      <p class="grey">{{repaymentstatus[applaydetails.Status+1]}}</p>
+      <p class="grey">剩余还款周期 : {{applaydetails.Cycle-diffCycle}}天</p>
       </p>
     </div>
     <div class="list ">
@@ -55,7 +55,7 @@
     <ion-infinite-scroll  on-infinite="getRepayment()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
   <div class="padding light-bg row row-horizontal-around bottom-0">
-    <a class="col-40 button button-calm" ng-href="#/repayment" >还款</a>
-    <button class="col-40 button button-stable  " ng-click="">取消</button>
+    <a class="col-80 button button-calm" ng-href="#/repayment" >还款</a>
+<!--    <button class="col-40 button button-stable  " ng-click="">取消</button>-->
   </div>
 </ion-view>

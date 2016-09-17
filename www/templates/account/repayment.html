@@ -12,7 +12,7 @@
       <div class="list  ">
         <label class="item item-input item-borderless">
           <span class="input-label">本金金额</span>
-          <input type="number" placeholder="应还本金{{applaydetails.Money|currency:''}}元" ng-model="repaymentinfo.Money" required/>
+          <input type="number" placeholder="应还本金{{applaydetails.Money|currency:''}}元" ng-model="repaymentinfo.Money" max="{{applaydetails.Money}}"  required/>
         </label>
 
         <a class="item ">
