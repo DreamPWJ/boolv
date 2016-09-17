@@ -18,22 +18,19 @@
           <span class="input-label"> 申请供货数量  </span>
           <input type="number"  ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SurplusNum+item.UName}}" required  max="{{item.SurplusNum}}"  />
         </label>
-
+        <label class="item item-input">
+          <span class="input-label"> 供货次数  </span>
+          <input type="number" ng-model="supplyinfo[$index].SupCount" placeholder="单位 : 次">
+        </label>
       </div>
     </div>
 
-    <div class="list list-borderless">
-      <label class="item item-input">
-        <span class="input-label"> 供货次数  </span>
-        <input type="number" ng-model="supplyinfo.SupCount" placeholder="">
-      </label>
 
-    </div>
 
     <div class="list list-borderless">
       <label class="item item-input">
         <span class="input-label"> 平均供货周期  </span>
-        <input type="number" ng-model="supplyinfo.SupNum" placeholder="(单位 : 天; 不能大于总周期)">
+        <input type="number" ng-model="supplyinfo.SupNum" placeholder="(单位 : 天/次; 不能大于总周期)">
       </label>
 
     </div>
@@ -43,7 +40,7 @@
       </a>
       <a class="item text-center item-button-right">
         <strong>预计物流费 : {{expressesCost}} 元</strong>
-        <button class="button  button-calm button-outline" ng-click="calculateExpressesCost()">计算物流费</button>
+        <button class="button button-small  button-calm button-outline" ng-click="calculateExpressesCost()">计算物流费</button>
       </a>
     </div>
 

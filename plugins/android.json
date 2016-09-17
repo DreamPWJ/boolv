@@ -25,10 +25,6 @@
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
-        "cordova-plugin-wechat": {
-            "WECHATAPPID": "wxb396622c9dcee881",
-            "PACKAGE_NAME": "com.boolv.trading"
-        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
@@ -52,6 +48,10 @@
             "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.boolv.trading"
+        },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wx3a43052a36e31c53",
             "PACKAGE_NAME": "com.boolv.trading"
         }
     },

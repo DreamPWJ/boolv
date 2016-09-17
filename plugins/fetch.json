@@ -87,16 +87,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-wechat": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-wechat"
-        },
-        "is_top_level": true,
-        "variables": {
-            "WECHATAPPID": "wxb396622c9dcee881"
-        }
-    },
     "com.telerik.plugins.nativepagetransitions": {
         "source": {
             "type": "git",
@@ -139,5 +129,16 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-wechat": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/xu-li/cordova-plugin-wechat",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "WECHATAPPID": "wx3a43052a36e31c53"
+        }
     }
 }

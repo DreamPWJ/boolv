@@ -355,7 +355,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.buyparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No:$scope.searchcontent || '',//订单号，模糊匹配
+        No: $scope.searchcontent || '',//订单号，模糊匹配
         User: localStorage.getItem("usertoken"),//买家账号
         Type: '',//0-物流配送1-送货上门2-上门回收
         Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
@@ -392,7 +392,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.supplyparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No: $scope.searchcontent ||'',//订单号，模糊匹配
+        No: $scope.searchcontent || '',//订单号，模糊匹配
         User: localStorage.getItem("usertoken"),//下单人账号
         Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
         BONo: '',//买货单号 关联买货单号
@@ -428,7 +428,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.collectparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No: $scope.searchcontent ||'',//订单号，模糊匹配
+        No: $scope.searchcontent || '',//订单号，模糊匹配
         User: localStorage.getItem("usertoken"),//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
         FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
         Status: '',//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
@@ -2456,16 +2456,17 @@ angular.module('starter.controllers', [])
 
       //供货计划明细数组
       $scope.details = [];
-
       angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
         var items = {};//提交供货计划明细json数据
-        items.ProdID = item.ProdID, // 产品编号
-          items.ProdName = item.ProdName , // 产品名称
-          items.SaleClass = item.SaleClass , // 销售分类ID
-          items.Unit = item.Unit, // 计算单位ID
-          items.Num = $rootScope.supplyinfo[index].num, //数量
-          items.Price = item.Price//买货单价
-        $scope.details.push(items)
+        items.ProdID = item.ProdID; // 产品编号
+        items.ProdName = item.ProdName; // 产品名称
+        items.SaleClass = item.SaleClass; // 销售分类ID
+        items.Unit = item.Unit;// 计算单位ID
+        items.Num = $rootScope.supplyinfo[index].num; //数量
+        items.Price = item.Price;//买货单价
+        items.SupCount = $rootScope.supplyinfo[index].SupCount;//供货次数
+        $scope.details.push(items);
+
       })
       //提交供货计划
       $scope.datas = {
@@ -2473,11 +2474,11 @@ angular.module('starter.controllers', [])
         ToUser: $rootScope.supplyDetails.FromUser,//买货单(买货)账号（待供货接口获取）
         SupCycle: $rootScope.supplyDetails.SurplusCycle,//剩余供货周期（待供货接口获取）
         FromUser: localStorage.getItem("usertoken"),//供货人账号
-        SupCount: $rootScope.supplyinfo.SupCount,//供货次数
+        SupCount: 0,//供货次数
         SupNum: $rootScope.supplyinfo.SupNum,//平均供货周期
         Details: $scope.details// 供货计划明细（BuyOrder/GetToPage））
       };
-
+      console.log(JSON.stringify($scope.datas));
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
