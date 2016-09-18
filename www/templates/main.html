@@ -55,7 +55,7 @@
         <strong>行情报价</strong>
         <span class="item-note">详情>></span>
       </a>
-      <a ng-repeat="item in prods.data_list | limitTo:8 "  class="item item-thumbnail-left" ng-href="#">
+      <a ng-repeat="item in prods.data_list | limitTo:8 "  class="item item-thumbnail-left" ng-href="">
         <img  ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
         <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span>  <span ui-sref="currenttimeoffer" class="item-note">[ 详情 ]</span></h2>
         <p class="text-wrap"  style="height: 40px;">{{item.PIntrodu}} </p>

@@ -27,7 +27,7 @@ angular.module('starter.services', [])
           } else if(stateurl=='close'){//不处理
 
           } else {
-            $state.go(stateurl);
+            $state.go(stateurl,{},{reload:true});
           }
 
         });
@@ -197,11 +197,10 @@ angular.module('starter.services', [])
           cssClass: 'action-s',
           titleText: '<p>分享</p>',
           buttons: [
-            {text: ' <p>收藏</p>'},
             {text: '<p>微信朋友圈</p>'},
+            {text: '<p>微信好友</p>'},
             {text: '<p>QQ好友</p>'},
             {text: '<p>QQ空间</p>'},
-            {text: '<p>更多</p>'}
           ],
           cancelText: '<p>关闭</p>',
           cancel: function () {

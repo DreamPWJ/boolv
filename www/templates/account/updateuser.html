@@ -11,7 +11,7 @@
   <ion-content overflow-scroll="false" class="stable-bg ">
     <div class="list list-borderless padding-top">
       <label  ng-if="type=='nickname'"  class="item item-input">
-        <input type="text" ng-model="user.nickname" placeholder="{{value}}" required>
+        <input type="text" ng-model="user.nickname" placeholder="{{value}}" maxlength="20" required>
           <i class="icon  ion-close-circled padding-right"></i>
       </label>
       <label ng-if="type=='sex'"  class="item item-input item-select" >

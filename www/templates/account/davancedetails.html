@@ -45,17 +45,17 @@
       </a>
       <div ng-hide="showme2" ng-repeat="item in repaylist">
         <a ng-href="" class="item " >
-          <h2>已还本金 <span class="item-note font-size-1-3 dark">{{item.Money|currency:''}}</span></h2>
+          <h2>已还本金 <span class="item-note font-size-1-3 dark">{{item.repayPrincipal|currency:''}}</span></h2>
         </a>
         <a ng-href="" class="item  border-bottom-none">
-          <h2>已还服务费 <span class="item-note font-size-1-3 dark">{{item.Money*0.03|currency:''}}</span></h2>
+          <h2>已还服务费 <span class="item-note font-size-1-3 dark">{{item.Money-item.repayPrincipal|currency:''}}</span></h2>
         </a>
       </div>
     </div>
     <ion-infinite-scroll  on-infinite="getRepayment()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
   <div class="padding light-bg row row-horizontal-around bottom-0">
-    <a class="col-80 button button-calm" ng-href="#/repayment" >还款</a>
+    <a class="col-80 button button-calm"  ng-disabled="repayPrincipalTotal>=applaydetails.Money" ng-href="#/repayment" >还款</a>
 <!--    <button class="col-40 button button-stable  " ng-click="">取消</button>-->
   </div>
 </ion-view>

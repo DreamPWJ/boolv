@@ -170,6 +170,7 @@ angular.module('starter.controllers', [])
     $scope.currentTimeOffer();
 
   })
+  //交易公告
   .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var Id = $stateParams.Id;
@@ -184,6 +185,7 @@ angular.module('starter.controllers', [])
     }
 
   })
+  //公司新闻
   .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var Id = $stateParams.Id;
@@ -200,14 +202,14 @@ angular.module('starter.controllers', [])
 //Wechat.Scene.TIMELINE 表示分享到朋友圈
 //Wechat.Scene.SESSION 表示分享给好友
 //（1）文本
-      /*      Wechat.share({
-       text: "This is just a plain string",
-       scene: Wechat.Scene.TIMELINE   // share to Timeline
-       }, function () {
-       alert("Success");
-       }, function (reason) {
-       alert("Failed: " + reason);
-       });*/
+      Wechat.share({
+        text: "This is just a plain string",
+        scene: Wechat.Scene.TIMELINE   // share to Timeline
+      }, function () {
+        alert("Success");
+      }, function (reason) {
+        alert("Failed: " + reason);
+      });
       //（2）媒体
       /*    Wechat.share({
        message: {
@@ -243,6 +245,7 @@ angular.module('starter.controllers', [])
       AccountService.checkMobilePhone($scope, mobilephone);
     }
     $scope.sendCode = function () {
+      event.preventDefault();
       if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
@@ -2728,6 +2731,10 @@ angular.module('starter.controllers', [])
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;
     })
+    //分享
+    $scope.shareActionSheet = function () {
+      CommonService.shareActionSheet();
+    }
   })
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, $state, CommonService) {
@@ -2816,6 +2823,7 @@ angular.module('starter.controllers', [])
   //获取还款记录列表
   .controller('DavanceDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, ApplyAdvanceService) {
     $rootScope.applaydetails = JSON.parse($stateParams.item);
+    $scope.repayPrincipalTotal = 0;//已还本金总金额
     //当前时间与申请时间差
     $scope.diffCycle = Math.floor((new Date().getTime() - new Date($rootScope.applaydetails.EffectDate || $rootScope.applaydetails.AddTime).getTime()) / (24 * 3600 * 1000));
     $scope.repaymentstatus = ['关闭/取消', '未审核', '审核未通过', '审核通过', '款已到账', '款已还完', '已完成'];
@@ -2835,12 +2843,17 @@ angular.module('starter.controllers', [])
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
         No: '',//单号
-        RelateNo: 0,//关联单号
+        RelateNo: $rootScope.applaydetails.No,//关联单号
         User: localStorage.getItem("usertoken")//申请人
       }
       ApplyAdvanceService.getRepayment($scope.params).success(function (data) {
+        if (data.Values == null) {
+          return;
+        }
         angular.forEach(data.Values.data_list, function (item) {
+          item.repayPrincipal = item.Money / ($rootScope.applaydetails.FuWu / 100 * $rootScope.applaydetails.Cycle + 1)
           $scope.repaylist.push(item);
+          $scope.repayPrincipalTotal += item.repayPrincipal;
         })
         console.log($scope.repaylist);
         $scope.total = data.Values.page_count;
@@ -2861,7 +2874,7 @@ angular.module('starter.controllers', [])
       $scope.repayMoney = $scope.repaymentinfo.Money * $scope.applaydetails.FuWu / 100 * $scope.applaydetails.Cycle + $scope.repaymentinfo.Money;
       //提交还款记录数据
       $scope.datas = {
-        RelateNo: 0,//关联单号
+        RelateNo: $rootScope.applaydetails.No,//关联单号
         User: localStorage.getItem("usertoken"),//还款人
         Money: $scope.repayMoney,//还款金额
         Remark: "还款完毕"//备注
@@ -3029,6 +3042,9 @@ angular.module('starter.controllers', [])
     if (id == 13) {
       $scope.title = '关于我们';
     }
+    if (id == 14) {
+      $scope.title = '信用分解读';
+    }
     //获取帮助中心详情
     $scope.params = {
       ID: id
@@ -3051,6 +3067,7 @@ angular.module('starter.controllers', [])
       AccountService.checkMobilePhone($scope, mobilephone);
     }
     $scope.sendCode = function () {
+      event.preventDefault();
       if ($scope.user.username != JSON.parse(localStorage.getItem("user")).mobile) {
         CommonService.platformPrompt("输入手机号与原手机号不一致", 'cancelmobile');
         return;
@@ -3085,6 +3102,7 @@ angular.module('starter.controllers', [])
       AccountService.checkMobilePhone($scope, mobilephone);
     }
     $scope.sendCode = function () {
+      event.preventDefault();
       if ($scope.paraclass) { //按钮可用
         //60s倒计时
         AccountService.countDown($scope);
@@ -3095,6 +3113,7 @@ angular.module('starter.controllers', [])
         })
       }
       $scope.bindingMobileSubmit = function () {
+        CommonService.ionicLoadingShow();
         if ($scope.user.passwordcode != $scope.user.password) {
           CommonService.platformPrompt("输入验证码不正确", 'bindingmobile');
           return;
@@ -3108,6 +3127,8 @@ angular.module('starter.controllers', [])
         }
         AccountService.modifyMobile($scope.datas).success(function (data) {
           CommonService.platformPrompt('修改手机号成功', 'tab.account');
+        }).finally(function () {
+          CommonService.ionicLoadingHide();
         })
       }
     }

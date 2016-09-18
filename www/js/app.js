@@ -158,12 +158,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'CurrentTimeOfferCtrl'
 
       })
+      //交易公告
       .state('dealnotice', {
         url: '/dealnotice/:Id',
         templateUrl: 'templates/maindetails/dealnotice.html',
         controller: 'DealNoticeCtrl'
 
       })
+      //公司新闻
       .state('companytrends', {
         url: '/companytrends/:Id',
         templateUrl: 'templates/maindetails/companytrends.html',
