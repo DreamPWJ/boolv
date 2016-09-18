@@ -53,11 +53,11 @@
     <div class="list light-bg " style="margin-top: 0.6rem">
       <a nav-direction=forward ng-href="#/currenttimeoffer" class="item item-borderless">
         <strong>行情报价</strong>
-        <span class="item-note">详情>></span>
+        <span class="item-note">更多>></span>
       </a>
-      <a ng-repeat="item in prods.data_list | limitTo:8 "  class="item item-thumbnail-left" ng-href="">
+      <div ng-repeat="item in prods.data_list | limitTo:8 "  class="item item-thumbnail-left" >
         <img  ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
-        <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span>  <span ui-sref="currenttimeoffer" class="item-note">[ 详情 ]</span></h2>
+        <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span>  <span ui-sref="currenttimeoffer"  nav-direction=forward class="item-note">[ 详情 ]</span></h2>
         <p class="text-wrap"  style="height: 40px;">{{item.PIntrodu}} </p>
         <p class="row row-no-padding" ng-repeat="itemp in item.Prices">
           <span ng-if="item.PriType==0" class="calm">不限量</span>
@@ -65,7 +65,7 @@
           <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{item.PUName}}</span>
         </p>
         </p>
-      </a>
+      </div>
 
     </div>
     <div class="list light-bg">

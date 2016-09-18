@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService,$ionicPlatform) {
     CommonService.ionicLoadingShow();
     $scope.getMainData = function () {
       //登录授权
@@ -62,6 +62,7 @@ angular.module('starter.controllers', [])
         }
         MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
           $scope.prods = data.Values;
+          console.log(data);
         })
         //获取交易公告
         $scope.listNewsParams = {
@@ -87,16 +88,17 @@ angular.module('starter.controllers', [])
         try {
           window.plugins.jPushPlugin.getRegistrationID(function (data) {
             $scope.jPushRegistrationID = data;
+
             //提交设备信息到服务器
             $scope.datas = {
               registration_id: $scope.jPushRegistrationID,	//极光注册id
               user: localStorage.getItem("usertoken"),	//用户id,没登录为空
               mobile: JSON.stringify(localStorage.getItem("user")).mobile,	//手机号码
               alias: "",	//设备别名
-              device: 0	//设备类型:0-android,1-ios
+              device: $ionicPlatform.is('android')?0:1	//设备类型:0-android,1-ios
             }
-            NewsService.setDeviceInfo().success(function (data) {
-              console.log(data);
+            NewsService.setDeviceInfo($scope.datas).success(function (data) {
+
             })
           })
         } catch (e) {
@@ -197,18 +199,26 @@ angular.module('starter.controllers', [])
     $scope.shareActionSheet = function () {
       CommonService.shareActionSheet();
 
-
+      //检查微信是否初始化
+      Wechat.isInstalled(function (installed) {
+        if(!installed){
+          CommonService.platformPrompt("未安装微信",'close');
+          return;
+        }
+      }, function (reason) {
+        console.log(reason);
+      })
       //微信分享
-//Wechat.Scene.TIMELINE 表示分享到朋友圈
-//Wechat.Scene.SESSION 表示分享给好友
-//（1）文本
+   //Wechat.Scene.TIMELINE 表示分享到朋友圈
+   //Wechat.Scene.SESSION 表示分享给好友
+    //（1）文本
       Wechat.share({
         text: "This is just a plain string",
         scene: Wechat.Scene.TIMELINE   // share to Timeline
       }, function () {
-        alert("Success");
+        CommonService.platformPrompt("分享成功");
       }, function (reason) {
-        alert("Failed: " + reason);
+        CommonService.platformPrompt("分享失败: " + reason);
       });
       //（2）媒体
       /*    Wechat.share({
@@ -223,9 +233,9 @@ angular.module('starter.controllers', [])
        },
        scene: Wechat.Scene.TIMELINE   // share to Timeline
        }, function () {
-       alert("Success");
+       CommonService.platformPrompt("分享成功");
        }, function (reason) {
-       alert("Failed: " + reason);
+       CommonService.platformPrompt("分享失败: " + reason);
        });*/
       //（3）网页链接
     }
@@ -1481,6 +1491,7 @@ angular.module('starter.controllers', [])
 
     //提交发货
     $scope.delivergoodssubmit = function () {
+      CommonService.ionicLoadingShow();
       //提交发货详细数据
       $scope.details = [];
       var ordeType = $rootScope.deliverDetails.OrdeType;
@@ -1526,6 +1537,8 @@ angular.module('starter.controllers', [])
 
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder', 'deliverlist');
+      }).finally(function () {
+          CommonService.ionicLoadingHide();
       })
 
     }
@@ -1691,7 +1704,7 @@ angular.module('starter.controllers', [])
       $scope.buyDatas = {
         FromUser: localStorage.getItem('usertoken'),//下单人
         TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
-        ToAddr: $rootScope.addrlistFirst.id,//收货地址ID
+        AddrID: $rootScope.addrlistFirst.id,//收货地址ID
         Cycle: $rootScope.buyCycle.day || 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
@@ -2144,6 +2157,7 @@ angular.module('starter.controllers', [])
     }
     //添加扣款项 提交  提交供货单
     $scope.submitCutPayMent = function () {
+      CommonService.ionicLoadingShow();
       //提交验货详细数据
       $scope.addYanhuodetails = [];
       var ordeType = $rootScope.checkDetails.OrdeType;
@@ -2208,6 +2222,8 @@ angular.module('starter.controllers', [])
           console.log(data);
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
         })
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
       })
 
     }
@@ -2226,6 +2242,7 @@ angular.module('starter.controllers', [])
       CommonService.uploadActionSheet($scope, 'Receipt');
     }
     $scope.checkgoodssubmit = function () {
+      CommonService.ionicLoadingShow();
       //提交验货详细数据
       $scope.details = [];
       var ordeType = $rootScope.checkDetails.OrdeType;
@@ -2254,6 +2271,8 @@ angular.module('starter.controllers', [])
       }
       DeliverService.addYanhuo($scope.datas).success(function (data) {
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
       })
 
     }
@@ -2547,6 +2566,7 @@ angular.module('starter.controllers', [])
     CommonService.ionicLoadingShow();
     $scope.addrinfo = {};
     $scope.addrinfoother = {};
+    $scope.buttonText='添加';
     if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
       $scope.addressiteminfo = $rootScope.addressitem;
       $scope.addrinfo.username = $scope.addressiteminfo.username;
@@ -2554,6 +2574,7 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.addr = $scope.addressiteminfo.addr;
       $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
       $rootScope.addressitem = [];
+      $scope.buttonText='修改';
     }
 
 
@@ -2598,7 +2619,7 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.addr = $scope.addrareacountyone.mergername + $scope.addrinfo.addr;
       console.log($scope.addrinfo);
       AccountService.setAddr($scope.addrinfo).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息添加成功！</p>', '查看', '关闭', 'dealaddress', '');
+        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息'+$scope.buttonText+'成功！</p>', '查看', '关闭', 'dealaddress', '');
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -2693,6 +2714,7 @@ angular.module('starter.controllers', [])
 
     //签收提交
     $scope.signsubmit = function () {
+      CommonService.ionicLoadingShow();
       var ordeType = $rootScope.signDetails.OrdeType;
       //提交签收数据
       $scope.datas = {
@@ -2715,6 +2737,8 @@ angular.module('starter.controllers', [])
 
       DeliverService.addSign($scope.datas).success(function (data) {
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
       })
 
     }
@@ -2972,6 +2996,7 @@ angular.module('starter.controllers', [])
 
     //增加收款银行账号信息
     $scope.bankinfo = {};
+    $scope.buttonText='添加';
     if ($rootScope.bankitem && $rootScope.bankitem.length != 0) { //修改银行信息
       $scope.bankiteminfo = $rootScope.bankitem;
       $scope.bankinfo.bankname = $scope.bankiteminfo.bankname;
@@ -2980,7 +3005,7 @@ angular.module('starter.controllers', [])
       $scope.bankinfo.branchname = $scope.bankiteminfo.branchname;
       $scope.bankinfo.isdefault = $scope.bankiteminfo.isdefault == 1 ? true : false;
       $rootScope.bankitem = [];//清空数据
-
+      $scope.buttonText='修改';
     }
     //查询银行名称
     AccountService.getBankName({name: ''}).success(function (data) {
@@ -2998,7 +3023,7 @@ angular.module('starter.controllers', [])
         remark: ""	//备注
       }
       AccountService.addUserBank($scope.datas).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！</p><p>账户信息添加成功！</p>', '查看', '关闭', 'collectionaccount', '')
+        CommonService.showConfirm('', '<p>恭喜您！</p><p>账户信息'+$scope.buttonText+'成功！</p>', '查看', '关闭', 'collectionaccount', '')
       })
     }
 

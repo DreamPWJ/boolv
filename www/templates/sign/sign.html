@@ -20,11 +20,11 @@
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数</span>
-        <input type="text" placeholder="(单位 : 件)" ng-model="signinfo.Number" required/>
+        <input type="number" placeholder="(单位 : 件)" ng-model="signinfo.Number" required/>
       </label>
       <label class="item item-input">
         <span class="input-label"> 重量</span>
-        <input type="text" placeholder="(单位 : 公斤)" ng-model="signinfo.Weight" required/>
+        <input type="number" placeholder="(单位 : 公斤)" ng-model="signinfo.Weight" required/>
       </label>
 <!--      <label class="item item-input" ng-show="goodtype==2">
         <span class="input-label"> 车牌号码</span>
@@ -44,15 +44,15 @@
       </label>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 提货费</span>
-        <input type="text" placeholder="（单位 : 元）"  ng-model="signinfo.Cost"/>
+        <input type="number" placeholder="（单位 : 元）"  ng-model="signinfo.Cost"/>
       </label>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 物流费</span>
-        <input type="text" placeholder="（单位 : 元）" ng-model="signinfo.ExpCost"/>
+        <input type="number" placeholder="（单位 : 元）" ng-model="signinfo.ExpCost"/>
       </label>
       <label class="item item-input" ng-show="goodtype!=3">
         <span class="input-label"> 送货费</span>
-        <input type="text" placeholder="（单位 : 元）" ng-model="signinfo.Cost"/>
+        <input type="number" placeholder="（单位 : 元）" ng-model="signinfo.Cost"/>
       </label>
       <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">
         <span class="input-label"> 上传照片:  <span class="grey">货运车、车牌、货物包装照片</span></span>

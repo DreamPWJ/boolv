@@ -20,11 +20,11 @@
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数</span>
-        <input type="text" placeholder="(单位 : 件)" ng-model="deliverinfo.Number" required/>
+        <input type="number" placeholder="(单位 : 件)" ng-model="deliverinfo.Number" required/>
       </label>
       <label class="item item-input">
         <span class="input-label"> 重量</span>
-        <input type="text" placeholder="(单位 : 公斤)" ng-model="deliverinfo.Weight" required>
+        <input type="number" placeholder="(单位 : 公斤)" ng-model="deliverinfo.Weight" required>
       </label>
       <label ng-show="goodtype==null||goodtype==1" class="item item-input item-select">
         <div class="input-label">
