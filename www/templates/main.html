@@ -76,20 +76,20 @@
          class="item item-thumbnail-left">
         <img  ng-src="{{item.PicAddr}}" alt=""  onerror="this.src='img/logonew.png'" class="newspicture"/>
         <h2 class="padding-top">{{item.Title}}</h2>
-        <p>{{item.Note}}</p>
+        <p class="text-wrap"  style="height: 40px;">{{item.Note}}</p>
         <p>{{item.Source}}         <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span></p>
       </a>
 
     </div>
 
     <div class="list light-bg">
-      <a nav-direction=forward ng-href="" class="item item-borderless">
+      <a nav-direction=forward  class="item item-borderless">
         <strong>公司动态</strong>
       </a>
       <a ng-href="#/companytrends/{{item.ID}}" ng-repeat="item in listCompanyNews.data_list"  class="item item-thumbnail-left">
         <img  ng-src="{{item.PicAddr}}" alt="" onerror="this.src='img/logonew.png'" class="newspicture"/>
         <h2 class="padding-top">{{item.Title}}</h2>
-        <p>{{item.Note}}</p>
+        <p class="text-wrap"  style="height: 40px;">{{item.Note}}</p>
         <p>{{item.Source}}         <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span></p>
       </a>
 

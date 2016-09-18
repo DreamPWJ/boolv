@@ -51,7 +51,7 @@ angular.module('starter.controllers', [])
 
         $scope.restProdsParams = {
           currentPage: 1,
-          pageSize: 10,
+          pageSize: 10
         }
         $scope.ProdsParams = {
           IDList: '',
@@ -62,7 +62,6 @@ angular.module('starter.controllers', [])
         }
         MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
           $scope.prods = data.Values;
-          console.log(data);
         })
         //获取交易公告
         $scope.listNewsParams = {
@@ -337,7 +336,7 @@ angular.module('starter.controllers', [])
         Status: '',//0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款
         FromUser: localStorage.getItem("usertoken")//供货人
       }
-      console.log($scope.sellparams);
+
       //查单(卖货订单)获取卖货单列表
       SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
         $scope.searchcontent = '';//清空搜索条件
@@ -512,7 +511,6 @@ angular.module('starter.controllers', [])
         }
         SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
           CommonService.platformPrompt('定金支付成功');
-          console.log(data);
         })
       }
       CommonService.showConfirm('', '<p>温馨提示:此订单的买货定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails', $scope.paymoney)
@@ -523,7 +521,6 @@ angular.module('starter.controllers', [])
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-stockup.html');
-    console.log($rootScope.supplyDetails);
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
     //订单类型
@@ -541,7 +538,7 @@ angular.module('starter.controllers', [])
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService, SearchOrderService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item)
-    console.log($rootScope.deliverDetails);
+
     $scope.supplyinfo = [];//供货信息
     $scope.params = {
       page: 1,
@@ -623,7 +620,7 @@ angular.module('starter.controllers', [])
       };
 
       SearchOrderService.addSearchOrderSupplyPlan($scope.datas).success(function (data) {
-        console.log(data);
+
         CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', '')
       })
 
@@ -811,7 +808,6 @@ angular.module('starter.controllers', [])
         return;
       }
       SearchOrderService.addSaleTrade($scope.datas).success(function (data) {
-        console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
       }).then(function () {
         $scope.funcreuse(3)
@@ -829,7 +825,6 @@ angular.module('starter.controllers', [])
         return;
       }
       SearchOrderService.addReturn($scope.datas).success(function (data) {
-        console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
       }).then(function () {
         $scope.funcreuse(1)
@@ -852,7 +847,6 @@ angular.module('starter.controllers', [])
     }
     //查单(供货订单)获取供货验货单列表
     SearchOrderService.getSupplyPlanYanhuoList($scope.params).success(function (data) {
-      console.log(data);
       $scope.yanhuolist = data.Values.data_list;
       $scope.yanhuolistDetails = [];
       angular.forEach($scope.yanhuolist, function (item) {
@@ -878,7 +872,6 @@ angular.module('starter.controllers', [])
       }
 
       DeliverService.getPageBQueJian($scope.quejianparams).success(function (data) {
-        console.log(data);
         angular.forEach(data.Values.data_list, function (item) {
           $scope.supplyquejianList.push(item);
         })
@@ -983,7 +976,6 @@ angular.module('starter.controllers', [])
         return;
       }
       SearchOrderService.addSupTrade($scope.datas).success(function (data) {
-        console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
       }).then(function () {
         $scope.funcreuse(3)
@@ -1001,7 +993,6 @@ angular.module('starter.controllers', [])
         return;
       }
       SearchOrderService.addReturn($scope.datas).success(function (data) {
-        console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
       }).then(function () {
         $scope.funcreuse(1)
@@ -1012,7 +1003,6 @@ angular.module('starter.controllers', [])
   .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-payorder.html');
     $rootScope.collectGoodDetails = JSON.parse($stateParams.item);
-    console.log($rootScope.collectGoodDetails);
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
     //订单类型
@@ -1049,7 +1039,6 @@ angular.module('starter.controllers', [])
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deiverList.push(item);
         })
-        console.log($scope.deiverList);
         $scope.total = data.Values.page_count;
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -1092,7 +1081,7 @@ angular.module('starter.controllers', [])
         angular.forEach(data.Values.data_list, function (item) {
           $scope.signList.push(item);
         })
-        console.log(data);
+
         $scope.total = data.Values.page_count;
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -1213,9 +1202,8 @@ angular.module('starter.controllers', [])
         look: look,//页码
         ids: id
       }
-      console.log($scope.lookparams);
+
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
-        console.log(data);
         $scope.newslist(0);
       })
     }
@@ -1269,7 +1257,6 @@ angular.module('starter.controllers', [])
   //发货详情
   .controller('DeliverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);
-    console.log($rootScope.deliverDetails);
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
@@ -1419,7 +1406,6 @@ angular.module('starter.controllers', [])
     //增加数量信息 重新组装数组
     $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
-      console.log($scope.selectproduct);
       angular.forEach($scope.selectproduct, function (item) {
         item.num = $scope.adddeliverinfo.num[item.PID];
         $rootScope.selectproductandnum.push(item)
@@ -1708,7 +1694,7 @@ angular.module('starter.controllers', [])
         Cycle: $rootScope.buyCycle.day || 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
-      console.log($scope.buyDatas);
+
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
@@ -2074,7 +2060,7 @@ angular.module('starter.controllers', [])
         Name: ''//缺件属性名
       }
       DeliverService.getQueJianList($scope.paramsquejian).success(function (data) {
-        console.log(data);
+
         angular.forEach(data.Values.data_list, function (item) {
           $scope.queJianList.push(item);
         })
@@ -2195,7 +2181,7 @@ angular.module('starter.controllers', [])
         Details: $scope.addYanhuodetails //验货明细
 
       }
-      console.log($scope.addYanhuodatas);
+
       DeliverService.addYanhuo($scope.addYanhuodatas).success(function (data) {
         console.log(data);
       }).then(function () {
@@ -2420,7 +2406,7 @@ angular.module('starter.controllers', [])
         item.num = $scope.adddeliverinfo.num[item.PID];
         $rootScope.selectproductandnum.push(item)
       })
-      console.log($scope.selectproductandnum);
+
     }
 
     //关闭modle清空数据
@@ -2500,7 +2486,7 @@ angular.module('starter.controllers', [])
         SupNum: $rootScope.supplyinfo.SupNum,//平均供货周期
         Details: $scope.details// 供货计划明细（BuyOrder/GetToPage））
       };
-      console.log(JSON.stringify($scope.datas));
+
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
@@ -2617,7 +2603,7 @@ angular.module('starter.controllers', [])
         $scope.addrinfo.lon = $scope.addrareacountyone.lng, 	//经度
         $scope.addrinfo.addrtype = 0	//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
       $scope.addrinfo.addr = $scope.addrareacountyone.mergername + $scope.addrinfo.addr;
-      console.log($scope.addrinfo);
+
       AccountService.setAddr($scope.addrinfo).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息'+$scope.buttonText+'成功！</p>', '查看', '关闭', 'dealaddress', '');
       }).finally(function () {
@@ -2851,7 +2837,7 @@ angular.module('starter.controllers', [])
     //当前时间与申请时间差
     $scope.diffCycle = Math.floor((new Date().getTime() - new Date($rootScope.applaydetails.EffectDate || $rootScope.applaydetails.AddTime).getTime()) / (24 * 3600 * 1000));
     $scope.repaymentstatus = ['关闭/取消', '未审核', '审核未通过', '审核通过', '款已到账', '款已还完', '已完成'];
-    console.log($rootScope.applaydetails);
+
     $scope.repaylist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -2879,7 +2865,7 @@ angular.module('starter.controllers', [])
           $scope.repaylist.push(item);
           $scope.repayPrincipalTotal += item.repayPrincipal;
         })
-        console.log($scope.repaylist);
+
         $scope.total = data.Values.page_count;
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -3209,13 +3195,13 @@ angular.module('starter.controllers', [])
         if ($rootScope.orderType == 1) {
           //查单(卖货订单)修改卖货/供货订单状态
           SearchOrderService.updateSaleOrderStatus($scope.closeordersparams).success(function (data) {
-            console.log(data);
+
             CommonService.platformPrompt('取消订单成功');
           })
         } else if ($rootScope.orderType == 3) {
           //查单(供货订单)修改供货计划状态
           SearchOrderService.updateSupplyPlanStatus($scope.closeordersparams).success(function (data) {
-            console.log(data);
+
             CommonService.platformPrompt('取消订单成功');
           })
         }
@@ -3235,7 +3221,6 @@ angular.module('starter.controllers', [])
         }
         SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
           CommonService.platformPrompt('付款支付成功');
-          console.log(data);
         })
       }
       CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', '', $scope.paytopayments)
@@ -3252,7 +3237,7 @@ angular.module('starter.controllers', [])
         }
         SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
           CommonService.platformPrompt('付款支付成功');
-          console.log(data);
+
         })
       }
       CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', '', $scope.payfinalpayment)
