@@ -9,22 +9,28 @@
   </ion-nav-title>
   <ion-content overflow-scroll="false" class="stable-bg">
     <ion-refresher on-refresh="currentTimeOffer(0)" pulling-text="下拉更新"></ion-refresher>
-    <div class="list">
-      <a ng-repeat="item in currentprods "  class="item item-thumbnail-left" ng-href="">
-        <img ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
-        <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span></h2>
-        <p class="text-wrap"  style="height: 40px;" >{{item.PIntrodu}} </p>
+    <ion-list>
+      <div ng-repeat="item in currentprods ">
+      <ion-item ng-click="getProdsListIsNotTH(item.GrpID)" hide-show >
+        <strong>{{item.PName}}<span class="item-note"><i class="icon ion-chevron-down calm" ng-class="{true:'ion-chevron-right'}[showme]"></i></span></strong>
+      </ion-item>
 
-        <p class="row row-no-padding" ng-repeat="itemp in item.Prices">
-          <span ng-if="item.PriType==0" class="calm">不限量</span>
-          <span ng-if="item.PriType==1" class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>
-          <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{item.PUName}}</span>
+      <ion-item  ng-hide="showme" ng-repeat="items in isNotTHCurrentprods " class="item item-thumbnail-left">
+        <img ng-src="{{items.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
+        <h2>{{items.PName}} <span ng-if="items.PriType==1" class="calm">[按量报价]</span></h2>
+        <p class="text-wrap" style="height: 40px;">{{items.PIntrodu}} </p>
+
+        <p class="row row-no-padding" ng-repeat="itemp in items.Prices">
+          <span ng-if="items.PriType==0" class="calm">不限量</span>
+          <span ng-if="items.PriType==1" class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{items.PUName}}</span>
+          <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{items.PUName}}</span>
         </p>
-        </p>
-      </a>
-    </div>
-     <p class="calm text-center">现在行情不错 , <a href="#/sellprocure" class="calm"> 我要卖货</a></p>
-    <ion-infinite-scroll  on-infinite="currentTimeOffer()" ng-if="total > currentPage"  immediate-check="false" >
+      </ion-item>
+        <p></p>
+      </div>
+    </ion-list>
+    <p class="calm text-center padding-top">现在行情不错 , <a href="#/sellprocure" class="calm"> 我要卖货</a></p>
+    <ion-infinite-scroll on-infinite="currentTimeOffer()" ng-if="total > currentPage" immediate-check="false">
     </ion-infinite-scroll>
   </ion-content>
 
