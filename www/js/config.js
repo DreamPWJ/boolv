@@ -9,6 +9,7 @@ configMod.constant("BooLv", {
   "api": "http://a.boolv.com",
   'siteUrl': "http://a.boolv.com",
   'imgUrl': "http://f.boolv.com",
+  'moblileApi':"http://58.58.180.48:8888/boolv",
   'version': '1.0.1'
 });
 

@@ -172,7 +172,7 @@ angular.module('starter.controllers', [])
 
   })
   //交易公告
-  .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
+  .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, $state,BooLv, CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var Id = $stateParams.Id;
     MainService.getNews(Id).success(function (data) {
@@ -180,14 +180,14 @@ angular.module('starter.controllers', [])
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
-
+    //分享
     $scope.shareActionSheet = function () {
-      CommonService.shareActionSheet();
+      umeng.share($scope.news.Title,$scope.news.Note,$scope.news.PicAddr,BooLv.moblileApi+'/#/dealnotice/'+Id);
     }
 
   })
   //公司新闻
-  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
+  .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, $state, BooLv,CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var Id = $stateParams.Id;
     MainService.getNews(Id).success(function (data) {
@@ -195,13 +195,10 @@ angular.module('starter.controllers', [])
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
-
+    //分享
     $scope.shareActionSheet = function () {
-      umeng.share("测试",'测试内容','','http://www.juhuawang.com/')
-/*      CommonService.shareActionSheet();*/
-
+      umeng.share($scope.news.Title,$scope.news.Note,$scope.news.PicAddr,BooLv.moblileApi+'/#/companytrends/'+Id);
     }
-
 
 
   })
@@ -2696,7 +2693,7 @@ angular.module('starter.controllers', [])
 
   })
   //我的账号
-  .controller('AccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, $state, BooLv,CommonService, AccountService,MainService) {
     //是否登录
     if (!CommonService.isLogin(true)) {
       return;
@@ -2707,7 +2704,11 @@ angular.module('starter.controllers', [])
     })
     //分享
     $scope.shareActionSheet = function () {
-      CommonService.shareActionSheet();
+      MainService.getHelpDetails({ID:13}).success(function (data) {
+        $scope.helpdata = data.Values;
+        //分享
+        umeng.share($scope.helpdata.Title,$scope.helpdata.Abstract,'',BooLv.moblileApi+'/#/help/'+id);
+      })
     }
   })
   //账号信息
@@ -3005,7 +3006,7 @@ angular.module('starter.controllers', [])
 
   })
   //帮助信息共用模板
-  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService, MainService) {
+  .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state,BooLv, CommonService, MainService) {
     CommonService.ionicLoadingShow();
     var id = $stateParams.ID;
     if (id == 11) {
@@ -3029,6 +3030,10 @@ angular.module('starter.controllers', [])
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
+    //分享
+    $scope.shareActionSheet = function () {
+      umeng.share($scope.helpdata.Title,$scope.helpdata.Abstract,'',BooLv.moblileApi+'/#/help/'+id);
+    }
   })
   .controller('SettingCtrl', function ($scope, $rootScope, $state, CommonService) {
 

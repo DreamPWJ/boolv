@@ -14,7 +14,6 @@ var umeng = function() {
  * @param url {String} 分享内容跳转链接
  */
 umeng.share = function(title, content, pic, url) {
-  alert(55)
     exec(null, null, "UmengPlugin", "share", [title, content, pic, url]);
 };
 

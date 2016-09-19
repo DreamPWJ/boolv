@@ -109,10 +109,10 @@
           <key>CFBundleTypeRole</key>
           <string>Editor</string>
           <key>CFBundleURLName</key>
-          <string>zhongmianshangcheng</string>
+          <string>boolv</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>zhongmianshangcheng</string>
+            <string>boolv</string>
           </array>
         </dict>
         <dict>
@@ -122,7 +122,7 @@
           <string>wechat</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>wx8694fb999766c584</string>
+            <string>wx3a43052a36e31c53</string>
           </array>
         </dict>
         <dict>
@@ -152,7 +152,7 @@
           <string>sina</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>sina.54d87c9ffd98c53435000272</string>
+            <string>sina.5242e19241175a936bd2b469c50de423</string>
           </array>
         </dict>
       </array>
