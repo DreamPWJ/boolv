@@ -195,49 +195,13 @@ angular.module('starter.controllers', [])
     }).finally(function () {
       CommonService.ionicLoadingHide();
     })
-    $scope.shareActionSheet = function () {
-      CommonService.shareActionSheet();
 
-      //检查微信是否初始化
-      Wechat.isInstalled(function (installed) {
-        if(!installed){
-          CommonService.platformPrompt("未安装微信",'close');
-          return;
-        }
-      }, function (reason) {
-        console.log(reason);
-      })
-      //微信分享
-   //Wechat.Scene.TIMELINE 表示分享到朋友圈
-   //Wechat.Scene.SESSION 表示分享给好友
-    //（1）文本
-      Wechat.share({
-        text: "This is just a plain string",
-        scene: Wechat.Scene.TIMELINE   // share to Timeline
-      }, function () {
-        CommonService.platformPrompt("分享成功");
-      }, function (reason) {
-        CommonService.platformPrompt("分享失败: " + reason);
-      });
-      //（2）媒体
-      /*    Wechat.share({
-       message: {
-       title: "Hi, there",
-       description: "This is description.",
-       thumb: "www/img/thumbnail.png",
-       mediaTagName: "TEST-TAG-001",
-       messageExt: "这是第三方带的测试字段",
-       messageAction: "<action>dotalist</action>",
-       media: "YOUR_MEDIA_OBJECT_HERE"
-       },
-       scene: Wechat.Scene.TIMELINE   // share to Timeline
-       }, function () {
-       CommonService.platformPrompt("分享成功");
-       }, function (reason) {
-       CommonService.platformPrompt("分享失败: " + reason);
-       });*/
-      //（3）网页链接
+    $scope.shareActionSheet = function () {
+      umeng.share("测试",'测试内容','','http://www.juhuawang.com/')
+/*      CommonService.shareActionSheet();*/
+
     }
+
 
 
   })

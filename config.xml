@@ -13,7 +13,7 @@
   <access origin="sms:*" launch-external="yes"/>
   <access origin="mailto:*" launch-external="yes"/>
   <access origin="geo:*" launch-external="yes"/>
-  <allow-intent href="tel:*"/>  <!--苹果手机打电话功能-->
+  <allow-intent href="tel:*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
@@ -23,8 +23,11 @@
   <preference name="SplashScreenDelay" value="10000"/>
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="FadeSplashScreen" value="false"/>
-  <preference name="WECHAT_APPKEY" value="wxb396622c9dcee881"/>
-  <preference name="WECHAT_APPSECRET" value="156d64131e50087c000dee2fb11eef85"/>
+  <preference name="UMENG_APPKEY" value="57df634de0f55a0cc9001743"/>
+  <preference name="QQ_APPKEY" value="1105616387"/>
+  <preference name="QQ_APPSECRET" value="tw0WycrXSk54cfDG"/>
+  <preference name="WECHAT_APPKEY" value="wx3a43052a36e31c53"/>
+  <preference name="WECHAT_APPSECRET" value="6a3041d9f45d265f79d20bacf6d4965b"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>

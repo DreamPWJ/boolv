@@ -28,14 +28,13 @@
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.boolv.trading"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.boolv.trading"
-        },
-        "cordova-plugin-wechat": {
-            "WECHATAPPID": "wx3a43052a36e31c53",
             "PACKAGE_NAME": "com.boolv.trading"
         },
         "cordova-plugin-whitelist": {
@@ -56,6 +55,9 @@
         }
     },
     "dependent_plugins": {
+        "com.comall.umeng": {
+            "PACKAGE_NAME": "com.boolv.trading"
+        },
         "cordova-plugin-compat": {
             "PACKAGE_NAME": "com.boolv.trading"
         },

@@ -62,7 +62,7 @@
         <p class="row row-no-padding" ng-repeat="itemp in item.Prices">
           <span ng-if="item.PriType==0" class="calm">不限量</span>
           <span ng-if="item.PriType==1" class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>
-          <span class="col assertive text-right">{{itemp.Price | currency :'￥'}} 元/{{item.PUName}}</span>
+          <span class="col assertive text-right"><span class="calm">参考价 :</span> <strong>{{itemp.Price | currency :'￥'}}</strong> 元/{{item.PUName}}</span>
         </p>
         </p>
       </div>
