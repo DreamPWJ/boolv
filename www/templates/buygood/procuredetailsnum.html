@@ -1,0 +1,29 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 买货-录入数量</h1>
+  </ion-nav-title>
+  <form name="procuredetailsnum">
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+      <div class="list padding-top" >
+
+        <label class="item item-input" ng-repeat="item in buyDetails">
+          <span class="input-label"> {{item.PName}}</span>
+          <input type="number" ng-model="itembuynum[item.GrpID]"  placeholder="数量(单位:{{item.PUName}})"
+                 ng-blur="checknumber(item.PUType,itembuynum[item.GrpID])" >
+<!--          <span class="item-note input-right-1">{{item.PUName}}</span>-->
+
+        </label>
+
+      </div>
+    </ion-content>
+    <div class="padding light-bg bottom-0">
+      <a ng-disabled="!procuredetailsnum.$valid" class="button button-calm full-image"
+         ng-href="#/procuredetails">下一步</a>
+    </div>
+  </form>
+</ion-view>

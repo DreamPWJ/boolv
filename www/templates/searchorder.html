@@ -53,7 +53,7 @@
             <p>供货人 : {{item.Username}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></p>
             <p>手机号 : {{item.Usermotel}}</p>
             <p>供货品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></p>
-            <p  class="text-wrap">剩余供货量 : <span  ng-repeat="items in item.Details" >  {{items.ProdName+' : '+items.SurplusNum+' '+items.UName}} </span> </p>
+            <p  class="text-wrap">剩余供货量 : <span  ng-repeat="items in item.Details" >  {{items.ProdName+' : '+items.SupNum+' '+items.UName}} </span> </p>
             <p>订单状态 : <span>{{supplyorderStatus[item.Status+1]}}</span></p>
           </a>
         </div>

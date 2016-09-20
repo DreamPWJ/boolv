@@ -15,10 +15,14 @@ angular.module('starter.directive', [])
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
+        scope.showme = false;
         scope.showme1 = false;
         scope.showme2 = false;
         scope.showme3 = false;
         scope.toggle = function (arg) {//每次点击调用此方法都让scope.showme值反转1次
+          if (arg == 0) {
+            scope.showme = !scope.showme;
+          }
           if (arg == 1) {
             scope.showme1 = !scope.showme1;
           }

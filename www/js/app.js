@@ -153,7 +153,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
       //实时报价
       .state('currenttimeoffer', {
-        url: '/currenttimeoffer',
+        url: '/currenttimeoffer/:GrpID',
         templateUrl: 'templates/maindetails/currenttimeoffer.html',
         controller: 'CurrentTimeOfferCtrl'
 
@@ -392,7 +392,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ReleaseProcureCtrl'
 
       })
-      //买货发布买货单
+      //买货发布买货单数量
+      .state('procuredetailsnum', {
+        url: '/procuredetailsnum',
+        cache:false,
+        templateUrl: 'templates/buygood/procuredetailsnum.html',
+        controller: 'ProcureDetailsNumCtrl'
+
+      })
+      //买货发布买货单报价
       .state('procuredetails', {
         url: '/procuredetails',
         cache:false,

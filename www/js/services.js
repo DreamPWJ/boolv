@@ -256,7 +256,7 @@ angular.module('starter.services', [])
               localStorage.setItem("longitude", p.coords.longitude);
             },
             function (e) {
-              CommonService.platformPrompt("获取地理位置失败")
+              CommonService.platformPrompt("获取地理位置失败",'close')
             }
           );
         }

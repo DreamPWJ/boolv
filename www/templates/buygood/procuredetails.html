@@ -1,36 +1,37 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我要买货</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 买货-录入报价</h1>
   </ion-nav-title>
   <form name="procuredetails">
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
-    <div class="list" ng-repeat="item in buyDetails">
-      <a ng-click="toggle(1)" class="item "  hide-show>
-        <strong>{{item.PName}} <span class="item-note margin-right-1"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme1]"></i></span> </strong>
-      </a>
-      <div ng-hide="showme1">
-        <label class="item item-input">
-          <span class="input-label"> 数量 :</span>
-          <input type="number" ng-model="itemnumprice[$index].buynum"  ng-blur="checknumber(item.PUType,itemnumprice[$index].buynum)"  required>
-          <span class="item-note input-right-1">{{item.PUName}}</span>
-        </label>
-        <label class="item item-input border-bottom-none">
-          <span class="input-label"> 价格 :</span>
-          <input type="number" ng-model="itemnumprice[$index].buyprice" required>
-          <span class="item-note input-right-1">元/{{item.PUName}}</span>
-        </label>
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+      <div class="list padding-top">
+        <div ng-repeat="item in buyDetails">
+          <a ng-click="toggle(1)" class="item " hide-show>
+            <strong>{{item.PName}} <span class="item-note margin-right-1"><i class="icon ion-chevron-down"
+              ng-class="{true:'ion-chevron-right'}[showme1]"></i></span>
+            </strong>
+          </a>
+          <div ng-hide="showme1">
+            <label class="item item-input " ng-repeat="items in isNotTHCurrentprods[$index]">
+              <span class="input-label">{{items.PName}}</span>
+              <input type="number" ng-model="itembuyprice[items.GrpID][$index]" placeholder="报价(单位:元/{{items.PUName}})">
+              <!--          <span class="item-note input-right-1">元/{{item.PUName}}</span>-->
+            </label>
+            <p></p>
+          </div>
+        </div>
       </div>
+
+
+    </ion-content>
+    <div class="padding light-bg bottom-0">
+      <a ng-disabled="!procuredetails.$valid" class="button button-calm full-image"
+         ng-href="#/releaseprocureorder">提交</a>
     </div>
-
-
-  </ion-content>
-  <div class="padding light-bg bottom-0">
-    <a  ng-disabled="!procuredetails.$valid" class="button button-calm full-image"  ng-href="#/releaseprocureorder">提交</a>
-  </div>
   </form>
 </ion-view>

@@ -136,7 +136,8 @@ angular.module('starter.controllers', [])
   })
 
   //实时报价
-  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, CommonService, MainService) {
+  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService) {
+    $scope.type = $stateParams.GrpID;
     //获取行情报价分页列表
     $scope.currentprods = [];
     $scope.currentPage = 0;
@@ -154,8 +155,8 @@ angular.module('starter.controllers', [])
       $scope.ProdsParams = {
         IDList: '',
         prodname: '',//产品类别名
-        GrpIDList: '',//产品类别ID，多个用，隔开
-        IsTH: 1,//是否为统货 0否1是
+        GrpIDList: $scope.type == 0 ? '' : $scope.type,//产品类别ID，多个用，隔开
+        IsTH: $scope.type == 0 ? 1 : 0,//是否为统货 0否1是
         NoGrpIDList: ''//其他类别
       }
       MainService.getProdsList($scope.restProdsParams, $scope.ProdsParams).success(function (data) {
@@ -167,29 +168,32 @@ angular.module('starter.controllers', [])
         .finally(function () {
           $scope.$broadcast('scroll.refreshComplete');
           $scope.$broadcast('scroll.infiniteScrollComplete');
-        })
+        }).then(function () {
+        if ($scope.type == 0) {
+          angular.forEach($scope.currentprods, function (item, index) {
+            $scope.getProdsListIsNotTH(item.GrpID, index);
+          })
+        }
+      })
     }
     $scope.currentTimeOffer();
-    $scope.showme = false;
+    $scope.isNotTHCurrentprods = [];
     //首页调统货，详情就是这个类下的非统货
-    $scope.getProdsListIsNotTH = function (GrpIDList) {
-      $scope.prodsGrpID = GrpIDList;//点击的产品类别ID
-      //每次点击调用此方法都让scope.showme值反转1次
-      $scope.showme = !$scope.showme;
+    $scope.getProdsListIsNotTH = function (GrpIDList, index) {
       $scope.restIsNotTHParams = {
         currentPage: 1,
-        pageSize: 100
+        pageSize: 1000
       }
       $scope.isNotTHParams = {
         IDList: '',
         prodname: '',//产品类别名
-        GrpIDList: GrpIDList,//产品类别ID，多个用，隔开
+        GrpIDList: GrpIDList || '',//产品类别ID，多个用，隔开
         IsTH: 0,//是否为统货 0否1是
         NoGrpIDList: ''//其他类别
       }
       MainService.getProdsList($scope.restIsNotTHParams, $scope.isNotTHParams).success(function (data) {
         //类下的非统货
-        $scope.isNotTHCurrentprods = data.Values.data_list;
+        $scope.isNotTHCurrentprods[index] = data.Values.data_list;
       })
     }
   })
@@ -1582,6 +1586,8 @@ angular.module('starter.controllers', [])
     }
     $scope.supplygoodList();
 
+    //获取当前经纬度
+    CommonService.getLocation();
   })
   //供货计划填写
   .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
@@ -1655,40 +1661,96 @@ angular.module('starter.controllers', [])
       })
     }
   })
-  //买货发布买货单
-  .controller('ProcureDetailsCtrl', function ($scope, $state, $rootScope, CommonService, BuyService) {
+  //买货发布买货单数量
+  .controller('ProcureDetailsNumCtrl', function ($scope, $state, $rootScope, CommonService) {
+      $scope.buyDetails = [];
+      $rootScope.itembuynum = [];//买货数量
+      angular.forEach($rootScope.buyprodsList, function (item) {
+        if (item.checked == true) {
+          $scope.buyDetails.push(item);
+        }
+      })
+      //验证数量
+      $scope.checknumber = function (type, num) {
+        if (type == 1 && num) {
+          if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
+            CommonService.platformPrompt("数量单位只能输入正整数", 'close');
+            return;
+          }
+        }
+      }
+    }
+  )
+
+  //买货发布买货单报价
+  .controller('ProcureDetailsCtrl', function ($scope, $state, $rootScope, CommonService, BuyService, MainService) {
+
     $scope.buyDetails = [];
     angular.forEach($rootScope.buyprodsList, function (item) {
-      if (item.checked == true) {
+      if (item.checked == true && $rootScope.itembuynum[item.GrpID]) {//只显示在上一步录入的数量的统货类别
         $scope.buyDetails.push(item);
       }
     })
-    //验证数量
-    $scope.checknumber = function (type, num) {
-      if (type == 1) {
-        if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-          CommonService.platformPrompt("数量单位只能输入正整数", 'close');
-          return;
-        }
+
+
+    $scope.isNotTHCurrentprods = [];
+    //买货统货类下的非统货
+    $scope.getProdsListIsNotTH = function (GrpIDList, index) {
+      $scope.restIsNotTHParams = {
+        currentPage: 1,
+        pageSize: 1000
       }
+      $scope.isNotTHParams = {
+        IDList: '',
+        prodname: '',//产品类别名
+        GrpIDList: GrpIDList || '',//产品类别ID，多个用，隔开
+        IsTH: 0,//是否为统货 0否1是
+        NoGrpIDList: ''//其他类别
+      }
+      MainService.getProdsList($scope.restIsNotTHParams, $scope.isNotTHParams).success(function (data) {
+        //产品类别下的非统货
+        $scope.isNotTHCurrentprods[index] = data.Values.data_list;
+      }).then(function () {
+        $rootScope.itembuyprice = new Array();//买货非统货价格
+        //先声明一维数组
+        angular.forEach($scope.buyDetails, function (item, index) {
+          $rootScope.itembuyprice[item.GrpID] = new Array(); //一维长度为
+          angular.forEach($scope.isNotTHCurrentprods[index], function (items, indexs) {
+            $rootScope.itembuyprice[item.GrpID][indexs] = []; //二维长度为
+          })
+        })
+      })
 
     }
-    $scope.itemnumprice = [];//买货数量和价格
+
+    angular.forEach($scope.buyDetails, function (item, index) {
+      $scope.getProdsListIsNotTH(item.GrpID, index);
+    })
+
+
     $rootScope.buygoodssubmit = function () {//提交买货订单
+
       //是否登录
       if (!CommonService.isLogin()) {
         return;
       }
+
       $scope.Details = [];//收货明细数据数组
-      angular.forEach($scope.buyDetails, function (item, index) {
-        var items = {};//收货明细json数据
-        items.ProdID = item.PID;//产品编号
-        items.ProdName = item.PName;//产品名称
-        items.Unit = item.PUID;//计算单位ID
-        items.Num = $scope.itemnumprice[index].buynum;//输入数量
-        items.Price = $scope.itemnumprice[index].buyprice;//买货价格
-        items.SaleClass = item.PUSaleType;//销售分类ID
-        $scope.Details.push(items)
+      angular.forEach($scope.buyDetails, function (buyDetailsitem, indexs) {
+        angular.forEach($scope.isNotTHCurrentprods[indexs], function (item, index) {
+          if ($rootScope.itembuyprice[item.GrpID][index].length!=0) {
+            var items = {};//收货明细json数据
+            items.ProdID = item.PID;//产品编号
+            items.ProdName = item.PName;//产品名称
+            items.Unit = item.PUID;//计算单位ID
+            items.Num = $rootScope.itembuynum[item.GrpID];//输入数量
+            items.Price = $rootScope.itembuyprice[item.GrpID][index];//买货价格
+            items.SaleClass = item.PUSaleType;//销售分类ID
+            $scope.Details.push(items)
+          }
+
+        })
+
       })
       //提交买货订单数据
       $scope.buyDatas = {
@@ -1698,7 +1760,6 @@ angular.module('starter.controllers', [])
         Cycle: $rootScope.buyCycle.day || 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
-
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
@@ -1747,29 +1808,30 @@ angular.module('starter.controllers', [])
   //卖货下单
   .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
       CommonService.ionicLoadingShow();
+
       $scope.sellDetails = [];
       angular.forEach($rootScope.sellprodsList, function (item) {
         if (item.checked == true) {
           $scope.sellDetails.push(item);
         }
       })
-      CommonService.getLocation();
 
       //根据经纬度获取最近N个供货商
       $rootScope.supplierList = [];
-      $scope.page = 0;
-      $scope.total = 1;
+      $rootScope.pagesupplierList = 0;
+      $rootScope.totalsupplierList = 1;
       $rootScope.getListLongAndLatSupplier = function () {
         if (arguments != [] && arguments[0] == 0) {
-          $scope.page = 0;
+          $rootScope.pagesupplierList = 0;
           $rootScope.supplierList = [];
         }
-        $scope.page++;
+        $rootScope.pagesupplierList++;
+
         $scope.supplierListParams = {
-          currentPage: $scope.page,
+          currentPage: $rootScope.pagesupplierList,
           pageSize: 5,
-          Longitude: localStorage.getItem("longitude"),//当前经度
-          Latitude: localStorage.getItem("latitude"),//当前纬度
+          Longitude: localStorage.getItem("longitude") || 114.0557100,//当前经度
+          Latitude: localStorage.getItem("latitude") || 22.5224500,//当前纬度
           buff: 1000  //取最远多少距离KG的距离
         }
 
@@ -1783,7 +1845,7 @@ angular.module('starter.controllers', [])
           })
 
           $rootScope.supplierListFirst = $rootScope.supplierList[0];
-          $scope.total = data.Values.page_count;
+          $rootScope.totalsupplierList = data.Values.page_count;
 
         }).finally(function () {
           CommonService.ionicLoadingHide();
@@ -1801,8 +1863,8 @@ angular.module('starter.controllers', [])
             return;
           }
         }
-
       }
+
       $scope.itemnum = [];//卖货数量
       $scope.sellgoodssubmit = function () {//提交卖货订单
         //是否登录
@@ -1958,6 +2020,8 @@ angular.module('starter.controllers', [])
         }
       })
     }
+    //获取当前经纬度
+    CommonService.getLocation();
   })
   //验货列表
   .controller('CheckGoodCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
@@ -2426,11 +2490,9 @@ angular.module('starter.controllers', [])
   .controller('SupplyDetailsCtrl', function ($scope, $rootScope, CommonService, $stateParams, SupplyService) {
     $scope.supplyDetails = JSON.parse($stateParams.item);
 
-    CommonService.getLocation();
-
     $scope.params = {
-      longt: localStorage.getItem("longitude"),//当前经度
-      lat: localStorage.getItem("latitude"),//当前纬度
+      longt: localStorage.getItem("longitude") || 114.0557100,//当前经度
+      lat: localStorage.getItem("latitude") || 22.5224500,//当前纬度
       user: $scope.supplyDetails.FromUser //对应的会员对应的会员(一般为买家)
     }
     SupplyService.getRange($scope.params).success(function (data) {
@@ -3227,14 +3289,18 @@ angular.module('starter.controllers', [])
       //支付到付款按钮，付款后，调用修改状态的接口
       $scope.paytopayments = function () {
         //提交结算信息  到付款输入金额，其他3个余款，定金，订单金额是不是为0
+        /*      这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+         是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
+         是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
+         供货时，审核验货单（7）后就是结款（8）*/
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
           FromUser: $rootScope.collectGoodDetails.FromUser,//付款方
           ToUser: $rootScope.collectGoodDetails.ToUser,//收款方
-          Amount: 100,//订单金额
-          Yushou: 30,//到付款
-          AmountFu: 70,//余款
+          Amount: 0,//订单金额
+          Yushou: 0,//到付款
+          AmountFu: 0,//余款
           Earnest: 0,//定金
           Status: 6 //订单所对应的结算状态值
         }
@@ -3261,6 +3327,10 @@ angular.module('starter.controllers', [])
       //结算活支付尾款按钮，结算活支付尾款后，调用修改状态的接口
       $scope.payfinalpayment = function () {
         //提交结算信息  定金参数输入金额，其他3个为0
+        /*      这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+         是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
+         是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
+         供货时，审核验货单（7）后就是结款（8）*/
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
