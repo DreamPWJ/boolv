@@ -24,10 +24,10 @@ angular.module('starter.services', [])
         alertPopup.then(function (res) {
           if (stateurl == null || stateurl == '') {
             $ionicHistory.goBack();
-          } else if(stateurl=='close'){//不处理
+          } else if (stateurl == 'close') {//不处理
 
           } else {
-            $state.go(stateurl,{},{reload:true});
+            $state.go(stateurl, {}, {reload: true});
           }
 
         });
@@ -48,7 +48,8 @@ angular.module('starter.services', [])
             if (stateurl != '') {
               $state.go(stateurl, {}, {reload: true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
-            }  if(stateurl=='close'){//不处理
+            }
+            if (stateurl == 'close') {//不处理
 
             } else {
               confirmfunction();
@@ -256,7 +257,7 @@ angular.module('starter.services', [])
               localStorage.setItem("longitude", p.coords.longitude);
             },
             function (e) {
-              CommonService.platformPrompt("获取地理位置失败",'close')
+              CommonService.platformPrompt("获取地理位置失败", 'close')
             }
           );
         }
@@ -326,12 +327,12 @@ angular.module('starter.services', [])
         }
         return uniq(clone);
       },
-      regularVerification :function (reg,content) {//正则表达式验证
-          if(reg.test(content)){
-            return true;
-          }else {
-            return false;
-          }
+      regularVerification: function (reg, content) {//正则表达式验证
+        if (reg.test(content)) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   })
@@ -468,7 +469,7 @@ angular.module('starter.services', [])
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       }
     }
-  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state, $cordovaToast, $interval) {
+  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state, $cordovaToast, $interval,$timeout,$ionicPopup,$ionicLoading,$cordovaFile,$cordovaFileOpener2) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -516,14 +517,13 @@ angular.module('starter.services', [])
         }
       }, 1000, 100);
     },
-   checkMobilePhone:function ($scope,mobilephone) {  //检查手机号
-    if(/^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/.test(mobilephone))
-    {
-      $scope.paraclass = true;
-    }else {
-      $scope.paraclass = false;
-    }
-  },
+    checkMobilePhone: function ($scope, mobilephone) {  //检查手机号
+      if (/^0{0,1}(13[0-9]|15[7-9]|153|156|18[7-9])[0-9]{8}$/.test(mobilephone)) {
+        $scope.paraclass = true;
+      } else {
+        $scope.paraclass = false;
+      }
+    },
     modifySex: function (params) { //修改性别
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise;
@@ -763,9 +763,70 @@ angular.module('starter.services', [])
         }, function (progress) {
           // constant progress updates
         });
+    },
+    getVersions: function (params) {//查询软件版本
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/Versions/GetToPage",
+        params: params
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    showUpdateConfirm: function (updatecontent, appurl) {    // 显示是否更新对话框
+      var confirmPopup = $ionicPopup.confirm({
+        cssClass: "show-confirm",
+        title: '博绿网新版本',
+        template: updatecontent, //从服务端获取更新的内容
+        cancelText: '取消',
+        okText: '升级',
+        okType: 'button-calm'
+      });
+      confirmPopup.then(function (res) {
+        if (res) {
+          $ionicLoading.show({
+            template: "已经下载：0%"
+          });
+          var url = appurl; //可以从服务端获取更新APP的路径
+          var targetPath = cordova.file.externalRootDirectory + "/boolv/boolv.apk"; //APP下载存放的路径，可以使用cordova file插件进行相关配置
+          var trustHosts = true;
+          var options = {};
+          $cordovaFileTransfer.download(url, targetPath, options, trustHosts).then(function (result) {
+            // 打开下载下来的APP
+            $cordovaFileOpener2.open(targetPath, 'application/vnd.android.package-archive'
+            ).then(function () {
+              // 成功
+            }, function (err) {
+              // 错误
+            });
+            $ionicLoading.hide();
+          }, function (err) {
+            $cordovaToast.showLongCenter("APP下载失败");
+            $ionicLoading.hide();
+            return ;
+          }, function (progress) {
+            //进度，这里使用文字显示下载百分比
+            $timeout(function () {
+              var downloadProgress = (progress.loaded / progress.total) * 100;
+              $ionicLoading.show({
+                template: "已经下载：" + Math.floor(downloadProgress) + "%"
+              });
+              if (downloadProgress > 99) {
+                $ionicLoading.hide();
+              }
+            })
+          });
+        } else {
+          // 取消更新
+        }
+      })
     }
-  }
-})
+  }})
   .service('SellService', function ($q, $http, BooLv) {//卖货服务
     return {
       getListLongAndLat: function (params) { //根据经纬度获取最近N个供货商
@@ -1335,6 +1396,44 @@ angular.module('starter.services', [])
         });
         return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
       },
+      getSaleSupplyTotalPrice: function (params) { //获取单号对应总金额/到付款/余款
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Statement/GetSaleSupply_TotalPrice",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      /*  1.供货单的到付款插入的值就是：
+       订单金额：Amount=0
+       到付款：Yushou=对应/Statement/GetSaleSupply_TotalPrice接口的DaofuPrice
+       余款：AmountFu=0
+       定金：Earnest=0
+
+       2.供货单的余款插入的值就是：
+       订单金额：Amount=0
+       到付款：Yushou=0
+       余款：AmountFu=对应/Statement/GetSaleSupply_TotalPrice接口的YuEPrice
+       定金：Earnest=0
+
+       3.卖货的结款就是
+       订单金额：Amount=0
+       到付款：Yushou=0
+       余款：AmountFu=对应/Statement/GetSaleSupply_TotalPrice接口的YuEPrice
+       定金：Earnest=0
+
+       4.卖货的定金就是
+       订单金额：Amount=0
+       到付款：Yushou=0
+       余款：AmountFu=0
+       定金：Earnest=对应BuyOrder/GetToPage接口的Deposit
+       （采购定金 >1为金额 <=1为百分比）来判断，大于1就是Deposit，小于1就是0.01*Deposit*TotalPrice*/
       addStatement: function (datas) { //查单 提交结算信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;

@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, MainService, NewsService, $ionicPlatform) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
     CommonService.ionicLoadingShow();
     $scope.getMainData = function () {
       //登录授权
@@ -103,6 +103,24 @@ angular.module('starter.controllers', [])
         } catch (e) {
           console.log(e);
         }
+        if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
+          //自动更新软件版本
+          $scope.versionparams = {
+            currentPage: 1,//当前页码
+            pageSize: 5,//每页条数
+            ID: '',//编码 ,等于空时取所有
+            Name: '博绿固废直卖',//软件名称（中文）
+            NameE: '',//软件名称（英文）
+            Enable: 1 //是否启用 1启用 2禁用
+          }
+          AccountService.getVersions($scope.versionparams).success(function (data) {
+            $scope.versions = data.Values.data_list[0];
+            if (BooLv.version < $scope.versions.VerCode) {
+              AccountService.showUpdateConfirm($scope.versions.Remark, $scope.versions.Attached);
+            }
+          })
+        }
+
       }).finally(function () {
         CommonService.ionicLoadingHide();
         $scope.$broadcast('scroll.refreshComplete');
@@ -761,7 +779,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         FromUser: localStorage.getItem("usertoken"),//卖货人
         ToUser: $scope.yanhuolist[0].AddUser,//收货人
-        RelateNo: "",//关联单号
+        RelateNo: $scope.yanhuolist[0].OrderNo,//关联单号 取的验货单列表里的OrderNo字段，而不是No字段
         Details: $scope.details
       }
 
@@ -915,7 +933,7 @@ angular.module('starter.controllers', [])
             items.Price = item.Price//买货单价
           $scope.details.push(items);
           $scope.detailsmore.push(item);
-          $scope.IDList.push(item.ID)
+          $scope.IDList.push(item.ID);
         } else if (!item.checked && item.Status == 0) {
           $scope.isAllUpdate = false;
         }
@@ -929,7 +947,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         FromUser: localStorage.getItem("usertoken"),//卖货人
         ToUser: $scope.yanhuolist[0].AddUser,//收货人
-        RelateNo: "",//关联单号
+        RelateNo: $scope.yanhuolist[0].OrderNo,//关联单号 取的验货单列表里的OrderNo字段，而不是No字段
         Details: $scope.details
       }
 
@@ -1738,7 +1756,7 @@ angular.module('starter.controllers', [])
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (buyDetailsitem, indexs) {
         angular.forEach($scope.isNotTHCurrentprods[indexs], function (item, index) {
-          if ($rootScope.itembuyprice[item.GrpID][index].length!=0) {
+          if ($rootScope.itembuyprice[item.GrpID][index].length != 0) {
             var items = {};//收货明细json数据
             items.ProdID = item.PID;//产品编号
             items.ProdName = item.PName;//产品名称

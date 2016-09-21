@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   SocialSDK
 
@@ -109,13 +109,13 @@
 "account_lable_have_auth" = "已授权";
 "account_title_sns_config" = "分享设置";
 
-"sina" = "微博";
+"sina" = "新浪微博";
 "tencent" = "腾讯微博";
 "renren" = "人人网";
 "qzone" = "QQ空间";
 "qq_account" = "QQ 账号";
 "douban" = "豆瓣";
-"wechat" = "微信";
+"wechat" = "微信好友";
 "email" = "邮箱";
 "sms" = "短信";
 "wechat_session" = "微信好友";
@@ -123,7 +123,7 @@
 "wechat_favorite" = "微信收藏";
 "facebook" = "Facebook";
 "twitter" = "Twitter";
-"mobile_qq" = "QQ";
+"mobile_qq" = "QQ好友";
 "yx_session" = "易信";
 "yx_timeline" = "易信朋友圈";
 "lw_session" = "来往";

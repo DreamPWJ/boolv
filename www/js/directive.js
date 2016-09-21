@@ -15,7 +15,7 @@ angular.module('starter.directive', [])
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-        scope.showme = false;
+        scope.showme = true;
         scope.showme1 = false;
         scope.showme2 = false;
         scope.showme3 = false;
