@@ -388,6 +388,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货选择产品
       .state('releaseprocure', {
         url: '/releaseprocure',
+        cache:false,
         templateUrl: 'templates/buygood/releaseprocure.html',
         controller: 'ReleaseProcureCtrl'
 
@@ -423,6 +424,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我要卖货
       .state('sellprocure', {
         url: '/sellprocure',
+        cache:false,
         templateUrl: 'templates/sellgood/sellprocure.html',
         controller: 'SellProcureCtrl'
       })
