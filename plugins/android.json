@@ -19,6 +19,9 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
+        "cordova-plugin-file-opener2": {
+            "PACKAGE_NAME": "com.boolv.trading"
+        },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
@@ -51,9 +54,6 @@
             "PACKAGE_NAME": "com.boolv.trading"
         },
         "phonegap-plugin-barcodescanner": {
-            "PACKAGE_NAME": "com.boolv.trading"
-        },
-        "cordova-plugin-file-opener2": {
             "PACKAGE_NAME": "com.boolv.trading"
         }
     },

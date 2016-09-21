@@ -1634,6 +1634,10 @@ angular.module('starter.controllers', [])
   })
   //买货选择产品
   .controller('ReleaseProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
     //获取行情报价分页列表
     $rootScope.buyprodsList = [];
     $scope.currentPage = 0;
@@ -1992,6 +1996,10 @@ angular.module('starter.controllers', [])
   })
   //我要卖货
   .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
     //获取行情报价分页列表
     $rootScope.sellprodsList = [];
     $scope.currentPage = 0;
@@ -2984,6 +2992,10 @@ angular.module('starter.controllers', [])
   })
   //申请预收款
   .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService, AccountService) {
+    //是否登录
+    if (!CommonService.isLogin()) {
+      return;
+    }
     $scope.applyinfo = {}
     //查询用户银行信息
     $scope.params = {
