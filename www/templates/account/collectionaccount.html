@@ -14,13 +14,13 @@
     <ion-refresher on-refresh="getUserBanklist(0)" pulling-text="下拉更新"></ion-refresher>
     <ion-list class="list list-borderless">
       <div ng-repeat="item in userbanklist">
-      <ion-item ng-href="#/addbankaccount" class="item  item-icon-right item-borderless">
+      <ion-item  ng-click="selectAccount(item)"   class="item-borderless">
         <h2><strong>收款人 : </strong>{{item.accountname}}    <span ng-if="item.isdefault==1" class="right-1  balanced"> ● 默认</span></h2>
         <h2><strong>账号 : </strong>{{item.accountno}}</h2>
         <h2><strong>银行 : </strong>{{item.bankname}}</h2>
         <ion-option-button class="button-calm" ng-click="updatebank(item)">编辑</ion-option-button>
         <ion-option-button class="button-assertive" ng-click="delUserBank(item.id)">删除</ion-option-button>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+     <!--   <i class="icon ion-ios-arrow-right grey-arrow-right"></i>-->
       </ion-item>
       <p></p>
       </div>

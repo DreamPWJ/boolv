@@ -1,7 +1,7 @@
 {
-  "name": "boolv",
+  "name": "juhua",
   "version": "1.1.1",
-  "description": "boolv: An Ionic project",
+  "description": "juhua: An Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
@@ -10,9 +10,21 @@
     "gulp-rename": "^1.2.0"
   },
   "devDependencies": {
-    "bower": "^1.3.3",
-    "gulp-util": "^2.2.14",
-    "shelljs": "^0.3.0"
+    "bower": "^1.7.9",
+    "del": "^2.2.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cache": "^0.4.5",
+    "gulp-concat": "^2.6.0",
+    "gulp-if": "^2.0.1",
+    "gulp-imagemin": "^3.0.1",
+    "gulp-minify-css": "^0.3.13",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^1.5.4",
+    "gulp-useref": "^3.1.0",
+    "gulp-util": "^3.0.7",
+    "shelljs": "^0.7.0"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
@@ -20,7 +32,13 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-hot-code-push-plugin",
+    "cordova-plugin-wkwebview",
+    {
+      "locator": "https://github.com/Telerik-Verified-Plugins/NativePageTransitions",
+      "id": "jpush-phonegap-plugin"
+    }
   ],
   "cordovaPlatforms": [
     "android"

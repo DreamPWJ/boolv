@@ -45,3 +45,25 @@ angular.module('starter.directive', [])
     }
   }
 })
+/**
+ * 提示框tooltip
+ */
+.directive('toolTip',[function(){
+
+  return {
+    restrict: 'EA',
+    templateUrl: 'templates/popover/tooltip.html',
+    scope : {
+      message : "=",
+      type : "="
+    },
+    link: function(scope, element, attrs){
+
+      scope.hideAlert = function() {
+        scope.message = null;
+        scope.type = null;
+      };
+
+    }
+  };
+}]);

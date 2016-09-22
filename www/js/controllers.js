@@ -27,6 +27,7 @@ angular.module('starter.controllers', [])
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
     CommonService.ionicLoadingShow();
+    $rootScope.commonService = CommonService;
     $scope.getMainData = function () {
       //登录授权
       MainService.authLogin().success(function (data) {
@@ -116,7 +117,7 @@ angular.module('starter.controllers', [])
           AccountService.getVersions($scope.versionparams).success(function (data) {
             $scope.versions = data.Values.data_list[0];
             if (BooLv.version < $scope.versions.VerCode) {
-              AccountService.showUpdateConfirm($scope.versions.Remark, $scope.versions.Attached);
+              AccountService.showUpdateConfirm($scope.versions.Remark, $scope.versions.Attached,$scope.versions.VerCode);
             }
           })
         }
@@ -248,6 +249,7 @@ angular.module('starter.controllers', [])
   })
 
   .controller('LoginCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService) {
+    $rootScope.commonService = CommonService;
     //删除记住用户信息
     localStorage.removeItem("usertoken");
     localStorage.removeItem("user");
@@ -258,6 +260,12 @@ angular.module('starter.controllers', [])
     $scope.checkphone = function (mobilephone) {//检查手机号
       AccountService.checkMobilePhone($scope, mobilephone);
     }
+    $scope.blurcheckphone=function (mobilephone) {
+      if(!AccountService.checkMobilePhone($scope, mobilephone)){
+        CommonService.toolTip("手机号有误","")
+      }
+
+    }
     $scope.sendCode = function () {
       event.preventDefault();
       if ($scope.paraclass) { //按钮可用
@@ -266,31 +274,32 @@ angular.module('starter.controllers', [])
         AccountService.sendCode($scope.user.username).success(function (data) {
           $scope.user.passwordcode = data.Values;
         }).error(function () {
-          CommonService.platformPrompt("验证码获取失败!", 'login');
+          CommonService.platformPrompt("验证码获取失败!", 'close');
         })
       }
 
     }
     $scope.loginSubmit = function () {
       if ($scope.user.passwordcode != $scope.user.password) {
-        CommonService.platformPrompt("输入验证码不正确", 'login');
+        CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }
       CommonService.ionicLoadingShow();
       AccountService.login($scope.user).success(function (data) {
         if (data.Key != 200) {
-          CommonService.platformPrompt("登录失败!", 'login');
+          CommonService.platformPrompt("登录失败!", 'close');
           return;
         }
         localStorage.setItem('usertoken', data.Values);
-        CommonService.getStateName();   //跳转页面
+
       }).error(function () {
-        CommonService.platformPrompt("登录失败!", 'login');
+        CommonService.platformPrompt("登录失败!", 'close');
       }).then(function () {
         $scope.userid = localStorage.getItem("usertoken");
         AccountService.getUserInfo($scope.userid).success(function (data) {
           localStorage.setItem('user', JSON.stringify(data.Values));
         })
+        CommonService.getStateName();   //跳转页面
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -490,7 +499,7 @@ angular.module('starter.controllers', [])
 
   })
   //查单买货详情
-  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, SearchOrderService) {
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService,SearchOrderService) {
     $rootScope.buyDetails = JSON.parse($stateParams.item);
     console.log($rootScope.buyDetails);
     CommonService.ionicPopover($scope, 'my-pay.html');
@@ -504,18 +513,64 @@ angular.module('starter.controllers', [])
     $rootScope.evaluateFromUser = $rootScope.buyDetails.FromUser;
     //订单状态
     $rootScope.orderStatus = $rootScope.buyDetails.Status;
+
+    $scope.isNotTHCurrentprods = [];
+    //买货统货类下的非统货
+    $scope.getProdsListIsNotTH = function (GrpIDList, index) {
+      $scope.restIsNotTHParams = {
+        currentPage: 1,
+        pageSize: 1000
+      }
+      $scope.isNotTHParams = {
+        IDList: '',
+        prodname: '',//产品类别名
+        GrpIDList: GrpIDList || '',//产品类别ID，多个用，隔开
+        IsTH: 0,//是否为统货 0否1是
+        NoGrpIDList: ''//其他类别
+      }
+      MainService.getProdsList($scope.restIsNotTHParams, $scope.isNotTHParams).success(function (data) {
+        //产品类别下的非统货
+        $scope.isNotTHCurrentprods[index] = data.Values.data_list;
+      })
+
+    }
+
+    angular.forEach($scope.buyDetails, function (item, index) {
+      $scope.getProdsListIsNotTH(item.GrpID, index);
+    })
+
     //支付定金
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
       $scope.paymoney = function () {
-        //查单(买货订单)修改买货订单状态
-        $scope.params = {
-          No: $rootScope.buyDetails.No,//订单号
-          User: $rootScope.buyDetails.FromUser,//下单人账号
-          Status: 3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+        //提交结算信息  到付款输入金额，其他3个余款，定金，订单金额是不是为0
+        /*      这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+         是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
+         是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
+         供货时，审核验货单（7）后就是结款（8）*/
+        $scope.datas = {
+          OrderNo: $rootScope.buyDetails.No,//订单号
+          OrderType: 2,//1-卖货单2-买货单3-供货单
+          FromUser: $rootScope.buyDetails.FromUser,//付款方
+          ToUser: $rootScope.buyDetails.ToUser,//收款方
+          Amount: 0,//订单金额
+          Yushou: 0,//到付款
+          AmountFu: 0,//余款
+          Earnest: 0,//定金
+          Status: 6 //订单所对应的结算状态值
         }
-        SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
-          CommonService.platformPrompt('定金支付成功');
+        SearchOrderService.addStatement($scope.datas).success(function (data) {
+
+        }).then(function () {
+          //查单(买货订单)修改买货订单状态
+          $scope.params = {
+            No: $rootScope.buyDetails.No,//订单号
+            User: $rootScope.buyDetails.FromUser,//下单人账号
+            Status: 3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+          }
+          SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
+            CommonService.platformPrompt('定金支付成功');
+          })
         })
       }
       CommonService.showConfirm('', '<p>温馨提示:此订单的买货定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails', $scope.paymoney)
@@ -2996,23 +3051,28 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin()) {
       return;
     }
+    console.log($rootScope.userbankliststatus);
+    //收款账户信息
     $scope.applyinfo = {}
     //查询用户银行信息
-    $scope.params = {
-      page: 1,
-      size: 5,
-      userid: localStorage.getItem("usertoken")
-    }
-    AccountService.getUserBanklist($scope.params).success(function (data) {
-      $scope.userbankliststatus = [];
-      angular.forEach(data.Values.data_list, function (item) {
-        if (item.isdefault == 1) {
-          $scope.userbankliststatus.push(item);
-        }
+
+      $scope.params = {
+        page: 1,
+        size: 5,
+        userid: localStorage.getItem("usertoken")
+      }
+      AccountService.getUserBanklist($scope.params).success(function (data) {
+        $rootScope.userbankliststatus = [];
+        angular.forEach(data.Values.data_list, function (item) {
+          if (item.isdefault == 1) {
+            $rootScope.userbankliststatus.push(item);
+          }
+        })
       })
-    })
+   
+
     $scope.applyadvancesubmit = function () {
-      if ($scope.userbankliststatus.length == 0) {
+      if ($rootScope.userbankliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
         $state.go('addbankaccount');
         return;
@@ -3020,7 +3080,7 @@ angular.module('starter.controllers', [])
       $scope.datas = {
         RelateNo: 0,//关联单号
         User: localStorage.getItem("usertoken"),//申请人
-        BankID: $scope.userbankliststatus[0].id,//银行ID
+        BankID: $rootScope.userbankliststatus[0].id,//银行ID
         Money: $scope.applyinfo.Money,//申请金额
         Cycle: $scope.applyinfo.Cycle,//货款周期（天）
         RepaymentType: 1,//还款方式1.等额本金2.等额本息
@@ -3035,6 +3095,13 @@ angular.module('starter.controllers', [])
   })
   //收款银行账号列表
   .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+    if ($rootScope.userbankliststatus) {
+        $scope.selectAccount = function (item) {
+        $rootScope.userbankliststatus = [];
+        $rootScope.userbankliststatus.push(item);
+        $state.go("applyadvance");
+      }
+    }
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;

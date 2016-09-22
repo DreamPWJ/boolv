@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button back-button buttons button-clear header-item "  nav-direction=forward  ng-href="#/tab/main" >
+    <a class="button back-button buttons button-clear header-item " nav-direction=forward ng-href="#/tab/main">
       <i class="icon ion-chevron-left"></i>
     </a>
   </ion-nav-buttons>
@@ -11,27 +11,33 @@
     <form name="loginForm">
       <div class="list card">
         <label class="item item-input">
-            <span class="input-label icon ion-android-phone-portrait"> 手机号</span>
-            <input type="number" ng-model="user.username" ng-keyup="checkphone(user.username)"  maxlength="11" required>
+          <span class="input-label icon ion-android-phone-portrait"> 手机号</span>
+          <input type="number" name="username" ng-model="user.username" ng-blur="blurcheckphone(user.username)" ng-keyup="checkphone(user.username)"
+                 ng-maxlength="11" required>
+         <!-- <span ng-if="loginForm.username.$invalid&&loginForm.username.$touched"
+                class="text-center assertive font-size-08 right-1">手机号输入有误</span>-->
+        </label>
 
-        </label>
         <label class="item item-input">
-            <span class="input-label icon ion-unlocked "> 验证码</span>
-            <input type="number" ng-model="user.password"  required>
+          <span class="input-label icon ion-unlocked "> 验证码</span>
+          <input type="number" ng-model="user.password" required>
         </label>
-        <button class="authcode"  ng-class="{false:'disabledauthcode'}[paraclass]"  ng-click="sendCode()" >{{paracont}}</button>
-        <ion-checkbox class="checkbox-calm" ng-model="agreedeal" ng-checked="true" >
+        <button class="authcode" ng-class="{false:'disabledauthcode'}[paraclass]" ng-click="sendCode()">{{paracont}}
+        </button>
+        <ion-checkbox class="checkbox-calm" ng-model="agreedeal" ng-checked="true">
           同意登录协议
         </ion-checkbox>
       </div>
       <div class="padding-horizontal">
-        <button class="button full-image button-balanced " ng-click="loginSubmit()" ng-disabled="!(loginForm.$valid&&agreedeal)">登录
+        <button class="button full-image button-balanced " ng-click="loginSubmit()"
+                ng-disabled="!(loginForm.$valid&&agreedeal)">登录
         </button>
       </div>
     </form>
-     <p class="text-right  padding"> <a class="light subdued icon ion-help-circled" ng-href="#/help/11" nav-direction=forward > 查看登录注册协议</a></p>
+    <p class="text-right  padding"><a class="light subdued icon ion-help-circled" ng-href="#/help/11"
+                                      nav-direction=forward> 查看登录注册协议</a></p>
 
   </ion-content>
-<!--  <p class="fixed-bottom  text-center calm hide-on-keyboard-open">&copy;博绿网	</p>-->
+  <!--  <p class="fixed-bottom  text-center calm hide-on-keyboard-open">&copy;博绿网	</p>-->
 </ion-view>
 
