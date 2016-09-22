@@ -514,40 +514,24 @@ angular.module('starter.controllers', [])
     //订单状态
     $rootScope.orderStatus = $rootScope.buyDetails.Status;
 
-    $scope.isNotTHCurrentprods = [];
-    //买货统货类下的非统货
-    $scope.getProdsListIsNotTH = function (GrpIDList, index) {
-      $scope.restIsNotTHParams = {
-        currentPage: 1,
-        pageSize: 1000
+    //买货订单 获取买货明细
+    $scope.getProdsBuyOrderDetails = function () {
+      $scope.detailParams = {
+        No: $rootScope.buyDetails.No//订单号
       }
-      $scope.isNotTHParams = {
-        IDList: '',
-        prodname: '',//产品类别名
-        GrpIDList: GrpIDList || '',//产品类别ID，多个用，隔开
-        IsTH: 0,//是否为统货 0否1是
-        NoGrpIDList: ''//其他类别
-      }
-      MainService.getProdsList($scope.restIsNotTHParams, $scope.isNotTHParams).success(function (data) {
-        //产品类别下的非统货
-        $scope.isNotTHCurrentprods[index] = data.Values.data_list;
-      })
+      SearchOrderService.getBuyOrderDetails($scope.detailParams).success(function (data) {
+        //买货订单 获取买货明细
+        $scope.buyOrderDetails =data.Values;
 
+      })
     }
 
-    angular.forEach($scope.buyDetails, function (item, index) {
-      $scope.getProdsListIsNotTH(item.GrpID, index);
-    })
-
+    $scope.getProdsBuyOrderDetails();
     //支付定金
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
       $scope.paymoney = function () {
-        //提交结算信息  到付款输入金额，其他3个余款，定金，订单金额是不是为0
-        /*      这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
-         是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
-         是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
-         供货时，审核验货单（7）后就是结款（8）*/
+        //Status是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
         $scope.datas = {
           OrderNo: $rootScope.buyDetails.No,//订单号
           OrderType: 2,//1-卖货单2-买货单3-供货单
@@ -556,11 +540,11 @@ angular.module('starter.controllers', [])
           Amount: 0,//订单金额
           Yushou: 0,//到付款
           AmountFu: 0,//余款
-          Earnest: 0,//定金
-          Status: 6 //订单所对应的结算状态值
+          Earnest: $rootScope.buyDetails.Deposit,//定金  Deposit这个值到时候直接在后台审核的时候改金额
+          Status: 7 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
-
+          console.log(data);
         }).then(function () {
           //查单(买货订单)修改买货订单状态
           $scope.params = {
@@ -573,7 +557,7 @@ angular.module('starter.controllers', [])
           })
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的买货定金为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(定金=预计总金额*30%)</p>', '确定', '取消', '', 'procureorderdetails', $scope.paymoney)
+      CommonService.showConfirm('', '<p>温馨提示:此订单的买货</p><p>定金为'+$rootScope.buyDetails.Deposit+'元，支付</p><p>请点击"确认"，否则点击"取消"</p>', '确定', '取消', '', 'close', $scope.paymoney)
     }
 
   })
@@ -1796,6 +1780,7 @@ angular.module('starter.controllers', [])
             $rootScope.itembuyprice[item.GrpID][indexs] = []; //二维长度为
           })
         })
+        console.log($scope.isNotTHCurrentprods);
       })
 
     }
@@ -1813,22 +1798,37 @@ angular.module('starter.controllers', [])
       }
 
       $scope.Details = [];//收货明细数据数组
-      angular.forEach($scope.buyDetails, function (buyDetailsitem, indexs) {
+      angular.forEach($scope.buyDetails, function (THitem, indexs) {
+        //统货数据 统货输入数量，金额用0表示
+        if ($rootScope.itembuynum[THitem.GrpID].length != 0&&THitem.IsTH==1) {
+          var items = {};//收货明细json数据
+          items.ProdID = THitem.PID;//产品编号
+          items.ProdName = THitem.PName;//产品名称
+          items.Unit = THitem.PUID;//计算单位ID
+          items.Num = $rootScope.itembuynum[THitem.GrpID];//输入数量
+          items.Price = 0;//买货价格
+          items.SaleClass = THitem.PUSaleType;//销售分类ID
+          items.GrpID=THitem.GrpID;//产品类别ID
+          $scope.Details.push(items)
+        }
+        //非统货数据 非统货数量为0，金额是输入
         angular.forEach($scope.isNotTHCurrentprods[indexs], function (item, index) {
-          if ($rootScope.itembuyprice[item.GrpID][index].length != 0) {
+          if ($rootScope.itembuyprice[item.GrpID][index].length != 0&&item.IsTH==0) {
             var items = {};//收货明细json数据
             items.ProdID = item.PID;//产品编号
             items.ProdName = item.PName;//产品名称
             items.Unit = item.PUID;//计算单位ID
-            items.Num = $rootScope.itembuynum[item.GrpID];//输入数量
+            items.Num = 0;//输入数量
             items.Price = $rootScope.itembuyprice[item.GrpID][index];//买货价格
             items.SaleClass = item.PUSaleType;//销售分类ID
+            items.GrpID=item.GrpID;//产品类别ID
             $scope.Details.push(items)
           }
 
         })
 
       })
+
       //提交买货订单数据
       $scope.buyDatas = {
         FromUser: localStorage.getItem('usertoken'),//下单人
@@ -3069,7 +3069,7 @@ angular.module('starter.controllers', [])
           }
         })
       })
-   
+
 
     $scope.applyadvancesubmit = function () {
       if ($rootScope.userbankliststatus.length == 0) {
@@ -3379,27 +3379,30 @@ angular.module('starter.controllers', [])
 
 
       }
-      CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', '', $scope.ordersubmit)
+      CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', 'close', $scope.ordersubmit)
     }
     // 支付到付款
     $rootScope.paytopaymentsubmit = function () {
+
+
       //支付到付款按钮，付款后，调用修改状态的接口
       $scope.paytopayments = function () {
         //提交结算信息  到付款输入金额，其他3个余款，定金，订单金额是不是为0
-        /*      这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+        /*    Status  这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
          是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
          是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
          供货时，审核验货单（7）后就是结款（8）*/
+
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
           FromUser: $rootScope.collectGoodDetails.FromUser,//付款方
           ToUser: $rootScope.collectGoodDetails.ToUser,//收款方
           Amount: 0,//订单金额
-          Yushou: 0,//到付款
+          Yushou: $scope.paytopaymentprice.DaofuPrice,//到付款
           AmountFu: 0,//余款
           Earnest: 0,//定金
-          Status: 6 //订单所对应的结算状态值
+          Status: 8 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
 
@@ -3416,15 +3419,26 @@ angular.module('starter.controllers', [])
         })
 
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>50000元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', '', $scope.paytopayments)
+      //获取单号对应总金额/到付款/余款
+      $scope.priceParams={
+         ordertype:$rootScope.OrderType,//类型 1卖货单2供货单
+         node:$rootScope.orderId //所属分组卖货单/供货单NO
+      }
+      SearchOrderService.getSaleSupplyTotalPrice($scope.priceParams).success(function (data) {
+        $scope.paytopaymentprice=data.Values;
+      }).then(function () {
+        CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>'+$scope.paytopaymentprice.DaofuPrice+'元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', 'close', $scope.paytopayments)
+      })
+
 
     }
     //结算 支付尾款
     $rootScope.payfinalpaymentsubmit = function () {
+
       //结算活支付尾款按钮，结算活支付尾款后，调用修改状态的接口
       $scope.payfinalpayment = function () {
         //提交结算信息  定金参数输入金额，其他3个为0
-        /*      这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+        /*  Status 这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
          是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
          是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
          供货时，审核验货单（7）后就是结款（8）*/
@@ -3435,9 +3449,9 @@ angular.module('starter.controllers', [])
           ToUser: $rootScope.collectGoodDetails.ToUser,//收款方
           Amount: 0,//订单金额
           Yushou: 0,//到付款
-          AmountFu: 0,//余款
+          AmountFu: $scope.finalpayprice.YuEPrice,//余款
           Earnest: 0,//定金
-          Status: 6 //订单所对应的结算状态值
+          Status: 8 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
 
@@ -3454,7 +3468,16 @@ angular.module('starter.controllers', [])
           })
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>30000元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', '', $scope.payfinalpayment)
+      //获取单号对应总金额/到付款/余款
+      $scope.finalpaypriceParams={
+        ordertype:$rootScope.OrderType,//类型 1卖货单2供货单
+        node:$rootScope.orderId //所属分组卖货单/供货单NO
+      }
+      SearchOrderService.getSaleSupplyTotalPrice($scope.finalpaypriceParams).success(function (data) {
+        $scope.finalpayprice=data.Values;
+      }).then(function () {
+        CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>'+$scope.finalpayprice.YuEPrice+'元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', 'close', $scope.payfinalpayment)
+      })
     }
 
 

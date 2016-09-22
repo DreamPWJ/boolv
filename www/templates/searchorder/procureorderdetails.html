@@ -34,18 +34,20 @@
     </div>
 
 
-    <div class="list">
-      <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>买货清单  <span class="item-note"><i class="icon ion-chevron-down"
-                                                  ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
-      </a>
-      <div ng-hide="showme2">
-        <a ng-href="" class="item" ng-repeat="item in buyDetails.Details">
-          <h2>{{item.ProdName}} : {{item.Num+item.UName}};  报价: {{item.Price}}元/{{item.UName}}</h2>
-        </a>
-
+    <ion-list>
+      <ion-item  class=" item-borderless">
+        <strong>买货清单  </strong>
+      </ion-item>
+      <p></p>
+      <div ng-repeat="item in buyOrderDetails">
+        <ion-item ng-click="toggle(0)"   hide-show>
+          <h2 class="padding-bottom">{{item.ProdName}} : {{item.Num+item.UName}} <span class="item-note">{{showme?'显示':'隐藏'}}报价 <i class="icon ion-chevron-down padding-left" ng-class="{true:'ion-chevron-right'}[showme]"></i></span></h2>
+          <h2 ng-if="items.GrpID==item.GrpID" class="padding" ng-hide="showme" ng-repeat="items in item.Details">
+            {{items.ProdName}} : {{items.Price}}元/{{items.UName}}</h2>
+        </ion-item>
+          <p></p>
       </div>
-    </div>
+    </ion-list>
 
   </ion-content>
   <div class="padding light-bg bottom-0">

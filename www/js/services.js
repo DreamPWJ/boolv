@@ -48,13 +48,14 @@ angular.module('starter.services', [])
             if (stateurl != '') {
               $state.go(stateurl, {}, {reload: true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
-            }
-            if (stateurl == 'close') {//不处理
-
-            } else {
+            }else {
               confirmfunction();
             }
+
           } else {
+            if (closeurl == 'close') {//不处理
+                return;
+            }
             $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, {}, {reload: true})
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
           }
@@ -1449,12 +1450,12 @@ service('MainService', function ($q, $http, BooLv) { //主页服务定义
        余款：AmountFu=对应/Statement/GetSaleSupply_TotalPrice接口的YuEPrice
        定金：Earnest=0
 
-       4.卖货的定金就是
+       4.买货的定金就是
        订单金额：Amount=0
        到付款：Yushou=0
        余款：AmountFu=0
        定金：Earnest=对应BuyOrder/GetToPage接口的Deposit
-       （采购定金 >1为金额 <=1为百分比）来判断，大于1就是Deposit，小于1就是0.01*Deposit*TotalPrice*/
+      */
       addStatement: function (datas) { //查单 提交结算信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;

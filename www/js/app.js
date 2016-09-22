@@ -513,7 +513,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //申请预收款
       .state('applyadvance', {
         url: '/applyadvance',
-        cache:false,
         templateUrl: 'templates/account/applyadvance.html',
         controller: 'ApplyAdvancesCtrl'
       })
