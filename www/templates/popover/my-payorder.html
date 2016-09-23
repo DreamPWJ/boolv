@@ -5,11 +5,11 @@
         <i class="icon ion-social-usd assertive"></i>
         支付到付款
       </a>
-      <a ng-href="#/sign"  ng-if="orderStatus>=3" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/sign"  ng-if="orderStatus==3" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-compose calm"></i>
         签收
       </a>
-      <a ng-href="#/enteringcheck" ng-if="orderStatus>=5" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/addproduct" ng-if="orderStatus==4" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-search balanced"></i>
         验货
       </a>
