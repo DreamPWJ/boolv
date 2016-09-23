@@ -30,13 +30,13 @@
     <div class="list list-borderless">
       <label class="item item-input">
         <span class="input-label"> 平均供货周期  </span>
-        <input type="number" ng-model="supplyinfo.SupNum" placeholder="(单位 : 天/次; 不能大于总周期)">
+        <input type="number" ng-model="supplyinfo.SupNum"  max="{{supplyDetails.Cycle==0?'':supplyDetails.Cycle}}"   placeholder="(单位 : 天/次; 不能大于总周期)">
       </label>
 
     </div>
     <div class="list list-borderless">
       <a ng-href="" class="item text-center border-bottom-1">
-        <strong>供货总周期 : {{supplyDetails.Cycle==0?'没有限制':supplyDetails.Cycle+'天'}}</strong>
+        <strong>供货总周期 : {{supplyDetails.Cycle==0?'不限':supplyDetails.Cycle+'天'}}</strong>
       </a>
       <a class="item text-center item-button-right">
         <strong>预计物流费 : {{expressesCost}} 元</strong>

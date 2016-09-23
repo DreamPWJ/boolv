@@ -104,8 +104,8 @@ angular.module('starter.controllers', [])
         } catch (e) {
           console.log(e);
         }
-        if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-          //自动更新软件版本
+        if ($ionicPlatform.is('android')) {
+          //android系统自动更新软件版本
           $scope.versionparams = {
             currentPage: 1,//当前页码
             pageSize: 5,//每页条数
