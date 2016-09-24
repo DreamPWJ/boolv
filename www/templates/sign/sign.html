@@ -38,11 +38,11 @@
           <option value="{{item.Name}}" ng-repeat="item in expresses">{{item.Name}}</option>
         </select>
       </label>
-      <label class="item item-input item-icon-right" ng-show="goodtype==null||goodtype==1">
+      <div class="item item-input item-icon-right" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 物流单号:  </span>
         <input class="col-50"  type="number" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo" />
         <i class="icon ion-qr-scanner" ng-click="barcodeScanner()" ></i>
-      </label>
+      </div>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 提货费</span>
         <input type="number" placeholder="（单位 : 元）"  ng-model="signinfo.Cost"/>
