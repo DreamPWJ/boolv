@@ -25,8 +25,11 @@
           <h2 ng-if="collectGoodDetails.OrdeType==1">订单状态 : {{collectsellStatus[collectGoodDetails.Status+1]}}</h2>
           <h2 ng-if="collectGoodDetails.OrdeType==2">订单状态 : {{collectsupplyStatus[collectGoodDetails.Status+1]}}</h2>
         </a>
-        <a ng-href="" class="item border-bottom-none">
+        <a ng-href="" class="item ">
           <h2>下单时间 : {{collectGoodDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
+        </a>
+        <a ng-href="#/help/15" class="item ">
+          <h2>收款账号  <span class="item-note">查看>></span></h2>
         </a>
       </div>
     </div>

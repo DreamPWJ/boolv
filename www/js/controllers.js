@@ -1500,7 +1500,7 @@ angular.module('starter.controllers', [])
       $scope.goodtype = 3;
     }
 
-    $scope.delivergoods();
+    $scope.delivery();
     //扫描物流单号
     $scope.barcodeScanner = function () {
       CommonService.barcodeScanner($scope);
@@ -1585,7 +1585,7 @@ angular.module('starter.controllers', [])
         Details: $scope.details //发货明细
 
       }
-
+      console.log(JSON.stringify($scope.datas));
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder', 'deliverlist');
       }).finally(function () {

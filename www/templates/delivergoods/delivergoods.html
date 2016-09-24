@@ -35,10 +35,11 @@
 
         </select>
       </label>
-      <label ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right " ng-click="barcodeScanner()">
-        <span class="input-label"> 物流单号: <span ng-bind="deliverinfo.ExpNo"></span> <span ng-if="deliverinfo.ExpNo==null" class="grey"> 点击右侧图标扫描</span></span>
-        <i class="icon ion-qr-scanner"></i>
-      </label>
+      <div ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right " >
+        <span class="input-label"> 物流单号: </span>
+        <input class="col-50"  type="number" placeholder="点击右侧图标扫描"  ng-model="deliverinfo.ExpNo"  ng-value="deliverinfo.ExpNo" />
+        <i  ng-click="barcodeScanner()" class="icon ion-qr-scanner"></i>
+      </div>
 
 <!--  <label ng-show="goodtype==2" class="item item-input item-icon-right">
         <span class="input-label"> 车牌号码</span>
@@ -48,11 +49,11 @@
         <h2>收货人 : {{item.username}}</h2>
         <p>手机 : {{item.mobile}}</p>
         <p>地址 : {{item.areaname+item.addr}}</p>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+<!--        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>-->
       </a>
 
       <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">
-        <span class="input-label"> 上传照片:  <span class="grey">货运车、车牌、货物包装照片</span></span>
+        <span class="input-label"> 上传照片  <span class="grey">货运车、车牌、货物包装照片</span></span>
 
         <i class="icon ion-android-add calm" ></i>
       </label>

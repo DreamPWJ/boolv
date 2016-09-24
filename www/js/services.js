@@ -271,7 +271,7 @@ angular.module('starter.services', [])
             }
             $state.go('login');
           } else {
-            this.showConfirm('博绿网', '请先登录博绿网', '登录', '关闭', 'login');
+            this.showConfirm('博绿网', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
             return;
           }
           return false;

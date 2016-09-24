@@ -38,9 +38,10 @@
           <option value="{{item.Name}}" ng-repeat="item in expresses">{{item.Name}}</option>
         </select>
       </label>
-      <label class="item item-input item-icon-right" ng-click="barcodeScanner()" ng-show="goodtype==null||goodtype==1">
-        <span class="input-label"> 物流单号: <span ng-bind="signinfo.ExpNo"></span> <span ng-if="signinfo.ExpNo==null" class="grey"> 点击右侧图标扫描</span></span>
-        <i class="icon ion-qr-scanner"></i>
+      <label class="item item-input item-icon-right" ng-show="goodtype==null||goodtype==1">
+        <span class="input-label"> 物流单号:  </span>
+        <input class="col-50"  type="number" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo" />
+        <i class="icon ion-qr-scanner" ng-click="barcodeScanner()" ></i>
       </label>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 提货费</span>
