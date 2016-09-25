@@ -21,7 +21,7 @@
         </ion-item>
         <ion-item class="item-input" ng-if="item.GID==items.GrpID" ng-repeat="items in selectproductandnum">
           <span class="input-label">{{items.PName}}</span>
-          <input type="text" ng-model="items.num+items.PUName" readonly/>
+          <input type="text" ng-value="items.num+items.PUName" readonly/>
         </ion-item>
         <p></p>
       </div>
@@ -30,7 +30,7 @@
     <div ng-repeat="items in selectproductandnumother">
       <ion-item class="item-input" >
         <span class="input-label">{{items.PName}}</span>
-        <input type="text" ng-model="items.num+items.PUName" readonly/>
+        <input type="text" ng-value="items.num+items.PUName"  readonly/>
       </ion-item>
       <p></p>
     </div>

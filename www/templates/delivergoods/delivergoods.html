@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
@@ -15,53 +15,62 @@
       <a ng-click="recover()" class="button" ng-class="{true:'button-calm',false:'button-stable'}[goodtype==3]">上门回收</a>
     </div>
   </div>
-  <form  name="deliver">
-  <ion-content overflow-scroll="false" class="stable-bg  has-subheader  has-button-footer">
-    <div class="list padding-top">
-      <label class="item item-input item-borderless">
-        <span class="input-label"> 件数</span>
-        <input type="number" placeholder="(单位 : 件)" ng-model="deliverinfo.Number" required/>
-      </label>
-      <label class="item item-input">
-        <span class="input-label"> 重量</span>
-        <input type="number" placeholder="(单位 : 公斤)" ng-model="deliverinfo.Weight" required>
-      </label>
-      <label ng-show="goodtype==null||goodtype==1" class="item item-input item-select">
-        <div class="input-label">
-          物流公司
-        </div>
-        <select ng-model="deliverinfo.ExpName">
-          <option value="{{item.Name}}" ng-repeat="item in expresses">{{item.Name}}</option>
+  <form name="deliver">
+    <ion-content overflow-scroll="false" class="stable-bg  has-subheader  has-button-footer">
+      <div class="list padding-top">
+        <label class="item item-input item-borderless">
+          <span class="input-label"> 件数</span>
+          <input type="number" placeholder="(单位 : 件)" ng-model="deliverinfo.Number" required/>
+        </label>
+        <label class="item item-input">
+          <span class="input-label"> 重量</span>
+          <input type="number" placeholder="(单位 : 公斤)" ng-model="deliverinfo.Weight" required>
+        </label>
+        <div class="item " ng-show="goodtype==null||goodtype==1">
+        <span class="input-label"><span class="padding-right">物流公司 : </span>
+          <input ng-model="deliverinfo.ExpName" placeholder="填写或选择物流公司" class="no-border bankname"  list="expName" />
+        <datalist id="expName">
+          <option  ng-repeat="item in expresses">{{item.Name}}</option>
+        </datalist></span>
 
-        </select>
-      </label>
-      <div ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right " >
-        <span class="input-label"> 物流单号: </span>
-        <input class="col-50"  type="number" placeholder="点击右侧图标扫描"  ng-model="deliverinfo.ExpNo"  ng-value="deliverinfo.ExpNo" />
-        <i  ng-click="barcodeScanner()" class="icon ion-qr-scanner"></i>
+        </div>
+        <div ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right ">
+          <span class="input-label"> 物流单号: </span>
+          <input class="col-50" type="number" placeholder="点击右侧图标扫描" ng-model="deliverinfo.ExpNo"
+                 />
+          <i ng-click="barcodeScanner()" class="icon ion-qr-scanner"></i>
+        </div>
+
+        <!--  <label ng-show="goodtype==2" class="item item-input item-icon-right">
+                <span class="input-label"> 车牌号码</span>
+                <input type="text" placeholder=""  >
+              </label>-->
+        <a ng-href="" ng-show="goodtype==3" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
+          <h2>收货人 : {{item.username}}</h2>
+          <p>手机 : {{item.mobile}}</p>
+          <p>地址 : {{item.areaname+item.addr}}</p>
+          <!--        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>-->
+        </a>
+
+        <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">
+          <span class="input-label"> 上传照片  <span class="grey">货运车、车牌、货物包装照片</span></span>
+
+          <i class="icon ion-android-add calm"></i>
+        </label>
+        <div class="row  row-wrap row-horizontal-around"  >
+          <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="" style="height: 6rem" class="col-33 padding">
+        </div>
+
       </div>
 
-<!--  <label ng-show="goodtype==2" class="item item-input item-icon-right">
-        <span class="input-label"> 车牌号码</span>
-        <input type="text" placeholder=""  >
-      </label>-->
-      <a ng-href="" ng-show="goodtype==3" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
-        <h2>收货人 : {{item.username}}</h2>
-        <p>手机 : {{item.mobile}}</p>
-        <p>地址 : {{item.areaname+item.addr}}</p>
-<!--        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>-->
-      </a>
-
-      <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">
-        <span class="input-label"> 上传照片  <span class="grey">货运车、车牌、货物包装照片</span></span>
-
-        <i class="icon ion-android-add calm" ></i>
-      </label>
+    </ion-content>
+    <div class="padding light-bg bottom-0">
+      <button ng-disabled="!deliver.$valid" class="button button-calm full-image " ng-click="delivergoodssubmit()">提交
+      </button>
     </div>
-
-  </ion-content>
-  <div class="padding light-bg bottom-0">
-    <button ng-disabled="!deliver.$valid" class="button button-calm full-image " ng-click="delivergoodssubmit()">提交</button>
+  </form>
+  <div  ng-if="bigImage" class="popover-backdrop dark-bg" ng-click="hideBigImage()" >
+    <img class="full-image"
+         src="{{Url}}"/>
   </div>
-    </form>
 </ion-view>

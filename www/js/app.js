@@ -480,12 +480,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AddCutPaymentCtrl'
       })
 
-      //录入验货数据
-      .state('enteringcheck', {
-        url: '/enteringcheck',
-        templateUrl: 'templates/checkgood/enteringcheck.html',
-        controller: 'EnteringCheckCtrl'
-      })
 
       //签收列表
       .state('signlist', {

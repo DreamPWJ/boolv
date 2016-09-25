@@ -27,6 +27,9 @@
         <span class="input-label"> 上传照片:  <span class="grey">(不合格产品拍清楚原因)</span></span>
         <i class="icon ion-android-add calm"></i>
       </label>
+      <div class="row  row-wrap row-horizontal-around"  >
+        <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="" style="height: 6rem" class="col-33 padding">
+      </div>
     </ion-list>
 
     <ion-list>
@@ -42,5 +45,8 @@
   <div class="padding light-bg bottom-0">
     <button  ng-disabled="!cutpaymentinfo.totalmoney" class="button button-calm full-image" ng-click="submitCutPayMent()" >提交</button>
   </div>
-
+  <div  ng-if="bigImage" class="popover-backdrop dark-bg" ng-click="hideBigImage()" >
+    <img class="full-image"
+         src="{{Url}}"/>
+  </div>
 </ion-view>

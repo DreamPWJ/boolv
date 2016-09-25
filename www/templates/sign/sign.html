@@ -30,14 +30,14 @@
         <span class="input-label"> 车牌号码</span>
         <input type="text" placeholder="填写真实车牌号码">
       </label>-->
-      <label class="item item-input item-select" ng-show="goodtype==null||goodtype==1">
-        <div class="input-label">
-          物流公司
+
+      <div class="item " ng-show="goodtype==null||goodtype==1">
+        <span class="input-label"><span class="padding-right">物流公司 : </span>
+          <input ng-model="signinfo.ExpName" placeholder="填写或选择物流公司" class="no-border bankname"  list="expName" />
+        <datalist id="expName">
+          <option  ng-repeat="item in expresses">{{item.Name}}</option>
+        </datalist></span>
         </div>
-        <select ng-model="signinfo.ExpName">
-          <option value="{{item.Name}}" ng-repeat="item in expresses">{{item.Name}}</option>
-        </select>
-      </label>
       <div class="item item-input item-icon-right" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 物流单号:  </span>
         <input class="col-50"  type="number" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo" />
@@ -59,11 +59,17 @@
         <span class="input-label"> 上传照片:  <span class="grey">货运车、车牌、货物包装照片</span></span>
         <i class="icon ion-android-add calm"></i>
       </label>
-    </div>
-
+      <div class="row  row-wrap row-horizontal-around"  >
+        <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="" style="height: 6rem" class="col-33 padding">
+      </div>
+</div>
   </ion-content>
   <div class="padding light-bg bottom-0">
     <button ng-disabled="!sign.$valid" class="button button-calm full-image " ng-click="signsubmit()">提交</button>
   </div>
   </form>
+  <div  ng-if="bigImage" class="popover-backdrop dark-bg" ng-click="hideBigImage()" >
+    <img class="full-image"
+         src="{{Url}}"/>
+  </div>
 </ion-view>

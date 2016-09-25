@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout,$cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera,$cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout,$cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -132,29 +132,53 @@ angular.module('starter.services', [])
       ionicLoadingHide: function () {
         $ionicLoading.hide();
       },
-      //调用摄像头和相册
+      //调用摄像头和相册 type 0是图库 1是拍照
       takePicture: function ($scope, type, filenames) {
-        //$cordovaCamera.cleanup();
-        var options = {
-          quality: 100,//相片质量0-100
-          destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-          sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
-          allowEdit: false,                                        //在选择之前允许修改截图
-          encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
-          targetWidth: 500,                                        //照片宽度
-          targetHeight: 500,                                       //照片高度
-          mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
-          cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
-          saveToPhotoAlbum: true                                   //保存进手机相册
-        };
+        //统计上传成功数量
+        $scope.imageSuccessCount = 0;
+        if(type==0){//图库
+          var options = {
+            maximumImagesCount: 6-$scope.imageList.length,//需要显示的图片的数量
+            width: 800,
+            height: 800,
+            quality: 80
+          };
+          $cordovaImagePicker.getPictures(options).then(function (results) {
+            for (var i = 0, len = results.length; i < len; i++) {
+              $scope.imageList.push(results[i]);
+              AccountService.addFilenames($scope, {filenames: filenames},results[i]);
+            }
 
-        $cordovaCamera.getPicture(options).then(function (imageUrl) {
-          AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
+          }, function (error) {
+            $cordovaToast.showLongCenter('获取图片失败');
+          });
+        }
+        if(type==1){  //拍照
+          //$cordovaCamera.cleanup();
+          var options = {
+            quality: 100,//相片质量0-100
+            destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
+            sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
+            allowEdit: false,                                        //在选择之前允许修改截图
+            encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
+            targetWidth: 500,                                        //照片宽度
+            targetHeight: 500,                                       //照片高度
+            mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
+            cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
+            saveToPhotoAlbum: true                                   //保存进手机相册
+          };
 
-        }, function (err) {
-          // An error occured. Show a message to the user
+          $cordovaCamera.getPicture(options).then(function (imageUrl) {
+            $scope.imageList.push(imageUrl);
+            AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
 
-        });
+          }, function (err) {
+            // An error occured. Show a message to the user
+            $cordovaToast.showLongCenter('获取照片失败');
+
+          });
+        }
+
       },
       //扫一扫
       barcodeScanner: function ($scope) {
@@ -769,9 +793,10 @@ service('MainService', function ($q, $http, BooLv) { //主页服务定义
             AccountService.modifyFigure(figurparams);
           }
           if (params.filenames == 'Receipt') {
-            $scope.Imgs.PicAddr = JSON.parse(result.response).Des;
+            $scope.ImgsPicAddr.push(JSON.parse(result.response).Des) ;
           }
-          $cordovaToast.showLongCenter("上传成功");
+            $cordovaToast.showLongCenter("上传成功");
+
           console.log("success=" + result.response);
         }, function (err) {
           console.log("err=" + err.response);

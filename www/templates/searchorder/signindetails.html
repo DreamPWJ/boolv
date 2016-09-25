@@ -41,7 +41,7 @@
         图片浏览 :(点击浏览大图)
       </ion-item>
     </ion-list>
-    <div class="row row-horizontal-around"  ng-repeat="item in signList">
+    <div class="row row-wrap row-horizontal-around"  ng-repeat="item in signList">
       <img ng-repeat="items in item.Imgs" ng-click="shouBigImage(items.PicAddr)" ng-src="{{items.PicAddr}}" alt="" style="height: 6rem" class="col-33 padding">
     </div>
 

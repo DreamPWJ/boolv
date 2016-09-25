@@ -1489,7 +1489,7 @@ angular.module('starter.controllers', [])
   //提交发货信息
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
     $scope.deliverinfo = {};//发货信息获取
-    $scope.Imgs = [];//图片信息数组
+    $scope.ImgsPicAddr = [];//图片信息数组
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -1505,6 +1505,8 @@ angular.module('starter.controllers', [])
     $scope.barcodeScanner = function () {
       CommonService.barcodeScanner($scope);
     }
+    //上传图片数组集合
+    $scope.imageList = [];
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'Receipt');
@@ -1539,7 +1541,15 @@ angular.module('starter.controllers', [])
       }
     })
 
-
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
     //提交发货
     $scope.delivergoodssubmit = function () {
       CommonService.ionicLoadingShow();
@@ -1566,6 +1576,10 @@ angular.module('starter.controllers', [])
         items.SaleClass = item.PUSaleType;
         $scope.details.push(items);
       })
+      $scope.imgsDetails=[];
+      angular.forEach($scope.ImgsPicAddr,function (item) {
+        $scope.imgsDetails.push({PicAddr:item,PicDes:'提交发货拍照图库照片'})
+      })
       //提交发货数据
       $scope.datas = {
         User: $rootScope.deliverDetails.ToUser,//订单所对应的会员账号
@@ -1578,10 +1592,7 @@ angular.module('starter.controllers', [])
         Weight: $scope.deliverinfo.Weight,//总重量
         Cost: '',//送货费或提货费
         ExpCost: '',//到付物流费
-        Imgs: [{  //上传图片集合
-          PicAddr: $scope.Imgs.PicAddr,
-          PicDes: "拍照图库照片！"
-        }],
+        Imgs:$scope.imgsDetails,  //上传图片集合
         Details: $scope.details //发货明细
 
       }
@@ -2158,7 +2169,7 @@ angular.module('starter.controllers', [])
   })
   //添加扣款项
   .controller('AddCutPaymentCtrl', function ($scope, $rootScope, $stateParams, CommonService, DeliverService) {
-    $scope.Imgs = [];//图片信息数组
+    $scope.ImgsPicAddr = [];//图片信息数组
     $scope.cutpaymentinfo = {};//扣款信息
     $scope.cutpaymentinfo.isAdd = [];
     $scope.cutpaymentinfo.isMinus = [];
@@ -2286,11 +2297,22 @@ angular.module('starter.controllers', [])
       $scope.cutpaymentinfo.selectnum = 0;
       $scope.cutpaymentinfo.totalmoney = 0;//扣款总金额
     }
+    //上传图片数组集合
+    $scope.imageList = [];
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'Receipt');
     }
-    //添加扣款项 提交  提交供货单
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
+    //添加扣款项 提交  提交验货单
     $scope.submitCutPayMent = function () {
       CommonService.ionicLoadingShow();
       //提交验货详细数据
@@ -2317,16 +2339,16 @@ angular.module('starter.controllers', [])
         items.Status = 0;//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         $scope.addYanhuodetails.push(items);
       })
-
+      $scope.imgsDetails=[];
+      angular.forEach($scope.ImgsPicAddr,function (item) {
+        $scope.imgsDetails.push({PicAddr:item,PicDes:'提交验货拍照图库照片'})
+      })
       //提交验货数据
       $scope.addYanhuodatas = {
         AddUser: localStorage.getItem("usertoken"),//添加人账号 AddUser
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.checkDetails.No,//卖货单/供货单订单号
-        Imgs: [{  //上传图片集合
-          PicAddr: $scope.Imgs.PicAddr,
-          PicDes: "拍照图库照片！"
-        }],
+        Imgs:$scope.imgsDetails,  //上传图片集合,
         Details: $scope.addYanhuodetails //验货明细
 
       }
@@ -2364,54 +2386,7 @@ angular.module('starter.controllers', [])
     }
   })
 
-  //录入验货数据
-  .controller('EnteringCheckCtrl', function ($scope, $rootScope, $state, CommonService, DeliverService) {
-    $scope.checkinfo = {};//验货信息获取
-    $scope.Imgs = [];//图片数组
-    $scope.toaddproduct = function () {
-      $state.go("addproduct")
-    }
 
-    //上传照片
-    $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet($scope, 'Receipt');
-    }
-    $scope.checkgoodssubmit = function () {
-      CommonService.ionicLoadingShow();
-      //提交验货详细数据
-      $scope.details = [];
-      var ordeType = $rootScope.checkDetails.OrdeType;
-      angular.forEach(ordeType == 1 ? $rootScope.checkDetails.Details : $rootScope.checkDetails.SpO_Details, function (item) {
-        var items = {};
-        items.ProdID = item.ProdID;
-        items.ProdName = item.ProdName;
-        items.Unit = item.Unit;
-        items.Num = item.Num;
-        items.Price = item.Price;
-        items.SaleClass = item.SaleClass;
-        items.Status = item.Status;//（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
-        $scope.details.push(items);
-      })
-      //提交验货数据
-      $scope.datas = {
-        AddUser: localStorage.getItem("usertoken"),//添加人账号 AddUser
-        OrderType: ordeType,//类型 1卖货单2供货单
-        OrderNo: $rootScope.checkDetails.No,//卖货单/供货单订单号
-        Imgs: [{  //上传图片集合
-          PicAddr: $scope.Imgs.PicAddr,
-          PicDes: "拍照图库照片！"
-        }],
-        Details: $scope.details //验货明细
-
-      }
-      DeliverService.addYanhuo($scope.datas).success(function (data) {
-        CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
-      }).finally(function () {
-        CommonService.ionicLoadingHide();
-      })
-
-    }
-  })
   //添加验货清单
   .controller('AddProductCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService) {
     CommonService.searchModal($scope, 'templates/checkgood/checkgoodsmodel.html');
@@ -2814,7 +2789,8 @@ angular.module('starter.controllers', [])
   })
   .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
     $scope.signinfo = {};//签收信息获取
-    $scope.Imgs = [];//图片信息数组
+    $scope.ImgsPicAddr = [];//图片信息数组
+
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -2830,6 +2806,8 @@ angular.module('starter.controllers', [])
     $scope.barcodeScanner = function () {
       CommonService.barcodeScanner($scope);
     }
+    //上传图片数组集合
+    $scope.imageList = [];
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'Receipt');
@@ -2843,12 +2821,26 @@ angular.module('starter.controllers', [])
     AccountService.getExpresses($scope.params).success(function (data) {
       $scope.expresses = data.Values;
     })
-
+    
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
 
     //签收提交
     $scope.signsubmit = function () {
       CommonService.ionicLoadingShow();
+      $scope.imgsDetails=[];
+      angular.forEach($scope.ImgsPicAddr,function (item) {
+        $scope.imgsDetails.push({PicAddr:item,PicDes:'签收拍照图库照片'})
+      })
       var ordeType = $rootScope.signDetails.OrdeType;
+      
       //提交签收数据
       $scope.datas = {
         User: localStorage.getItem('usertoken'),//订单所对应的会员账号
@@ -2861,10 +2853,7 @@ angular.module('starter.controllers', [])
         Weight: $scope.signinfo.Weight,//总重量
         Cost: $scope.signinfo.Cost,//送货费或提货费
         ExpCost: $scope.signinfo.ExpCost,//到付物流费
-        Imgs: [{  //上传图片集合
-          PicAddr: $scope.Imgs.PicAddr,
-          PicDes: "拍照图库照片！"
-        }]
+        Imgs:$scope.imgsDetails,  //上传图片集合
 
       }
 
@@ -3317,6 +3306,8 @@ angular.module('starter.controllers', [])
   })
   //修改用户头像图片
   .controller('UploadHeadrCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService) {
+    //上传图片数组集合
+    $scope.imageList = [];
     $scope.figureurl = $stateParams.figure;
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
