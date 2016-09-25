@@ -36,8 +36,7 @@
         </div>
         <div ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right ">
           <span class="input-label"> 物流单号: </span>
-          <input class="col-50" type="number" placeholder="点击右侧图标扫描" ng-model="deliverinfo.ExpNo"
-                 />
+          <input class="col-50" type="number" placeholder="点击右侧图标扫描" ng-model="deliverinfo.ExpNo" ng-value="deliverinfo.ExpNo"/>
           <i ng-click="barcodeScanner()" class="icon ion-qr-scanner"></i>
         </div>
 

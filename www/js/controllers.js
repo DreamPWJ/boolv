@@ -514,6 +514,8 @@ angular.module('starter.controllers', [])
     //订单状态
     $rootScope.orderStatus = $rootScope.buyDetails.Status;
 
+    $scope.minTotalMoney=0;//最少总金额
+    $scope.maxTotalMoney=0;//最大总金额
     //买货订单 获取买货明细
     $scope.getProdsBuyOrderDetails = function () {
       $scope.detailParams = {
@@ -522,6 +524,21 @@ angular.module('starter.controllers', [])
       SearchOrderService.getBuyOrderDetails($scope.detailParams).success(function (data) {
         //买货订单 获取买货明细
         $scope.buyOrderDetails =data.Values;
+        console.log($scope.buyOrderDetails);
+        angular.forEach($scope.buyOrderDetails,function(item,index){
+          $scope.minMoney=item.Details[0].Price;//最少金额
+          $scope.maxMoney=item.Details[0].Price;//最大金额
+          angular.forEach(item.Details,function (items) {
+            if(items.Price<$scope.minMoney){
+              $scope.minMoney=items.Price;//最少金额
+            }
+            if(items.Price>$scope.maxMoney){
+              $scope.maxMoney=items.Price;//最大金额
+            }
+          })
+          $scope.minTotalMoney+=item.Num*$scope.minMoney;//最少总金额
+          $scope.maxTotalMoney+=item.Num*$scope.maxMoney;//最大总金额
+        })
 
       })
     }
@@ -752,18 +769,21 @@ angular.module('starter.controllers', [])
         })
       })
 
+    }).then(function () {
+      $scope.getPageSQueJian();
     })
     //查询卖货验货扣款记录分页列
     $scope.sellquejianList = [];
     $scope.page = 0;
     $scope.total = 1;
     $scope.getPageSQueJian = function () {
+      $scope.queJianTotalMoney=0;
       $scope.page++;
       $scope.quejianparams = {
         currentPage: $scope.page,//当前页码
-        pageSize: 5,//编码 ,等于空时取所有
+        pageSize: 1000,//编码 ,等于空时取所有
         ID: '',//编码 ,等于空时取所有
-        No: '',//订单号，模糊匹配
+        No: $rootScope.orderId,//订单号，模糊匹配
         User: ''//添加人的值
       }
 
@@ -771,13 +791,14 @@ angular.module('starter.controllers', [])
         console.log(data);
         angular.forEach(data.Values.data_list, function (item) {
           $scope.sellquejianList.push(item);
+          $scope.queJianTotalMoney+=item.Price;
         })
         $scope.total = data.Values.page_count;
       }).finally(function () {
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getPageSQueJian();
+
     //检查是否复选框选中
     $scope.checkChecded = function () {
       $scope.ischecked = false;
@@ -853,7 +874,7 @@ angular.module('starter.controllers', [])
           //查单(卖货订单)修改卖货/供货订单状态
           $scope.supplyparams = {
             No: $scope.yanhuolist[0].No,//订单号
-            Status: 5,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+            Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
             OrderType: 1,//1代表卖货单2代表供货单
 
@@ -927,18 +948,20 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.getPageBQueJian = function () {
+      $scope.queJianTotalMoney=0;
       $scope.page++;
       $scope.quejianparams = {
         currentPage: $scope.page,//当前页码
-        pageSize: 5,//编码 ,等于空时取所有
+        pageSize: 1000,//编码 ,等于空时取所有
         ID: '',//编码 ,等于空时取所有
-        No: '',//订单号，模糊匹配
+        No: $rootScope.orderId,//订单号，模糊匹配
         User: ''//添加人的值
       }
 
       DeliverService.getPageBQueJian($scope.quejianparams).success(function (data) {
         angular.forEach(data.Values.data_list, function (item) {
           $scope.supplyquejianList.push(item);
+          $scope.queJianTotalMoney+=item.Price;
         })
         $scope.total = data.Values.page_count;
       }).finally(function () {
@@ -1021,7 +1044,7 @@ angular.module('starter.controllers', [])
           //查单(供货订单)修改供货计划状态
           $scope.supplyparams = {
             No: $scope.yanhuolist[0].No,//订单号
-            Status: 5,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+            Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
             OrderType: 2,//1代表卖货单2代表供货单
 
@@ -1068,6 +1091,8 @@ angular.module('starter.controllers', [])
   .controller('DeiverOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     CommonService.ionicPopover($scope, 'my-payorder.html');
     $rootScope.collectGoodDetails = JSON.parse($stateParams.item);
+    $rootScope.signDetails = JSON.parse($stateParams.item);//签收
+    $rootScope.checkDetails=JSON.parse($stateParams.item);//验货
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
     //订单类型
@@ -1264,10 +1289,9 @@ angular.module('starter.controllers', [])
     $scope.newslist();
     $scope.updateNewsLook = function (look, id) { //设置已读未读
       $scope.lookparams = {
-        look: look,//页码
+        look: look,
         ids: id
       }
-
       NewsService.updateNewsLook($scope.lookparams).success(function (data) {
         $scope.newslist(0);
       })
@@ -2142,6 +2166,7 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
+        console.log(data);
         if (data.Values == null) {
           CommonService.platformPrompt('暂无订单信息', '');
           return;
@@ -2404,9 +2429,10 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.checkDetails.No ? $rootScope.checkDetails.No : '',//发货单号
-        BNode: $rootScope.orderId ? $rootScope.orderId : ''//买货单号
+        SNode: $rootScope.checkDetails.No ?($rootScope.orderId?'':$rootScope.checkDetails.No)  : '',//发货单号
+        BNode:  ''//买货单号
       }
+      console.log($scope.params);
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
@@ -2821,7 +2847,7 @@ angular.module('starter.controllers', [])
     AccountService.getExpresses($scope.params).success(function (data) {
       $scope.expresses = data.Values;
     })
-    
+
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {
       $scope.bigImage = false;
@@ -2840,7 +2866,7 @@ angular.module('starter.controllers', [])
         $scope.imgsDetails.push({PicAddr:item,PicDes:'签收拍照图库照片'})
       })
       var ordeType = $rootScope.signDetails.OrdeType;
-      
+
       //提交签收数据
       $scope.datas = {
         User: localStorage.getItem('usertoken'),//订单所对应的会员账号
@@ -3375,7 +3401,6 @@ angular.module('starter.controllers', [])
     // 支付到付款
     $rootScope.paytopaymentsubmit = function () {
 
-
       //支付到付款按钮，付款后，调用修改状态的接口
       $scope.paytopayments = function () {
         //提交结算信息  到付款输入金额，其他3个余款，定金，订单金额是不是为0
@@ -3412,7 +3437,7 @@ angular.module('starter.controllers', [])
       }
       //获取单号对应总金额/到付款/余款
       $scope.priceParams={
-         ordertype:$rootScope.OrderType,//类型 1卖货单2供货单
+         ordertype:$rootScope.OrdeType,//类型 1卖货单2供货单
          node:$rootScope.orderId //所属分组卖货单/供货单NO
       }
       SearchOrderService.getSaleSupplyTotalPrice($scope.priceParams).success(function (data) {
@@ -3425,7 +3450,6 @@ angular.module('starter.controllers', [])
     }
     //结算 支付尾款
     $rootScope.payfinalpaymentsubmit = function () {
-
       //结算活支付尾款按钮，结算活支付尾款后，调用修改状态的接口
       $scope.payfinalpayment = function () {
         //提交结算信息  定金参数输入金额，其他3个为0
@@ -3461,10 +3485,14 @@ angular.module('starter.controllers', [])
       }
       //获取单号对应总金额/到付款/余款
       $scope.finalpaypriceParams={
-        ordertype:$rootScope.OrderType,//类型 1卖货单2供货单
+        ordertype:$rootScope.OrdeType,//类型 1卖货单2供货单
         node:$rootScope.orderId //所属分组卖货单/供货单NO
       }
+      console.log( $scope.finalpaypriceParams);
       SearchOrderService.getSaleSupplyTotalPrice($scope.finalpaypriceParams).success(function (data) {
+        if(data.Values==null){
+          CommonService.platformPrompt("获取当前单号的金额失败","close")
+        }
         $scope.finalpayprice=data.Values;
       }).then(function () {
         CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>'+$scope.finalpayprice.YuEPrice+'元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', 'close', $scope.payfinalpayment)
