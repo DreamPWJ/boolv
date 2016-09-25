@@ -50,7 +50,7 @@
 
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-20 button button-balanced " ng-disabled="OrdeType!=2&&orderStatus!=4" ng-click="paytopaymentsubmit()">付款</a>
+    <a ng-if="OrdeType==2" class="col-20 button button-balanced " ng-disabled="orderStatus!=4" ng-click="paytopaymentsubmit()">付款</a>
     <a class="col-20  button button-calm " ng-disabled="orderStatus!=3" ng-href="#/sign">签收</a>
     <a class="col-20  button button-balanced " ng-disabled="orderStatus!=4" ng-href="#/addproduct">验货</a>
     <a class="col-20  button button-calm " ng-click="payfinalpaymentsubmit()" ng-disabled="!(OrdeType==2&&orderStatus==7)||(OrdeType==1&&(orderStatus==6||orderStatus==7))" ng-href=""> {{OrdeType==1?"结算":"支付尾款"}}</a>
