@@ -244,12 +244,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
      // 查单卖货单审核验货单列表
       .state('examinegoodsorder', {
         url: '/examinegoodsorder',
+        cache: false,
         templateUrl: 'templates/searchorder/examinegoodsorder.html',
         controller: 'ExamineGoodsOrderCtrl'
       })
       // 查单供货计划审核验货单列表
       .state('supplyexamineorder', {
         url: '/supplyexamineorder',
+        cache: false,
         templateUrl: 'templates/searchorder/supplyexamineorder.html',
         controller: 'SupplyExamineOrderCtrl'
       })
