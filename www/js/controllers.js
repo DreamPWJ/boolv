@@ -3252,7 +3252,16 @@ angular.module('starter.controllers', [])
       umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
     }
   })
-  .controller('SettingCtrl', function ($scope, $rootScope, $state, CommonService) {
+  //我的设置
+  .controller('SettingCtrl', function ($scope, $rootScope, $state,BooLv, CommonService) {
+    $scope.version=BooLv.version;
+  })
+  //设置安全
+  .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService) {
+
+  })
+  //帮助与反馈
+  .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService) {
 
   })
   //解绑手机

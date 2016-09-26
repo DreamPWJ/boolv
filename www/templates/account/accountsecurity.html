@@ -1,0 +1,28 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item "  ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title"> <img id="logo" src="img/logo.png" alt=""/> 账号安全</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="stable-bg">
+      <p></p>
+      <ion-list>
+        <ion-item ng-href="#/cancelmobile" class="item-icon-right">
+          <h2>绑定手机 <span class="item-note calm">已绑定</span></h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </ion-item>
+        <ion-item class="item-icon-right">
+          <h2>绑定邮箱 <span class="item-note assertive">未绑定</span></h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </ion-item>
+        <ion-item class="item-icon-right">
+          <h2>实名认证 <span class="item-note assertive">未绑定</span></h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

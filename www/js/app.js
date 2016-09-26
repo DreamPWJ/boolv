@@ -558,10 +558,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/help.html',
         controller: 'HelpCtrl'
       })
+      //我的设置
       .state('setting', {
         url: '/setting',
         templateUrl: 'templates/account/setting.html',
         controller: 'SettingCtrl'
+      })
+      //设置安全
+      .state('accountsecurity', {
+        url: '/accountsecurity',
+        templateUrl: 'templates/account/accountsecurity.html',
+        controller: 'AccountSecurityCtrl'
+      })
+      //帮助与反馈
+      .state('helpfeedback', {
+        url: '/helpfeedback',
+        templateUrl: 'templates/account/helpfeedback.html',
+        controller: 'HelpFeedBackCtrl'
       })
       //修改用户信息
       .state('updateuser', {

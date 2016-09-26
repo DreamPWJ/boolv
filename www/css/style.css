@@ -171,3 +171,7 @@
 .loading-container .loading {
   background-color: rgba(0, 0, 0, 0);
 }
+
+.item-image:not(img){
+  text-align: left!important;
+}
