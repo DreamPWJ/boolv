@@ -5,6 +5,18 @@
         <i class="icon ion-social-usd assertive"></i>
         支付到付款
       </a>
+      <a ng-href="#/deiverdetails" ng-if="orderStatus>2" class="item item-icon-left" nav-direction=forward>
+        <i class="icon ion-android-train calm "></i>
+        发货详情
+      </a>
+      <a ng-href="#/signindetails" ng-if="orderStatus>3" class="item item-icon-left" nav-direction=forward>
+        <i class="icon ion-ios-search-strong assertive "></i>
+        签收详情
+      </a>
+      <a ng-href="#/examinegoodsorder" ng-if="orderStatus>4" class="item item-icon-left" nav-direction=forward>
+        <i class="icon ion-clipboard energized"></i>
+        验货详情
+      </a>
       <a ng-href="#/sign"  ng-if="orderStatus==3" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-compose calm"></i>
         签收

@@ -12,7 +12,7 @@
           <option   value="{{item.GID}}"  ng-repeat="item in goodTypeListAll">{{item.GName}}</option>
         </select>
       </ion-item>
-      <ion-item class="item-icon-right" ng-repeat="item in queJianList">{{item.Name}}
+      <ion-item class="item-icon-right" ng-repeat="item in queJianList"><h2 class="padding-bottom">{{item.Name}}</h2>
         <i ng-if="cutpaymentinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
         <i ng-if="cutpaymentinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
         <label class=" item-input stable-bg border-bottom-1px"  ng-if="cutpaymentinfo.isMinus[$index]">

@@ -894,6 +894,7 @@ angular.module('starter.controllers', [])
         return;
       }
       SearchOrderService.addSaleTrade($scope.datas).success(function (data) {
+        console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
       }).then(function () {
         $scope.funcreuse(3)
@@ -1432,9 +1433,7 @@ angular.module('starter.controllers', [])
             if (items.PID == item.PID) {
               $scope.adddeliverinfo.isAdd[index] = false;
               $scope.adddeliverinfo.isMinus[index] = true;
-              $scope.adddeliverinfo.num[index] = items.num;
-            } else {
-              $scope.adddeliverinfo.num[index] = '';
+              $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
         })
@@ -1630,15 +1629,21 @@ angular.module('starter.controllers', [])
     }
   })
   //接单供货计划订单列表以及详情
-  .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService) {
+  .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService,AccountService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return
     } else {
       //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
-      if (JSON.parse(localStorage.getItem("user")).grade != 5) {
-        CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
-      }
+      $scope.userid = localStorage.getItem("usertoken");
+      AccountService.getUserInfo($scope.userid).success(function (data) {
+        localStorage.setItem('user', JSON.stringify(data.Values));
+      }).then(function(){
+        if (JSON.parse(localStorage.getItem("user")).grade != 5) {
+          CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
+        }
+      })
+
     }
 
     $scope.supplylist = [];
@@ -1815,7 +1820,7 @@ angular.module('starter.controllers', [])
             $rootScope.itembuyprice[item.GrpID][indexs] = []; //二维长度为
           })
         })
-        console.log($scope.isNotTHCurrentprods);
+
       })
 
     }
@@ -2174,6 +2179,7 @@ angular.module('starter.controllers', [])
         angular.forEach(data.Values.data_list, function (item) {
           $scope.deliverlist.push(item);
         })
+
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
         $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
@@ -2256,11 +2262,8 @@ angular.module('starter.controllers', [])
             if (items.ID == item.ID) {
               $scope.cutpaymentinfo.isAdd[index] = false;
               $scope.cutpaymentinfo.isMinus[index] = true;
-              $scope.cutpaymentinfo.num[index] = items.num;
-              $scope.cutpaymentinfo.money[index] = items.money;
-            } else {
-              $scope.cutpaymentinfo.num[index] = '';
-              $scope.cutpaymentinfo.money[index] = '';
+              $scope.cutpaymentinfo.num[item.ID] = items.num;
+              $scope.cutpaymentinfo.money[item.ID] = items.money;
             }
           })
         })
@@ -2310,7 +2313,7 @@ angular.module('starter.controllers', [])
         item.num = $scope.cutpaymentinfo.num[item.ID];
         item.money = $scope.cutpaymentinfo.money[item.ID];
         $rootScope.addcutpayment.push(item)
-        $scope.cutpaymentinfo.totalmoney += item.money;
+        $scope.cutpaymentinfo.totalmoney+=item.money;
       })
     }
 
@@ -2487,9 +2490,7 @@ angular.module('starter.controllers', [])
             if (items.PID == item.PID) {
               $scope.adddeliverinfo.isAdd[index] = false;
               $scope.adddeliverinfo.isMinus[index] = true;
-              $scope.adddeliverinfo.num[index] = items.num;
-            } else {
-              $scope.adddeliverinfo.num[index] = '';
+              $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
         })
