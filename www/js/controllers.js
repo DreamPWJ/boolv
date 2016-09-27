@@ -570,7 +570,12 @@ angular.module('starter.controllers', [])
             Status: 3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
           }
           SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
-            CommonService.platformPrompt('定金支付成功');
+            if(data.key==200){
+              CommonService.platformPrompt('定金支付成功');
+            }else {
+              CommonService.platformPrompt('定金支付失败');
+            }
+
           })
         })
       }
@@ -1958,7 +1963,10 @@ angular.module('starter.controllers', [])
             return;
           }
           angular.forEach(data.Values.data_list, function (item) {
-            $rootScope.supplierList.push(item);
+            if(item.LogID!=localStorage.getItem("usertoken")){ //供应商不能选择自己
+              $rootScope.supplierList.push(item);
+            }
+
           })
 
           $rootScope.supplierListFirst = $rootScope.supplierList[0];
@@ -2950,7 +2958,7 @@ angular.module('starter.controllers', [])
         username: $scope.addrinfo.username,	//姓名
         mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
         addrcode: $scope.addrareaone.code,	//地区编码
-        addr: $scope.addrinfo.address,	//详细地址
+        addr:$scope.addrareaone.mergername + $scope.addrinfo.address,	//详细地址
         quantity: $scope.addrinfo.num, 	//供货量
         prodclass: "",//供货品类（多个以逗号隔开）
         lat: $scope.addrareaone.lat,	//纬度
