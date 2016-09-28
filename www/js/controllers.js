@@ -583,7 +583,7 @@ angular.module('starter.controllers', [])
       }
       CommonService.showConfirm('', '<p>温馨提示:此订单的买货</p><p>定金为'+$rootScope.buyDetails.Deposit+'元，支付</p><p>请点击"确认"，否则点击"取消"</p>', '确定', '取消', '', 'close', $scope.paymoney)
     }
-    $rootScope.procureorderdetailssubmit();
+
   })
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
