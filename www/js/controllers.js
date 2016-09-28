@@ -544,6 +544,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.getProdsBuyOrderDetails();
+
     //支付定金
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
@@ -552,14 +553,15 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           OrderNo: $rootScope.buyDetails.No,//订单号
           OrderType: 2,//1-卖货单2-买货单3-供货单
-          FromUser: $rootScope.buyDetails.FromUser,//付款方
-          ToUser: $rootScope.buyDetails.ToUser,//收款方
+          FromUser: localStorage.getItem("usertoken"),//付款方
+          ToUser: $rootScope.buyDetails.FromUser,//收款方
           Amount: 0,//订单金额
           Yushou: 0,//到付款
           AmountFu: 0,//余款
           Earnest: $rootScope.buyDetails.Deposit,//定金  Deposit这个值到时候直接在后台审核的时候改金额
           Status: 7 //订单所对应的结算状态值
         }
+        console.log($scope.datas);
         SearchOrderService.addStatement($scope.datas).success(function (data) {
           console.log(data);
         }).then(function () {
@@ -570,7 +572,7 @@ angular.module('starter.controllers', [])
             Status: 3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
           }
           SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
-            if(data.key==200){
+            if(data.Key==200){
               CommonService.platformPrompt('定金支付成功');
             }else {
               CommonService.platformPrompt('定金支付失败');
@@ -856,7 +858,7 @@ angular.module('starter.controllers', [])
       $scope.paramsdetails = {
         IDList: $scope.IDList.join(','),//编号，多个用,隔开
         Status: status,//订单状态0-待确认1-已退货2-暂存3-已成交
-        YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
+        YhUser: localStorage.getItem("usertoken")//会员账号 验货人
       }
 
       //这个明细不是默认值后下次就不能修改状态了 如一条明细是退货了，就不能改成成交了
@@ -869,7 +871,7 @@ angular.module('starter.controllers', [])
           $scope.yanhuoparams = {
             No: $scope.yanhuolist[0].No,//订单号
             Status: 2,//订单状态0-验货中1-待审核/验货完成2-已审核
-            YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
+            YhUser: localStorage.getItem("usertoken")//会员账号 验货人
           }
 
           SearchOrderService.updateSaleOrderYanhuoStatus($scope.yanhuoparams).success(function (data) {
@@ -878,10 +880,10 @@ angular.module('starter.controllers', [])
 
           //查单(卖货订单)修改卖货/供货订单状态
           $scope.supplyparams = {
-            No: $scope.yanhuolist[0].No,//订单号
+            No: $scope.yanhuolist[0].OrderNo,//订单号 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
             Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
-            OrderType: 1,//1代表卖货单2代表供货单
+            OrderType: 1//1代表卖货单2代表供货单
 
           }
           SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
@@ -1781,7 +1783,7 @@ angular.module('starter.controllers', [])
         if (type == 1 && num) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
             CommonService.platformPrompt("数量单位只能输入正整数", 'close');
-            return;
+            return false;
           }
         }
       }
@@ -1985,7 +1987,7 @@ angular.module('starter.controllers', [])
         if (type == 1) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
             CommonService.platformPrompt("数量单位只能输入正整数", 'close');
-            return;
+            return false;
           }
         }
       }
@@ -3430,8 +3432,8 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
-          FromUser: $rootScope.collectGoodDetails.FromUser,//付款方
-          ToUser: $rootScope.collectGoodDetails.ToUser,//收款方
+          FromUser:localStorage.getItem("usertoken") ,//付款方
+          ToUser: $rootScope.collectGoodDetails.FromUser,//收款方
           Amount: 0,//订单金额
           Yushou: $scope.paytopaymentprice.DaofuPrice,//到付款
           AmountFu: 0,//余款
@@ -3478,8 +3480,8 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
-          FromUser: $rootScope.collectGoodDetails.FromUser,//付款方
-          ToUser: $rootScope.collectGoodDetails.ToUser,//收款方
+          FromUser:localStorage.getItem("usertoken") ,//付款方
+          ToUser: $rootScope.collectGoodDetails.FromUser,//收款方
           Amount: 0,//订单金额
           Yushou: 0,//到付款
           AmountFu: $scope.finalpayprice.YuEPrice,//余款
