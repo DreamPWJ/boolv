@@ -22,7 +22,7 @@
       </div>
     </ion-content>
     <div class="padding light-bg bottom-0">
-      <a ng-disabled="!procuredetailsnum.$valid" class="button button-calm full-image"
+      <a ng-disabled="!(procuredetailsnum.$valid&&verify)" class="button button-calm full-image"
          ng-href="#/procuredetails">下一步</a>
     </div>
   </form>

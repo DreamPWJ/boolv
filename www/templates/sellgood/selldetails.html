@@ -36,7 +36,7 @@
                                       nav-direction=forward>  查看卖货协议</a></p>
   </ion-content>
   <div class="padding light-bg bottom-0 ">
-    <button ng-disabled="!selldetails.$valid" class="button button-calm full-image" ng-click="sellgoodssubmit()">提交</button>
+    <button ng-disabled="!(selldetails.$valid&&verify)" class="button button-calm full-image" ng-click="sellgoodssubmit()">提交</button>
   </div>
   </form>
 </ion-view>

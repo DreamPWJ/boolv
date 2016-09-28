@@ -1771,6 +1771,7 @@ angular.module('starter.controllers', [])
   })
   //买货发布买货单数量
   .controller('ProcureDetailsNumCtrl', function ($scope, $state, $rootScope, CommonService) {
+    $rootScope.commonService = CommonService;
       $scope.buyDetails = [];
       $rootScope.itembuynum = [];//买货数量
       angular.forEach($rootScope.buyprodsList, function (item) {
@@ -1779,11 +1780,15 @@ angular.module('starter.controllers', [])
         }
       })
       //验证数量
+    $scope.verify=true;
       $scope.checknumber = function (type, num) {
         if (type == 1 && num) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-            CommonService.platformPrompt("数量单位只能输入正整数", 'close');
-            return false;
+            CommonService.toolTip("数量单位只能输入正整数","");
+            $scope.verify=false;
+            return ;
+          }else {
+            $scope.verify=true;
           }
         }
       }
@@ -1932,7 +1937,7 @@ angular.module('starter.controllers', [])
   //卖货下单
   .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
       CommonService.ionicLoadingShow();
-
+    $rootScope.commonService = CommonService;
       $scope.sellDetails = [];
       angular.forEach($rootScope.sellprodsList, function (item) {
         if (item.checked == true) {
@@ -1983,11 +1988,15 @@ angular.module('starter.controllers', [])
       }
       $rootScope.getListLongAndLatSupplier();
       //验证数量
+    $scope.verify=true;
       $scope.checknumber = function (type, num) {
         if (type == 1) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-            CommonService.platformPrompt("数量单位只能输入正整数", 'close');
-            return false;
+            CommonService.toolTip("数量单位只能输入正整数","");
+            $scope.verify=false;
+            return ;
+          }else{
+            $scope.verify=true;
           }
         }
       }
@@ -2043,9 +2052,11 @@ angular.module('starter.controllers', [])
             CommonService.ionicLoadingHide();
             CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
             $state.go('adddealaddress');
-            return;
           }
         }).then(function () {
+          if ($scope.addrliststatus.length == 0) {
+            return;
+          }
           //查询用户银行信息
           AccountService.getUserBanklist($scope.params).success(function (data) {
             $scope.userbankliststatus = [];
@@ -2058,9 +2069,11 @@ angular.module('starter.controllers', [])
               CommonService.ionicLoadingHide();
               CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
               $state.go('addbankaccount');
-              return;
             }
           }).then(function () {
+            if ($scope.userbankliststatus.length == 0) {
+              return ;
+            }
             //提交卖货订单数据
             $scope.sellDatas = {
               FromUser: localStorage.getItem('usertoken'),//供货商账号
@@ -2720,6 +2733,8 @@ angular.module('starter.controllers', [])
       $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
       $rootScope.addressitem = [];
       $scope.buttonText = '修改';
+    }else {//查询是否有默认地址
+      $scope.addrinfoother.isstatus =true;
     }
 
 
@@ -2764,7 +2779,7 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.addr = $scope.addrareacountyone.mergername + $scope.addrinfo.addr;
 
       AccountService.setAddr($scope.addrinfo).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '查看', '关闭', 'dealaddress', '');
+        CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>',  '');
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -3185,6 +3200,8 @@ angular.module('starter.controllers', [])
       $scope.bankinfo.isdefault = $scope.bankiteminfo.isdefault == 1 ? true : false;
       $rootScope.bankitem = [];//清空数据
       $scope.buttonText = '修改';
+    }else{
+      $scope.bankinfo.isdefault =true;
     }
     //查询银行名称
     AccountService.getBankName({name: ''}).success(function (data) {
@@ -3202,7 +3219,7 @@ angular.module('starter.controllers', [])
         remark: ""	//备注
       }
       AccountService.addUserBank($scope.datas).success(function (data) {
-        CommonService.showConfirm('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '查看', '关闭', 'collectionaccount', '')
+        CommonService.showAlert('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '')
       })
     }
 
