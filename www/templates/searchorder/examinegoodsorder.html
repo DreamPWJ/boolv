@@ -48,15 +48,29 @@
       <ion-item>
         <strong>扣款项(扣款总金额: {{yanhuolist[0].Debit}} 元)</strong>
       </ion-item>
-      <ion-item class="row"  ng-repeat="item in sellquejianList">
-          <span class="col padding">{{item.QJName}} : {{item.Num}} 个</span>
-          <span class="col padding">金额 : {{item.Price}} 元</span>
+      <ion-item class="row item-borderless"  ng-repeat="item in sellquejianList" >
+          <span class="col-60 padding">{{item.QJName}} : {{item.Num}} 个</span>
+          <span class="col-40 padding">金额 : {{item.Price}} 元</span>
       </ion-item>
     </ion-list>
+
+    <p></p>
+    <ion-list>
+      <ion-item>
+        图片浏览 :(点击浏览大图)
+      </ion-item>
+    </ion-list>
+    <div class="row row-wrap row-horizontal-around"  ng-repeat="item in yanhuolist">
+      <img ng-repeat="items in item.Imgs" ng-click="shouBigImage(items.PicAddr)" ng-src="{{items.PicAddr}}" alt="" style="height: 6rem" class="col-33 padding">
+    </div>
     <ion-infinite-scroll  on-infinite="getPageSQueJian()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
+  <div  ng-if="bigImage" class="popover-backdrop dark-bg" ng-click="hideBigImage()" >
+    <img class="full-image"
+         src="{{Url}}"/>
+  </div>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-40 button button-balanced " ng-disabled="!ischecked" ng-click="examinegoodsordersubmit()">确认交易</a>
+    <a  class="col-40 button button-balanced " ng-disabled="!(ischecked&&orderStatus==5)" ng-click="examinegoodsordersubmit()">确认交易</a>
     <a class="col-40  button button-calm " ng-disabled="!(ischecked&&orderStatus==5)"  ng-click="salesreturn()">退货</a>
   </div>
 

@@ -714,7 +714,7 @@ angular.module('starter.controllers', [])
         Status: '',//订单状态0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         BONo: '',//关联买货单号
         ToUser: '',//关联买货单人
-        SPNo: ''//供货计划单
+        SPNo: $rootScope.orderId//供货计划单
       };
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
@@ -892,6 +892,15 @@ angular.module('starter.controllers', [])
         }
       })
     }
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
     //确认交易
     $scope.examinegoodsordersubmit = function () {
       //查单(卖货订单)提交卖货交易信息
@@ -1063,6 +1072,15 @@ angular.module('starter.controllers', [])
         }
       })
     }
+    $scope.bigImage = false;    //初始默认大图是隐藏的
+    $scope.hideBigImage = function () {
+      $scope.bigImage = false;
+    };
+    //点击图片放大
+    $scope.shouBigImage = function (imageName) {  //传递一个参数（图片的URl）
+      $scope.Url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+      $scope.bigImage = true;                   //显示大图
+    };
     //确认交易
     $scope.examinegoodsordersubmit = function () {
       //查单(供货订单)提交供货交易信息
@@ -1502,8 +1520,11 @@ angular.module('starter.controllers', [])
     $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       angular.forEach($scope.selectproduct, function (item) {
-        item.num = $scope.adddeliverinfo.num[item.PID];
-        $rootScope.selectproductandnum.push(item)
+        if($scope.adddeliverinfo.num[item.PID]){
+          item.num = $scope.adddeliverinfo.num[item.PID];
+          $rootScope.selectproductandnum.push(item)
+        }
+
       })
     }
 
@@ -2333,10 +2354,12 @@ angular.module('starter.controllers', [])
       $rootScope.addcutpayment = [];//增加数量信息
       $scope.cutpaymentinfo.totalmoney = 0;//扣款总金额
       angular.forEach($scope.selectproduct, function (item) {
-        item.num = $scope.cutpaymentinfo.num[item.ID];
-        item.money = $scope.cutpaymentinfo.money[item.ID];
-        $rootScope.addcutpayment.push(item)
-        $scope.cutpaymentinfo.totalmoney+=item.money;
+        if($scope.cutpaymentinfo.num[item.ID]&&$scope.cutpaymentinfo.money[item.ID]){
+          item.num = $scope.cutpaymentinfo.num[item.ID];
+          item.money = $scope.cutpaymentinfo.money[item.ID];
+          $rootScope.addcutpayment.push(item)
+          $scope.cutpaymentinfo.totalmoney+=item.money;
+        }
       })
     }
 
@@ -2577,8 +2600,11 @@ angular.module('starter.controllers', [])
     $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       angular.forEach($scope.selectproduct, function (item) {
-        item.num = $scope.adddeliverinfo.num[item.PID];
-        $rootScope.selectproductandnum.push(item)
+        if($scope.adddeliverinfo.num[item.PID]){
+          item.num = $scope.adddeliverinfo.num[item.PID];
+          $rootScope.selectproductandnum.push(item)
+        }
+
       })
 
     }
