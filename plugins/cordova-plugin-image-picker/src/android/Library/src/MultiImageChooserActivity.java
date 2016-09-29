@@ -189,8 +189,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         if (maxImages == 0 && isChecked) {
             isChecked = false;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("最多 " + maxImageCount + " 图片");
-            builder.setMessage("您只能同时选择 " + maxImageCount + " 图片");
+            builder.setTitle("最多 " + maxImageCount + " 张图片");
+            builder.setMessage("您只能同时选择 " + maxImageCount + " 张图片");
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
