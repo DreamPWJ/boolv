@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.boolv.trading" version="1.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>博绿网</name>
+  <name>博绿固废直卖</name>
   <description>
     博绿网固废直卖平台APP
   </description>
-  <author email="406798106@qq.com" href="http://m.boolv.com/">
+  <author email="service@boolv.com" href="http://m.boolv.com/">
     博绿网
     </author>
   <content src="index.html"/>
