@@ -174,7 +174,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         updateAcceptButton();
         progress = new ProgressDialog(this);
         progress.setTitle("上传图片");
-        progress.setMessage("正在上传中");
+        progress.setMessage("正在上传中...");
     }
 
     @Override

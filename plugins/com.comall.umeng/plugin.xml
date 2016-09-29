@@ -179,16 +179,15 @@
     <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/UMSocialQQHandler.h" />
     <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/UMSocialWechatHandler.h" />
     <!-- 同时使用微信支付插件时不需要引入 -->
-    <!-- <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApi.h" />
-    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApiObject.h" /> -->
-
+   <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApi.h" />
+    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApiObject.h" />
     <source-file src="src/ios/UMMobClick.framework/UMMobClick" framework="true" />
     <source-file src="src/ios/UMSocial_Sdk/libUMSocial_Sdk_4.2.1.a" framework="true" />
     <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/libSocialSina.a" framework="true" />
     <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/libSocialQQ.a" framework="true" />
     <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libSocialWechat.a" framework="true" />
     <!-- 同时使用微信支付插件时不需要引入 -->
-    <!-- <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libWeChatSDK.a" framework="true" /> -->
+    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libWeChatSDK.a" framework="true" />
 
     <resource-file src="src/ios/UMSocial_Sdk/en.lproj" />
     <resource-file src="src/ios/UMSocial_Sdk/zh-Hans.lproj" />
