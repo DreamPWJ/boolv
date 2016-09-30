@@ -66,4 +66,15 @@ angular.module('starter.directive', [])
 
     }
   };
-}]);
+}]).directive('checkForm', function () {//验证表单类型 提示
+  return {
+    restrict: 'AE',
+    link: function (scope, element, attrs) {
+      scope.checkForm = function (value,type) {
+            if(type=='phone'){
+
+            }
+      };
+    }
+  }
+});
