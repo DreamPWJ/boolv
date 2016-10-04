@@ -14,7 +14,7 @@
         <label class="item item-input" ng-repeat="item in buyDetails">
           <span class="input-label"> {{item.PName}}</span>
           <input type="number" ng-model="itembuynum[item.GrpID]"  placeholder="数量(单位:{{item.PUName}})"
-                 ng-blur="checknumber(item.PUType,itembuynum[item.GrpID])" >
+                 ng-change="checknumber(item.PUType,itembuynum[item.GrpID])" >
 <!--          <span class="item-note input-right-1">{{item.PUName}}</span>-->
 
         </label>

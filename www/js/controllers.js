@@ -482,7 +482,12 @@ angular.module('starter.controllers', [])
     $scope.slideChanged = function (index) {
       $ionicTabsDelegate.select(index);
     };
-
+    //查看订单自动跳转到相应类型的订单  非默认0选项
+    if($rootScope.searchorderTabsSelect){
+      $scope.$on('$ionicView.afterEnter', function() {
+        $ionicTabsDelegate.select($rootScope.searchorderTabsSelect);
+      })
+    }
 
     /*    $scope.$on('$ionicView.afterEnter', function () {
      //等待视图加载完成的时候默认选中第一个菜单
@@ -561,7 +566,7 @@ angular.module('starter.controllers', [])
           Earnest: $rootScope.buyDetails.Deposit,//定金  Deposit这个值到时候直接在后台审核的时候改金额
           Status: 7 //订单所对应的结算状态值
         }
-        console.log($scope.datas);
+
         SearchOrderService.addStatement($scope.datas).success(function (data) {
           console.log(data);
         }).then(function () {
@@ -573,6 +578,7 @@ angular.module('starter.controllers', [])
           }
           SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
             if (data.Key == 200) {
+              $rootScope.orderStatus=3;//控制按钮状态 不能重复提交
               CommonService.platformPrompt('定金支付成功');
             } else {
               CommonService.platformPrompt('定金支付失败');
@@ -719,7 +725,7 @@ angular.module('starter.controllers', [])
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
         if (data.Values == null) {
-          $scope.isNotData=true;
+          $scope.isNotData = true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -906,7 +912,7 @@ angular.module('starter.controllers', [])
       //查单(卖货订单)提交卖货交易信息
       $scope.datareuse();
       if ($scope.IDList.length == 0) {//没有满足条件详细数据
-        CommonService.platformPrompt('订单都已经修改状态');
+        CommonService.platformPrompt('订单已经全部修改状态');
         return;
       }
       SearchOrderService.addSaleTrade($scope.datas).success(function (data) {
@@ -924,7 +930,7 @@ angular.module('starter.controllers', [])
       $scope.datareuse();
       $scope.datas.ordertype = 1;//退货类别 1卖货验货 2供货验货
       if ($scope.IDList.length == 0) {//没有满足条件详细数据
-        CommonService.platformPrompt('订单都已经修改状态');
+        CommonService.platformPrompt('订单已经全部修改状态');
         return;
       }
       SearchOrderService.addReturn($scope.datas).success(function (data) {
@@ -1299,7 +1305,7 @@ angular.module('starter.controllers', [])
       }
       NewsService.getNewsList($scope.params).success(function (data) {
         if (data.Values == null) {
-          $scope.isNotData=true;
+          $scope.isNotData = true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -1351,7 +1357,7 @@ angular.module('starter.controllers', [])
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
-          $scope.isNotData=true;
+          $scope.isNotData = true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -1637,8 +1643,8 @@ angular.module('starter.controllers', [])
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.deliverDetails.No,//卖货单/供货单订单号
         TradeType: $scope.goodtype - 1,//交易方式 0-物流配送1-送货上门2-上门回收
-        ExpName: $scope.deliverinfo.ExpName,//物流名称
-        ExpNo: $scope.deliverinfo.ExpNo,//物流单号
+        ExpName: $scope.deliverinfo.ExpName||'',//物流名称
+        ExpNo: $scope.deliverinfo.ExpNo||'',//物流单号
         Number: $scope.deliverinfo.Number,//件数
         Weight: $scope.deliverinfo.Weight,//总重量
         Cost: '',//送货费或提货费
@@ -1697,7 +1703,7 @@ angular.module('starter.controllers', [])
       //接单供货计划订单列表以及详情
       SupplyService.getToPage($scope.params).success(function (data) {
         if (data.Values == null) {
-          $scope.isNotData=true;
+          $scope.isNotData = true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -1716,7 +1722,7 @@ angular.module('starter.controllers', [])
   })
   //供货计划填写
   .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
-/*    $rootScope.commonService=CommonService;*/
+    /*    $rootScope.commonService=CommonService;*/
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     $rootScope.supplyinfo = [];//供货信息填写信息
     //根据距离及产品明细数量得到参考物流费用
@@ -1724,10 +1730,10 @@ angular.module('starter.controllers', [])
 
       $scope.details = [];
       angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
-          var items = {};
-          items.Num = $rootScope.supplyinfo[index].num;
-          items.SaleClass = item.SaleClass;
-          $scope.details.push(items);
+        var items = {};
+        items.Num = $rootScope.supplyinfo[index].num;
+        items.SaleClass = item.SaleClass;
+        $scope.details.push(items);
 
       })
       $scope.datas = {
@@ -1805,7 +1811,7 @@ angular.module('starter.controllers', [])
       //验证数量
       $scope.verify = true;
       $scope.checknumber = function (type, num) {
-        if (type == 1 && num) {
+        if (type == 1) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
             CommonService.toolTip("数量单位只能输入正整数", "");
             $scope.verify = false;
@@ -1913,6 +1919,7 @@ angular.module('starter.controllers', [])
         Details: $scope.Details//收货明细
       }
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
+        $rootScope.searchorderTabsSelect=1;//买货单选项
         CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
 
@@ -2219,7 +2226,7 @@ angular.module('starter.controllers', [])
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         console.log(data);
         if (data.Values == null) {
-          $scope.isNotData=true;
+          $scope.isNotData = true;
           return;
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -2360,7 +2367,7 @@ angular.module('starter.controllers', [])
           item.num = $scope.cutpaymentinfo.num[item.ID];
           item.money = $scope.cutpaymentinfo.money[item.ID];
           $rootScope.addcutpayment.push(item)
-          $scope.cutpaymentinfo.totalmoney += item.money;
+          $scope.cutpaymentinfo.totalmoney += item.num*item.money; //合计扣款总金额的时候是单价*数量
         }
       })
     }
@@ -2688,6 +2695,7 @@ angular.module('starter.controllers', [])
       };
 
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
+        $rootScope.searchorderTabsSelect=2;//供货计划选项
         CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
       })
 
@@ -2844,7 +2852,7 @@ angular.module('starter.controllers', [])
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
-            $scope.isNotData=true;
+          $scope.isNotData = true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -2927,17 +2935,18 @@ angular.module('starter.controllers', [])
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.signDetails.No,//卖货单/供货单订单号
         TradeType: $scope.goodtype - 1,//交易方式 0-物流配送1-送货上门2-上门回收
-        ExpName: $scope.signinfo.ExpName,//物流名称
-        ExpNo: $scope.signinfo.ExpNo,//物流单号
+        ExpName: $scope.signinfo.ExpName||'',//物流名称
+        ExpNo: $scope.signinfo.ExpNo||'',//物流单号
         Number: $scope.signinfo.Number,//件数
         Weight: $scope.signinfo.Weight,//总重量
         Cost: $scope.signinfo.Cost,//送货费或提货费
-        ExpCost: $scope.signinfo.ExpCost,//到付物流费
-        Imgs: $scope.imgsDetails,  //上传图片集合
+        ExpCost: $scope.signinfo.ExpCost||0,//到付物流费
+        Imgs: $scope.imgsDetails  //上传图片集合
 
       }
 
       DeliverService.addSign($scope.datas).success(function (data) {
+        console.log(data);
         CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -3116,7 +3125,7 @@ angular.module('starter.controllers', [])
   })
   //申请预收款
   .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService, AccountService) {
-    $rootScope.commonService=CommonService;
+    $rootScope.commonService = CommonService;
     //是否登录
     if (!CommonService.isLogin()) {
       return;

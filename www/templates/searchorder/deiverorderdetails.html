@@ -49,7 +49,8 @@
     </div>
 
   </ion-content>
-  <div class="row row-horizontal-around padding light-bg bottom-0">
+  <div  ng-if="(OrdeType==2&&orderStatus==4)||orderStatus==3||orderStatus==4||(OrdeType==1&&(orderStatus==6||orderStatus==7))||(OrdeType==2&&orderStatus==7)"
+    class="row row-horizontal-around padding light-bg bottom-0">
     <a ng-if="OrdeType==2&&orderStatus==4" class="col-40 button button-balanced "  ng-click="paytopaymentsubmit()">付款</a>
     <a  ng-if="orderStatus==3" class="col-40  button button-calm "  ng-href="#/sign">签收</a>
     <a ng-if="orderStatus==4" class="col-40  button button-balanced "  ng-href="#/addproduct">验货</a>

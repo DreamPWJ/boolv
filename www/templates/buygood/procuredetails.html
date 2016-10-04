@@ -19,7 +19,7 @@
           <div ng-hide="showme1">
             <label class="item item-input " ng-repeat="items in isNotTHCurrentprods[$index]">
               <span class="input-label">{{items.PName}}</span>
-              <input type="number" ng-model="itembuyprice[items.GrpID][$index]" placeholder="报价(单位:元/{{items.PUName}})" check-form  ng-blur="checkForm(itembuyprice[items.GrpID][$index],'价格输入错误 两位小数的正数','positivenumber','')" />
+              <input type="number" ng-model="itembuyprice[items.GrpID][$index]" placeholder="报价(单位:元/{{items.PUName}})" check-form  ng-change="checkForm(itembuyprice[items.GrpID][$index],'价格输入错误 正数可保留两位小数','positivenumber','')" />
               <!--          <span class="item-note input-right-1">元/{{item.PUName}}</span>-->
             </label>
             <p></p>

@@ -72,22 +72,44 @@ angular.module('starter.directive', [])
     link: function (scope, element, attrs) {
       $rootScope.commonService = CommonService;
       $rootScope.verify = true;
-      scope.checkForm = function (value, content, type, comparevalue) {
-        if (type == 'phone') {//验证手机号
+      scope.checkForm = function (value, content, type, maxvalue) {
+        if (type == 'mobilephone') {//验证手机号
+          if (/^1(3|4|5|7|8)\d{9}$/.test(value)) {
+            $rootScope.verify = true;
+          } else {
+            if (value) {
+              $rootScope.commonService.toolTip(content, '')
+            }
+            $rootScope.verify = false;
+          }
         }
-        if (type == 'maxvaule') {//最大不能超过comparevalue值
-          if (value > comparevalue) {
-            $rootScope.commonService.toolTip(content, '')
+        if (type == 'maxvaule') {//最大不能超过maxvalue值
+          if (value > maxvalue) {
+            if (value||value==0) {
+              $rootScope.commonService.toolTip(content, '')
+            }
             $rootScope.verify = false;
           } else {
             $rootScope.verify = true;
           }
         }
-        if (type =='positivenumber') {//正数验证
-          if (/^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/.test(value)) {
+        if (type == 'positivenumber') {//正数验证(如 价格)
+          if (/^([1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value)) {
             $rootScope.verify = true;
           } else {
-            $rootScope.commonService.toolTip(content, '')
+            if (value||value==0) {
+              $rootScope.commonService.toolTip(content, '')
+            }
+            $rootScope.verify = false;
+          }
+        }
+        if (type == 'positiveinteger') {//正整数
+          if (/^[1-9]\d*$/.test(value)) {
+            $rootScope.verify = true;
+          } else {
+            if (value||value==0) {
+              $rootScope.commonService.toolTip(content, '')
+            }
             $rootScope.verify = false;
           }
         }

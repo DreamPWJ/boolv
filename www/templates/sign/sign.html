@@ -20,11 +20,11 @@
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数</span>
-        <input type="number" placeholder="(单位 : 件)" ng-model="signinfo.Number" required/>
+        <input type="number" placeholder="(单位 : 件)" ng-model="signinfo.Number" check-form ng-change="checkForm(signinfo.Number,'签收件数输入错误 需为正整数','positiveinteger','')" required/>
       </label>
       <label class="item item-input">
         <span class="input-label"> 重量</span>
-        <input type="number" placeholder="(单位 : 公斤)" ng-model="signinfo.Weight" />
+        <input type="number" placeholder="(单位 : 公斤)" ng-model="signinfo.Weight" check-form ng-change="checkForm(signinfo.Weight,'签收重量输入错误 正数可保留两位小数','positivenumber','')" />
       </label>
 <!--      <label class="item item-input" ng-show="goodtype==2">
         <span class="input-label"> 车牌号码</span>
@@ -65,7 +65,7 @@
 </div>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <button ng-disabled="!sign.$valid" class="button button-calm full-image " ng-click="signsubmit()">提交</button>
+    <button ng-disabled="!(sign.$valid&&verify)" class="button button-calm full-image " ng-click="signsubmit()">提交</button>
   </div>
   </form>
   <div  ng-if="bigImage" class="popover-backdrop dark-bg" ng-click="hideBigImage()" >

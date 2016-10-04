@@ -16,10 +16,10 @@
         <i ng-if="cutpaymentinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
         <i ng-if="cutpaymentinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
         <label class=" item-input stable-bg border-bottom-1px"  ng-if="cutpaymentinfo.isMinus[$index]">
-          <input type="number"  ng-model="cutpaymentinfo.num[item.ID]" placeholder="{{item.Name}}扣款数量 " ng-blur="selectedproduct()"/>
+          <input type="number"  ng-model="cutpaymentinfo.num[item.ID]" placeholder="{{item.Name}}扣款数量 " check-form ng-change="checkForm(cutpaymentinfo.num[item.ID],'扣款数量输入错误 正数可保留两位小数','positivenumber','')" ng-blur="selectedproduct()"/>
         </label>
         <label class=" item-input stable-bg "  ng-if="cutpaymentinfo.isMinus[$index]">
-          <input type="number"   ng-model="cutpaymentinfo.money[item.ID]" placeholder="{{item.Name}}扣款金额 " ng-blur="selectedproduct()"/>
+          <input type="number"   ng-model="cutpaymentinfo.money[item.ID]" placeholder="{{item.Name}}扣款金额 " check-form ng-change="checkForm(cutpaymentinfo.money[item.ID],'扣款金额输入错误 正数可保留两位小数','positivenumber','')" ng-blur="selectedproduct()"/>
         </label>
       </ion-item>
 
@@ -29,7 +29,7 @@
   <div class="light-bg bottom-0">
     <div class="row row-no-padding">
       <div class="col-66   gongxiang" >共 :  <span class="calm" ng-bind="cutpaymentinfo.selectnum"></span>  项</div>
-      <button class="button button-calm full-image col-34" ng-click="selectaffirm()" >选好了</button>
+      <button class="button button-calm full-image col-34" ng-disabled="!verify" ng-click="selectaffirm()" >选好了</button>
     </div>
 
   </div>
