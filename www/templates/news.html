@@ -5,6 +5,10 @@
 
   <ion-content overflow-scroll="false"  class="stable-bg ">
     <ion-refresher on-refresh="newslist(0)" pulling-text="下拉更新"></ion-refresher>
+    <div ng-if="isNotData" class="isNotDataHint">
+      <i class="icon ion-android-notifications"></i>
+      <p>暂无新消息</p>
+    </div>
    <ion-list class="margin-top-1px">
      <ion-item ng-href="" ng-repeat="item in newsList | orderBy : item.createdate ">
        <h2 ><i class="icon ion-ios-circle-filled " ng-class="{true:'calm',false:'grey'}[item.look==0]"  ></i> {{item.title}} <span class="item-note right-1">{{item.createdate | date:'yyyy-MM-dd HH:mm'}}</span></h2>

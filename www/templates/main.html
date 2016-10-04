@@ -11,7 +11,7 @@
 
   <ion-content overflow-scroll="false" class="stable-bg">
     <ion-refresher on-refresh="getMainData()" pulling-text="下拉更新"></ion-refresher>
-    <ion-slide-box does-continue="true" auto-play="true" slide-interval="3000" delegate-handle="slideboximgs" show-pager="true" id="main-slide">
+    <ion-slide-box does-continue="true" auto-play="true" slide-interval="3000" delegate-handle="slideboximgs" show-pager="false" id="main-slide">
        <ion-slide ng-repeat="item in adImg"><img ng-click="windowOpen(item.Url)" ng-src="{{item.ImgUrl}}"  alt="首页轮播图" class="full-image"/>
        </ion-slide>
     </ion-slide-box>

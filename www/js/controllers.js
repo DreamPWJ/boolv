@@ -117,7 +117,7 @@ angular.module('starter.controllers', [])
           AccountService.getVersions($scope.versionparams).success(function (data) {
             $scope.versions = data.Values.data_list[0];
             if (BooLv.version < $scope.versions.VerCode) {
-              AccountService.showUpdateConfirm($scope.versions.Remark, $scope.versions.Attached,$scope.versions.VerCode);
+              AccountService.showUpdateConfirm($scope.versions.Remark, $scope.versions.Attached, $scope.versions.VerCode);
             }
           })
         }
@@ -260,9 +260,9 @@ angular.module('starter.controllers', [])
     $scope.checkphone = function (mobilephone) {//检查手机号
       AccountService.checkMobilePhone($scope, mobilephone);
     }
-    $scope.blurcheckphone=function (mobilephone) {
-      if(!AccountService.checkMobilePhone($scope, mobilephone)){
-        CommonService.toolTip("手机号有误","")
+    $scope.blurcheckphone = function (mobilephone) {
+      if (!AccountService.checkMobilePhone($scope, mobilephone)) {
+        CommonService.toolTip("手机号有误", "")
       }
 
     }
@@ -499,7 +499,7 @@ angular.module('starter.controllers', [])
 
   })
   //查单买货详情
-  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService,SearchOrderService) {
+  .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, SearchOrderService) {
     $rootScope.buyDetails = JSON.parse($stateParams.item);
     console.log($rootScope.buyDetails);
     CommonService.ionicPopover($scope, 'my-pay.html');
@@ -514,8 +514,8 @@ angular.module('starter.controllers', [])
     //订单状态
     $rootScope.orderStatus = $rootScope.buyDetails.Status;
 
-    $scope.minTotalMoney=0;//最少总金额
-    $scope.maxTotalMoney=0;//最大总金额
+    $scope.minTotalMoney = 0;//最少总金额
+    $scope.maxTotalMoney = 0;//最大总金额
     //买货订单 获取买货明细
     $scope.getProdsBuyOrderDetails = function () {
       $scope.detailParams = {
@@ -523,21 +523,21 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.getBuyOrderDetails($scope.detailParams).success(function (data) {
         //买货订单 获取买货明细
-        $scope.buyOrderDetails =data.Values;
+        $scope.buyOrderDetails = data.Values;
         console.log($scope.buyOrderDetails);
-        angular.forEach($scope.buyOrderDetails,function(item,index){
-          $scope.minMoney=item.Details[0].Price;//最少金额
-          $scope.maxMoney=item.Details[0].Price;//最大金额
-          angular.forEach(item.Details,function (items) {
-            if(items.Price<$scope.minMoney){
-              $scope.minMoney=items.Price;//最少金额
+        angular.forEach($scope.buyOrderDetails, function (item, index) {
+          $scope.minMoney = item.Details[0].Price;//最少金额
+          $scope.maxMoney = item.Details[0].Price;//最大金额
+          angular.forEach(item.Details, function (items) {
+            if (items.Price < $scope.minMoney) {
+              $scope.minMoney = items.Price;//最少金额
             }
-            if(items.Price>$scope.maxMoney){
-              $scope.maxMoney=items.Price;//最大金额
+            if (items.Price > $scope.maxMoney) {
+              $scope.maxMoney = items.Price;//最大金额
             }
           })
-          $scope.minTotalMoney+=item.Num*$scope.minMoney;//最少总金额
-          $scope.maxTotalMoney+=item.Num*$scope.maxMoney;//最大总金额
+          $scope.minTotalMoney += item.Num * $scope.minMoney;//最少总金额
+          $scope.maxTotalMoney += item.Num * $scope.maxMoney;//最大总金额
         })
 
       })
@@ -572,16 +572,16 @@ angular.module('starter.controllers', [])
             Status: 3//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
           }
           SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
-            if(data.Key==200){
+            if (data.Key == 200) {
               CommonService.platformPrompt('定金支付成功');
-            }else {
+            } else {
               CommonService.platformPrompt('定金支付失败');
             }
 
           })
         })
       }
-      CommonService.showConfirm('', '<p>温馨提示:此订单的买货</p><p>定金为'+$rootScope.buyDetails.Deposit+'元，支付</p><p>请点击"确认"，否则点击"取消"</p>', '确定', '取消', '', 'close', $scope.paymoney)
+      CommonService.showConfirm('', '<p>温馨提示:此订单的买货</p><p>定金为' + $rootScope.buyDetails.Deposit + '元，支付</p><p>请点击"确认"，否则点击"取消"</p>', '确定', '取消', '', 'close', $scope.paymoney)
     }
 
   })
@@ -719,7 +719,7 @@ angular.module('starter.controllers', [])
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt('暂无供货记录', '');
+          $scope.isNotData=true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -784,7 +784,7 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.getPageSQueJian = function () {
-      $scope.queJianTotalMoney=0;
+      $scope.queJianTotalMoney = 0;
       $scope.page++;
       $scope.quejianparams = {
         currentPage: $scope.page,//当前页码
@@ -798,7 +798,7 @@ angular.module('starter.controllers', [])
         console.log(data);
         angular.forEach(data.Values.data_list, function (item) {
           $scope.sellquejianList.push(item);
-          $scope.queJianTotalMoney+=item.Price;
+          $scope.queJianTotalMoney += item.Price;
         })
         $scope.total = data.Values.page_count;
       }).finally(function () {
@@ -965,7 +965,7 @@ angular.module('starter.controllers', [])
     $scope.page = 0;
     $scope.total = 1;
     $scope.getPageBQueJian = function () {
-      $scope.queJianTotalMoney=0;
+      $scope.queJianTotalMoney = 0;
       $scope.page++;
       $scope.quejianparams = {
         currentPage: $scope.page,//当前页码
@@ -978,7 +978,7 @@ angular.module('starter.controllers', [])
       DeliverService.getPageBQueJian($scope.quejianparams).success(function (data) {
         angular.forEach(data.Values.data_list, function (item) {
           $scope.supplyquejianList.push(item);
-          $scope.queJianTotalMoney+=item.Price;
+          $scope.queJianTotalMoney += item.Price;
         })
         $scope.total = data.Values.page_count;
       }).finally(function () {
@@ -1118,7 +1118,7 @@ angular.module('starter.controllers', [])
     CommonService.ionicPopover($scope, 'my-payorder.html');
     $rootScope.collectGoodDetails = JSON.parse($stateParams.item);
     $rootScope.signDetails = JSON.parse($stateParams.item);//签收
-    $rootScope.checkDetails=JSON.parse($stateParams.item);//验货
+    $rootScope.checkDetails = JSON.parse($stateParams.item);//验货
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
     //订单类型
@@ -1299,7 +1299,7 @@ angular.module('starter.controllers', [])
       }
       NewsService.getNewsList($scope.params).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt('暂无消息', '');
+          $scope.isNotData=true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -1351,7 +1351,7 @@ angular.module('starter.controllers', [])
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt('暂无订单信息', '');
+          $scope.isNotData=true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -1520,7 +1520,7 @@ angular.module('starter.controllers', [])
     $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       angular.forEach($scope.selectproduct, function (item) {
-        if($scope.adddeliverinfo.num[item.PID]){
+        if ($scope.adddeliverinfo.num[item.PID]) {
           item.num = $scope.adddeliverinfo.num[item.PID];
           $rootScope.selectproductandnum.push(item)
         }
@@ -1627,9 +1627,9 @@ angular.module('starter.controllers', [])
         items.SaleClass = item.PUSaleType;
         $scope.details.push(items);
       })
-      $scope.imgsDetails=[];
-      angular.forEach($scope.ImgsPicAddr,function (item) {
-        $scope.imgsDetails.push({PicAddr:item,PicDes:'提交发货拍照图库照片'})
+      $scope.imgsDetails = [];
+      angular.forEach($scope.ImgsPicAddr, function (item) {
+        $scope.imgsDetails.push({PicAddr: item, PicDes: '提交发货拍照图库照片'})
       })
       //提交发货数据
       $scope.datas = {
@@ -1643,7 +1643,7 @@ angular.module('starter.controllers', [])
         Weight: $scope.deliverinfo.Weight,//总重量
         Cost: '',//送货费或提货费
         ExpCost: '',//到付物流费
-        Imgs:$scope.imgsDetails,  //上传图片集合
+        Imgs: $scope.imgsDetails,  //上传图片集合
         Details: $scope.details //发货明细
 
       }
@@ -1657,7 +1657,7 @@ angular.module('starter.controllers', [])
     }
   })
   //接单供货计划订单列表以及详情
-  .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService,AccountService) {
+  .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService, AccountService) {
     //是否登录
     if (!CommonService.isLogin()) {
       return
@@ -1666,7 +1666,7 @@ angular.module('starter.controllers', [])
       $scope.userid = localStorage.getItem("usertoken");
       AccountService.getUserInfo($scope.userid).success(function (data) {
         localStorage.setItem('user', JSON.stringify(data.Values));
-      }).then(function(){
+      }).then(function () {
         if (JSON.parse(localStorage.getItem("user")).grade != 5) {
           CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
         }
@@ -1697,7 +1697,7 @@ angular.module('starter.controllers', [])
       //接单供货计划订单列表以及详情
       SupplyService.getToPage($scope.params).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt('暂无订单信息', '');
+          $scope.isNotData=true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -1716,17 +1716,19 @@ angular.module('starter.controllers', [])
   })
   //供货计划填写
   .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
+/*    $rootScope.commonService=CommonService;*/
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     $rootScope.supplyinfo = [];//供货信息填写信息
-
     //根据距离及产品明细数量得到参考物流费用
     $scope.calculateExpressesCost = function () {
+
       $scope.details = [];
       angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
-        var items = {};
-        items.Num = $rootScope.supplyinfo[index].num;
-        items.SaleClass = item.SaleClass;
-        $scope.details.push(items);
+          var items = {};
+          items.Num = $rootScope.supplyinfo[index].num;
+          items.SaleClass = item.SaleClass;
+          $scope.details.push(items);
+
       })
       $scope.datas = {
         Distance: $rootScope.distance.replace('Km', ''),
@@ -1792,7 +1794,7 @@ angular.module('starter.controllers', [])
   })
   //买货发布买货单数量
   .controller('ProcureDetailsNumCtrl', function ($scope, $state, $rootScope, CommonService) {
-    $rootScope.commonService = CommonService;
+      $rootScope.commonService = CommonService;
       $scope.buyDetails = [];
       $rootScope.itembuynum = [];//买货数量
       angular.forEach($rootScope.buyprodsList, function (item) {
@@ -1801,15 +1803,15 @@ angular.module('starter.controllers', [])
         }
       })
       //验证数量
-    $scope.verify=true;
+      $scope.verify = true;
       $scope.checknumber = function (type, num) {
         if (type == 1 && num) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-            CommonService.toolTip("数量单位只能输入正整数","");
-            $scope.verify=false;
-            return ;
-          }else {
-            $scope.verify=true;
+            CommonService.toolTip("数量单位只能输入正整数", "");
+            $scope.verify = false;
+            return;
+          } else {
+            $scope.verify = true;
           }
         }
       }
@@ -1873,7 +1875,7 @@ angular.module('starter.controllers', [])
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (THitem, indexs) {
         //统货数据 统货输入数量，金额用0表示
-        if ($rootScope.itembuynum[THitem.GrpID].length != 0&&THitem.IsTH==1) {
+        if ($rootScope.itembuynum[THitem.GrpID].length != 0 && THitem.IsTH == 1) {
           var items = {};//收货明细json数据
           items.ProdID = THitem.PID;//产品编号
           items.ProdName = THitem.PName;//产品名称
@@ -1881,12 +1883,12 @@ angular.module('starter.controllers', [])
           items.Num = $rootScope.itembuynum[THitem.GrpID];//输入数量
           items.Price = 0;//买货价格
           items.SaleClass = THitem.PUSaleType;//销售分类ID
-          items.GrpID=THitem.GrpID;//产品类别ID
+          items.GrpID = THitem.GrpID;//产品类别ID
           $scope.Details.push(items)
         }
         //非统货数据 非统货数量为0，金额是输入
         angular.forEach($scope.isNotTHCurrentprods[indexs], function (item, index) {
-          if ($rootScope.itembuyprice[item.GrpID][index].length != 0&&item.IsTH==0) {
+          if ($rootScope.itembuyprice[item.GrpID][index].length != 0 && item.IsTH == 0) {
             var items = {};//收货明细json数据
             items.ProdID = item.PID;//产品编号
             items.ProdName = item.PName;//产品名称
@@ -1894,7 +1896,7 @@ angular.module('starter.controllers', [])
             items.Num = 0;//输入数量
             items.Price = $rootScope.itembuyprice[item.GrpID][index];//买货价格
             items.SaleClass = item.PUSaleType;//销售分类ID
-            items.GrpID=item.GrpID;//产品类别ID
+            items.GrpID = item.GrpID;//产品类别ID
             $scope.Details.push(items)
           }
 
@@ -1958,7 +1960,7 @@ angular.module('starter.controllers', [])
   //卖货下单
   .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
       CommonService.ionicLoadingShow();
-    $rootScope.commonService = CommonService;
+      $rootScope.commonService = CommonService;
       $scope.sellDetails = [];
       angular.forEach($rootScope.sellprodsList, function (item) {
         if (item.checked == true) {
@@ -1991,7 +1993,7 @@ angular.module('starter.controllers', [])
             return;
           }
           angular.forEach(data.Values.data_list, function (item) {
-            if(item.LogID!=localStorage.getItem("usertoken")){ //供应商不能选择自己
+            if (item.LogID != localStorage.getItem("usertoken")) { //供应商不能选择自己
               $rootScope.supplierList.push(item);
             }
 
@@ -2009,15 +2011,15 @@ angular.module('starter.controllers', [])
       }
       $rootScope.getListLongAndLatSupplier();
       //验证数量
-    $scope.verify=true;
+      $scope.verify = true;
       $scope.checknumber = function (type, num) {
         if (type == 1) {
           if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-            CommonService.toolTip("数量单位只能输入正整数","");
-            $scope.verify=false;
-            return ;
-          }else{
-            $scope.verify=true;
+            CommonService.toolTip("数量单位只能输入正整数", "");
+            $scope.verify = false;
+            return;
+          } else {
+            $scope.verify = true;
           }
         }
       }
@@ -2093,7 +2095,7 @@ angular.module('starter.controllers', [])
             }
           }).then(function () {
             if ($scope.userbankliststatus.length == 0) {
-              return ;
+              return;
             }
             //提交卖货订单数据
             $scope.sellDatas = {
@@ -2217,7 +2219,7 @@ angular.module('starter.controllers', [])
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         console.log(data);
         if (data.Values == null) {
-          CommonService.platformPrompt('暂无订单信息', '');
+          $scope.isNotData=true;
           return;
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -2354,11 +2356,11 @@ angular.module('starter.controllers', [])
       $rootScope.addcutpayment = [];//增加数量信息
       $scope.cutpaymentinfo.totalmoney = 0;//扣款总金额
       angular.forEach($scope.selectproduct, function (item) {
-        if($scope.cutpaymentinfo.num[item.ID]&&$scope.cutpaymentinfo.money[item.ID]){
+        if ($scope.cutpaymentinfo.num[item.ID] && $scope.cutpaymentinfo.money[item.ID]) {
           item.num = $scope.cutpaymentinfo.num[item.ID];
           item.money = $scope.cutpaymentinfo.money[item.ID];
           $rootScope.addcutpayment.push(item)
-          $scope.cutpaymentinfo.totalmoney+=item.money;
+          $scope.cutpaymentinfo.totalmoney += item.money;
         }
       })
     }
@@ -2413,16 +2415,16 @@ angular.module('starter.controllers', [])
         items.Status = 0;//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         $scope.addYanhuodetails.push(items);
       })
-      $scope.imgsDetails=[];
-      angular.forEach($scope.ImgsPicAddr,function (item) {
-        $scope.imgsDetails.push({PicAddr:item,PicDes:'提交验货拍照图库照片'})
+      $scope.imgsDetails = [];
+      angular.forEach($scope.ImgsPicAddr, function (item) {
+        $scope.imgsDetails.push({PicAddr: item, PicDes: '提交验货拍照图库照片'})
       })
       //提交验货数据
       $scope.addYanhuodatas = {
         AddUser: localStorage.getItem("usertoken"),//添加人账号 AddUser
         OrderType: ordeType,//类型 1卖货单2供货单
         OrderNo: $rootScope.checkDetails.No,//卖货单/供货单订单号
-        Imgs:$scope.imgsDetails,  //上传图片集合,
+        Imgs: $scope.imgsDetails,  //上传图片集合,
         Details: $scope.addYanhuodetails //验货明细
 
       }
@@ -2478,8 +2480,8 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.checkDetails.No ?($rootScope.orderId?'':$rootScope.checkDetails.No)  : '',//发货单号
-        BNode:  ''//买货单号
+        SNode: $rootScope.checkDetails.No ? ($rootScope.orderId ? '' : $rootScope.checkDetails.No) : '',//发货单号
+        BNode: ''//买货单号
       }
       console.log($scope.params);
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -2600,7 +2602,7 @@ angular.module('starter.controllers', [])
     $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       angular.forEach($scope.selectproduct, function (item) {
-        if($scope.adddeliverinfo.num[item.PID]){
+        if ($scope.adddeliverinfo.num[item.PID]) {
           item.num = $scope.adddeliverinfo.num[item.PID];
           $rootScope.selectproductandnum.push(item)
         }
@@ -2759,8 +2761,8 @@ angular.module('starter.controllers', [])
       $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
       $rootScope.addressitem = [];
       $scope.buttonText = '修改';
-    }else {//查询是否有默认地址
-      $scope.addrinfoother.isstatus =true;
+    } else {//查询是否有默认地址
+      $scope.addrinfoother.isstatus = true;
     }
 
 
@@ -2805,7 +2807,7 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.addr = $scope.addrareacountyone.mergername + $scope.addrinfo.addr;
 
       AccountService.setAddr($scope.addrinfo).success(function (data) {
-        CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>',  '');
+        CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -2842,7 +2844,7 @@ angular.module('starter.controllers', [])
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt('暂无订单信息', '');
+            $scope.isNotData=true;
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -2913,9 +2915,9 @@ angular.module('starter.controllers', [])
     //签收提交
     $scope.signsubmit = function () {
       CommonService.ionicLoadingShow();
-      $scope.imgsDetails=[];
-      angular.forEach($scope.ImgsPicAddr,function (item) {
-        $scope.imgsDetails.push({PicAddr:item,PicDes:'签收拍照图库照片'})
+      $scope.imgsDetails = [];
+      angular.forEach($scope.ImgsPicAddr, function (item) {
+        $scope.imgsDetails.push({PicAddr: item, PicDes: '签收拍照图库照片'})
       })
       var ordeType = $rootScope.signDetails.OrdeType;
 
@@ -2931,7 +2933,7 @@ angular.module('starter.controllers', [])
         Weight: $scope.signinfo.Weight,//总重量
         Cost: $scope.signinfo.Cost,//送货费或提货费
         ExpCost: $scope.signinfo.ExpCost,//到付物流费
-        Imgs:$scope.imgsDetails,  //上传图片集合
+        Imgs: $scope.imgsDetails,  //上传图片集合
 
       }
 
@@ -3001,7 +3003,7 @@ angular.module('starter.controllers', [])
         username: $scope.addrinfo.username,	//姓名
         mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
         addrcode: $scope.addrareaone.code,	//地区编码
-        addr:$scope.addrareaone.mergername + $scope.addrinfo.address,	//详细地址
+        addr: $scope.addrareaone.mergername + $scope.addrinfo.address,	//详细地址
         quantity: $scope.addrinfo.num, 	//供货量
         prodclass: "",//供货品类（多个以逗号隔开）
         lat: $scope.addrareaone.lat,	//纬度
@@ -3114,6 +3116,7 @@ angular.module('starter.controllers', [])
   })
   //申请预收款
   .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService, AccountService) {
+    $rootScope.commonService=CommonService;
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -3123,19 +3126,19 @@ angular.module('starter.controllers', [])
     $scope.applyinfo = {}
     //查询用户银行信息
 
-      $scope.params = {
-        page: 1,
-        size: 5,
-        userid: localStorage.getItem("usertoken")
-      }
-      AccountService.getUserBanklist($scope.params).success(function (data) {
-        $rootScope.userbankliststatus = [];
-        angular.forEach(data.Values.data_list, function (item) {
-          if (item.isdefault == 1) {
-            $rootScope.userbankliststatus.push(item);
-          }
-        })
+    $scope.params = {
+      page: 1,
+      size: 5,
+      userid: localStorage.getItem("usertoken")
+    }
+    AccountService.getUserBanklist($scope.params).success(function (data) {
+      $rootScope.userbankliststatus = [];
+      angular.forEach(data.Values.data_list, function (item) {
+        if (item.isdefault == 1) {
+          $rootScope.userbankliststatus.push(item);
+        }
       })
+    })
 
 
     $scope.applyadvancesubmit = function () {
@@ -3163,7 +3166,7 @@ angular.module('starter.controllers', [])
   //收款银行账号列表
   .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     if ($rootScope.userbankliststatus) {
-        $scope.selectAccount = function (item) {
+      $scope.selectAccount = function (item) {
         $rootScope.userbankliststatus = [];
         $rootScope.userbankliststatus.push(item);
         $state.go("applyadvance");
@@ -3226,8 +3229,8 @@ angular.module('starter.controllers', [])
       $scope.bankinfo.isdefault = $scope.bankiteminfo.isdefault == 1 ? true : false;
       $rootScope.bankitem = [];//清空数据
       $scope.buttonText = '修改';
-    }else{
-      $scope.bankinfo.isdefault =true;
+    } else {
+      $scope.bankinfo.isdefault = true;
     }
     //查询银行名称
     AccountService.getBankName({name: ''}).success(function (data) {
@@ -3307,8 +3310,8 @@ angular.module('starter.controllers', [])
     }
   })
   //我的设置
-  .controller('SettingCtrl', function ($scope, $rootScope, $state,BooLv, CommonService) {
-    $scope.version=BooLv.version;
+  .controller('SettingCtrl', function ($scope, $rootScope, $state, BooLv, CommonService) {
+    $scope.version = BooLv.version;
   })
   //设置安全
   .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService) {
@@ -3475,7 +3478,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
-          FromUser:localStorage.getItem("usertoken") ,//付款方
+          FromUser: localStorage.getItem("usertoken"),//付款方
           ToUser: $rootScope.collectGoodDetails.FromUser,//收款方
           Amount: 0,//订单金额
           Yushou: $scope.paytopaymentprice.DaofuPrice,//到付款
@@ -3499,14 +3502,14 @@ angular.module('starter.controllers', [])
 
       }
       //获取单号对应总金额/到付款/余款
-      $scope.priceParams={
-         ordertype:$rootScope.OrdeType,//类型 1卖货单2供货单
-         node:$rootScope.orderId //所属分组卖货单/供货单NO
+      $scope.priceParams = {
+        ordertype: $rootScope.OrdeType,//类型 1卖货单2供货单
+        node: $rootScope.orderId //所属分组卖货单/供货单NO
       }
       SearchOrderService.getSaleSupplyTotalPrice($scope.priceParams).success(function (data) {
-        $scope.paytopaymentprice=data.Values;
+        $scope.paytopaymentprice = data.Values;
       }).then(function () {
-        CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>'+$scope.paytopaymentprice.DaofuPrice+'元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', 'close', $scope.paytopayments)
+        CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>' + $scope.paytopaymentprice.DaofuPrice + '元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', 'close', $scope.paytopayments)
       })
 
 
@@ -3523,7 +3526,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
-          FromUser:localStorage.getItem("usertoken") ,//付款方
+          FromUser: localStorage.getItem("usertoken"),//付款方
           ToUser: $rootScope.collectGoodDetails.FromUser,//收款方
           Amount: 0,//订单金额
           Yushou: 0,//到付款
@@ -3547,18 +3550,18 @@ angular.module('starter.controllers', [])
         })
       }
       //获取单号对应总金额/到付款/余款
-      $scope.finalpaypriceParams={
-        ordertype:$rootScope.OrdeType,//类型 1卖货单2供货单
-        node:$rootScope.orderId //所属分组卖货单/供货单NO
+      $scope.finalpaypriceParams = {
+        ordertype: $rootScope.OrdeType,//类型 1卖货单2供货单
+        node: $rootScope.orderId //所属分组卖货单/供货单NO
       }
-      console.log( $scope.finalpaypriceParams);
+      console.log($scope.finalpaypriceParams);
       SearchOrderService.getSaleSupplyTotalPrice($scope.finalpaypriceParams).success(function (data) {
-        if(data.Values==null){
-          CommonService.platformPrompt("获取当前单号的金额失败","close")
+        if (data.Values == null) {
+          CommonService.platformPrompt("获取当前单号的金额失败", "close")
         }
-        $scope.finalpayprice=data.Values;
+        $scope.finalpayprice = data.Values;
       }).then(function () {
-        CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>'+$scope.finalpayprice.YuEPrice+'元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', 'close', $scope.payfinalpayment)
+        CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>' + $scope.finalpayprice.YuEPrice + '元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', 'close', $scope.payfinalpayment)
       })
     }
 

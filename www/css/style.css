@@ -175,3 +175,13 @@
 .item-image:not(img){
   text-align: left!important;
 }
+
+.isNotDataHint{
+  color: #808080;
+  padding: 6rem;
+  text-align: center;
+}
+
+.isNotDataHint i{
+  font-size: 5rem;
+}

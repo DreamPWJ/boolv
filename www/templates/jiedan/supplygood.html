@@ -10,6 +10,10 @@
 
   <ion-content overflow-scroll="false" class="stable-bg">
     <ion-refresher on-refresh="supplygoodList(0)" pulling-text="下拉更新"></ion-refresher>
+    <div ng-if="isNotData" class="isNotDataHint">
+      <i class="icon ion-android-notifications"></i>
+      <p>暂无订单信息</p>
+    </div>
     <div class="list margin-top-1px">
       <a ng-href="#/supplydetails/{{item}}" class="item item-icon-right" ng-repeat="item in supplylist">
         <h2>订单号:{{item.No}} <span class="item-note jiedan-time">{{item.AddTime | date:'yyyy-MM-dd HH:mm'}}</span></h2>

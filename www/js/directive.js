@@ -48,32 +48,49 @@ angular.module('starter.directive', [])
 /**
  * 提示框tooltip
  */
-.directive('toolTip',[function(){
+  .directive('toolTip', [function () {
 
+    return {
+      restrict: 'EA',
+      templateUrl: 'templates/popover/tooltip.html',
+      scope: {
+        message: "=",
+        type: "="
+      },
+      link: function (scope, element, attrs) {
+
+        scope.hideAlert = function () {
+          scope.message = null;
+          scope.type = null;
+        };
+
+      }
+    };
+  }]).directive('checkForm', function ($rootScope, CommonService) {//验证表单类型 提示
   return {
-    restrict: 'EA',
-    templateUrl: 'templates/popover/tooltip.html',
-    scope : {
-      message : "=",
-      type : "="
-    },
-    link: function(scope, element, attrs){
-
-      scope.hideAlert = function() {
-        scope.message = null;
-        scope.type = null;
-      };
-
-    }
-  };
-}]).directive('checkForm', function () {//验证表单类型 提示
-  return {
-    restrict: 'AE',
+    restrict: 'A',
     link: function (scope, element, attrs) {
-      scope.checkForm = function (value,type) {
-            if(type=='phone'){
-
-            }
+      $rootScope.commonService = CommonService;
+      $rootScope.verify = true;
+      scope.checkForm = function (value, content, type, comparevalue) {
+        if (type == 'phone') {//验证手机号
+        }
+        if (type == 'maxvaule') {//最大不能超过comparevalue值
+          if (value > comparevalue) {
+            $rootScope.commonService.toolTip(content, '')
+            $rootScope.verify = false;
+          } else {
+            $rootScope.verify = true;
+          }
+        }
+        if (type =='positivenumber') {//正数验证
+          if (/^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/.test(value)) {
+            $rootScope.verify = true;
+          } else {
+            $rootScope.commonService.toolTip(content, '')
+            $rootScope.verify = false;
+          }
+        }
       };
     }
   }
