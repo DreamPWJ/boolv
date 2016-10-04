@@ -366,7 +366,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getSaleOrderList();
+    $scope.getSaleOrderList(0);//卖货单加载刷新
     $scope.buyorderlist = [];
     $scope.buyparamspage = 0;
     $scope.buyparamstotal = 1;
@@ -402,7 +402,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.buyOrderList();
+    $scope.buyOrderList(0);//买货单加载刷新
 
     $scope.supplyorderlist = [];
     $scope.supplyparamspage = 0;
@@ -438,7 +438,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getSupplyPlanList();
+    $scope.getSupplyPlanList(0);//供货计划加载刷新
 
     $scope.collectorderlist = [];
     $scope.collectparamspage = 0;
@@ -477,7 +477,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getSaleSupply();
+    $scope.getSaleSupply(0);//收货单加载刷新
 
     $scope.slideChanged = function (index) {
       $ionicTabsDelegate.select(index);
@@ -1318,7 +1318,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    $scope.newslist();
+    $scope.newslist(0);//新闻加载刷新
     $scope.updateNewsLook = function (look, id) { //设置已读未读
       $scope.lookparams = {
         look: look,
