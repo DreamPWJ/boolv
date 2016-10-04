@@ -44,9 +44,10 @@
       </a>
       <div ng-hide="showme2">
         <a ng-href="" class="item" ng-repeat="item in supplyDetails.Details">
-          <h2>{{item.ProdName}} <!--供货量(余/总): {{supplyDetails.SupSum}}/{{supplyDetails.NumSum+item.UName}}--></h2>
-          <p>剩余供货次数: {{supplyDetails.SupCount}}次</p>
+          <h2>{{item.ProdName}}  供货量(余/总) : {{item.Num}}/{{supplyDetails.NumSum+item.UName}}</h2>
+          <p>供货次数(余/总) : {{item.SupCount}}/{{supplyDetails.SupCount}}次</p>
           <p>单次供货量: {{item.SupNum+item.UName}}</p>
+
         </a>
 
       </div>
@@ -55,7 +56,7 @@
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
     <a class="col-40 button button-balanced " ng-disabled="!((orderStatus==2||orderStatus==3)&&isSupply)" ng-href="#/enteringnum/{{supplyDetails}}">备货</a>
-    <a class="col-40  button button-calm " ng-href="#/supplyorderlist">供货记录</a>
+    <a class="col-40  button button-calm "  ng-href="#/supplyorderlist">供货记录</a>
   </div>
 
 </ion-view>

@@ -21,13 +21,13 @@
         <input type="text" placeholder="请输入完整卡号" ng-model="bankinfo.accountno" required/>
       </label>
       <p class="padding-top"></p>
-      <div class="item ">
+      <label class="item ">
         <span class="input-label"><span class="padding-right">银行名称 : </span><input ng-model="bankinfo.bankname" placeholder="填写或选择银行名称" class="no-border bankname"  list="bankName" required/>
         <datalist id="bankName">
           <option  ng-repeat="item in bankName">{{item.Name}}</option>
         </datalist></span>
 
-      </div>
+      </label>
       <p class="padding-top"></p>
       <label class="item item-input ">
         <span class="input-label">支行名称 : </span>

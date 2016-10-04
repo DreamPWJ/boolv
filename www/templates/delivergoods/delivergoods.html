@@ -26,17 +26,17 @@
           <span class="input-label"> 重量</span>
           <input type="number" placeholder="(单位 : 公斤)" ng-model="deliverinfo.Weight" check-form ng-change="checkForm(deliverinfo.Weight,'发货重量输入错误 正数可保留两位小数','positivenumber','')" />
         </label>
-        <div class="item " ng-show="goodtype==null||goodtype==1">
+        <label class="item " ng-show="goodtype==null||goodtype==1">
         <span class="input-label"><span class="padding-right">物流公司 : </span>
           <input ng-model="deliverinfo.ExpName" placeholder="填写或选择物流公司" class="no-border bankname"  list="expName" />
         <datalist id="expName">
           <option  ng-repeat="item in expresses">{{item.Name}}</option>
         </datalist></span>
 
-        </div>
+        </label>
         <div ng-show="goodtype==null||goodtype==1" class="item item-input item-icon-right ">
           <span class="input-label"> 物流单号: </span>
-          <input class="col-50" type="number" placeholder="点击右侧图标扫描" ng-model="deliverinfo.ExpNo" ng-value="deliverinfo.ExpNo"/>
+          <input class="col-50" type="text" placeholder="点击右侧图标扫描" ng-model="deliverinfo.ExpNo" ng-value="deliverinfo.ExpNo"/>
           <i ng-click="barcodeScanner()" class="icon ion-qr-scanner"></i>
         </div>
 

@@ -31,16 +31,16 @@
         <input type="text" placeholder="填写真实车牌号码">
       </label>-->
 
-      <div class="item " ng-show="goodtype==null||goodtype==1">
+      <label class="item " ng-show="goodtype==null||goodtype==1">
         <span class="input-label"><span class="padding-right">物流公司 : </span>
           <input ng-model="signinfo.ExpName" placeholder="填写或选择物流公司" class="no-border bankname"  list="expName" />
         <datalist id="expName">
           <option  ng-repeat="item in expresses">{{item.Name}}</option>
         </datalist></span>
-        </div>
+        </label>
       <div class="item item-input item-icon-right" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 物流单号:  </span>
-        <input class="col-50"  type="number" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo" />
+        <input class="col-50"  type="text" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo" />
         <i class="icon ion-qr-scanner" ng-click="barcodeScanner()" ></i>
       </div>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">

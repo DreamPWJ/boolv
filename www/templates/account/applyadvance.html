@@ -20,7 +20,7 @@
       </a>
       <label class="item item-input border-bottom-1">
         <span class="input-label">借款周期</span>
-        <input type="number" placeholder="不能超过30天" check-form ng-change="checkForm(applyinfo.Cycle,'借款周期不能超过30天','maxvaule',30)" ng-model="applyinfo.Cycle" required/>
+        <input type="number" placeholder="不能超过30天" check-form ng-change="checkForm(applyinfo.Cycle,'借款周期不能超过30天或小于0','maxvaule',30)" ng-model="applyinfo.Cycle" required/>
       </label>
       <a ng-href="" class="item " >
         <h2 style="color:#444;">服务费 <span class="item-note dark font-size-1" >0.03%</span></h2>

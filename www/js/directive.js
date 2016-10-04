@@ -84,7 +84,7 @@ angular.module('starter.directive', [])
           }
         }
         if (type == 'maxvaule') {//最大不能超过maxvalue值
-          if (value > maxvalue) {
+          if (value > maxvalue||value<0) {
             if (value||value==0) {
               $rootScope.commonService.toolTip(content, '')
             }

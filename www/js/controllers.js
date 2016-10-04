@@ -594,6 +594,7 @@ angular.module('starter.controllers', [])
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.supplyDetails);
     CommonService.ionicPopover($scope, 'my-stockup.html');
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
@@ -611,12 +612,11 @@ angular.module('starter.controllers', [])
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService, SearchOrderService) {
-    $rootScope.deliverDetails = JSON.parse($stateParams.item)
-
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);
     $scope.supplyinfo = [];//供货信息
     $scope.params = {
       page: 1,
-      size: 10,
+      size: 5,
       userid: localStorage.getItem("usertoken")
     }
     //获取发货用户常用地址ID
@@ -631,7 +631,7 @@ angular.module('starter.controllers', [])
     })
     $scope.toAddrparams = {
       page: 1,
-      size: 10,
+      size: 5,
       userid: $rootScope.deliverDetails.ToUser
     }
     //获取收货用户常用地址ID
@@ -646,10 +646,10 @@ angular.module('starter.controllers', [])
     })
     //查询用户银行信息
     AccountService.getUserBanklist($scope.params).success(function (data) {
-      $scope.userbankliststatus = [];
+      $rootScope.userbankliststatus = [];
       angular.forEach(data.Values.data_list, function (item) {
         if (item.isdefault == 1) {
-          $scope.userbankliststatus.push(item);
+          $rootScope.userbankliststatus.push(item);
         }
       })
     })
@@ -659,7 +659,7 @@ angular.module('starter.controllers', [])
         $state.go('adddealaddress');
         return;
       }
-      if ($scope.userbankliststatus.length == 0) {
+      if ($rootScope.userbankliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
         $state.go('addbankaccount');
         return;
@@ -689,13 +689,13 @@ angular.module('starter.controllers', [])
         FromAddr: $scope.addrliststatus[0].id,//发货地址ID
         ToAddr: $scope.toAddraddrliststatus[0].id,//收货地址ID
         TradeType: 0,//0-物流配送1-送货上门3-上门回收：TradeType
-        Account: $scope.userbankliststatus[0].id,//收款账号ID
+        Account: $rootScope.userbankliststatus[0].id,//收款账号ID
         Details: $scope.details// 供货明细
       };
 
       SearchOrderService.addSearchOrderSupplyPlan($scope.datas).success(function (data) {
-
-        CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', '')
+        $rootScope.searchorderTabsSelect=2;//供货计划选项
+        CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder')
       })
 
     }
@@ -2703,12 +2703,12 @@ angular.module('starter.controllers', [])
 
   })
   //地址详细列表
-  .controller('DealAddressCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
+  .controller('DealAddressCtrl', function ($scope, $state, $rootScope,$ionicHistory, CommonService, AccountService) {
     if ($rootScope.addrlist) {
       $scope.addrlist = $rootScope.addrlist;
       $scope.selectAddress = function (item) {
         $rootScope.addrlistFirst = item;
-        $state.go("releaseprocureorder");
+        $ionicHistory.goBack();
       }
     }
     $scope.addrlist = [];
@@ -3130,7 +3130,6 @@ angular.module('starter.controllers', [])
     if (!CommonService.isLogin()) {
       return;
     }
-    console.log($rootScope.userbankliststatus);
     //收款账户信息
     $scope.applyinfo = {}
     //查询用户银行信息
@@ -3173,14 +3172,16 @@ angular.module('starter.controllers', [])
     }
   })
   //收款银行账号列表
-  .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    if ($rootScope.userbankliststatus) {
+  .controller('CollectionAccountCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService) {
+    if ($rootScope.userbankliststatus) { //申请预收款和增加备货银行账号选择
       $scope.selectAccount = function (item) {
         $rootScope.userbankliststatus = [];
         $rootScope.userbankliststatus.push(item);
-        $state.go("applyadvance");
+        $ionicHistory.goBack();
       }
     }
+
+
     $scope.userbanklist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -3257,7 +3258,8 @@ angular.module('starter.controllers', [])
         remark: ""	//备注
       }
       AccountService.addUserBank($scope.datas).success(function (data) {
-        CommonService.showAlert('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '')
+        CommonService.showAlert('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '');
+
       })
     }
 
