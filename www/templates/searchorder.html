@@ -15,6 +15,10 @@
     <ion-slide>
       <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSaleOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
+        <div ng-if="isNotData1" class="isNotDataHint">
+          <i class="icon ion-android-notifications"></i>
+          <p>暂无卖货单</p>
+        </div>
         <div class="list margin-top-1px">
           <a ng-href="#/sellorderdetails/{{item}}" class="item" ng-repeat="item in saleorderlist">
             <h2>订单号: {{item.No}} </h2>
@@ -31,6 +35,10 @@
     <ion-slide>
       <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="buyOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
+        <div ng-if="isNotData2" class="isNotDataHint">
+          <i class="icon ion-android-notifications"></i>
+          <p>暂无买货单</p>
+        </div>
         <div class="list margin-top-1px">
           <a ng-href="#/procureorderdetails/{{item}}" class="item" ng-repeat="item in buyorderlist">
             <h2>订单号: {{item.No}} </h2>
@@ -47,6 +55,10 @@
     <ion-slide>
       <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSupplyPlanList(0)" pulling-text="下拉刷新"></ion-refresher>
+        <div ng-if="isNotData3" class="isNotDataHint">
+          <i class="icon ion-android-notifications"></i>
+          <p>暂无供货计划</p>
+        </div>
         <div class="list margin-top-1px">
           <a ng-href="#/supplyorderplan/{{item}}" class="item" ng-repeat="item in supplyorderlist">
             <h2>订单号: {{item.No}} </h2>
@@ -64,6 +76,10 @@
     <ion-slide>
       <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSaleSupply(0)" pulling-text="下拉刷新"></ion-refresher>
+        <div ng-if="isNotData4" class="isNotDataHint">
+          <i class="icon ion-android-notifications"></i>
+          <p>暂无收货单</p>
+        </div>
         <div class="list margin-top-1px">
           <a ng-href="#/deiverorderdetails/{{item}}" class="item" ng-repeat="item in collectorderlist">
             <h2>订单号: {{item.No}} </h2>

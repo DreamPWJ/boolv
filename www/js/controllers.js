@@ -195,7 +195,7 @@ angular.module('starter.controllers', [])
         }
       })
     }
-    $scope.currentTimeOffer();
+    $scope.currentTimeOffer(0);//实时报价加载刷新
     $scope.isNotTHCurrentprods = [];
     //首页调统货，详情就是这个类下的非统货
     $scope.getProdsListIsNotTH = function (GrpIDList, index) {
@@ -354,6 +354,12 @@ angular.module('starter.controllers', [])
       //查单(卖货订单)获取卖货单列表
       SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
         $scope.searchcontent = '';//清空搜索条件
+        $scope.isNotData1=false;
+        if(data.Values==null){//没有订单数据
+          $scope.isNotData1=true;
+          $scope.sellparamstotal=1;
+          return;
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.saleorderlist.push(item);
         })
@@ -391,12 +397,20 @@ angular.module('starter.controllers', [])
       //查单(买货订单)获取买货单列表
       SupplyService.getToPage($scope.buyparams).success(function (data) {
         $scope.searchcontent = '';//清空搜索条件
+        $scope.isNotData2=false;
+        if(data.Values==null){//没有订单数据
+          $scope.isNotData2=true;
+          $scope.buyparamstotal=1;
+          return;
+        }
+
         angular.forEach(data.Values.data_list, function (item) {
           $scope.buyorderlist.push(item);
         })
         $scope.buyparamstotal = data.Values.page_count;
         //订单状态(买货单)
         $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
+
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -427,12 +441,20 @@ angular.module('starter.controllers', [])
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlanList($scope.supplyparams).success(function (data) {
         $scope.searchcontent = '';//清空搜索条件
+        $scope.isNotData3=false;
+        if(data.Values==null){//没有订单数据
+          $scope.isNotData3=true;
+          $scope.supplyparamstotal=1;
+          return;
+        }
+
         angular.forEach(data.Values.data_list, function (item) {
           $scope.supplyorderlist.push(item);
         })
         $scope.supplyparamstotal = data.Values.page_count;
         //订单状态(供货单)
         $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中', '供货完成'];
+
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -464,6 +486,13 @@ angular.module('starter.controllers', [])
       //查单(收货订单)获取收货单列表
       DeliverService.getSaleSupply($scope.collectparams).success(function (data) {
         $scope.searchcontent = '';//清空搜索条件
+        $scope.isNotData4=false;
+        if(data.Values==null){ //没有订单数据
+          $scope.isNotData4=true;
+          $scope.collectparamstotal=1;
+          return;
+        }
+
         angular.forEach(data.Values.data_list, function (item) {
           $scope.collectorderlist.push(item);
         })
@@ -472,6 +501,7 @@ angular.module('starter.controllers', [])
         $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
         //订单状态(供货单)
         $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -724,6 +754,7 @@ angular.module('starter.controllers', [])
       };
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
+        $scope.isNotData = false;
         if (data.Values == null) {
           $scope.isNotData = true;
           return
@@ -1304,6 +1335,7 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("usertoken")//用户id
       }
       NewsService.getNewsList($scope.params).success(function (data) {
+        $scope.isNotData = false;
         if (data.Values == null) {
           $scope.isNotData = true;
           return
@@ -1356,6 +1388,7 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
+        $scope.isNotData = false;
         if (data.Values == null) {
           $scope.isNotData = true;
           return
@@ -1373,7 +1406,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getSaleSupply();
+    $scope.getSaleSupply(0);//发货加载刷新
   })
   //发货详情
   .controller('DeliverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
@@ -1702,6 +1735,7 @@ angular.module('starter.controllers', [])
       }
       //接单供货计划订单列表以及详情
       SupplyService.getToPage($scope.params).success(function (data) {
+        $scope.isNotData = false;
         if (data.Values == null) {
           $scope.isNotData = true;
           return
@@ -2224,7 +2258,7 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
-        console.log(data);
+        $scope.isNotData = false;
         if (data.Values == null) {
           $scope.isNotData = true;
           return;
@@ -2243,7 +2277,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getSaleSupply();
+    $scope.getSaleSupply(0);//验货加载刷新
 
   })
   //验货列表详情
@@ -2727,6 +2761,11 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AccountService.getAddrlist($scope.params).success(function (data) {
+        $scope.isNotData = false;
+        if(data.Values.data_list==null){
+          $scope.isNotData=true;
+          return;
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.addrlist.push(item);
         })
@@ -2736,7 +2775,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getAddrlist();
+    $scope.getAddrlist(0);//交易地址加载刷新
 
     //删除用户常用地址
     $scope.deleteAddr = function (addrid, index) {
@@ -2851,6 +2890,7 @@ angular.module('starter.controllers', [])
         Type: '' //0-物流配送1-送货上门2-上门回收
       };
       DeliverService.getSaleSupply($scope.params).success(function (data) {
+        $scope.isNotData = false;
         if (data.Values == null) {
           $scope.isNotData = true;
           return
@@ -2869,7 +2909,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    $scope.getSaleSupply();
+    $scope.getSaleSupply(0);//签收加载刷新
   })
   .controller('SignDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.signDetails = JSON.parse($stateParams.item);
@@ -3045,6 +3085,11 @@ angular.module('starter.controllers', [])
         User: localStorage.getItem("usertoken")//申请人
       }
       ApplyAdvanceService.getApplyPayment($scope.params).success(function (data) {
+        $scope.isNotData = false;
+        if (data.Values == null) {
+          $scope.isNotData = true;
+          return
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.applylist.push(item);
         })
@@ -3056,7 +3101,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    $scope.getApplyPayment();
+    $scope.getApplyPayment(0);//我的预收款加载刷新
 
   })
   //获取还款记录列表
@@ -3197,6 +3242,11 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("usertoken")//用户id
       }
       AccountService.getUserBanklist($scope.params).success(function (data) {
+        $scope.isNotData = false;
+        if(data.Values.data_list==null){
+          $scope.isNotData=true;
+          return;
+        }
         angular.forEach(data.Values.data_list, function (item) {
           $scope.userbanklist.push(item);
         })
@@ -3206,7 +3256,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.getUserBanklist();
+    $scope.getUserBanklist(0);//收款账号加载刷新
     //删除银行账号
     $scope.delUserBank = function (bankId) {
       $scope.delparams = {

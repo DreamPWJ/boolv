@@ -10,6 +10,10 @@
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <ion-refresher on-refresh="getApplyPayment(0)" pulling-text="下拉更新"></ion-refresher>
+    <div ng-if="isNotData" class="isNotDataHint">
+      <i class="icon ion-android-notifications"></i>
+      <p>暂无预收款</p>
+    </div>
     <div class="list margin-top-1px ">
       <a ng-href="#/davancedetails/{{item}}" class="item " ng-repeat="item in applylist">
         <h2><strong>{{item.Money|currency:''}}</strong></h2>

@@ -12,6 +12,10 @@
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="stable-bg ">
     <ion-refresher on-refresh="getUserBanklist(0)" pulling-text="下拉更新"></ion-refresher>
+    <div ng-if="isNotData" class="isNotDataHint">
+      <i class="icon ion-sad"></i>
+      <p>无收款账号</p>
+    </div>
     <ion-list class="list list-borderless">
       <div ng-repeat="item in userbanklist">
       <ion-item  ng-click="selectAccount(item)"   class="item-borderless">
@@ -25,6 +29,7 @@
       <p></p>
       </div>
    </ion-list>
+    <p ng-if="userbanklist.length!=0" class="text-center padding-top grey">* 列表左滑可编辑删除收款账号</p>
     <ion-infinite-scroll  on-infinite="getUserBanklist()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 

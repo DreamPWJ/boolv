@@ -177,11 +177,17 @@
 }
 
 .isNotDataHint{
-  color: #808080;
-  padding: 6rem;
+  width: 100%;
+  height: 100%;
+  color: rgba(128,128,128,0.6);
+  padding-top: 40%;
   text-align: center;
 }
 
 .isNotDataHint i{
   font-size: 5rem;
+}
+
+.isNotDataHint p{
+  margin-top: 1rem;
 }
