@@ -588,7 +588,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('uploadhead', {
         url: '/uploadhead/:figure',
         templateUrl: 'templates/account/uploadhead.html',
-        controller: 'UploadHeadrCtrl'
+        controller: 'UploadHeadCtrl'
       })
       //解绑手机
       .state('cancelmobile', {

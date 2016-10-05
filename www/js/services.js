@@ -783,15 +783,15 @@ angular.module('starter.services', [])
       $cordovaFileTransfer.upload(url, imageUrl, options)
         .then(function (result) {
           if (params.filenames == 'User') {
-            var figurparams = {
-              userid: localStorage.getItem("usertoken"),
-              figure: JSON.parse(result.response).Des
+            if($scope.uploadName=='uploadhead'){//上传头像单独处理
+              var figurparams = {
+                userid: localStorage.getItem("usertoken"),
+                figure: JSON.parse(result.response).Des
+              }
+              AccountService.modifyFigure(figurparams);
             }
-            AccountService.modifyFigure(figurparams);
           }
-          if (params.filenames == 'Receipt') {
-            $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
-          }
+          $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
           $cordovaToast.showLongCenter("上传成功");
 
           console.log("success=" + result.response);

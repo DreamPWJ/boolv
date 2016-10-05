@@ -2949,6 +2949,7 @@ angular.module('starter.controllers', [])
 
   })
   .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
+    console.log($rootScope.signDetails);
     $scope.signinfo = {};//签收信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
 
@@ -3435,7 +3436,7 @@ angular.module('starter.controllers', [])
   })
   //设置安全
   .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService) {
-
+    console.log(JSON.parse(localStorage.getItem("user")));
   })
   //帮助与反馈
   .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, MainService) {
@@ -3582,7 +3583,7 @@ angular.module('starter.controllers', [])
       AccountService.sendEmailCode($scope.params).success(function (data) {
         console.log(data);
         if (data.Key == data) {
-          CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的<p>邮箱,请尽快去您的邮箱进行验证！</p>', '')
+          CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', '')
         } else {
           CommonService.platformPrompt('发送邮件失败');
         }
@@ -3597,12 +3598,17 @@ angular.module('starter.controllers', [])
     //上传图片数组集合
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadName = 'realname';//上传图片的类别 用于区分
     //上传照片
     $scope.uploadActionSheet = function () {
-      CommonService.uploadActionSheet($scope, 'Receipt');
+      CommonService.uploadActionSheet($scope, 'User');
     }
     //申请实名认证
     $scope.addCertificationName = function () {
+      if($scope.ImgsPicAddr.length==0){
+        CommonService.platformPrompt("请先上传认证照片后再提交!", 'close');
+        return;
+      }
       CommonService.ionicLoadingShow();
       $scope.datas = {
         userid: localStorage.getItem("usertoken"),	//当前用户userid
@@ -3612,7 +3618,7 @@ angular.module('starter.controllers', [])
       }
       AccountService.certificationName($scope.datas).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经<p>提交成功,我们会尽快处理！</p>', '')
+          CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')
         } else {
           CommonService.platformPrompt('实名认证失败');
         }
@@ -3631,9 +3637,11 @@ angular.module('starter.controllers', [])
     };
   })
   //修改用户头像图片
-  .controller('UploadHeadrCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService) {
+  .controller('UploadHeadCtrl', function ($scope, $rootScope, $stateParams, $state, CommonService) {
     //上传图片数组集合
     $scope.imageList = [];
+    $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadName = 'uploadhead';//上传图片的类别 用于区分
     $scope.figureurl = $stateParams.figure;
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
