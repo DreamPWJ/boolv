@@ -10,6 +10,7 @@
   <ion-nav-buttons side="right">
     <a class="button icon ion-plus no-border" ng-href="#/adddealaddress"></a>
   </ion-nav-buttons>
+  <form name="releaseprocureorder">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
     <div class="list  padding-top">
       <label class="item item-input">
@@ -28,6 +29,7 @@
                                       nav-direction=forward>  查看买货协议</a></p>
   </ion-content>
   <div class="padding light-bg bottom-0">
-    <button ng-disabled="!verify" class="button button-calm full-image " ng-click="buygoodssubmit()">提交</button>
+    <button ng-disabled="!(releaseprocureorder.$valid&&verify)" class="button button-calm full-image " ng-click="buygoodssubmit()">提交</button>
   </div>
+  </form>
 </ion-view>

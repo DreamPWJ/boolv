@@ -14,12 +14,12 @@
       <a ng-href="" class="item item-borderless">
         <strong>供货商列表 : </strong>
       </a>
-      <a ng-click="selectSupplier(item)" class="item item-icon-right" ng-repeat="item in supplierList">
+      <div ng-click="selectSupplier(item)" class="item item-icon-right" ng-repeat="item in supplierList">
         <h2>姓名 : {{item.UserName}} <span class="item-note">距离 : {{item.Range}}</span></h2>
         <p>手机号码 : <span class="calm">{{item.Motel}}</span></p>
         <p>地址 : {{item.Addr}}</p>
         <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
+      </div>
 
     </div>
     <ion-infinite-scroll  on-infinite="getListLongAndLatSupplier()" ng-if="totalsupplierList > pagesupplierList"  immediate-check="false">   </ion-infinite-scroll>

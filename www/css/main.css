@@ -188,3 +188,8 @@
 .newspicture {
   max-height: 60px !important;
 }
+
+.pic-has-header{
+  top: 44px !important;
+  background-color: #000000!important;
+}

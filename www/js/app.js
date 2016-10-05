@@ -574,6 +574,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //帮助与反馈
       .state('helpfeedback', {
         url: '/helpfeedback',
+        cache:false,
         templateUrl: 'templates/account/helpfeedback.html',
         controller: 'HelpFeedBackCtrl'
       })
@@ -600,6 +601,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/bindingmobile/:oldphone',
         templateUrl: 'templates/account/bindingmobile.html',
         controller: 'BindingMobileCtrl'
+      })
+      //绑定邮箱
+      .state('bindingemail', {
+        url: '/bindingemail',
+        templateUrl: 'templates/account/bindingemail.html',
+        controller: 'BindingEmailCtrl'
+      })
+      //实名认证
+      .state('realname', {
+        url: '/realname',
+        templateUrl: 'templates/account/realname.html',
+        controller: 'RealNameCtrl'
       })
     ;
 // if none of the above states are matched, use this as the fallback

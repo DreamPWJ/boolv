@@ -1,0 +1,45 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 实名认证</h1>
+  </ion-nav-title>
+  <form name="realname">
+    <ion-content overflow-scroll="false" class="stable-bg   has-button-footer">
+      <div class="list padding-top">
+        <label class="item item-input ">
+          <span class="input-label"> 姓名</span>
+          <input type="text" placeholder="请填写真实姓名" ng-model="realname.name" ng-maxlength="8" required/>
+        </label>
+        <label class="item item-input ">
+          <span class="input-label"> 身份证号码</span>
+          <input type="text" placeholder="请填写真实身份号码" ng-model="realname.no" ng-maxlength="18" required/>
+        </label>
+        <label class="item item-input item-icon-right " ng-click="uploadActionSheet()">
+          <span class="input-label"> 上传照片  <span class="padding-left grey">  必须上传 请参看示例</span></span>
+          <i class="icon ion-android-add calm"></i>
+        </label>
+        <div class="row  row-wrap row-horizontal-around"  >
+          <img ng-repeat="item in imageList" ng-click="shouBigImage(item)" ng-src="{{item}}" alt="实名认证图片" style="height: 12rem" class="col-80 padding">
+        </div>
+        <div ng-if="imageList.length==0" class="row  row-wrap padding-top grey">
+          <span class="padding">示例 ：</span>
+          <img ng-click="shouBigImage('img/realname.jpg')" ng-src="img/realname.jpg" alt="实名认证示例" style="height: 12rem"
+               class="col-80 padding">
+        </div>
+      </div>
+    </ion-content>
+    <div class="padding light-bg bottom-0">
+      <button ng-disabled="!realname.$valid" class="button button-calm full-image " ng-click="addCertificationName()">
+        提交认证
+      </button>
+    </div>
+  </form>
+  <div ng-if="bigImage" class="popover-backdrop dark-bg pic-has-header"  ng-click="hideBigImage()">
+    <img class="full-image"
+         src="{{Url}}"/>
+  </div>
+</ion-view>

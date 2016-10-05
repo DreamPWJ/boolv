@@ -20,18 +20,16 @@
             <label class="item item-input " ng-repeat="items in isNotTHCurrentprods[$index]">
               <span class="input-label">{{items.PName}}</span>
               <input type="number" ng-model="itembuyprice[items.GrpID][$index]" placeholder="报价(单位:元/{{items.PUName}})" check-form  ng-change="checkForm(itembuyprice[items.GrpID][$index],'价格输入错误 正数可保留两位小数','positivenumber','')" />
-              <!--          <span class="item-note input-right-1">元/{{item.PUName}}</span>-->
             </label>
             <p></p>
           </div>
         </div>
       </div>
 
-
     </ion-content>
     <div class="padding light-bg bottom-0">
       <a ng-disabled="!(procuredetails.$valid&&verify)" class="button button-calm full-image"
-         ng-href="#/releaseprocureorder">提交</a>
+         ng-href="#/releaseprocureorder">下一步</a>
     </div>
   </form>
 </ion-view>

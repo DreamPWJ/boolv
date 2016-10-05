@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera,$cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout,$cordovaToast, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -48,13 +48,13 @@ angular.module('starter.services', [])
             if (stateurl != '') {
               $state.go(stateurl, {}, {reload: true});
               $ionicViewSwitcher.nextDirection("forward");//前进画效果
-            }else {
+            } else {
               confirmfunction();
             }
 
           } else {
             if (closeurl == 'close') {//不处理
-                return;
+              return;
             }
             $state.go((closeurl == null || closeurl == '') ? 'tab.main' : closeurl, {}, {reload: true})
             $ionicViewSwitcher.nextDirection("back");//后退动画效果
@@ -136,9 +136,9 @@ angular.module('starter.services', [])
       takePicture: function ($scope, type, filenames) {
         //统计上传成功数量
         $scope.imageSuccessCount = 0;
-        if(type==0){//图库
+        if (type == 0) {//图库
           var options = {
-            maximumImagesCount: 6-$scope.imageList.length,//需要显示的图片的数量
+            maximumImagesCount: 6 - $scope.imageList.length,//需要显示的图片的数量
             width: 800,
             height: 800,
             quality: 80
@@ -146,14 +146,14 @@ angular.module('starter.services', [])
           $cordovaImagePicker.getPictures(options).then(function (results) {
             for (var i = 0, len = results.length; i < len; i++) {
               $scope.imageList.push(results[i]);
-              AccountService.addFilenames($scope, {filenames: filenames},results[i]);
+              AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
             }
 
           }, function (error) {
             $cordovaToast.showLongCenter('获取图片失败');
           });
         }
-        if(type==1){  //拍照
+        if (type == 1) {  //拍照
           //$cordovaCamera.cleanup();
           var options = {
             quality: 100,//相片质量0-100
@@ -275,17 +275,15 @@ angular.module('starter.services', [])
       },
       getLocation: function () { //获取当前经纬度
         CommonService = this;
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            function (p) {
-              localStorage.setItem("latitude", p.coords.latitude);
-              localStorage.setItem("longitude", p.coords.longitude);
-            },
-            function (e) {
-              CommonService.platformPrompt("获取地理位置失败", 'close')
-            }
-          );
-        }
+        var posOptions = {timeout: 10000, enableHighAccuracy: false};
+        $cordovaGeolocation
+          .getCurrentPosition(posOptions)
+          .then(function (position) {
+            localStorage.setItem("latitude", position.coords.latitude);
+            localStorage.setItem("longitude", position.coords.longitude);
+          }, function (err) {
+            CommonService.platformPrompt("获取地理位置失败", 'close');
+          });
       },
       isLogin: function (flag) {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
@@ -370,143 +368,142 @@ angular.module('starter.services', [])
         }, 3000);
       }
 
-  }
-})
-.
-service('MainService', function ($q, $http, BooLv) { //主页服务定义
-  return {
-    //登录并且授权
-    authLogin: function () {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'POST',
-        url: BooLv.api + "/Auth/Login",
-        data: {
-          "AppID": "1209889123",
-          "AppKey": "fdsjyt34fwefyu6776yhthhj78643ffghg"
-        }
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取广告图
-    getAdMsg: function () {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/AdMsg/GetAdMsg",
-        /*       headers: {
-         'Authorization':localStorage.getItem('token')
-         },*/
-        params: {
-          type: 1
-        }
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取行情报价  废弃
-    getProds: function () {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/Prod/GetProds",
-        params: {GrpIDList: '1,5'}
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取行情报价分页列表
-    getProdsList: function (restparams, params) {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise;
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/Prod/GetPageProds/" + restparams.currentPage + '/' + restparams.pageSize,
-        params: params
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取交易公告
-    getListNews: function (listNewsParams) {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/News/GetListNews",
-        params: listNewsParams
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取新闻详情
-    getNews: function (Id) {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/News/GetNews",
-        params: {
-          id: Id
-        }
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取帮助中心列表
-    getHelpList: function (params) {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/Help/GetListPage",
-        params: params
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-    },
-    //获取帮助中心详情
-    getHelpDetails: function (params) {
-      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-      var promise = deferred.promise
-      promise = $http({
-        method: 'GET',
-        url: BooLv.api + "/Help/GetHelp",
-        params: params
-      }).success(function (data) {
-        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-      }).error(function (err) {
-        deferred.reject(err);// 声明执行失败，即服务器返回错误
-      });
-      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
     }
-  }
-}).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state, $cordovaToast, $interval, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) {
+  })
+  .service('MainService', function ($q, $http, BooLv) { //主页服务定义
+    return {
+      //登录并且授权
+      authLogin: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'POST',
+          url: BooLv.api + "/Auth/Login",
+          data: {
+            "AppID": "1209889123",
+            "AppKey": "fdsjyt34fwefyu6776yhthhj78643ffghg"
+          }
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取广告图
+      getAdMsg: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/AdMsg/GetAdMsg",
+          /*       headers: {
+           'Authorization':localStorage.getItem('token')
+           },*/
+          params: {
+            type: 1
+          }
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取行情报价  废弃
+      getProds: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Prod/GetProds",
+          params: {GrpIDList: '1,5'}
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取行情报价分页列表
+      getProdsList: function (restparams, params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise;
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Prod/GetPageProds/" + restparams.currentPage + '/' + restparams.pageSize,
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取交易公告
+      getListNews: function (listNewsParams) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/News/GetListNews",
+          params: listNewsParams
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取新闻详情
+      getNews: function (Id) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/News/GetNews",
+          params: {
+            id: Id
+          }
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取帮助中心列表
+      getHelpList: function (params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Help/GetListPage",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取帮助中心详情
+      getHelpDetails: function (params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/Help/GetHelp",
+          params: params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      }
+    }
+  }).service('AccountService', function ($q, $http, BooLv, $cordovaFileTransfer, $state, $cordovaToast, $interval, $timeout, $ionicPopup, $ionicLoading, $cordovaFile, $cordovaFileOpener2) {
   return {
     sendCode: function (phonenum) {
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -793,9 +790,9 @@ service('MainService', function ($q, $http, BooLv) { //主页服务定义
             AccountService.modifyFigure(figurparams);
           }
           if (params.filenames == 'Receipt') {
-            $scope.ImgsPicAddr.push(JSON.parse(result.response).Des) ;
+            $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
           }
-            $cordovaToast.showLongCenter("上传成功");
+          $cordovaToast.showLongCenter("上传成功");
 
           console.log("success=" + result.response);
         }, function (err) {
@@ -803,6 +800,61 @@ service('MainService', function ($q, $http, BooLv) { //主页服务定义
         }, function (progress) {
           // constant progress updates
         });
+    },
+    sendEmailCode: function (params) {//发送邮件验证码
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/sendemail_code/" + params.email
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    authEmail: function (datas) {//验证邮箱
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/auth_email",
+        data: datas
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    certificationName: function (datas) {//申请实名认证
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/user/certification",
+        data: datas
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    inCollectAdd: function (datas) {//提交帮助与反馈
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'POST',
+        url: BooLv.api + "/InCollect/Add",
+        data: datas
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
     },
     getVersions: function (params) {//查询软件版本
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -818,6 +870,7 @@ service('MainService', function ($q, $http, BooLv) { //主页服务定义
       });
       return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
     },
+
     showUpdateConfirm: function (updatecontent, appurl, version) {    // 显示是否更新对话框
       var confirmPopup = $ionicPopup.confirm({
         cssClass: "show-confirm",
@@ -1480,7 +1533,7 @@ service('MainService', function ($q, $http, BooLv) { //主页服务定义
        到付款：Yushou=0
        余款：AmountFu=0
        定金：Earnest=对应BuyOrder/GetToPage接口的Deposit
-      */
+       */
       addStatement: function (datas) { //查单 提交结算信息
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise;
