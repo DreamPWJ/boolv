@@ -19,7 +19,7 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>供货商 : {{deliverDetails.Username}}</h2>
+          <h2>{{deliverDetails.OrdeType==1?'供货商':'买家'}} : {{deliverDetails.Username}}</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>手机号码 : {{deliverDetails.Usermotel}}</h2>
@@ -36,7 +36,7 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>卖货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        <strong>{{deliverDetails.OrdeType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
         <a ng-href="" class="item" ng-repeat="item in deliverDetails.Details">

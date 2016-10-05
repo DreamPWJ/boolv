@@ -1877,19 +1877,7 @@ angular.module('starter.controllers', [])
           $scope.buyDetails.push(item);
         }
       })
-      //验证数量
-      $scope.verify = true;
-      $scope.checknumber = function (type, num) {
-        if (type == 1) {
-          if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-            CommonService.toolTip("数量单位只能输入正整数", "");
-            $scope.verify = false;
-            return;
-          } else {
-            $scope.verify = true;
-          }
-        }
-      }
+ 
     }
   )
 
@@ -2091,19 +2079,7 @@ angular.module('starter.controllers', [])
         })
       }
       $rootScope.getListLongAndLatSupplier();
-      //验证数量
-      $scope.verify = true;
-      $scope.checknumber = function (type, num) {
-        if (type == 1) {
-          if (!CommonService.regularVerification(/^[1-9]\d*$/, num)) {
-            CommonService.toolTip("数量单位只能输入正整数", "");
-            $scope.verify = false;
-            return;
-          } else {
-            $scope.verify = true;
-          }
-        }
-      }
+
 
       $scope.itemnum = [];//卖货数量
       $scope.sellgoodssubmit = function () {//提交卖货订单

@@ -5,15 +5,15 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 新增账户</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{buttonText}}账户</h1>
   </ion-nav-title>
   <form name="addbank">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
     <div class="list list-borderless ">
       <p class="padding-top"></p>
       <label class="item item-input ">
-        <span class="input-label">用户姓名 : </span>
-        <input type="text" placeholder="请输入真实姓名" ng-model="bankinfo.accountname" required/>
+        <span class="input-label">账号名称 : </span>
+        <input type="text" placeholder="请输入账号名称" ng-model="bankinfo.accountname" required/>
       </label>
       <p class="padding-top"></p>
       <label class="item item-input ">

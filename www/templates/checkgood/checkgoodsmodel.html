@@ -16,7 +16,7 @@
       <i ng-if="adddeliverinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
       <i ng-if="adddeliverinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
        <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[$index]">
-         <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" ng-blur="selectedproduct()"/>
+         <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" check-form ng-change="checkForm(adddeliverinfo.num[item.PID],'数量错误 台数为正整数 公斤为正数可保留两位小数',item.PUType==1?'positiveinteger':'positivenumber','')" ng-blur="selectedproduct()"/>
        </label>
    </ion-item>
 
@@ -26,7 +26,7 @@
   <div class="light-bg bottom-0">
     <div class="row row-no-padding">
       <div class="col-66   gongxiang" >共 :  <span class="calm" ng-bind="adddeliverinfo.selectnum"></span>  项</div>
-      <button class="button button-calm full-image col-34" ng-click="selectaffirm()" >选好了</button>
+      <button class="button button-calm full-image col-34" ng-disabled="!verify" ng-click="selectaffirm()" >选好了</button>
     </div>
 
   </div>
