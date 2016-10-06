@@ -30,9 +30,9 @@
     // 添加新浪微博
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
     // 添加QQ
-    [UMSocialQQHandler setQQWithAppId:qqAppKey appKey:qqAppSecret url:@"http://m.boolv.com/"];
+    [UMSocialQQHandler setQQWithAppId:qqAppKey appKey:qqAppSecret url:@"http://mobile.umeng.com/social"];
     // 添加微信
-    [UMSocialWechatHandler setWXAppId:wechatAppKey appSecret:wechatAppSecret url:@"http://m.boolv.com/"];
+    [UMSocialWechatHandler setWXAppId:wechatAppKey appSecret:wechatAppSecret url:@"http://mobile.umeng.com/social"];
 }
 
 - (void)share:(CDVInvokedUrlCommand*)command
