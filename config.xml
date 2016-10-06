@@ -31,18 +31,6 @@
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
-  <feature name="Device">
-    <param name="ios-package" value="CDVDevice" />
-    <param name="android-package" value="org.apache.cordova.device.Device" />
-  </feature>
-  <feature name="File">
-    <param name="ios-package" value="CDVFile" />
-    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
-  </feature>
-  <feature name="FileTransfer">
-    <param name="ios-package" value="CDVFileTransfer" />
-    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
-  </feature>
   <platform name="android">
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>
@@ -92,8 +80,6 @@
     <splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
     <splash src="resources/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
     <splash src="resources/ios/splash/Default~iphone.png" width="320" height="480"/>
-    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
-    <preference name="iosPersistentFileLocation" value="Library" />
   </platform>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
   <icon src="resources/ios/icon/icon-small@3x.png"/>
