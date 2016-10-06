@@ -29,7 +29,7 @@
       <p></p>
       </div>
    </ion-list>
-    <p ng-if="userbanklist.length!=0" class="text-center padding-top grey">* 列表左滑可编辑删除收款账号</p>
+    <p ng-if="userbanklist.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i> 列表左滑可编辑删除收款账号</p>
     <ion-infinite-scroll  on-infinite="getUserBanklist()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 

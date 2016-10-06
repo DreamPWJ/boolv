@@ -13,14 +13,13 @@
         <label class="item item-input">
           <span class="input-label icon ion-android-phone-portrait"> 手机号</span>
           <input type="number" name="username" ng-model="user.username" ng-blur="blurcheckphone(user.username)" ng-keyup="checkphone(user.username)"
-                 ng-maxlength="11" required>
-         <!-- <span ng-if="loginForm.username.$invalid&&loginForm.username.$touched"
-                class="text-center assertive font-size-08 right-1">手机号输入有误</span>-->
+                 ng-maxlength="11" required/>
+         <!-- <span ng-if="loginForm.username.$invalid&&loginForm.username.$touched">手机号输入有误</span>-->
         </label>
 
         <label class="item item-input">
           <span class="input-label icon ion-unlocked "> 验证码</span>
-          <input type="number" ng-model="user.password" required>
+          <input type="number" ng-model="user.password" required/>
         </label>
         <button class="authcode" ng-class="{false:'disabledauthcode'}[paraclass]" ng-click="sendCode()">{{paracont}}
         </button>
@@ -38,6 +37,6 @@
                                       nav-direction=forward> 查看登录注册协议</a></p>
 
   </ion-content>
-  <!--  <p class="fixed-bottom  text-center calm hide-on-keyboard-open">&copy;博绿网	</p>-->
+<!--    <p class="fixed-bottom  text-center light hide-on-keyboard-open">&copy;博绿网	</p>-->
 </ion-view>
 

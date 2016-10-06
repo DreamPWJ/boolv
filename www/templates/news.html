@@ -17,7 +17,7 @@
        <ion-option-button class="button-balanced" ng-click="updateNewsLook(item.look==0?1:0,item.id)">{{item.look==1?'未读':'已读'}} </ion-option-button>
      </ion-item>
    </ion-list>
-    <p ng-if="newsList.length!=0" class="text-center padding-top grey">* 列表左滑可设置消息已读未读状态</p>
+    <p ng-if="newsList.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i> 列表左滑可设置消息已读未读状态</p>
     <ion-infinite-scroll  on-infinite="newslist()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 </ion-view>

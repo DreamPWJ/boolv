@@ -17,20 +17,22 @@
       <div ng-repeat="item in goodTypeList">
         <ion-item class="item-button-right">
           {{item.GName}}
-          <button class="button button-calm button-small button-outline " ng-click="addproduct(item.GID)">添加产品</button>
+          <button class="button button-calm button-small button-outline "  ng-click="addproduct(item.GID)">添加产品</button>
         </ion-item>
-        <ion-item class="item-input" ng-if="item.GID==items.GrpID" ng-repeat="items in selectproductandnum">
-          <span class="input-label">{{items.PName}}</span>
-          <input type="text" ng-value="items.num+items.PUName" readonly/>
+        <ion-item  ng-if="item.GID==items.GrpID" ng-repeat="items in selectproductandnum">
+          {{items.PName}}
+          <span class="item-note dark">{{items.num+items.PUName}}</span>
+<!--          <input type="text"  ng-value="items.num+items.PUName" readonly/>-->
         </ion-item>
         <p></p>
       </div>
     </ion-list>
     <ion-list>
     <div ng-repeat="items in selectproductandnumother">
-      <ion-item class="item-input" >
-        <span class="input-label">{{items.PName}}</span>
-        <input type="text" ng-value="items.num+items.PUName"  readonly/>
+      <ion-item  >
+        {{items.PName}}
+        <span class="item-note dark">{{items.num+items.PUName}}</span>
+        <!--        <input type="text"  ng-value="items.num+items.PUName"  readonly/>-->
       </ion-item>
       <p></p>
     </div>

@@ -51,7 +51,7 @@
 }
 
 .white-bg {
-  background-color: #ffffff;
+  background-color: #ffffff!important;
 }
 
 /* 修改android平台默认样式*/
@@ -92,9 +92,15 @@
   margin-top: -1px;
 }
 
+.font-size-05 {
+  font-size: 0.5rem!important;
+}
+
 .font-size-08 {
   font-size: 0.8rem;
 }
+
+
 .font-size-1 {
   font-size: 1rem
 }
@@ -191,3 +197,5 @@
 .isNotDataHint p{
   margin-top: 1rem;
 }
+
+

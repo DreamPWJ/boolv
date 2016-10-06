@@ -1458,8 +1458,9 @@ angular.module('starter.controllers', [])
   })
   //添加发货清单
   .controller('AddDeliverListCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService) {
-
+    console.log($rootScope.deliverDetails);
     CommonService.searchModal($scope, 'templates/delivergoods/delivergoodsmodel.html');
+    $rootScope.selectproductandnum = [];//清空数据
     $scope.adddeliverinfo = {};//扣款信息
     $scope.adddeliverinfo.isAdd = [];
     $scope.adddeliverinfo.isMinus = [];
@@ -2538,6 +2539,7 @@ angular.module('starter.controllers', [])
   //添加验货清单
   .controller('AddProductCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService) {
     CommonService.searchModal($scope, 'templates/checkgood/checkgoodsmodel.html');
+    $rootScope.selectproductandnum = [];//清空数据
     $scope.adddeliverinfo = {};//扣款信息
     $scope.adddeliverinfo.isAdd = [];
     $scope.adddeliverinfo.isMinus = [];
@@ -2959,7 +2961,6 @@ angular.module('starter.controllers', [])
   })
   //签收提交
   .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService,SearchOrderService) {
-    console.log($rootScope.signDetails);
     $scope.signinfo = {};//签收信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
 

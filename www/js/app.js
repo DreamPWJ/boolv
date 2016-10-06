@@ -474,6 +474,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //添加扣款项
       .state('addcutpayment', {
         url: '/addcutpayment',
+        cache:false,
         templateUrl: 'templates/checkgood/addcutpayment.html',
         controller: 'AddCutPaymentCtrl'
       })
