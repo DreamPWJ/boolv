@@ -12,7 +12,7 @@
     <button class="button icon ion-search no-border" ng-click="modal.show()"></button>
   </ion-nav-buttons>
 
-  <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" id="searchorder">
+  <ion-slide-box show-pager="false" on-slide-changed="slideChanged($index)" delegate-handle="slidebox-searchorder" id="searchorder">
     <ion-slide>
       <ion-content overflow-scroll="false" class="has-tabs">
         <ion-refresher on-refresh="getSaleOrderList(0)" pulling-text="下拉刷新"></ion-refresher>
@@ -98,7 +98,7 @@
     </ion-slide>
   </ion-slide-box>
 
-  <ion-tabs id="searhorder" class="tabs-light">
+  <ion-tabs id="searhorder" class="tabs-light" delegate-handle="my-handle-searchorder">
     <ion-tab title="卖货单" on-select="selectedTab('卖货单',0)">
     </ion-tab>
     <ion-tab title="买货单" on-select="selectedTab('买货单',1)">

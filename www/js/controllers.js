@@ -37,7 +37,7 @@ angular.module('starter.controllers', [])
         MainService.getAdMsg().success(function (data) {
           $scope.adImg = data.Values;
           //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
-          $ionicSlideBoxDelegate.update();
+          $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
           //上面这句就是实现无限循环的关键，绑定了滑动框，
           $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
 
@@ -316,7 +316,7 @@ angular.module('starter.controllers', [])
     $scope.search = {};//搜索内容
     $scope.searchcontent = '';//输入内容
     $scope.searchquery = function (searchcontent) {
-      var index = $ionicTabsDelegate.selectedIndex();
+      var index = $ionicTabsDelegate.$getByHandle('my-handle-searchorder').selectedIndex();
       $scope.searchcontent = searchcontent;
       if (index == 0) {
         $scope.getSaleOrderList();
@@ -509,25 +509,21 @@ angular.module('starter.controllers', [])
     $scope.getSaleSupply(0);//收货单加载刷新
 
     $scope.slideChanged = function (index) {
-      $ionicTabsDelegate.select(index);
+      $ionicTabsDelegate.$getByHandle('my-handle-searchorder').select(index);
     };
     //查看订单自动跳转到相应类型的订单  非默认0选项
     if ($rootScope.searchorderTabsSelect) {
       $scope.$on('$ionicView.afterEnter', function () {
-        $ionicTabsDelegate.select($rootScope.searchorderTabsSelect);
+        $ionicTabsDelegate.$getByHandle('my-handle-searchorder').select($rootScope.searchorderTabsSelect);
       })
     }
-
-    /*    $scope.$on('$ionicView.afterEnter', function () {
-     //等待视图加载完成的时候默认选中第一个菜单
-     $ionicTabsDelegate._instances[1].select($ionicSlideBoxDelegate._instances[1].currentIndex());
-     });*/
+    
 
     $scope.selectedTab = function (title, index) {
       //更改标题
       $scope.title = title;
       //滑动的索引和速度
-      $ionicSlideBoxDelegate.slide(index)
+      $ionicSlideBoxDelegate.$getByHandle("slidebox-searchorder").slide(index)
     }
     CommonService.searchModal($scope, 'templates/search.html');
 
