@@ -149,7 +149,7 @@
           <key>CFBundleTypeRole</key>
           <string>Editor</string>
           <key>CFBundleURLName</key>
-          <string>sina</string>
+          <string>新浪微博</string>
           <key>CFBundleURLSchemes</key>
           <array>
             <string>5242e19241175a936bd2b469c50de423</string>
@@ -189,7 +189,7 @@
     <!-- 同时使用微信支付插件时不需要引入 -->
     <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libWeChatSDK.a" framework="true" />
 
-<!--    <resource-file src="src/ios/UMSocial_Sdk/en.lproj" />-->
+    <resource-file src="src/ios/UMSocial_Sdk/en.lproj" />
     <resource-file src="src/ios/UMSocial_Sdk/zh-Hans.lproj" />
     <resource-file src="src/ios/UMSocial_Sdk/SocialSDKXib" />
     <resource-file src="src/ios/UMSocial_Sdk/UMSocialSDKResourcesNew.bundle" />
