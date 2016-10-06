@@ -536,7 +536,7 @@ angular.module('starter.controllers', [])
   //查单买货详情
   .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, SearchOrderService) {
     $rootScope.buyDetails = JSON.parse($stateParams.item);
-    console.log($rootScope.buyDetails);
+    $rootScope.searchorderTabsSelect=1;//买货单选项
     CommonService.ionicPopover($scope, 'my-pay.html');
     //订单号
     $rootScope.orderId = $rootScope.buyDetails.No;
@@ -625,6 +625,7 @@ angular.module('starter.controllers', [])
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     console.log($rootScope.supplyDetails);
+    $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
@@ -724,8 +725,9 @@ angular.module('starter.controllers', [])
       };
 
       SearchOrderService.addSearchOrderSupplyPlan($scope.datas).success(function (data) {
-        $rootScope.searchorderTabsSelect = 2;//供货计划选项
+
         if (data.Key == 200) {
+          $rootScope.searchorderTabsSelect = 2;//供货计划选项
           CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
         } else {
           CommonService.platformPrompt('您的供货单提交失败');
@@ -1181,6 +1183,8 @@ angular.module('starter.controllers', [])
     $rootScope.collectGoodDetails = JSON.parse($stateParams.item);
     $rootScope.signDetails = JSON.parse($stateParams.item);//签收
     $rootScope.checkDetails = JSON.parse($stateParams.item);//验货
+
+    $rootScope.searchorderTabsSelect = 3;//收货单选项
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
     //订单类型
@@ -1720,6 +1724,7 @@ angular.module('starter.controllers', [])
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.selectproductandnum = [];//提交成功后清空数据
+          $rootScope.searchorderTabsSelect=0;//卖货单选项
           CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder', 'deliverlist');
         } else {
           CommonService.platformPrompt('您的发货信息提交失败');
@@ -1976,8 +1981,8 @@ angular.module('starter.controllers', [])
         Details: $scope.Details//收货明细
       }
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
-        $rootScope.searchorderTabsSelect = 1;//买货单选项
         if (data.Key == 200) {
+          $rootScope.searchorderTabsSelect = 1;//买货单选项
           CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder');
         } else {
           CommonService.platformPrompt('您的买货单提交失败');
@@ -2165,6 +2170,7 @@ angular.module('starter.controllers', [])
             }
             SellService.addOrderDetails($scope.sellDatas).success(function (data) {
               if (data.Key == 200) {
+                $rootScope.searchorderTabsSelect=0;//卖货单选项
                 CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder', '');
               } else {
                 CommonService.platformPrompt('您的卖货单提交失败');
@@ -2183,6 +2189,7 @@ angular.module('starter.controllers', [])
   .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);
     console.log($rootScope.deliverDetails);
+    $rootScope.searchorderTabsSelect=0;//卖货单选项
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
@@ -2753,8 +2760,9 @@ angular.module('starter.controllers', [])
       };
 
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
-        $rootScope.searchorderTabsSelect = 2;//供货计划选项
+
         if (data.Key == 200) {
+          $rootScope.searchorderTabsSelect = 2;//供货计划选项
           CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
         } else {
           CommonService.platformPrompt('提交供货计划操作失败');
@@ -2944,11 +2952,13 @@ angular.module('starter.controllers', [])
 
     $scope.getSaleSupply(0);//签收加载刷新
   })
+  //签收收货单详情
   .controller('SignDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.signDetails = JSON.parse($stateParams.item);
 
   })
-  .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
+  //签收提交
+  .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService,SearchOrderService) {
     console.log($rootScope.signDetails);
     $scope.signinfo = {};//签收信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
@@ -2974,7 +2984,21 @@ angular.module('starter.controllers', [])
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'Receipt');
     }
-
+    //获取发货详情填充签收表单
+    $scope.getPageFaHuo = function () {
+      $scope.params = {
+        currentPage: 1,//当前页码
+        pageSize: 5,//条数
+        ID: '',//编码 ,等于空时取所有
+        No: $rootScope.signDetails.No,//订单号，模糊匹配
+        OrderType: $rootScope.signDetails.OrdeType,//类型 1卖货单2供货单
+        AddUser: ''//添加人
+      }
+      SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
+        $scope.deiverList=data.Values.data_list[0];
+      })
+    }
+    $scope.getPageFaHuo();  //获取发货详情填充签收表单
     //查询物流快递
     $scope.params = {
       code: '',

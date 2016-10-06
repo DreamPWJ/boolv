@@ -319,6 +319,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //添加发货清单
       .state('adddeliverlist', {
         url: '/adddeliverlist',
+        cache:false,
         templateUrl: 'templates/delivergoods/adddeliverlist.html',
         controller: 'AddDeliverListCtrl'
       })
@@ -491,13 +492,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/sign/signlist.html',
         controller: 'SignListCtrl'
       })
+      //签收收货单详情
       .state('signdetails', {
         url: '/signdetails/:item',
         templateUrl: 'templates/sign/signdetails.html',
         controller: 'SignDetailsCtrl'
       })
+      //签收提交
       .state('sign', {
         url: '/sign',
+        cache:false,
         templateUrl: 'templates/sign/sign.html',
         controller: 'SignCtrl'
       })
