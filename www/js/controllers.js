@@ -36,7 +36,6 @@ angular.module('starter.controllers', [])
         //获取广告图
         MainService.getAdMsg().success(function (data) {
           $scope.adImg = data.Values;
-          console.log($scope.adImg);
           //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
           $ionicSlideBoxDelegate.update();
           //上面这句就是实现无限循环的关键，绑定了滑动框，
@@ -559,7 +558,6 @@ angular.module('starter.controllers', [])
       SearchOrderService.getBuyOrderDetails($scope.detailParams).success(function (data) {
         //买货订单 获取买货明细
         $scope.buyOrderDetails = data.Values;
-        console.log($scope.buyOrderDetails);
         angular.forEach($scope.buyOrderDetails, function (item, index) {
           $scope.minMoney = item.Details[0].Price;//最少金额
           $scope.maxMoney = item.Details[0].Price;//最大金额
@@ -624,7 +622,6 @@ angular.module('starter.controllers', [])
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
-    console.log($rootScope.supplyDetails);
     $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
     //订单号
@@ -840,7 +837,6 @@ angular.module('starter.controllers', [])
       }
 
       DeliverService.getPageSQueJian($scope.quejianparams).success(function (data) {
-        console.log(data);
         angular.forEach(data.Values.data_list, function (item) {
           $scope.sellquejianList.push(item);
           $scope.queJianTotalMoney += item.Price;
@@ -1370,7 +1366,7 @@ angular.module('starter.controllers', [])
       }
       NewsService.getNewsList($scope.params).success(function (data) {
         $scope.isNotData = false;
-        if (data.Values == null) {
+        if (data.Values == null||data.Values.data_list==0) {
           $scope.isNotData = true;
           return
         }
@@ -1721,7 +1717,7 @@ angular.module('starter.controllers', [])
         Details: $scope.details //发货明细
 
       }
-      console.log(JSON.stringify($scope.datas));
+
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.selectproductandnum = [];//提交成功后清空数据
@@ -2188,8 +2184,7 @@ angular.module('starter.controllers', [])
   )
   //查单卖货详情
   .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    $rootScope.deliverDetails = JSON.parse($stateParams.item);
-    console.log($rootScope.deliverDetails);
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);;
     $rootScope.searchorderTabsSelect=0;//卖货单选项
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
@@ -2559,7 +2554,7 @@ angular.module('starter.controllers', [])
         SNode: $rootScope.checkDetails.No,//发货单号
         BNode: ''//买货单号
       }
-      console.log($scope.params);
+
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
@@ -3486,7 +3481,6 @@ angular.module('starter.controllers', [])
         GrpCode: 103109 //类别编码 103为APP协议类别
       }
       MainService.getHelpList($scope.params).success(function (data) {
-        console.log(data);
         angular.forEach(data.Values.data_list, function (item) {
           $scope.helpfeedbacklist.push(item);
         })
@@ -3608,7 +3602,6 @@ angular.module('starter.controllers', [])
       }
 
       AccountService.sendEmailCode($scope.params).success(function (data) {
-        console.log(data);
         if (data.Key == data) {
           CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', '')
         } else {
@@ -3838,7 +3831,7 @@ angular.module('starter.controllers', [])
         ordertype: $rootScope.OrdeType,//类型 1卖货单2供货单
         node: $rootScope.orderId //所属分组卖货单/供货单NO
       }
-      console.log($scope.finalpaypriceParams);
+
       SearchOrderService.getSaleSupplyTotalPrice($scope.finalpaypriceParams).success(function (data) {
         if (data.Values == null) {
           CommonService.platformPrompt("获取当前单号的金额失败", "close")
