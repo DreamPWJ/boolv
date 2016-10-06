@@ -456,12 +456,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //验货列表详情
       .state('checkdetails', {
         url: '/checkdetails/:item',
+        cache:false,
         templateUrl: 'templates/checkgood/checkdetails.html',
         controller: 'CheckDetailsCtrl'
       })
       //添加验货清单
       .state('addproduct', {
         url: '/addproduct',
+        cache:false,
         templateUrl: 'templates/checkgood/addproduct.html',
         controller: 'AddProductCtrl'
       })
@@ -496,6 +498,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //签收收货单详情
       .state('signdetails', {
         url: '/signdetails/:item',
+        cache:false,
         templateUrl: 'templates/sign/signdetails.html',
         controller: 'SignDetailsCtrl'
       })

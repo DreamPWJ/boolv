@@ -2314,6 +2314,7 @@ angular.module('starter.controllers', [])
   })
   //添加扣款项
   .controller('AddCutPaymentCtrl', function ($scope, $rootScope, $stateParams, CommonService, DeliverService) {
+    $rootScope.addcutpayment = [];//提交成功清空数据
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.cutpaymentinfo = {};//扣款信息
     $scope.cutpaymentinfo.isAdd = [];
@@ -2521,6 +2522,7 @@ angular.module('starter.controllers', [])
 
         DeliverService.addQJ($scope.datas).success(function (data) {
           if (data.Key == 200) {
+            $rootScope.addcutpayment = [];//提交成功清空数据
             $rootScope.selectproductandnum = [];//提交成功后清空数据
             CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood');
           } else {
@@ -2554,7 +2556,7 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.checkDetails.No ? ($rootScope.orderId ? '' : $rootScope.checkDetails.No) : '',//发货单号
+        SNode: $rootScope.checkDetails.No,//发货单号
         BNode: ''//买货单号
       }
       console.log($scope.params);
