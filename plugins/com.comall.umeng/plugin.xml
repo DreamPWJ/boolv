@@ -132,7 +132,7 @@
           <string>qq</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>QQ41C91511</string>
+            <string>QQ1105690120</string>
           </array>
         </dict>
         <dict>
@@ -142,17 +142,17 @@
           <string>tencent</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>tencent1103697169</string>
+            <string>tencent1105690120</string>
           </array>
         </dict>
         <dict>
           <key>CFBundleTypeRole</key>
           <string>Editor</string>
           <key>CFBundleURLName</key>
-          <string>新浪微博</string>
+          <string>sina</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>5242e19241175a936bd2b469c50de423</string>
+            <string>sina.5242e19241175a936bd2b469c50de423</string>
           </array>
         </dict>
       </array>
