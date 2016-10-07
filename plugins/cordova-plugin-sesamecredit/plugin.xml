@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="com-panweiji-sesamecredit"
+    id="cordova-plugin-sesamecredit"
     version="1.0.0">
     <name>SesameCredit</name>
     <description>SesameCredit Plugin</description>
@@ -12,7 +12,15 @@
     <clobbers target="SesameCredit" />
   </js-module>
 
+  <!-- android -->
+  <platform name="android">
 
+  <config-file target="res/xml/config.xml" parent="/*">
+    <feature name="SesameCredit">
+      <param name="android-package" value="cordova.plugin.sesamecredit.SesameCredit" />
+    </feature>
+  </config-file>
+  </platform>
 
 
 </plugin>

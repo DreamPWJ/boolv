@@ -8,9 +8,9 @@ var exec = require('cordova/exec');
  * 芝麻信用
  */
 var SesameCredit =  {
-  test: function() {
-    alert("测试cordova插件");
-  }
+  test : function(content1,content2) {
+  exec(null, null, "SesameCredit", "test", [content1,content2]);
+}
 };
 
 module.exports = SesameCredit;

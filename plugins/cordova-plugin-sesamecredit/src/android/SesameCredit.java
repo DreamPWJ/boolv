@@ -2,7 +2,7 @@
   芝麻信用 android SDK调用
   潘维吉
 */
-package com.panweiji.sesamecredit;
+package cordova.plugin.sesamecredit;
 
 import android.app.Activity;
 import android.util.Log;
