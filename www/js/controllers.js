@@ -770,7 +770,7 @@ angular.module('starter.controllers', [])
       })
     }
 
-    $scope.getSupplyPlanList();
+    $scope.getSupplyPlanList(0);//供货计划加载刷新
 
   })
   //供货单详情

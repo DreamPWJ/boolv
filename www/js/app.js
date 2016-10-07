@@ -231,6 +231,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //供货记录单列表
       .state('supplyorderlist', {
         url: '/supplyorderlist',
+        cache: false,
         templateUrl: 'templates/searchorder/supplyorderlist.html',
         controller: 'SupplyOrderListCtrl'
       })
