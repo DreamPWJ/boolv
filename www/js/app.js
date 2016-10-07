@@ -378,6 +378,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //添加地址
       .state('adddealaddress', {
         url: '/adddealaddress',
+        cache:false,
         templateUrl: 'templates/jiedan/adddealaddress.html',
         controller: 'AddDealAddressCtrl'
 
@@ -553,6 +554,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //增加收款银行账号
       .state('addbankaccount', {
         url: '/addbankaccount',
+        cache:false,
         templateUrl: 'templates/account/addbankaccount.html',
         controller: 'AddBankAccountCtrl'
       })

@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $timeout, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
     CommonService.ionicLoadingShow();
     $rootScope.commonService = CommonService;
     $scope.getMainData = function () {
@@ -35,20 +35,19 @@ angular.module('starter.controllers', [])
       }).then(function () {
         //获取广告图
         MainService.getAdMsg().success(function (data) {
+          console.log(data);
           $scope.adImg = data.Values;
           //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
-          $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
-          //上面这句就是实现无限循环的关键，绑定了滑动框，
-          $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
+          $timeout(function () {
+            $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
+            //上面这句就是实现无限循环的关键，绑定了滑动框，
+            $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
+            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());
+          }, 100)
+
 
         })
-        //获取行情报价
-        /*     MainService.getProds().success(function (data) {
-         $scope.prods = data.Values;
-         sessionStorage.setItem("getProds", JSON.stringify(data.Values));//行情报价数据复用
-         })*/
         //获取行情报价分页列表
-
         $scope.restProdsParams = {
           currentPage: 1,
           pageSize: 10
@@ -147,7 +146,7 @@ angular.module('starter.controllers', [])
       CommonService.windowOpen(url)
     }
   })
-  .controller('StartCtrl', function ($scope, $state, $rootScope, CommonService) {
+  .controller('StartCtrl', function ($scope, $state) {
     $scope.tomain = function () {
       $state.go('tab.main', {reload: true});
     }
@@ -517,7 +516,7 @@ angular.module('starter.controllers', [])
         $ionicTabsDelegate.$getByHandle('my-handle-searchorder').select($rootScope.searchorderTabsSelect);
       })
     }
-    
+
 
     $scope.selectedTab = function (title, index) {
       //更改标题
@@ -531,7 +530,7 @@ angular.module('starter.controllers', [])
   //查单买货详情
   .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, SearchOrderService) {
     $rootScope.buyDetails = JSON.parse($stateParams.item);
-    $rootScope.searchorderTabsSelect=1;//买货单选项
+    $rootScope.searchorderTabsSelect = 1;//买货单选项
     CommonService.ionicPopover($scope, 'my-pay.html');
     //订单号
     $rootScope.orderId = $rootScope.buyDetails.No;
@@ -1362,7 +1361,7 @@ angular.module('starter.controllers', [])
       }
       NewsService.getNewsList($scope.params).success(function (data) {
         $scope.isNotData = false;
-        if (data.Values == null||data.Values.data_list==0) {
+        if (data.Values == null || data.Values.data_list == 0) {
           $scope.isNotData = true;
           return
         }
@@ -1717,7 +1716,7 @@ angular.module('starter.controllers', [])
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.selectproductandnum = [];//提交成功后清空数据
-          $rootScope.searchorderTabsSelect=0;//卖货单选项
+          $rootScope.searchorderTabsSelect = 0;//卖货单选项
           CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder', 'deliverlist');
         } else {
           CommonService.platformPrompt('您的发货信息提交失败');
@@ -1783,7 +1782,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-    $scope.supplygoodList();
+    $scope.supplygoodList(0);//供货计划加载刷新
 
     //获取当前经纬度
     CommonService.getLocation();
@@ -2163,7 +2162,7 @@ angular.module('starter.controllers', [])
             }
             SellService.addOrderDetails($scope.sellDatas).success(function (data) {
               if (data.Key == 200) {
-                $rootScope.searchorderTabsSelect=0;//卖货单选项
+                $rootScope.searchorderTabsSelect = 0;//卖货单选项
                 CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder', '');
               } else {
                 CommonService.platformPrompt('您的卖货单提交失败');
@@ -2180,8 +2179,9 @@ angular.module('starter.controllers', [])
   )
   //查单卖货详情
   .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    $rootScope.deliverDetails = JSON.parse($stateParams.item);;
-    $rootScope.searchorderTabsSelect=0;//卖货单选项
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);
+    ;
+    $rootScope.searchorderTabsSelect = 0;//卖货单选项
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
@@ -2828,21 +2828,6 @@ angular.module('starter.controllers', [])
   //添加地址
   .controller('AddDealAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     CommonService.ionicLoadingShow();
-    $scope.addrinfo = {};
-    $scope.addrinfoother = {};
-    $scope.buttonText = '添加';
-    if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
-      $scope.addressiteminfo = $rootScope.addressitem;
-      $scope.addrinfo.username = $scope.addressiteminfo.username;
-      $scope.addrinfo.mobile = $scope.addressiteminfo.mobile;
-      $scope.addrinfo.addr = $scope.addressiteminfo.addr;
-      $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
-      $rootScope.addressitem = [];
-      $scope.buttonText = '修改';
-    } else {//查询是否有默认地址
-      $scope.addrinfoother.isstatus = true;
-    }
-
 
     $scope.addrcode = '0';
     AccountService.getArea($scope.addrcode).success(function (data) {
@@ -2863,6 +2848,23 @@ angular.module('starter.controllers', [])
       })
     }
 
+    $scope.addrinfo = {};
+    $scope.addrinfoother = {};
+    $scope.buttonText = '添加';
+    if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
+      $scope.addressiteminfo = $rootScope.addressitem;
+      $scope.addrinfo.username = $scope.addressiteminfo.username;
+      $scope.addrinfo.mobile = $scope.addressiteminfo.mobile;
+      $scope.addrinfo.addr = $scope.addressiteminfo.addr;
+      $scope.addrinfoother.isstatus = $scope.addressiteminfo.status == 1 ? true : false;
+      /* $scope.selectCity($rootScope.addressitem.addrcode);*/
+      $rootScope.addressitem = [];
+      $scope.buttonText = '修改';
+
+
+    } else {//查询是否有默认地址
+      $scope.addrinfoother.isstatus = true;
+    }
     //增加地址方法
     $scope.dealaddresssubmit = function () {
       CommonService.ionicLoadingShow();
@@ -2953,7 +2955,7 @@ angular.module('starter.controllers', [])
 
   })
   //签收提交
-  .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService,SearchOrderService) {
+  .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService, SearchOrderService) {
     $scope.signinfo = {};//签收信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
 
@@ -2989,7 +2991,7 @@ angular.module('starter.controllers', [])
         AddUser: ''//添加人
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
-        $scope.deiverList=data.Values.data_list[0];
+        $scope.deiverList = data.Values.data_list[0];
       })
     }
     $scope.getPageFaHuo();  //获取发货详情填充签收表单
@@ -3621,7 +3623,7 @@ angular.module('starter.controllers', [])
     }
     //申请实名认证
     $scope.addCertificationName = function () {
-      if($scope.ImgsPicAddr.length==0){
+      if ($scope.ImgsPicAddr.length == 0) {
         CommonService.platformPrompt("请先上传认证照片后再提交!", 'close');
         return;
       }
