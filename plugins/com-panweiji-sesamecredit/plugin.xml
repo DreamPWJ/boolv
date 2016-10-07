@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="com-panweiji-sesamecredit"
+    version="1.0.0">
+    <name>SesameCredit</name>
+    <description>SesameCredit Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>Boolv,SesameCredit,PANWEIJI</keywords>
+
+  <js-module src="www/SesameCredit.js" name="SesameCredit">
+    <clobbers target="SesameCredit" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+
+  <config-file target="res/xml/config.xml" parent="/*">
+    <feature name="SesameCredit">
+      <param name="android-package" value="com.panweiji.sesamecredit.SesameCredit" />
+    </feature>
+  </config-file>
+  </platform>
+
+
+</plugin>
