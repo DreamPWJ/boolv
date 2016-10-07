@@ -2530,7 +2530,7 @@ angular.module('starter.controllers', [])
 
 
   //添加验货清单
-  .controller('AddProductCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService) {
+  .controller('AddProductCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, DeliverService, SearchOrderService) {
     CommonService.searchModal($scope, 'templates/checkgood/checkgoodsmodel.html');
     $rootScope.selectproductandnum = [];//清空数据
     $scope.adddeliverinfo = {};//扣款信息
@@ -2538,6 +2538,34 @@ angular.module('starter.controllers', [])
     $scope.adddeliverinfo.isMinus = [];
     $scope.adddeliverinfo.num = [];//填写数量
     $scope.adddeliverinfo.selectnum = 0;//选中数量
+    //获取发货详情填充添加验货清单
+    $scope.getPageFaHuo = function () {
+      $scope.params = {
+        currentPage: 1,//当前页码
+        pageSize: 5,//条数
+        ID: '',//编码 ,等于空时取所有
+        No: $rootScope.checkDetails.No,//订单号，模糊匹配
+        OrderType: $rootScope.checkDetails.OrdeType,//类型 1卖货单2供货单
+        AddUser: ''//添加人
+      }
+      SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
+        $scope.deiverList = data.Values.data_list[0];
+        angular.forEach($scope.deiverList.Details, function (item) {
+          var items = {};
+          items.PID = item.ProdID;
+          items.PName = item.ProdName;
+          items.PUID = item.Unit;
+          items.num = item.Num;
+/*        items.Prices=item.Price;
+          items.PriType=item.PriType;*/
+          items.PUSaleType=item.SaleClass;
+          items.Mark='Fahuo';//标示是发货详情信息还是获取的报价详情的信息
+          $rootScope.selectproductandnum.push(items);
+        })
+
+      })
+    }
+   /* $scope.getPageFaHuo(); */ //获取发货详情填充添加验货清单
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
       //发货 签收 验货  获取产品类别
@@ -2558,10 +2586,30 @@ angular.module('starter.controllers', [])
         $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $scope.goodTypeListAll = data.Values;
+
         })
       })
     }
+
     $scope.getGoodTypeList();
+
+    //选中的产品以及发货的数量
+    $scope.selectproduct = [];
+    //添加缺件
+    $scope.addQueJian = function (index, item) {
+      $scope.adddeliverinfo.isAdd[index] = false;
+      $scope.adddeliverinfo.isMinus[index] = true;
+      $scope.adddeliverinfo.selectnum++;
+      $scope.selectproduct.push(item);
+
+    }
+    //取消添加的缺件
+    $scope.minusQueJian = function (index, item) {
+      $scope.adddeliverinfo.isAdd[index] = true;
+      $scope.adddeliverinfo.isMinus[index] = false;
+      $scope.adddeliverinfo.selectnum--;
+      $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
+    }
 
     //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
     $scope.adddeliverList = [];
@@ -2596,15 +2644,18 @@ angular.module('starter.controllers', [])
         angular.forEach(data.Values.data_list, function (item) {
           $scope.adddeliverList.push(item);
         })
-
         angular.forEach($scope.adddeliverList, function (item, index) {
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
           angular.forEach($rootScope.selectproductandnum, function (items) {
 
             if (items.PID == item.PID) {
-              $scope.adddeliverinfo.isAdd[index] = false;
-              $scope.adddeliverinfo.isMinus[index] = true;
+   /*            if(items.Mark='Fahuo'){
+                 $scope.addQueJian(index,items);
+               }else {*/
+                 $scope.adddeliverinfo.isAdd[index] = false;
+                 $scope.adddeliverinfo.isMinus[index] = true;
+       /*        }*/
               $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
@@ -2621,22 +2672,7 @@ angular.module('starter.controllers', [])
       //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
       $scope.addDeliverProduct(goodtypeid);
     }
-    //选中的产品以及发货的数量
-    $scope.selectproduct = [];
-    //添加缺件
-    $scope.addQueJian = function (index, item) {
-      $scope.adddeliverinfo.isAdd[index] = false;
-      $scope.adddeliverinfo.isMinus[index] = true;
-      $scope.adddeliverinfo.selectnum++;
-      $scope.selectproduct.push(item);
-    }
-    //取消添加的缺件
-    $scope.minusQueJian = function (index, item) {
-      $scope.adddeliverinfo.isAdd[index] = true;
-      $scope.adddeliverinfo.isMinus[index] = false;
-      $scope.adddeliverinfo.selectnum--;
-      $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
-    }
+
     //添加产品
     $scope.addproduct = function (GID) {
       $scope.openModal();
