@@ -383,12 +383,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AddDealAddressCtrl'
 
       })
-      .state('buygood', {
-        url: '/buygood',
-        templateUrl: 'templates/buygood/buygood.html',
-        controller: 'BuyGoodCtrl'
 
-      })
       //买货选择产品
       .state('releaseprocure', {
         url: '/releaseprocure',
@@ -558,10 +553,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/addbankaccount.html',
         controller: 'AddBankAccountCtrl'
       })
+      //芝麻信用
       .state('mycredit', {
         url: '/mycredit',
+        cache:false,
         templateUrl: 'templates/account/mycredit.html',
         controller: 'MyCreditCtrl'
+      })
+      //芝麻信用身份证授权
+      .state('creditnoauthorization', {
+        url: '/creditnoauthorization',
+        cache:false,
+        templateUrl: 'templates/account/creditnoauthorization.html',
+        controller: 'CreditNoAuthorizationCtrl'
+      })
+      //芝麻信用手机号授权
+      .state('creditphoneauthorization', {
+        url: '/creditphoneauthorization',
+        cache:false,
+        templateUrl: 'templates/account/creditphoneauthorization.html',
+        controller: 'CreditPhoneAuthorizationCtrl'
       })
       //帮助信息共用模板
       .state('help', {

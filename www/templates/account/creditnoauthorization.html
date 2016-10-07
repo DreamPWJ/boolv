@@ -1,0 +1,45 @@
+<ion-view>
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item " ng-click="$ionicGoBack()">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 芝麻信用授权</h1>
+  </ion-nav-title>
+
+  <ion-content overflow-scroll="false" class="stable-bg">
+    <div class="row row-horizontal-around text-center padding-vertical  creditflow">
+      <a class="col " ><p class="activate calm-bg" >1</p>
+      <span>立即授权</span></a>
+      <p class="col  line">........</p>
+      <a class="col " ><p class="activate grey-bg" >2</p>
+        <span>同意协议</span></a>
+      <p class="col  line">........</p>
+      <a class="col " ><p class="activate grey-bg" >3</p>
+        <span>短信认证</span></a>
+
+    </div>
+
+    <ion-list>
+      <ion-item class="item-input">
+        <label class="input-label">姓名</label>
+        <input type="text" placeholder="请输入真实姓名" required/>
+      </ion-item>
+      <ion-item class="item-input">
+        <label class="input-label">身份证号码</label>
+        <input type="text" placeholder="请输入真实身份证号码" required/>
+      </ion-item>
+      <p class="padding grey"><i class="icon ion-information-circled"></i> 以上信息用于确认您的身份</p>
+      <div class="padding">
+        <button class="button button-calm button-full ">立即授权</button>
+        <p class=" text-right padding-top"><a class="calm subdued" ng-href="#/creditphoneauthorization">手机验证授权>></a></p>
+        <p class="padding grey"><i class="icon ion-information-circled"></i> 温馨提示: 在博绿网, 您的芝麻信用分越高, 您的预收款额度就会更高,
+          立即授权芝麻信用吧！</p>
+      </div>
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

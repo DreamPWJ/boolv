@@ -2010,10 +2010,7 @@ angular.module('starter.controllers', [])
 
 
   })
-  .controller('BuyGoodCtrl', function ($scope, $rootScope, CommonService) {
-    CommonService.searchModal($scope, 'templates/search.html');
 
-  })
   .controller('SellGoodCtrl', function ($scope, $rootScope, $ionicHistory, $state, CommonService) {
     $scope.selectSupplier = function (item) {
       $rootScope.supplierListFirst = item;
@@ -3427,6 +3424,7 @@ angular.module('starter.controllers', [])
     }
 
   })
+  //芝麻信用
   .controller('MyCreditCtrl', function ($scope, $rootScope, $state, CommonService) {
 
     // 基于准备好的dom，初始化echarts实例
@@ -3451,6 +3449,17 @@ angular.module('starter.controllers', [])
       ]
     };
     myChart.setOption(option, true);
+
+  })
+  //芝麻信用身份证授权
+  .controller('CreditNoAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService) {
+
+
+  })
+
+  //芝麻信用手机号授权
+  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService) {
+
 
   })
   //帮助信息共用模板
