@@ -9,6 +9,7 @@ var exec = require('cordova/exec');
  */
 var SesameCredit =  {
   test : function(content1,content2) {
+    alert(content1);
   exec(null, null, "SesameCredit", "test", [content1,content2]);
 }
 };

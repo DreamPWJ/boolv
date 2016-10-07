@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="cordova-plugin-sesamecredit"
+    id="com.boolv.sesamecredit"
     version="1.0.0">
     <name>SesameCredit</name>
     <description>SesameCredit Plugin</description>
@@ -17,9 +17,10 @@
 
   <config-file target="res/xml/config.xml" parent="/*">
     <feature name="SesameCredit">
-      <param name="android-package" value="cordova.plugin.sesamecredit.SesameCredit" />
+      <param name="android-package" value="com.boolv.sesamecredit.SesameCredit" />
     </feature>
   </config-file>
+    <source-file src="src/android/SesameCredit.java" target-dir="src/com/boolv/sesamecredit" />
   </platform>
 
 
