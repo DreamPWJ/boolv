@@ -412,6 +412,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //收货地址选择提交买货单
       .state('releaseprocureorder', {
         url: '/releaseprocureorder',
+        cache:false,
         templateUrl: 'templates/buygood/releaseprocureorder.html',
         controller: 'ReleaseProcureOrderCtrl'
 

@@ -123,7 +123,7 @@ angular.module('starter.services', [])
 
       ionicLoadingShow: function (content) {
         $ionicLoading.show({
-          template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner>',
+          template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner><p>'+(content?content:'')+'</p>',
           animation: 'fade-in',
           showBackdrop: false
 
@@ -312,9 +312,7 @@ angular.module('starter.services', [])
           $state.go("tab.main", {}, {reload: true});
         }
       },
-      stateReload: function (stateurl) {//路由跳转刷新
-        $state.go(stateurl, {}, {reload: true});
-      },
+
       windowOpen: function (url) {        //通过默认浏览器打开
 
         window.open(url, '_system', 'location=yes');

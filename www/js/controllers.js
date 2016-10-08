@@ -27,7 +27,6 @@ angular.module('starter.controllers', [])
   })
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $timeout, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
     CommonService.ionicLoadingShow();
-    $rootScope.commonService = CommonService;
     $scope.getMainData = function () {
       //登录授权
       MainService.authLogin().success(function (data) {
@@ -153,7 +152,7 @@ angular.module('starter.controllers', [])
   })
 
   //实时报价
-  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService) {
+  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService,$ionicScrollDelegate) {
     $scope.type = $stateParams.GrpID;
     //获取行情报价分页列表
     $scope.currentprods = [];
@@ -181,6 +180,7 @@ angular.module('starter.controllers', [])
           $scope.currentprods.push(item);
         })
         $scope.total = data.Values.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       })
         .finally(function () {
           $scope.$broadcast('scroll.refreshComplete');
@@ -199,7 +199,7 @@ angular.module('starter.controllers', [])
     $scope.getProdsListIsNotTH = function (GrpIDList, index) {
       $scope.restIsNotTHParams = {
         currentPage: 1,
-        pageSize: 1000
+        pageSize: 10000
       }
       $scope.isNotTHParams = {
         IDList: '',
@@ -306,7 +306,7 @@ angular.module('starter.controllers', [])
 
   })
   //查单列表
-  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate) {
+  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate,$ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -364,7 +364,7 @@ angular.module('starter.controllers', [])
         $scope.sellparamstotal = data.Values.page_count;
         //订单状态(卖货单)
         $rootScope.saleorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
-
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -408,7 +408,7 @@ angular.module('starter.controllers', [])
         $scope.buyparamstotal = data.Values.page_count;
         //订单状态(买货单)
         $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
-
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -452,7 +452,7 @@ angular.module('starter.controllers', [])
         $scope.supplyparamstotal = data.Values.page_count;
         //订单状态(供货单)
         $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中', '供货完成'];
-
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -499,7 +499,7 @@ angular.module('starter.controllers', [])
         $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
         //订单状态(供货单)
         $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
-
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1344,7 +1344,7 @@ angular.module('starter.controllers', [])
     }
   })
   //通知消息列表
-  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService) {
+  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService,$ionicScrollDelegate) {
     $scope.newsList = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -1369,6 +1369,7 @@ angular.module('starter.controllers', [])
           $scope.newsList.push(item);
         })
         $scope.total = data.Values.page_count;
+        $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1789,7 +1790,6 @@ angular.module('starter.controllers', [])
   })
   //供货计划填写
   .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
-    /*    $rootScope.commonService=CommonService;*/
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     $rootScope.supplyinfo = [];//供货信息填写信息
     //根据距离及产品明细数量得到参考物流费用
@@ -1816,10 +1816,7 @@ angular.module('starter.controllers', [])
   })
   //买货选择产品
   .controller('ReleaseProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
-    //是否登录
-    if (!CommonService.isLogin()) {
-      return;
-    }
+
     //获取行情报价分页列表
     $rootScope.buyprodsList = [];
     $scope.currentPage = 0;
@@ -1867,7 +1864,6 @@ angular.module('starter.controllers', [])
   })
   //买货发布买货单数量
   .controller('ProcureDetailsNumCtrl', function ($scope, $state, $rootScope, CommonService) {
-      $rootScope.commonService = CommonService;
       $scope.buyDetails = [];
       $rootScope.itembuynum = [];//买货数量
       angular.forEach($rootScope.buyprodsList, function (item) {
@@ -1926,12 +1922,10 @@ angular.module('starter.controllers', [])
 
 
     $rootScope.buygoodssubmit = function () {//提交买货订单
-
       //是否登录
       if (!CommonService.isLogin()) {
         return;
       }
-
       $scope.Details = [];//收货明细数据数组
       angular.forEach($scope.buyDetails, function (THitem, indexs) {
         //统货数据 统货输入数量，金额用0表示
@@ -2023,7 +2017,6 @@ angular.module('starter.controllers', [])
   //卖货下单
   .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
       CommonService.ionicLoadingShow();
-      $rootScope.commonService = CommonService;
       $scope.sellDetails = [];
       angular.forEach($rootScope.sellprodsList, function (item) {
         if (item.checked == true) {
@@ -2193,10 +2186,6 @@ angular.module('starter.controllers', [])
   })
   //我要卖货
   .controller('SellProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
-    //是否登录
-    if (!CommonService.isLogin()) {
-      return;
-    }
     //获取行情报价分页列表
     $rootScope.sellprodsList = [];
     $scope.currentPage = 0;
@@ -3271,7 +3260,6 @@ angular.module('starter.controllers', [])
   })
   //申请预收款
   .controller('ApplyAdvancesCtrl', function ($scope, $rootScope, $state, CommonService, ApplyAdvanceService, AccountService) {
-    $rootScope.commonService = CommonService;
     //是否登录
     if (!CommonService.isLogin()) {
       return;
