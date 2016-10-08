@@ -55,9 +55,8 @@ public class SesameCredit extends CordovaPlugin {
     final Window window = activity.getWindow();*/
     this.callbackContext = callbackContext;
     if ("test".equals(action)) {
-      Log.i(TAG,"第一个参数：" + args.getString(0));
-      Log.i(TAG"第二个参数：" + args.getString(1));
-      callbackContext.error("=====测试cordova插件");
+      callbackContext.success("=====测试cordova插件"+args.getString(0));
+      callbackContext.error("=====测试cordova插件"+args.getString(1));
       return true;
     }
 
