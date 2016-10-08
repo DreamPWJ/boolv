@@ -1982,26 +1982,27 @@ angular.module('starter.controllers', [])
   })
   //收货地址选择提交买货单
   .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
-    CommonService.ionicLoadingShow();
-    $rootScope.buyCycle = {}; //供货周期（天） 0-无限期：Cycle
-    $scope.params = {
-      page: 1,
-      size: 10,
-      userid: localStorage.getItem("usertoken")
-    }
-    //获取用户常用地址
-    AccountService.getAddrlist($scope.params).success(function (data) {
-      $rootScope.addrlist = data.Values.data_list;
-      $rootScope.addrlistFirst = data.Values.data_list[0];
-      if ($scope.addrlist.length == 0) {
-        CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
-        $state.go('adddealaddress');
-        return;
+    if(!$rootScope.addrlistFirst){
+      CommonService.ionicLoadingShow();
+      $rootScope.buyCycle = {}; //供货周期（天） 0-无限期：Cycle
+      $scope.params = {
+        page: 1,
+        size: 5,
+        userid: localStorage.getItem("usertoken")
       }
-    }).finally(function () {
-      CommonService.ionicLoadingHide()
-    })
-
+      //获取用户常用地址
+      AccountService.getAddrlist($scope.params).success(function (data) {
+        $rootScope.addrlist = data.Values.data_list;
+        $rootScope.addrlistFirst = data.Values.data_list[0];
+        if ($scope.addrlist.length == 0) {
+          CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
+          $state.go('adddealaddress');
+          return;
+        }
+      }).finally(function () {
+        CommonService.ionicLoadingHide()
+      })
+    }
 
   })
 
@@ -2103,7 +2104,7 @@ angular.module('starter.controllers', [])
         //获取当前用户地址id和银行账号id
         $scope.params = {
           page: 1,
-          size: 10,
+          size: 5,
           userid: localStorage.getItem("usertoken")
         }
         //获取用户常用地址
@@ -2731,7 +2732,7 @@ angular.module('starter.controllers', [])
   .controller('ReleaseSupplyCtrl', function ($scope, $state, $rootScope, CommonService, AccountService, SupplyService) {
     $scope.params = {
       page: 1,
-      size: 10,
+      size: 5,
       userid: localStorage.getItem("usertoken")
     }
     //获取用户常用地址
@@ -3266,21 +3267,23 @@ angular.module('starter.controllers', [])
     }
     //收款账户信息
     $scope.applyinfo = {}
-    //查询用户银行信息
 
-    $scope.params = {
-      page: 1,
-      size: 5,
-      userid: localStorage.getItem("usertoken")
-    }
-    AccountService.getUserBanklist($scope.params).success(function (data) {
-      $rootScope.userbankliststatus = [];
-      angular.forEach(data.Values.data_list, function (item) {
-        if (item.isdefault == 1) {
-          $rootScope.userbankliststatus.push(item);
+      if(!$rootScope.userbankliststatus){
+        //查询用户银行信息
+        $scope.params = {
+          page: 1,
+          size: 5,
+          userid: localStorage.getItem("usertoken")
         }
-      })
-    })
+        AccountService.getUserBanklist($scope.params).success(function (data) {
+          $rootScope.userbankliststatus = [];
+          angular.forEach(data.Values.data_list, function (item) {
+            if (item.isdefault == 1) {
+              $rootScope.userbankliststatus.push(item);
+            }
+          })
+        })
+      }
 
 
     $scope.applyadvancesubmit = function () {
