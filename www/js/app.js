@@ -72,10 +72,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           StatusBar.styleDefault();
         }
         if($ionicPlatform.is('android')){
+          StatusBar.overlaysWebView(false);
           StatusBar.backgroundColorByHexString("#11c1f3");
         }
 
-        StatusBar.overlaysWebView(false);
+
 
       }
       //打开外部网页
