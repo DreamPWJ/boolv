@@ -68,8 +68,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       if (window.StatusBar) {
         //状态栏颜色设置
         // org.apache.cordova.statusbar required
+        if($ionicPlatform.is('ios')){
+          StatusBar.styleLightContent();
+        }
+        if($ionicPlatform.is('android')){
+          StatusBar.backgroundColorByHexString("#11c1f3");
+        }
+
         StatusBar.overlaysWebView(false);
-        StatusBar.backgroundColorByHexString("#11c1f3");
+
       }
       //打开外部网页
       if (window.cordova && window.cordova.InAppBrowser) {
