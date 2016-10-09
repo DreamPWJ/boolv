@@ -34,14 +34,13 @@ angular.module('starter.controllers', [])
       }).then(function () {
         //获取广告图
         MainService.getAdMsg().success(function (data) {
-          console.log(data);
           $scope.adImg = data.Values;
           //ng-repeat遍历生成一个个slide块的时候，执行完成页面是空白的 手动在渲染之后更新一下，在控制器注入$ionicSlideBoxDelegate，然后渲染数据之后
           $timeout(function () {
             $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
             //上面这句就是实现无限循环的关键，绑定了滑动框，
             $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
-            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());
+/*            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());*/
           }, 100)
 
 
@@ -2066,7 +2065,7 @@ angular.module('starter.controllers', [])
         })
       }
 
-      $rootScope.getListLongAndLatSupplier();
+      $rootScope.getListLongAndLatSupplier(0);//获取最新供应商
 
       $scope.itemnum = [];//卖货数量
       $scope.sellgoodssubmit = function () {//提交卖货订单

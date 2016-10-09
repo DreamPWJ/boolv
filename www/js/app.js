@@ -69,7 +69,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         //状态栏颜色设置
         // org.apache.cordova.statusbar required
         if($ionicPlatform.is('ios')){
-          StatusBar.styleDefault();
+          StatusBar.styleLightContent();
         }
         if($ionicPlatform.is('android')){
           StatusBar.overlaysWebView(false);
