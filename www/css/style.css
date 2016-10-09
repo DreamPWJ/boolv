@@ -210,3 +210,7 @@ background-color:  #aaa;
 .item {
   border-color: rgba(221, 221, 221, 0.5) !important;
 }
+
+.button.back-button{
+  border: none;
+}
