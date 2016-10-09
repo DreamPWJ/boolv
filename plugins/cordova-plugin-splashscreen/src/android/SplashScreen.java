@@ -161,8 +161,8 @@ public class SplashScreen extends CordovaPlugin {
           final  Window window = activity.getWindow();
             cordova.getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                  webView.postMessage("splashscreen", "hide");
                   window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                  webView.postMessage("splashscreen", "hide");
                 }
             });
         } else if (action.equals("show")) {
