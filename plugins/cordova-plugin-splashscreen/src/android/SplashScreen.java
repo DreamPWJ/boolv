@@ -59,6 +59,7 @@ public class SplashScreen extends CordovaPlugin {
     private static ProgressDialog spinnerDialog;
     private static boolean firstShow = true;
     private static boolean lastHideAfterDelay; // https://issues.apache.org/jira/browse/CB-9094
+
     /**
      * Displays the splash drawable.
      */
@@ -83,8 +84,8 @@ public class SplashScreen extends CordovaPlugin {
         if (HAS_BUILT_IN_SPLASH_SCREEN) {
             return;
         }
-      final Activity activity = this.cordova.getActivity();
-      final Window window = activity.getWindow();
+      final  Activity activity = this.cordova.getActivity();
+      final  Window window = activity.getWindow();
       window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // Make WebView invisible while loading URL
         getView().setVisibility(View.INVISIBLE);
@@ -156,12 +157,12 @@ public class SplashScreen extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("hide")) {
-          final Activity activity = this.cordova.getActivity();
-          final Window window = activity.getWindow();
-          window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+          final  Activity activity = this.cordova.getActivity();
+          final  Window window = activity.getWindow();
             cordova.getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    webView.postMessage("splashscreen", "hide");
+                  webView.postMessage("splashscreen", "hide");
+                  window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
             });
         } else if (action.equals("show")) {
