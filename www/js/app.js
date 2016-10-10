@@ -10,6 +10,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory,$cordovaToast) {
     localStorage.setItem("start", 1);
     $ionicPlatform.ready(function () {
+      if (window.StatusBar) {
+        //状态栏颜色设置
+        // org.apache.cordova.statusbar required
+        if($ionicPlatform.is('ios')){
+          StatusBar.styleLightContent();
+        }
+        if($ionicPlatform.is('android')){
+          StatusBar.backgroundColorByHexString("#11c1f3");
+        }
+
+      }
       //主页面显示退出提示框
       $ionicPlatform.registerBackButtonAction(function (e) {
         e.preventDefault();
@@ -65,20 +76,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         cordova.plugins.Keyboard.disableScroll(true);
 
       }
-      if (window.StatusBar) {
-        //状态栏颜色设置
-        // org.apache.cordova.statusbar required
-        if($ionicPlatform.is('ios')){
-          StatusBar.styleLightContent();
-        }
-        if($ionicPlatform.is('android')){
-          StatusBar.overlaysWebView(false);
-          StatusBar.backgroundColorByHexString("#11c1f3");
-        }
 
-
-
-      }
       //打开外部网页
       if (window.cordova && window.cordova.InAppBrowser) {
         window.open = window.cordova.InAppBrowser.open;
