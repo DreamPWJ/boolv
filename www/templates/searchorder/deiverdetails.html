@@ -31,6 +31,18 @@
 
     </ion-list>
     <p></p>
+    <ion-list class="list ">
+      <a ng-click="toggle(2)" hide-show class="item item-borderless">
+        <strong>发货清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+      </a>
+      <div ng-hide="showme2" >
+        <ion-item ng-repeat="item in deiverList[0].Details">
+          {{item.ProdName}} : {{item.Num + item.UName}}
+        </ion-item>
+
+      </div>
+    </ion-list>
+    <p></p>
     <ion-list>
       <ion-item>
         图片浏览 :(点击浏览大图)

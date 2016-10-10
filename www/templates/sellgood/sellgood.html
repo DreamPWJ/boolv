@@ -22,6 +22,7 @@
       </div>
 
     </div>
+    <p ng-if="supplierList.length!=0" class="text-center padding-top grey"><i class="icon ion-information-circled"></i> 上滑列表可获取更多供货商信息</p>
     <ion-infinite-scroll  on-infinite="getListLongAndLatSupplier()" ng-if="totalsupplierList > pagesupplierList"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
 

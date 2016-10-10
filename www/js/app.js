@@ -641,6 +641,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //实名认证
       .state('realname', {
         url: '/realname',
+        cache:false,
         templateUrl: 'templates/account/realname.html',
         controller: 'RealNameCtrl'
       })

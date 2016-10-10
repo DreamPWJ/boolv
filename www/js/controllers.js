@@ -1738,11 +1738,10 @@ angular.module('starter.controllers', [])
       //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
       $scope.userid = localStorage.getItem("usertoken");
       AccountService.getUserInfo($scope.userid).success(function (data) {
-        localStorage.setItem('user', JSON.stringify(data.Values));
-      }).then(function () {
-        if (JSON.parse(localStorage.getItem("user")).grade != 5) {
+        if (data.Values.grade != 5) {
           CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
         }
+        localStorage.setItem('user', JSON.stringify(data.Values));
       })
 
     }
@@ -2039,7 +2038,7 @@ angular.module('starter.controllers', [])
 
         $scope.supplierListParams = {
           currentPage: $rootScope.pagesupplierList,
-          pageSize: 10,
+          pageSize: 5,
           Longitude: localStorage.getItem("longitude") || 114.0557100,//当前经度
           Latitude: localStorage.getItem("latitude") || 22.5224500,//当前纬度
           buff: 1000  //取最远多少距离KG的距离
@@ -3089,6 +3088,7 @@ angular.module('starter.controllers', [])
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
       $rootScope.userinfo = data.Values;
+      localStorage.setItem('user', JSON.stringify(data.Values));
     })
     //分享
     $scope.shareActionSheet = function () {
@@ -3495,8 +3495,27 @@ angular.module('starter.controllers', [])
     $scope.version = BooLv.version;
   })
   //设置安全
-  .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService) {
-    console.log(JSON.parse(localStorage.getItem("user")));
+  .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService,AccountService) {
+    $scope.userid = localStorage.getItem("usertoken");
+    AccountService.getUserInfo($scope.userid).success(function (data) {
+      if(data.Key==200){
+        localStorage.setItem('user', JSON.stringify(data.Values));
+        $rootScope.userinfo=data.Values;
+        var certstate=data.Values.certstate;//获取认证状态参数
+        $scope.certstatestatus=['未认证','认证中','已认证','未通过'];
+        //ubstr(start,length)表示从start位置开始，截取length长度的字符串
+        $scope.phonestatus=certstate.substr(0,1);//手机认证状态码
+        $scope.emailstatus=certstate.substr(1,1);//邮箱认证状态码
+        $scope.secrecystatus=certstate.substr(2,1);//保密认证状态码
+        $scope.identitystatus=certstate.substr(3,1);//身份认证状态码
+        $scope.companystatus=certstate.substr(4,1);//企业认证状态码
+        $scope.bankstatus=certstate.substr(5,1);//银行账号状态码
+
+      }else {
+        CommonService.platformPrompt('获取用户信息失败');
+      }
+
+    })
   })
   //帮助与反馈
   .controller('HelpFeedBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService, MainService) {
@@ -3640,7 +3659,7 @@ angular.module('starter.controllers', [])
       }
 
       AccountService.sendEmailCode($scope.params).success(function (data) {
-        if (data.Key == data) {
+        if (data.Key == 200) {
           CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', '')
         } else {
           CommonService.platformPrompt('发送邮件失败');
@@ -3661,6 +3680,14 @@ angular.module('starter.controllers', [])
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
     }
+     //获取实名认证信息
+    $scope.params={
+      userid:localStorage.getItem("usertoken"),
+    }
+    AccountService.getCertification( $scope.params).success(function (data) {
+      $scope.certificationinfo=data.Values;
+      console.log($scope.certificationinfo);
+    })
     //申请实名认证
     $scope.addCertificationName = function () {
       if ($scope.ImgsPicAddr.length == 0) {
