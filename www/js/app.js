@@ -231,6 +231,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //查单供货计划备货录入
       .state('enteringnum', {
         url: '/enteringnum/:item',
+        cache: false,
         templateUrl: 'templates/searchorder/enteringnum.html',
         controller: 'EnteringNumCtrl'
       })

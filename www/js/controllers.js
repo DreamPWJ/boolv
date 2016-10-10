@@ -666,15 +666,18 @@ angular.module('starter.controllers', [])
         }
       })
     })
-    //查询用户银行信息
-    AccountService.getUserBanklist($scope.params).success(function (data) {
-      $rootScope.userbankliststatus = [];
-      angular.forEach(data.Values.data_list, function (item) {
-        if (item.isdefault == 1) {
-          $rootScope.userbankliststatus.push(item);
-        }
+    if(!$rootScope.userbankliststatus||$rootScope.userbankliststatus.length==0){
+      //查询用户银行信息
+      AccountService.getUserBanklist($scope.params).success(function (data) {
+        $rootScope.userbankliststatus = [];
+        angular.forEach(data.Values.data_list, function (item) {
+          if (item.isdefault == 1) {
+            $rootScope.userbankliststatus.push(item);
+          }
+        })
       })
-    })
+    }
+
     $scope.enteringnumsubmit = function () {
       if ($scope.addrliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
@@ -2905,12 +2908,14 @@ angular.module('starter.controllers', [])
     $scope.selectProvince = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacity = data.Values;
+        $scope.addrinfo.addr='';//清空详细地址
       })
     }
     //选择市级联查询县级
     $scope.selectCity = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacounty = data.Values;
+        $scope.addrinfo.addr='';//清空详细地址
       })
     }
     //选择县级
@@ -2952,7 +2957,6 @@ angular.module('starter.controllers', [])
         $scope.addrinfo.lon = $scope.addrareacountyone.lng, 	//经度
         $scope.addrinfo.addrtype = 0	//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
       $scope.addrinfo.addr = $scope.addrareacountyone.mergername + $scope.addrinfo.addr;
-       
       AccountService.setAddr($scope.addrinfo).success(function (data) {
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
@@ -3088,7 +3092,7 @@ angular.module('starter.controllers', [])
       angular.forEach($scope.ImgsPicAddr, function (item) {
         $scope.imgsDetails.push({PicAddr: item, PicDes: '签收拍照图库照片'})
       })
-      var ordeType = $rootScope.signDetails.OrdeType;
+      var ordeType = $rootScope.signDetails.OrderType;
 
       //提交签收数据
       $scope.datas = {
