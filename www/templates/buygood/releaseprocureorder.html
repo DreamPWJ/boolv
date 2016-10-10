@@ -18,9 +18,9 @@
         <input type="number" placeholder="(单位  天)" ng-model="buyCycle.day"   check-form ng-change="checkForm(buyCycle.day,'采购周期不能为空且是正整数','positiveinteger','')" required/>
       </label>
       <a ng-href="#/dealaddress" class="item  item-icon-right">
-        <h2><strong>收货人 :</strong> {{addrlistFirst.username}}</h2>
-        <h2><strong>手机 :</strong> {{addrlistFirst.mobile}}</h2>
-        <h2 class="text-wrap"><strong>地址 :</strong> {{addrlistFirst.addr}}</h2>
+        <h2><strong>收货人 :</strong> {{addrlistFirst[0].username}}</h2>
+        <h2><strong>手机 :</strong> {{addrlistFirst[0].mobile}}</h2>
+        <h2 class="text-wrap"><strong>地址 :</strong> {{addrlistFirst[0].addr}}</h2>
         <i class="icon ion-ios-arrow-right grey"></i>
       </a>
 

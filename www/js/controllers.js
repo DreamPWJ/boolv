@@ -1437,6 +1437,7 @@ angular.module('starter.controllers', [])
   .controller('DeliverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
+    console.log($rootScope.deliverDetails);
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
     //订单类型
@@ -1981,7 +1982,7 @@ angular.module('starter.controllers', [])
   })
   //收货地址选择提交买货单
   .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
-    if(!$rootScope.addrlistFirst){
+    if(!$rootScope.addrlistFirst||$rootScope.addrlistFirst.length==0){
       CommonService.ionicLoadingShow();
       $rootScope.buyCycle = {}; //供货周期（天） 0-无限期：Cycle
       $scope.params = {
@@ -1991,8 +1992,9 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AccountService.getAddrlist($scope.params).success(function (data) {
+        $rootScope.addrlistFirst=[];
         $rootScope.addrlist = data.Values.data_list;
-        $rootScope.addrlistFirst = data.Values.data_list[0];
+        $rootScope.addrlistFirst.push(data.Values.data_list[0]);
         if ($scope.addrlist.length == 0) {
           CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
           $state.go('adddealaddress');
@@ -2791,10 +2793,10 @@ angular.module('starter.controllers', [])
   })
   //地址详细列表
   .controller('DealAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AccountService) {
-    if ($rootScope.addrlist) {
-      $scope.addrlist = $rootScope.addrlist;
+    if ($rootScope.addrlistFirst) {
       $scope.selectAddress = function (item) {
-        $rootScope.addrlistFirst = item;
+        $rootScope.addrlistFirst=[]
+        $rootScope.addrlistFirst.push(item);
         $ionicHistory.goBack();
       }
     }
@@ -2817,6 +2819,7 @@ angular.module('starter.controllers', [])
         $scope.isNotData = false;
         if (data.Values.data_list == null) {
           $scope.isNotData = true;
+          $rootScope.addrlistFirst=[];//无交易地址的时候清除数据
           return;
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -2837,7 +2840,8 @@ angular.module('starter.controllers', [])
         userid: localStorage.getItem("usertoken")
       }
       AccountService.deleteAddr($scope.delparams).success(function (data) {
-        $scope.addrlist.splice(index, 1)
+        $scope.getAddrlist(0)
+       /* $scope.addrlist.splice(index, 1)*/
       })
     }
     //修改地址信息
@@ -3267,7 +3271,7 @@ angular.module('starter.controllers', [])
     //收款账户信息
     $scope.applyinfo = {}
 
-      if(!$rootScope.userbankliststatus){
+      if(!$rootScope.userbankliststatus||$rootScope.userbankliststatus.length==0){
         //查询用户银行信息
         $scope.params = {
           page: 1,
@@ -3340,6 +3344,7 @@ angular.module('starter.controllers', [])
         $scope.isNotData = false;
         if (data.Values.data_list == null) {
           $scope.isNotData = true;
+          $rootScope.userbankliststatus=[];//无银行账号的时候清除数据
           return;
         }
         angular.forEach(data.Values.data_list, function (item) {
