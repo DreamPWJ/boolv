@@ -43,7 +43,7 @@
           <div class="input-label">
             请选择县
           </div>
-          <select ng-model="addrinfoother.county" required   >
+          <select ng-model="addrinfoother.county" ng-change="selectAcounty(addrinfoother.county)"  required   >
             <option   value="{{item.code}}"   ng-repeat="item in addrareacounty">{{item.name}}</option>
           </select>
         </label>
