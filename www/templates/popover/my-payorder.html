@@ -1,7 +1,7 @@
 <ion-popover-view style="height: {{popoversize}};" ng-controller="MyPopover">
   <ion-content overflow-scroll="false">
     <div id="mypopover" class="list">
-      <a ng-click="paytopaymentsubmit()" ng-if="OrdeType==2&&orderStatus==4" class="item item-icon-left" nav-direction=forward>
+      <a ng-click="paytopaymentsubmit()" ng-if="OrderType==2&&orderStatus==4" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-social-usd assertive"></i>
         支付到付款
       </a>
@@ -25,9 +25,9 @@
         <i class="icon ion-search balanced"></i>
         验货
       </a>
-      <a ng-click="payfinalpaymentsubmit()"  ng-if="(OrdeType==2&&orderStatus==7)||(OrdeType==1&&(orderStatus==6||orderStatus==7))" class="item item-icon-left" nav-direction=forward>
+      <a ng-click="payfinalpaymentsubmit()"  ng-if="(OrderType==2&&orderStatus==7)||(OrderType==1&&(orderStatus==6||orderStatus==7))" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-card assertive"></i>
-        {{OrdeType==1?"结算":"支付尾款"}}
+        {{OrderType==1?"结算":"支付尾款"}}
       </a>
       <a ng-href="#/evaluate" ng-if="orderStatus>8" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-star energized"></i>

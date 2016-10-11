@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{checkDetails.OrdeType==1?'卖货':'供货'}}单详情</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{checkDetails.OrderType==1?'卖货':'供货'}}单详情</h1>
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
@@ -16,11 +16,11 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>{{checkDetails.OrdeType==1?'卖货':'供货'}}人 : {{checkDetails.Fromusername}}</h2>
+          <h2>{{checkDetails.OrderType==1?'卖货':'供货'}}人 : {{checkDetails.Fromusername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2 ng-if="checkDetails.OrdeType==1">订单状态 : <span>{{sellStatus[checkDetails.Status+1]}}</span></h2>
-          <h2 ng-if="checkDetails.OrdeType==2">订单状态 : <span>{{supplyStatus[checkDetails.Status+1]}}</span></h2>
+          <h2 ng-if="checkDetails.OrderType==1">订单状态 : <span>{{sellStatus[checkDetails.Status+1]}}</span></h2>
+          <h2 ng-if="checkDetails.OrderType==2">订单状态 : <span>{{supplyStatus[checkDetails.Status+1]}}</span></h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
           <h2>下单时间 : {{checkDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
@@ -31,10 +31,10 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>{{checkDetails.OrdeType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        <strong>{{checkDetails.OrderType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
-        <a ng-href="" class="item" ng-repeat="item in checkDetails.OrdeType==1?checkDetails.Details:checkDetails.SpO_Details">
+        <a ng-href="" class="item" ng-repeat="item in checkDetails.OrderType==1?checkDetails.Details:checkDetails.SpO_Details">
           <h2>{{item.ProdName}} : {{item.Num+item.UName}}</h2>
         </a>
       </div>

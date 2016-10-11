@@ -534,7 +534,7 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.buyDetails.No;
     //订单类型
-    $rootScope.OrdeType = $rootScope.buyDetails.OrdeType;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.buyDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
     $rootScope.orderType = 2;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
@@ -616,12 +616,13 @@ angular.module('starter.controllers', [])
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.supplyDetails);
     $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
     //订单类型
-    $rootScope.OrdeType = $rootScope.supplyDetails.OrdeType;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.supplyDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
     $rootScope.orderType = 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
@@ -703,12 +704,12 @@ angular.module('starter.controllers', [])
           items.Unit = item.Unit, // 计算单位ID
           items.Num = $scope.supplyinfo[index].num, //数量
           items.Price = item.Price//买货单价
-        $scope.details.push(items)
+          $scope.details.push(items)
       })
       //提交供货计划
       $scope.datas = {
-        SPNo: "",//供货计划单号
-        BONo: $rootScope.deliverDetails.No,//买货单号
+        SPNo: $rootScope.deliverDetails.No,//供货计划单号
+        BONo: $rootScope.deliverDetails.BONo,//买货单号
         ToUser: $rootScope.deliverDetails.FromUser,//买货单(买货)账号（待供货接口获取）
         FromUser: localStorage.getItem("usertoken"),//供货人账号
         FromAddr: $scope.addrliststatus[0].id,//发货地址ID
@@ -783,7 +784,7 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.supplyDetails.No;
     //订单类型
-    $rootScope.OrdeType = $rootScope.supplyDetails.OrdeType || 2;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.supplyDetails.OrderType || 2;//订单类型 1卖货单2供货单
     //评价订单类型
     $rootScope.orderType = 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
@@ -1220,7 +1221,7 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
     //订单类型
-    $rootScope.OrdeType = $rootScope.collectGoodDetails.OrdeType;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.collectGoodDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
     $rootScope.orderType = 2;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
@@ -1246,7 +1247,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//条数
         ID: '',//编码 ,等于空时取所有
         No: $rootScope.orderId,//订单号，模糊匹配
-        OrderType: $rootScope.OrdeType,//类型 1卖货单2供货单
+        OrderType: $rootScope.OrderType,//类型 1卖货单2供货单
         AddUser: ''//添加人
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
@@ -1288,7 +1289,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//条数
         ID: '',//编码 ,等于空时取所有
         No: $rootScope.orderId,//订单号，模糊匹配
-        OrderType: $rootScope.OrdeType,//类型 1卖货单2供货单
+        OrderType: $rootScope.OrderType,//类型 1卖货单2供货单
         AddUser: ''//添加人
       }
       SearchOrderService.getPageSign($scope.params).success(function (data) {
@@ -1483,9 +1484,9 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
     //订单类型
-    $rootScope.OrdeType = $rootScope.deliverDetails.OrdeType;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.deliverDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
-    $rootScope.orderType = $rootScope.deliverDetails.OrdeType == 1 ? 1 : 3;//订单类型1-卖货单2-买货单3-供货单
+    $rootScope.orderType = $rootScope.deliverDetails.OrderType == 1 ? 1 : 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser
 
@@ -1714,7 +1715,7 @@ angular.module('starter.controllers', [])
       CommonService.ionicLoadingShow();
       //提交发货详细数据
       $scope.details = [];
-      var ordeType = $rootScope.deliverDetails.OrdeType;
+      var ordeType = $rootScope.deliverDetails.OrderType;
       angular.forEach($rootScope.selectproductandnum, function (item) {
         var items = {};
         items.ProdID = item.PID;
@@ -2219,7 +2220,7 @@ angular.module('starter.controllers', [])
     //订单号
     $rootScope.orderId = $rootScope.deliverDetails.No;
     //订单类型
-    $rootScope.OrdeType = $rootScope.deliverDetails.OrdeType;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.deliverDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
     $rootScope.orderType = 1;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
@@ -2482,7 +2483,7 @@ angular.module('starter.controllers', [])
       CommonService.ionicLoadingShow();
       //提交验货详细数据
       $scope.addYanhuodetails = [];
-      var ordeType = $rootScope.checkDetails.OrdeType;
+      var ordeType = $rootScope.checkDetails.OrderType;
       angular.forEach($rootScope.selectproductandnum, function (item) {
         var items = {};
         items.ProdID = item.PID;
@@ -2534,7 +2535,7 @@ angular.module('starter.controllers', [])
           $scope.details.push(items);
         })
         $scope.datas = {
-          OrderType: $rootScope.checkDetails.OrdeType,//订单类型1-卖货单2-供货出库单
+          OrderType: $rootScope.checkDetails.OrderType,//订单类型1-卖货单2-供货出库单
           Node: $rootScope.checkDetails.No,//订单号
           Debit: $scope.cutpaymentinfo.totalmoney,//扣款总金额
           Details: $scope.details//卖货/供货验货扣款记录
@@ -2574,7 +2575,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//条数
         ID: '',//编码 ,等于空时取所有
         No: $rootScope.checkDetails.No,//订单号，模糊匹配
-        OrderType: $rootScope.checkDetails.OrdeType,//类型 1卖货单2供货单
+        OrderType: $rootScope.checkDetails.OrderType,//类型 1卖货单2供货单
         AddUser: ''//添加人
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
@@ -3058,7 +3059,7 @@ angular.module('starter.controllers', [])
         pageSize: 5,//条数
         ID: '',//编码 ,等于空时取所有
         No: $rootScope.signDetails.No,//订单号，模糊匹配
-        OrderType: $rootScope.signDetails.OrdeType,//类型 1卖货单2供货单
+        OrderType: $rootScope.signDetails.OrderType,//类型 1卖货单2供货单
         AddUser: ''//添加人
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
@@ -3887,7 +3888,7 @@ angular.module('starter.controllers', [])
       }
       //获取单号对应总金额/到付款/余款
       $scope.priceParams = {
-        ordertype: $rootScope.OrdeType,//类型 1卖货单2供货单
+        ordertype: $rootScope.OrderType,//类型 1卖货单2供货单
         node: $rootScope.orderId //所属分组卖货单/供货单NO
       }
       SearchOrderService.getSaleSupplyTotalPrice($scope.priceParams).success(function (data) {
@@ -3939,7 +3940,7 @@ angular.module('starter.controllers', [])
       }
       //获取单号对应总金额/到付款/余款
       $scope.finalpaypriceParams = {
-        ordertype: $rootScope.OrdeType,//类型 1卖货单2供货单
+        ordertype: $rootScope.OrderType,//类型 1卖货单2供货单
         node: $rootScope.orderId //所属分组卖货单/供货单NO
       }
 

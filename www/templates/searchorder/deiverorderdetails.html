@@ -19,11 +19,11 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>{{collectGoodDetails.OrdeType==1?'卖货':'供货'}}人 : {{collectGoodDetails.Fromusername}}</h2>
+          <h2>{{collectGoodDetails.OrderType==1?'卖货':'供货'}}人 : {{collectGoodDetails.Fromusername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2 ng-if="collectGoodDetails.OrdeType==1">订单状态 : {{collectsellStatus[collectGoodDetails.Status+1]}}</h2>
-          <h2 ng-if="collectGoodDetails.OrdeType==2">订单状态 : {{collectsupplyStatus[collectGoodDetails.Status+1]}}</h2>
+          <h2 ng-if="collectGoodDetails.OrderType==1">订单状态 : {{collectsellStatus[collectGoodDetails.Status+1]}}</h2>
+          <h2 ng-if="collectGoodDetails.OrderType==2">订单状态 : {{collectsupplyStatus[collectGoodDetails.Status+1]}}</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>下单时间 : {{collectGoodDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
@@ -37,7 +37,7 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>{{collectGoodDetails.OrdeType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down"
+        <strong>{{collectGoodDetails.OrderType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down"
                                                  ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
@@ -49,13 +49,13 @@
     </div>
 
   </ion-content>
-  <div  ng-if="(OrdeType==2&&orderStatus==4)||orderStatus==3||orderStatus==4||(OrdeType==1&&(orderStatus==6||orderStatus==7))||(OrdeType==2&&orderStatus==7)"
+  <div  ng-if="(OrderType==2&&orderStatus==4)||orderStatus==3||orderStatus==4||(OrderType==1&&(orderStatus==6||orderStatus==7))||(OrderType==2&&orderStatus==7)"
     class="row row-horizontal-around padding light-bg bottom-0">
-    <a ng-if="OrdeType==2&&orderStatus==4" class="col-40 button button-balanced "  ng-click="paytopaymentsubmit()">付款</a>
+    <a ng-if="OrderType==2&&orderStatus==4" class="col-40 button button-balanced "  ng-click="paytopaymentsubmit()">付款</a>
     <a  ng-if="orderStatus==3" class="col-40  button button-calm "  ng-href="#/sign">签收</a>
     <a ng-if="orderStatus==4" class="col-40  button button-balanced "  ng-href="#/addproduct">验货</a>
-    <a ng-if="OrdeType==1&&(orderStatus==6||orderStatus==7)" class="col-40  button button-calm " ng-click="payfinalpaymentsubmit()"  > 结算</a>
-    <a ng-if="OrdeType==2&&orderStatus==7" class="col-40  button button-calm " ng-click="payfinalpaymentsubmit()" >支付尾款</a>
+    <a ng-if="OrderType==1&&(orderStatus==6||orderStatus==7)" class="col-40  button button-calm " ng-click="payfinalpaymentsubmit()"  > 结算</a>
+    <a ng-if="OrderType==2&&orderStatus==7" class="col-40  button button-calm " ng-click="payfinalpaymentsubmit()" >支付尾款</a>
   </div>
 
 </ion-view>

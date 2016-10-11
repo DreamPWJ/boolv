@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{deliverDetails.OrdeType==1?'卖货':'供货'}}单详情</h1>
+    <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{deliverDetails.OrderType==1?'卖货':'供货'}}单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
     <button class="button icon ion-navicon button-clear"  ng-click="openPopover($event)">
@@ -19,11 +19,11 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>{{deliverDetails.OrdeType==1?'卖货人 ':'供货人  '}} : {{deliverDetails.OrdeType==1?deliverDetails.Fromusername:deliverDetails.Username}}</h2>
+          <h2>{{deliverDetails.OrderType==1?'卖货人 ':'供货人  '}} : {{deliverDetails.OrderType==1?deliverDetails.Fromusername:deliverDetails.Username}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2 ng-if="deliverDetails.OrdeType==1">订单状态 : <span>{{sellStatus[deliverDetails.Status+1]}}</span></h2>
-          <h2 ng-if="deliverDetails.OrdeType==2">订单状态 : <span>{{supplyStatus[deliverDetails.Status+1]}}</span></h2>
+          <h2 ng-if="deliverDetails.OrderType==1">订单状态 : <span>{{sellStatus[deliverDetails.Status+1]}}</span></h2>
+          <h2 ng-if="deliverDetails.OrderType==2">订单状态 : <span>{{supplyStatus[deliverDetails.Status+1]}}</span></h2>
         </a>
         <a ng-href="" class="item border-bottom-none">
           <h2>下单时间 : {{deliverDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
@@ -34,10 +34,10 @@
 
     <div class="list">
       <a ng-click="toggle(2)" hide-show class="item item-borderless">
-        <strong>{{deliverDetails.OrdeType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
+        <strong>{{deliverDetails.OrderType==1?'卖货':'供货'}}清单  <span class="item-note"><i class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
-        <a ng-href="" class="item" ng-repeat="item in deliverDetails.OrdeType==1?deliverDetails.Details:deliverDetails.SpO_Details">
+        <a ng-href="" class="item" ng-repeat="item in deliverDetails.OrderType==1?deliverDetails.Details:deliverDetails.SpO_Details">
           <h2>{{item.ProdName}} : {{item.Num+item.UName}}</h2>
         </a>
       </div>
