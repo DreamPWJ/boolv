@@ -16,6 +16,9 @@
   color: #ddd;
 }
 
+.account p .ion-star:not(:first-child){
+  color: #dddddd!important;
+}
 .authcode {
   position: absolute;
   top: 3.2rem;

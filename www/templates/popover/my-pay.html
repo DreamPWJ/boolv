@@ -9,7 +9,7 @@
         <i class="icon ion-star calm"></i>
         评价
       </a>
-      <a ng-click="closeordersubmit()" ng-if="orderStatus<3" class="item item-icon-left" nav-direction=forward>
+      <a ng-click="closeordersubmit()" ng-if="orderStatus>=0&&orderStatus<3" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-trash-a royal"></i>
         关闭订单
       </a>

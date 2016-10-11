@@ -88,12 +88,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }catch (e){
           console.log(e);
         }
-
-
-
-
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
+
+      //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
+/*      $rootScope.clearcacheInfo = [];
+      $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
+        var history = $ionicHistory.forwardView();
+        if (history && history.stateName) {
+          $rootScope.clearcacheInfo.push(history.stateName);
+        }
+
+      });
+      $rootScope.$on('$ionicView.afterEnter', function (event, data) {
+        if ($rootScope.clearcacheInfo.length > 0)
+        {
+          $ionicHistory.clearCache($rootScope.clearcacheInfo).then(function () {
+            $rootScope.clearcacheInfo = [];
+          });
+        }
+      });*/
+
     });
   })
 
@@ -125,6 +140,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       type: 'slide',
       direction: 'right'
     });
+
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.
@@ -140,7 +156,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       })
 
       // Each tab has its own nav history stack:
-
+      //APP首页面
       .state('tab.main', {
         url: '/main',
         nativeTransitions: null,
@@ -151,6 +167,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      //APP初次启动轮播图片
       .state('start', {
         url: '/start',
         templateUrl: 'templates/start.html',
@@ -197,6 +214,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/accountinfo.html',
         controller: 'AccountInfoCtrl'
       })
+      //登录页面
       .state('login', {
         url: '/login',
         cache: false,
@@ -638,6 +656,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/bindingemail',
         templateUrl: 'templates/account/bindingemail.html',
         controller: 'BindingEmailCtrl'
+      })
+      //认证邮箱
+      .state('authenticationemail', {
+        url: '/authenticationemail',
+        templateUrl: 'templates/account/authenticationemail.html',
+        controller: 'AuthenticationEmailCtrl'
       })
       //实名认证
       .state('realname', {

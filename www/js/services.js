@@ -144,6 +144,7 @@ angular.module('starter.services', [])
             quality: 80
           };
           $cordovaImagePicker.getPictures(options).then(function (results) {
+            $scope.imageUploadCount = results.length;
             for (var i = 0, len = results.length; i < len; i++) {
               $scope.imageList.push(results[i]);
               AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
@@ -169,6 +170,7 @@ angular.module('starter.services', [])
           };
 
           $cordovaCamera.getPicture(options).then(function (imageUrl) {
+            $scope.imageUploadCount=1;
             $scope.imageList.push(imageUrl);
             AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
 
@@ -790,10 +792,13 @@ angular.module('starter.services', [])
             }
           }
           $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
-          $cordovaToast.showLongCenter("上传成功");
-
+          $scope.imageSuccessCount++;
+          if($scope.imageSuccessCount==$scope.imageUploadCount){
+            $cordovaToast.showLongCenter("上传成功");
+          }
           console.log("success=" + result.response);
         }, function (err) {
+          $cordovaToast.showLongCenter("上传失败");
           console.log("err=" + err.response);
         }, function (progress) {
           // constant progress updates

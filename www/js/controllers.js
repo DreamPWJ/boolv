@@ -25,6 +25,7 @@ angular.module('starter.controllers', [])
 
 
   })
+  //APP首页面
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $timeout, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
     CommonService.ionicLoadingShow();
     $scope.getMainData = function () {
@@ -40,7 +41,7 @@ angular.module('starter.controllers', [])
             $ionicSlideBoxDelegate.$getByHandle("slideboximgs").update();
             //上面这句就是实现无限循环的关键，绑定了滑动框，
             $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
-/*            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());*/
+            /*            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());*/
           }, 100)
 
 
@@ -144,6 +145,7 @@ angular.module('starter.controllers', [])
       CommonService.windowOpen(url)
     }
   })
+  //APP初次启动轮播图片
   .controller('StartCtrl', function ($scope, $state) {
     $scope.tomain = function () {
       $state.go('tab.main', {reload: true});
@@ -151,7 +153,7 @@ angular.module('starter.controllers', [])
   })
 
   //实时报价
-  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService,$ionicScrollDelegate) {
+  .controller('CurrentTimeOfferCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, MainService, $ionicScrollDelegate) {
     $scope.type = $stateParams.GrpID;
     //获取行情报价分页列表
     $scope.currentprods = [];
@@ -244,7 +246,7 @@ angular.module('starter.controllers', [])
 
 
   })
-
+  //登录页面
   .controller('LoginCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, AccountService) {
     $rootScope.commonService = CommonService;
     //删除记住用户信息
@@ -305,7 +307,7 @@ angular.module('starter.controllers', [])
 
   })
   //查单列表
-  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate,$ionicScrollDelegate) {
+  .controller('SearchOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService, SupplyService, DeliverService, $ionicTabsDelegate, $ionicSlideBoxDelegate, $ionicScrollDelegate) {
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -616,6 +618,7 @@ angular.module('starter.controllers', [])
   //查单供货详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    $rootScope.deliverDetails = JSON.parse($stateParams.item);//用于发货数据
     console.log($rootScope.supplyDetails);
     $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
@@ -667,7 +670,7 @@ angular.module('starter.controllers', [])
         }
       })
     })
-    if(!$rootScope.userbankliststatus||$rootScope.userbankliststatus.length==0){
+    if (!$rootScope.userbankliststatus || $rootScope.userbankliststatus.length == 0) {
       //查询用户银行信息
       AccountService.getUserBanklist($scope.params).success(function (data) {
         $rootScope.userbankliststatus = [];
@@ -704,7 +707,7 @@ angular.module('starter.controllers', [])
           items.Unit = item.Unit, // 计算单位ID
           items.Num = $scope.supplyinfo[index].num, //数量
           items.Price = item.Price//买货单价
-          $scope.details.push(items)
+        $scope.details.push(items)
       })
       //提交供货计划
       $scope.datas = {
@@ -750,9 +753,9 @@ angular.module('starter.controllers', [])
         No: '',//订单号，模糊匹配
         User: '',//下单人账号
         Status: '',//订单状态0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
-        BONo: '',//关联买货单号
+        BONo: '' /*$rootScope.supplyDetails.BONo*/,//关联买货单号
         ToUser: '',//关联买货单人
-        SPNo: $rootScope.orderId//供货计划单
+        SPNo: ''/*$rootScope.orderId*///供货计划单
       };
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
@@ -932,7 +935,7 @@ angular.module('starter.controllers', [])
            是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
            供货时，审核验货单（7）后就是结款（8）*/
 
-          $scope.datas = {
+          $scope.addStatementdatas = {
             OrderNo: $scope.yanhuolist[0].No,//订单号
             OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
             FromUser: localStorage.getItem("usertoken"),//付款方
@@ -941,10 +944,9 @@ angular.module('starter.controllers', [])
             Yushou: 0,//到付款
             AmountFu: 0,//余款
             Earnest: 0,//定金
-            Status:7 //订单所对应的结算状态值
+            Status: 7 //订单所对应的结算状态值
           }
-          console.log(data);
-          SearchOrderService.addStatement($scope.datas).success(function (data) {
+          SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
             console.log(data);
           })
         }
@@ -1141,7 +1143,7 @@ angular.module('starter.controllers', [])
            是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
            供货时，审核验货单（7）后就是结款（8）*/
 
-          $scope.datas = {
+          $scope.addStatementdatas = {
             OrderNo: $scope.yanhuolist[0].No,//订单号
             OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
             FromUser: localStorage.getItem("usertoken"),//付款方
@@ -1150,10 +1152,10 @@ angular.module('starter.controllers', [])
             Yushou: 0,//到付款
             AmountFu: 0,//余款
             Earnest: 0,//定金
-            Status:7 //订单所对应的结算状态值
+            Status: 7 //订单所对应的结算状态值
           }
 
-          SearchOrderService.addStatement($scope.datas).success(function (data) {
+          SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
             console.log(data);
           })
         }
@@ -1386,7 +1388,7 @@ angular.module('starter.controllers', [])
     }
   })
   //通知消息列表
-  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService,$ionicScrollDelegate) {
+  .controller('NewsCtrl', function ($scope, $rootScope, $state, CommonService, NewsService, $ionicScrollDelegate) {
     $scope.newsList = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -2024,7 +2026,7 @@ angular.module('starter.controllers', [])
   })
   //收货地址选择提交买货单
   .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
-    if(!$rootScope.addrlistFirst||$rootScope.addrlistFirst.length==0){
+    if (!$rootScope.addrlistFirst || $rootScope.addrlistFirst.length == 0) {
       CommonService.ionicLoadingShow();
       $rootScope.buyCycle = {}; //供货周期（天） 0-无限期：Cycle
       $scope.params = {
@@ -2034,7 +2036,7 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AccountService.getAddrlist($scope.params).success(function (data) {
-        $rootScope.addrlistFirst=[];
+        $rootScope.addrlistFirst = [];
         $rootScope.addrlist = data.Values.data_list;
         $rootScope.addrlistFirst.push(data.Values.data_list[0]);
         if ($scope.addrlist.length == 0) {
@@ -2586,16 +2588,16 @@ angular.module('starter.controllers', [])
           items.PName = item.ProdName;
           items.PUID = item.Unit;
           items.num = item.Num;
-/*        items.Prices=item.Price;
-          items.PriType=item.PriType;*/
-          items.PUSaleType=item.SaleClass;
-          items.Mark='Fahuo';//标示是发货详情信息还是获取的报价详情的信息
+          /*        items.Prices=item.Price;
+           items.PriType=item.PriType;*/
+          items.PUSaleType = item.SaleClass;
+          items.Mark = 'Fahuo';//标示是发货详情信息还是获取的报价详情的信息
           $rootScope.selectproductandnum.push(items);
         })
 
       })
     }
-   /* $scope.getPageFaHuo(); */ //获取发货详情填充添加验货清单
+    /* $scope.getPageFaHuo(); */ //获取发货详情填充添加验货清单
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
       //发货 签收 验货  获取产品类别
@@ -2680,12 +2682,12 @@ angular.module('starter.controllers', [])
           angular.forEach($rootScope.selectproductandnum, function (items) {
 
             if (items.PID == item.PID) {
-   /*            if(items.Mark='Fahuo'){
-                 $scope.addQueJian(index,items);
+              /*            if(items.Mark='Fahuo'){
+               $scope.addQueJian(index,items);
                }else {*/
-                 $scope.adddeliverinfo.isAdd[index] = false;
-                 $scope.adddeliverinfo.isMinus[index] = true;
-       /*        }*/
+              $scope.adddeliverinfo.isAdd[index] = false;
+              $scope.adddeliverinfo.isMinus[index] = true;
+              /*        }*/
               $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
@@ -2837,7 +2839,7 @@ angular.module('starter.controllers', [])
   .controller('DealAddressCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AccountService) {
     if ($rootScope.addrlistFirst) {
       $scope.selectAddress = function (item) {
-        $rootScope.addrlistFirst=[]
+        $rootScope.addrlistFirst = []
         $rootScope.addrlistFirst.push(item);
         $ionicHistory.goBack();
       }
@@ -2861,7 +2863,7 @@ angular.module('starter.controllers', [])
         $scope.isNotData = false;
         if (data.Values.data_list == null) {
           $scope.isNotData = true;
-          $rootScope.addrlistFirst=[];//无交易地址的时候清除数据
+          $rootScope.addrlistFirst = [];//无交易地址的时候清除数据
           return;
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -2883,7 +2885,7 @@ angular.module('starter.controllers', [])
       }
       AccountService.deleteAddr($scope.delparams).success(function (data) {
         $scope.getAddrlist(0)
-       /* $scope.addrlist.splice(index, 1)*/
+        /* $scope.addrlist.splice(index, 1)*/
       })
     }
     //修改地址信息
@@ -2909,19 +2911,19 @@ angular.module('starter.controllers', [])
     $scope.selectProvince = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacity = data.Values;
-        $scope.addrinfo.addr='';//清空详细地址
+        $scope.addrinfo.addr = '';//清空详细地址
       })
     }
     //选择市级联查询县级
     $scope.selectCity = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacounty = data.Values;
-        $scope.addrinfo.addr='';//清空详细地址
+        $scope.addrinfo.addr = '';//清空详细地址
       })
     }
     //选择县级
     $scope.selectAcounty = function (addrcode) {
-        $scope.addrinfo.addr='';//清空详细地址
+      $scope.addrinfo.addr = '';//清空详细地址
     }
 
     if ($rootScope.addressitem && $rootScope.addressitem.length != 0) {//是否是修改信息
@@ -3318,22 +3320,22 @@ angular.module('starter.controllers', [])
     //收款账户信息
     $scope.applyinfo = {}
 
-      if(!$rootScope.userbankliststatus||$rootScope.userbankliststatus.length==0){
-        //查询用户银行信息
-        $scope.params = {
-          page: 1,
-          size: 5,
-          userid: localStorage.getItem("usertoken")
-        }
-        AccountService.getUserBanklist($scope.params).success(function (data) {
-          $rootScope.userbankliststatus = [];
-          angular.forEach(data.Values.data_list, function (item) {
-            if (item.isdefault == 1) {
-              $rootScope.userbankliststatus.push(item);
-            }
-          })
-        })
+    if (!$rootScope.userbankliststatus || $rootScope.userbankliststatus.length == 0) {
+      //查询用户银行信息
+      $scope.params = {
+        page: 1,
+        size: 5,
+        userid: localStorage.getItem("usertoken")
       }
+      AccountService.getUserBanklist($scope.params).success(function (data) {
+        $rootScope.userbankliststatus = [];
+        angular.forEach(data.Values.data_list, function (item) {
+          if (item.isdefault == 1) {
+            $rootScope.userbankliststatus.push(item);
+          }
+        })
+      })
+    }
 
 
     $scope.applyadvancesubmit = function () {
@@ -3391,7 +3393,7 @@ angular.module('starter.controllers', [])
         $scope.isNotData = false;
         if (data.Values.data_list == null) {
           $scope.isNotData = true;
-          $rootScope.userbankliststatus=[];//无银行账号的时候清除数据
+          $rootScope.userbankliststatus = [];//无银行账号的时候清除数据
           return;
         }
         angular.forEach(data.Values.data_list, function (item) {
@@ -3542,23 +3544,23 @@ angular.module('starter.controllers', [])
     $scope.version = BooLv.version;
   })
   //设置安全
-  .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService,AccountService) {
+  .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.userid = localStorage.getItem("usertoken");
     AccountService.getUserInfo($scope.userid).success(function (data) {
-      if(data.Key==200){
+      if (data.Key == 200) {
         localStorage.setItem('user', JSON.stringify(data.Values));
-        $rootScope.userinfo=data.Values;
-        var certstate=data.Values.certstate;//获取认证状态参数
-        $scope.certstatestatus=['未认证','认证中','已认证','未通过'];
+        $rootScope.userinfo = data.Values;
+        var certstate = data.Values.certstate;//获取认证状态参数
+        $scope.certstatestatus = ['未认证', '认证中', '已认证', '未通过'];
         //ubstr(start,length)表示从start位置开始，截取length长度的字符串
-        $scope.phonestatus=certstate.substr(0,1);//手机认证状态码
-        $scope.emailstatus=certstate.substr(1,1);//邮箱认证状态码
-        $scope.secrecystatus=certstate.substr(2,1);//保密认证状态码
-        $scope.identitystatus=certstate.substr(3,1);//身份认证状态码
-        $scope.companystatus=certstate.substr(4,1);//企业认证状态码
-        $scope.bankstatus=certstate.substr(5,1);//银行账号状态码
+        $scope.phonestatus = certstate.substr(0, 1);//手机认证状态码
+        $scope.emailstatus = certstate.substr(1, 1);//邮箱认证状态码
+        $scope.secrecystatus = certstate.substr(2, 1);//保密认证状态码
+        $scope.identitystatus = certstate.substr(3, 1);//身份认证状态码
+        $scope.companystatus = certstate.substr(4, 1);//企业认证状态码
+        $scope.bankstatus = certstate.substr(5, 1);//银行账号状态码
 
-      }else {
+      } else {
         CommonService.platformPrompt('获取用户信息失败');
       }
 
@@ -3697,19 +3699,43 @@ angular.module('starter.controllers', [])
   })
   //绑定邮箱
   .controller('BindingEmailCtrl', function ($scope, $rootScope, CommonService, AccountService) {
-    $scope.email = {};//邮箱
+    $rootScope.email = {};//邮箱
     //发送验证邮件
     $scope.sendEmail = function () {
       CommonService.ionicLoadingShow();
       $scope.params = {
-        email: $scope.email.No//邮箱号
+        email: $rootScope.email.No//邮箱号
       }
 
       AccountService.sendEmailCode($scope.params).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', '')
+          CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', 'authenticationemail')
         } else {
           CommonService.platformPrompt('发送邮件失败');
+        }
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
+      })
+    }
+  })
+
+  //认证邮箱
+  .controller('AuthenticationEmailCtrl', function ($scope, $rootScope, CommonService, AccountService) {
+    $scope.verify = true;
+    //认证邮箱
+    $scope.authenticationEmail = function () {
+      CommonService.ionicLoadingShow();
+      $scope.datas = {
+        userid: localStorage.getItem("usertoken"),		//用户id
+        email: $rootScope.email.No,//邮箱号
+        code:$rootScope.email.code //邮箱验证码
+      }
+      AccountService.authEmail($scope.datas).success(function (data) {
+        if (data.Key == 200) {
+          CommonService.platformPrompt('认证邮箱成功');
+          $scope.verify = false;
+        } else {
+          CommonService.platformPrompt('认证邮箱失败');
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -3727,12 +3753,12 @@ angular.module('starter.controllers', [])
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
     }
-     //获取实名认证信息
-    $scope.params={
-      userid:localStorage.getItem("usertoken"),
+    //获取实名认证信息
+    $scope.params = {
+      userid: localStorage.getItem("usertoken"),
     }
-    AccountService.getCertification( $scope.params).success(function (data) {
-      $scope.certificationinfo=data.Values;
+    AccountService.getCertification($scope.params).success(function (data) {
+      $scope.certificationinfo = data.Values;
       console.log($scope.certificationinfo);
     })
     //申请实名认证
