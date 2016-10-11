@@ -359,6 +359,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //提交发货信息
       .state('delivergoods', {
         url: '/delivergoods',
+        cache:false,
         templateUrl: 'templates/delivergoods/delivergoods.html',
         controller: 'DeliverGoodsCtrl'
 
@@ -617,6 +618,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //设置安全
       .state('accountsecurity', {
         url: '/accountsecurity',
+        cache:false,
         templateUrl: 'templates/account/accountsecurity.html',
         controller: 'AccountSecurityCtrl'
       })

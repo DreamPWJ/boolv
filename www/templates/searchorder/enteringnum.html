@@ -9,10 +9,11 @@
   </ion-nav-title>
 
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+    <p></p>
     <div class="list">
       <label class="item item-input " ng-repeat="item in deliverDetails.Details">
         <span class="input-label">{{item.ProdName}}</span>
-        <input type="number" ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SupNum+item.UName}}" check-form ng-change="checkForm(supplyinfo[$index].num,'备货数量不能大于剩余供货量或小于0','maxvaule',item.SupNum)" />
+        <input type="number" ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SupNum+item.UName}}" check-form ng-change="checkForm(supplyinfo[$index].num,'数量不能大于剩余供货量或小于0','maxvaule',item.SupNum)"  />
       </label>
 
 
@@ -29,7 +30,7 @@
 
   </ion-content>
   <div class="row row-horizontal-around padding light-bg bottom-0">
-    <a class="col-40 button button-balanced " ng-disabled="!verify" ng-click="enteringnumsubmit()">提交</a>
+    <a class=" button button-balanced full-image " ng-disabled="!verify" ng-click="enteringnumsubmit()">提交</a>
 <!--    <a class="col-40  button button-calm " ng-disabled="!(orderStatus==2||orderStatus==3)" ng-href="#/adddeliverlist">继续发货</a>-->
   </div>
 </ion-view>

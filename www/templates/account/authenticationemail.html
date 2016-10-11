@@ -7,18 +7,18 @@
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 认证邮箱</h1>
   </ion-nav-title>
-  <form name="bindingemail">
+  <form name="authenticationemail">
     <ion-content overflow-scroll="false" class="stable-bg">
       <p></p>
       <div class="list ">
         <label class="item item-input">
           <span class="input-label icon "> 邮箱认证码</span>
-          <input type="number" ng-model="email.code"  placeholder="请输入认证邮箱的认证码" required/>
+          <input type="number" ng-model="email.code"  placeholder="请输入发送邮箱的认证码" required/>
         </label>
       </div>
     </ion-content>
     <div class="padding light-bg  bottom-0">
-      <a ng-disabled="!(bindingemail.$valid&&verify)" class="button button-calm full-image " ng-click="authenticationEmail()">认证邮件</a>
+      <a ng-disabled="!(authenticationemail.$valid&&verify)" class="button button-calm full-image " ng-click="authenticationEmail()">认证邮箱</a>
     </div>
   </form>
 </ion-view>
