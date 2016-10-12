@@ -11,7 +11,7 @@
     <button class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>订单号 : </strong>{{supplyDetails.No}}<span class="item-note"><i
@@ -22,7 +22,7 @@
           <h2>买货商家 : {{supplyDetails.Tousername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>供货周期(余/总) : {{supplyDetails.SupCycle}}/{{supplyDetails.SupNum}}天</h2>
+          <h2>剩余供货周期 : {{supplyDetails.SupCycle}}天</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>总供货量(余/总) : {{supplyDetails.SupSum}}/{{supplyDetails.NumSum}}台</h2>
@@ -45,7 +45,7 @@
       <div ng-hide="showme2">
         <a ng-href="" class="item" ng-repeat="item in supplyDetails.Details">
           <h2>{{item.ProdName}}  供货量(余/总) : {{item.Num}}/{{supplyDetails.NumSum+item.UName}}</h2>
-          <p>供货次数(余/总) : {{item.SupCount}}/{{supplyDetails.SupCount}}次</p>
+          <p>供货次数 : {{item.SupCount}}次</p>
           <p>单次供货量: {{item.SupNum+item.UName}}</p>
 
         </a>

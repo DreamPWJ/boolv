@@ -3482,26 +3482,41 @@ angular.module('starter.controllers', [])
 
   })
   //芝麻信用
-  .controller('MyCreditCtrl', function ($scope, $rootScope, $state, CommonService) {
+  .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService) {
 
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('mycredit'));
-    option = {
+     option = {
       tooltip: {
-        formatter: "{a} <br/>{b} : {c}%"
+        formatter: "{a} <br/>{b} : {c}"
       },
-      toolbox: {
+/*      toolbox: {//保存图片 刷新图片
         feature: {
           restore: {},
           saveAsImage: {}
         }
-      },
+      },*/
       series: [
         {
-          name: '信用指标',
+          axisLine:
+          {
+            show: true,
+            lineStyle: {
+              color: [
+                [0.3, '#ef473a'],
+                [0.7, '#11c1f3'],
+                [1, '#33cd5f']
+              ],
+              width: 25
+            }
+          },
+          name: '信用分指标',
           type: 'gauge',
-          detail: {formatter: '80%'},
-          data: [{value: 80, name: '信用率'}]
+          detail: {formatter: $rootScope.userinfo.zmscore, textStyle: {
+            color: 'auto',
+            fontSize :38
+          }},
+          data: [{value: $rootScope.userinfo.zmscore, name: '信用分'}]
         }
       ]
     };

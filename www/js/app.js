@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova','ionic-native-transitions'])
 
-  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory,$cordovaToast) {
+  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory,$cordovaToast,$cordovaNetwork,CommonService) {
     localStorage.setItem("start", 1);
     $ionicPlatform.ready(function () {
       if (window.StatusBar) {
@@ -91,6 +91,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
 
+      //判断网络状态
+      document.addEventListener("deviceready", function() {
+        //var type = $cordovaNetwork.getNetwork()
+        //var isOnline = $cordovaNetwork.isOnline()
+        //var isOffline = $cordovaNetwork.isOffline()
+
+        // listen for Online event
+        $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
+          var onlineState = networkState;
+          console.log("device online...");
+        })
+
+        // listen for Offline event
+        $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
+          var offlineState = networkState;
+          //提醒用户的网络异常
+          CommonService.platformPrompt("网络异常 不能连接到服务器",'close');
+          CommonService.ionicLoadingHide();//取消加载动画
+        })
+
+      }, false);
       //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
 /*      $rootScope.clearcacheInfo = [];
       $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
