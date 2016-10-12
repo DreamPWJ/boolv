@@ -1824,7 +1824,9 @@ angular.module('starter.controllers', [])
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
-          $scope.supplylist.push(item);
+          if(item.FromUser!=localStorage.getItem("usertoken")){ // 接单供货列表过滤自己的订单信息
+            $scope.supplylist.push(item);
+          }
         })
         $scope.total = data.Values.page_count;
       }).finally(function () {
@@ -2170,6 +2172,9 @@ angular.module('starter.controllers', [])
             CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
             $state.go('adddealaddress');
           }
+          if(data.Key!=200){
+            CommonService.platformPrompt('交易地址获取失败','close');
+          }
         }).then(function () {
           if ($scope.addrliststatus.length == 0) {
             return;
@@ -2186,6 +2191,9 @@ angular.module('starter.controllers', [])
               CommonService.ionicLoadingHide();
               CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
               $state.go('addbankaccount');
+            }
+            if(data.Key!=200){
+              CommonService.platformPrompt('银行账户获取失败','close');
             }
           }).then(function () {
             if ($scope.userbankliststatus.length == 0) {

@@ -1,12 +1,12 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button icon ion-android-home no-border" nav-direction=forward ng-href="#/tab/main"></a>
+    <a class="button icon ion-android-home no-border" nav-direction=back ng-href="#/tab/main"></a>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title"><img id="logo" src="img/logo.png" alt=""/> 我的博绿</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg account ">
+  <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list padding-top list-borderless">
       <a nav-direction=forward  ng-href="#/accountinfo" class="item item-avatar ">
         <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">

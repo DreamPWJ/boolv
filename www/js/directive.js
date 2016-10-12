@@ -1,5 +1,5 @@
 angular.module('starter.directive', [])
-  .directive('hideTabs', function ($rootScope) {
+  .directive('hideTabs', function ($rootScope) {  //隐藏底部tabs指令
     return {
       restrict: 'AE',
       link: function ($scope) {
@@ -11,7 +11,7 @@ angular.module('starter.directive', [])
       }
     }
   })
-  .directive('hideShow', function () {
+  .directive('hideShow', function () {  //点击触发显示隐藏元素指令
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
@@ -35,7 +35,8 @@ angular.module('starter.directive', [])
         }
       }
     }
-  }).directive('scrollTop', function ($ionicScrollDelegate) {//返回顶部指令
+  })
+  .directive('scrollTop', function ($ionicScrollDelegate) {//返回顶部指令
   return {
     restrict: 'AE',
     link: function (scope, element, attrs) {
@@ -45,10 +46,7 @@ angular.module('starter.directive', [])
     }
   }
 })
-/**
- * 提示框tooltip
- */
-  .directive('toolTip', [function () {
+  .directive('toolTip', [function () { //提示框tooltip
 
     return {
       restrict: 'EA',
@@ -66,54 +64,55 @@ angular.module('starter.directive', [])
 
       }
     };
-  }]).directive('checkForm', function ($rootScope, CommonService) {//验证表单类型 提示
-  return {
-    restrict: 'A',
-    link: function (scope, element, attrs) {
-      $rootScope.commonService = CommonService;
-      $rootScope.verify = true;
-      scope.checkForm = function (value, content, type, maxvalue) {
-        if (type == 'mobilephone') {//验证手机号
-          if (/^1(3|4|5|7|8)\d{9}$/.test(value)) {
-            $rootScope.verify = true;
-          } else {
-            if (value) {
-              $rootScope.commonService.toolTip(content, '')
+  }])
+  .directive('checkForm', function ($rootScope, CommonService) {//验证表单类型 提示
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        $rootScope.commonService = CommonService;
+        $rootScope.verify = true;
+        scope.checkForm = function (value, content, type, maxvalue) {
+          if (type == 'mobilephone') {//验证手机号
+            if (/^1(3|4|5|7|8)\d{9}$/.test(value)) {
+              $rootScope.verify = true;
+            } else {
+              if (value) {
+                $rootScope.commonService.toolTip(content, '')
+              }
+              $rootScope.verify = false;
             }
-            $rootScope.verify = false;
           }
-        }
-        if (type == 'maxvaule') {//最大不能超过maxvalue值
-          if (value > maxvalue||value<0) {
-            if (value||value==0) {
-              $rootScope.commonService.toolTip(content, '')
+          if (type == 'maxvaule') {//最大不能超过maxvalue值
+            if (value > maxvalue || value < 0) {
+              if (value || value == 0) {
+                $rootScope.commonService.toolTip(content, '')
+              }
+              $rootScope.verify = false;
+            } else {
+              $rootScope.verify = true;
             }
-            $rootScope.verify = false;
-          } else {
-            $rootScope.verify = true;
           }
-        }
-        if (type == 'positivenumber') {//正数验证(如 价格)
-          if (/^([1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value)) {
-            $rootScope.verify = true;
-          } else {
-            if (value||value==0) {
-              $rootScope.commonService.toolTip(content, '')
+          if (type == 'positivenumber') {//正数验证(如 价格)
+            if (/^([1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value)) {
+              $rootScope.verify = true;
+            } else {
+              if (value || value == 0) {
+                $rootScope.commonService.toolTip(content, '')
+              }
+              $rootScope.verify = false;
             }
-            $rootScope.verify = false;
           }
-        }
-        if (type == 'positiveinteger') {//正整数
-          if (/^[1-9]\d*$/.test(value)) {
-            $rootScope.verify = true;
-          } else {
-            if (value||value==0) {
-              $rootScope.commonService.toolTip(content, '')
+          if (type == 'positiveinteger') {//正整数
+            if (/^[1-9]\d*$/.test(value)) {
+              $rootScope.verify = true;
+            } else {
+              if (value || value == 0) {
+                $rootScope.commonService.toolTip(content, '')
+              }
+              $rootScope.verify = false;
             }
-            $rootScope.verify = false;
           }
-        }
-      };
+        };
+      }
     }
-  }
-});
+  });

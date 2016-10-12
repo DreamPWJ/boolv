@@ -7,7 +7,7 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 实时报价</h1>
   </ion-nav-title>
-  <ion-content overflow-scroll="false" class="stable-bg">
+  <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
     <ion-list ng-if="type==0">
       <div ng-repeat="item in currentprods ">
         <ion-item ng-click="toggle(0)" hide-show>
