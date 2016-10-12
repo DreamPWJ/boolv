@@ -7,7 +7,7 @@
     <description>SesameCredit Plugin</description>
     <license>Apache 2.0</license>
     <keywords>Boolv,SesameCredit,PANWEIJI</keywords>
-
+<!-- 引入js 通过js调用原生SDK方法-->
   <js-module src="www/SesameCredit.js" name="SesameCredit">
     <clobbers target="SesameCredit" />
   </js-module>
@@ -20,7 +20,25 @@
       <param name="android-package" value="com.boolv.sesamecredit.SesameCredit" />
     </feature>
   </config-file>
+
+   <!-- 权限配置-->
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.INTERNET"/>
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    </config-file>
+
+  <!--  配置Activity-->
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">>
+      <activity
+        android:name="com.android.moblie.zmxy.antgroup.creditsdk.app.SDKActivity"
+        android:label="芝麻信用"
+        android:screenOrientation="portrait"/>
+
+    </config-file>
+
+    <!--   资源引入-->
     <source-file src="src/android/SesameCredit.java" target-dir="src/com/boolv/sesamecredit" />
+    <source-file src="src/android/libs/zmxySDKALCmini_V1.01450366738902_release.jar" target-dir="libs"/>
   </platform>
 
 
