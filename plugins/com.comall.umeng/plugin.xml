@@ -155,30 +155,131 @@
             <string>sina.5242e19241175a936bd2b469c50de423</string>
           </array>
         </dict>
-      </array>
-    </config-file>
+    <key>NSExceptionDomains</key>
+    <dict>
+    <key>log.umsns.com</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSTemporaryExceptionMinimumTLSVersion</key>
+      <string>TLSv1.1</string>
+    </dict>
+    <key>sns.whalecloud.com</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSTemporaryExceptionMinimumTLSVersion</key>
+      <string>TLSv1.1</string>
+    </dict>
 
-    <header-file src="src/ios/UmengPlugin.h" />
-    <source-file src="src/ios/UmengPlugin.m" />
+    <!-- 集成新浪微博对应的HTTP白名单-->
+    <key>sina.cn</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <key>sina.cn</key>
+    <dict>
+      <!-- 适配iOS10 -->
+      <key>NSExceptionMinimumTLSVersion</key>
+      <string>TLSv1.0</string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <key>weibo.cn</key>
+    <dict>
+      <!-- 适配iOS10 -->
+      <key>NSExceptionMinimumTLSVersion</key>
+      <string>TLSv1.0</string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <key>weibo.com</key>
+    <dict>
+      <!-- 适配iOS10 -->
+      <key>NSExceptionMinimumTLSVersion</key>
+      <string>TLSv1.0</string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <key>sinaimg.cn</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <key>sinajs.cn</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <key>sina.com.cn</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <!-- 新浪微博-->
 
-    <header-file src="src/ios/UMMobClick.framework/Headers/MobClick.h" />
-    <header-file src="src/ios/UMMobClick.framework/Headers/MobClickGameAnalytics.h" />
-    <header-file src="src/ios/UMMobClick.framework/Headers/MobClickSocialAnalytics.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocial.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialAccountManager.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialBar.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialConfig.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerService.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerServiceComment.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialData.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialDataService.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsData.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsPlatformManager.h" />
-    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsService.h" />
-    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/UMSocialSinaHandler.h" />
-    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/UMSocialQQHandler.h" />
-    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/UMSocialWechatHandler.h" />
-    <!-- 同时使用微信支付插件时不需要引入 -->
+    <!-- 集成微信、QQ、Qzone、腾讯微博授权对应的HTTP白名单-->
+    <key>qq.com</key>
+    <dict>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+      <true/>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+    </dict>
+    <!-- 腾讯授权-->
+  </array>
+</config-file>
+
+<header-file src="src/ios/UmengPlugin.h" />
+<source-file src="src/ios/UmengPlugin.m" />
+
+<header-file src="src/ios/UMMobClick.framework/Headers/MobClick.h" />
+<header-file src="src/ios/UMMobClick.framework/Headers/MobClickGameAnalytics.h" />
+<header-file src="src/ios/UMMobClick.framework/Headers/MobClickSocialAnalytics.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocial.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialAccountManager.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialBar.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialConfig.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerService.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerServiceComment.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialData.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialDataService.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsData.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsPlatformManager.h" />
+<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsService.h" />
+<header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/UMSocialSinaHandler.h" />
+<header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/UMSocialQQHandler.h" />
+<header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/UMSocialWechatHandler.h" />
+<!-- 同时使用微信支付插件时不需要引入 -->
    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApi.h" />
     <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApiObject.h" />
     <source-file src="src/ios/UMMobClick.framework/UMMobClick" framework="true" />
