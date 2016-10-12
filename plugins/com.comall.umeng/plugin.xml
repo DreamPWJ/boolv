@@ -1,105 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="com.comall.umeng"
-    version="1.0.0">
-    <name>Umeng</name>
-    <description>Umeng Plugin</description>
-    <license>Apache 2.0</license>
-    <keywords>comall, Umeng</keywords>
+        id="com.comall.umeng"
+        version="1.0.0">
+  <name>Umeng</name>
+  <description>Umeng Plugin</description>
+  <license>Apache 2.0</license>
+  <keywords>comall, Umeng</keywords>
 
   <js-module src="www/umeng.js" name="umeng">
-    <clobbers target="umeng" />
+    <clobbers target="umeng"/>
   </js-module>
 
   <!-- android -->
   <platform name="android">
-    <hook type="after_plugin_install" src="hook/android-install.js" />
-    <hook type="before_plugin_uninstall" src="hook/android-install.js" />
+    <hook type="after_plugin_install" src="hook/android-install.js"/>
+    <hook type="before_plugin_uninstall" src="hook/android-install.js"/>
 
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="UmengPlugin">
-        <param name="android-package" value="com.comall.umeng.UmengPlugin" />
+        <param name="android-package" value="com.comall.umeng.UmengPlugin"/>
       </feature>
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/*">
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.READ_LOGS" />
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-        <uses-permission android:name="android.permission.GET_TASKS" />
-        <uses-permission android:name="android.permission.SET_DEBUG_APP" />
-        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-        <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+      <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+      <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+      <uses-permission android:name="android.permission.INTERNET"/>
+      <uses-permission android:name="android.permission.READ_LOGS"/>
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+      <uses-permission android:name="android.permission.GET_TASKS"/>
+      <uses-permission android:name="android.permission.SET_DEBUG_APP"/>
+      <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+      <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+      <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+      <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <meta-data android:name="UMENG_APPKEY" android:value="57df634de0f55a0cc9001743"/>
-      <meta-data android:name="UMENG_CHANNEL" android:value="A3000" />
+      <meta-data android:name="UMENG_CHANNEL" android:value="A3000"/>
       <activity
-                android:configChanges="orientation|keyboard"
-                android:launchMode="singleTask"
-                android:name="com.umeng.socialize.view.ShareActivity"
-                android:noHistory="true"
-                android:theme="@style/Theme.UMDialog"
-                android:windowSoftInputMode="stateVisible|adjustResize"/>
+        android:configChanges="orientation|keyboard"
+        android:launchMode="singleTask"
+        android:name="com.umeng.socialize.view.ShareActivity"
+        android:noHistory="true"
+        android:theme="@style/Theme.UMDialog"
+        android:windowSoftInputMode="stateVisible|adjustResize"/>
       <activity
-                android:configChanges="keyboardHidden|orientation|screenSize"
-                android:exported="true"
-                android:name=".wxapi.WXEntryActivity"
-                android:screenOrientation="portrait"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:exported="true"
+        android:name=".wxapi.WXEntryActivity"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
       <activity
-                android:name="com.tencent.tauth.AuthActivity"
-                android:launchMode="singleTask"
-                android:noHistory="true" >
-           <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent1103697169" />
-           </intent-filter>
+        android:name="com.tencent.tauth.AuthActivity"
+        android:launchMode="singleTask"
+        android:noHistory="true">
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW"/>
+          <category android:name="android.intent.category.DEFAULT"/>
+          <category android:name="android.intent.category.BROWSABLE"/>
+          <data android:scheme="tencent1103697169"/>
+        </intent-filter>
       </activity>
       <activity
-                android:name="com.renn.rennsdk.oauth.OAuthActivity"
-                android:configChanges="orientation|navigation|keyboardHidden"/>
+        android:name="com.renn.rennsdk.oauth.OAuthActivity"
+        android:configChanges="orientation|navigation|keyboardHidden"/>
       <activity
-                android:name="com.tencent.connect.common.AssistActivity"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                android:screenOrientation="portrait">
+        android:name="com.tencent.connect.common.AssistActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:screenOrientation="portrait">
       </activity>
     </config-file>
 
-    <source-file src="src/android/UmengPlugin.java" target-dir="src/com/comall/umeng" />
-    <source-file src="src/android/libs/httpmime-4.1.3.jar" target-dir="libs" />
-    <source-file src="src/android/libs/SocialSDK_QQZone_1.jar" target-dir="libs" />
-    <source-file src="src/android/libs/SocialSDK_QQZone_2.jar" target-dir="libs" />
-    <source-file src="src/android/libs/SocialSDK_QQZone_3.jar" target-dir="libs" />
-    <source-file src="src/android/libs/SocialSDK_Sina.jar" target-dir="libs" />
-    <source-file src="src/android/libs/SocialSDK_WeiXin_1.jar" target-dir="libs" />
-    <source-file src="src/android/libs/SocialSDK_WeiXin_2.jar" target-dir="libs" />
-    <source-file src="src/android/libs/umeng_social_sdk.jar" target-dir="libs" />
-    <source-file src="src/android/libs/umeng-analytics-v6.0.1.jar" target-dir="libs" />
-    <resource-file src="src/android/res/anim" target="res/anim" />
-    <resource-file src="src/android/res/drawable" target="res/drawable" />
-    <resource-file src="src/android/res/drawable-hdpi" target="res/drawable-hdpi" />
-    <resource-file src="src/android/res/layout" target="res/layout" />
-    <resource-file src="src/android/res/layout-sw550dp-large" target="res/layout-sw550dp-large" />
-    <resource-file src="src/android/res/values" target="res/values" />
+    <source-file src="src/android/UmengPlugin.java" target-dir="src/com/comall/umeng"/>
+    <source-file src="src/android/libs/httpmime-4.1.3.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/SocialSDK_QQZone_1.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/SocialSDK_QQZone_2.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/SocialSDK_QQZone_3.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/SocialSDK_Sina.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/SocialSDK_WeiXin_1.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/SocialSDK_WeiXin_2.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/umeng_social_sdk.jar" target-dir="libs"/>
+    <source-file src="src/android/libs/umeng-analytics-v6.0.1.jar" target-dir="libs"/>
+    <resource-file src="src/android/res/anim" target="res/anim"/>
+    <resource-file src="src/android/res/drawable" target="res/drawable"/>
+    <resource-file src="src/android/res/drawable-hdpi" target="res/drawable-hdpi"/>
+    <resource-file src="src/android/res/layout" target="res/layout"/>
+    <resource-file src="src/android/res/layout-sw550dp-large" target="res/layout-sw550dp-large"/>
+    <resource-file src="src/android/res/values" target="res/values"/>
   </platform>
 
   <!-- ios -->
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
       <feature name="UmengPlugin">
-        <param name="ios-package" value="UmengPlugin" />
+        <param name="ios-package" value="UmengPlugin"/>
       </feature>
     </config-file>
 
@@ -155,156 +155,164 @@
             <string>sina.5242e19241175a936bd2b469c50de423</string>
           </array>
         </dict>
-    <key>NSExceptionDomains</key>
-    <dict>
-    <key>log.umsns.com</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSTemporaryExceptionMinimumTLSVersion</key>
-      <string>TLSv1.1</string>
-    </dict>
-    <key>sns.whalecloud.com</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSTemporaryExceptionMinimumTLSVersion</key>
-      <string>TLSv1.1</string>
-    </dict>
 
-    <!-- 集成新浪微博对应的HTTP白名单-->
-    <key>sina.cn</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <key>sina.cn</key>
-    <dict>
-      <!-- 适配iOS10 -->
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.0</string>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <key>weibo.cn</key>
-    <dict>
-      <!-- 适配iOS10 -->
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.0</string>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <key>weibo.com</key>
-    <dict>
-      <!-- 适配iOS10 -->
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.0</string>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <key>sinaimg.cn</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <key>sinajs.cn</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <key>sina.com.cn</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <!-- 新浪微博-->
+        <key>NSAppTransportSecurity</key>
+        <dict>
+          <key>NSExceptionDomains</key>
+          <dict>
+            <key>log.umsns.com</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSTemporaryExceptionMinimumTLSVersion</key>
+              <string>TLSv1.1</string>
+            </dict>
+            <key>sns.whalecloud.com</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSTemporaryExceptionMinimumTLSVersion</key>
+              <string>TLSv1.1</string>
+            </dict>
 
-    <!-- 集成微信、QQ、Qzone、腾讯微博授权对应的HTTP白名单-->
-    <key>qq.com</key>
-    <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-      <true/>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-    </dict>
-    <!-- 腾讯授权-->
-  </array>
-</config-file>
+            <!-- 集成新浪微博对应的HTTP白名单-->
+            <key>sina.cn</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <key>sina.cn</key>
+            <dict>
+              <!-- 适配iOS10 -->
+              <key>NSExceptionMinimumTLSVersion</key>
+              <string>TLSv1.0</string>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <key>weibo.cn</key>
+            <dict>
+              <!-- 适配iOS10 -->
+              <key>NSExceptionMinimumTLSVersion</key>
+              <string>TLSv1.0</string>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <key>weibo.com</key>
+            <dict>
+              <!-- 适配iOS10 -->
+              <key>NSExceptionMinimumTLSVersion</key>
+              <string>TLSv1.0</string>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <key>sinaimg.cn</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <key>sinajs.cn</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <key>sina.com.cn</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <!-- 新浪微博-->
 
-<header-file src="src/ios/UmengPlugin.h" />
-<source-file src="src/ios/UmengPlugin.m" />
+            <!-- 集成微信、QQ、Qzone、腾讯微博授权对应的HTTP白名单-->
+            <key>qq.com</key>
+            <dict>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+              <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+              <false/>
+            </dict>
+            <!-- 腾讯授权-->
+          </dict>
+        </dict>
+      </array>
+    </config-file>
 
-<header-file src="src/ios/UMMobClick.framework/Headers/MobClick.h" />
-<header-file src="src/ios/UMMobClick.framework/Headers/MobClickGameAnalytics.h" />
-<header-file src="src/ios/UMMobClick.framework/Headers/MobClickSocialAnalytics.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocial.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialAccountManager.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialBar.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialConfig.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerService.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerServiceComment.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialData.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialDataService.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsData.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsPlatformManager.h" />
-<header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsService.h" />
-<header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/UMSocialSinaHandler.h" />
-<header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/UMSocialQQHandler.h" />
-<header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/UMSocialWechatHandler.h" />
-<!-- 同时使用微信支付插件时不需要引入 -->
-   <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApi.h" />
-    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApiObject.h" />
-    <source-file src="src/ios/UMMobClick.framework/UMMobClick" framework="true" />
-    <source-file src="src/ios/UMSocial_Sdk/libUMSocial_Sdk_4.2.1.a" framework="true" />
-    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/libSocialSina.a" framework="true" />
-    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/libSocialQQ.a" framework="true" />
-    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libSocialWechat.a" framework="true" />
+    <header-file src="src/ios/UmengPlugin.h"/>
+    <source-file src="src/ios/UmengPlugin.m"/>
+
+    <header-file src="src/ios/UMMobClick.framework/Headers/MobClick.h"/>
+    <header-file src="src/ios/UMMobClick.framework/Headers/MobClickGameAnalytics.h"/>
+    <header-file src="src/ios/UMMobClick.framework/Headers/MobClickSocialAnalytics.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocial.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialAccountManager.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialBar.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialConfig.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerService.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialControllerServiceComment.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialData.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialDataService.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsData.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsPlatformManager.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/Header/UMSocialSnsService.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/UMSocialSinaHandler.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/UMSocialQQHandler.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/UMSocialWechatHandler.h"/>
     <!-- 同时使用微信支付插件时不需要引入 -->
-    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libWeChatSDK.a" framework="true" />
+    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApi.h"/>
+    <header-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/WXApiObject.h"/>
+    <source-file src="src/ios/UMMobClick.framework/UMMobClick" framework="true"/>
+    <source-file src="src/ios/UMSocial_Sdk/libUMSocial_Sdk_4.2.1.a" framework="true"/>
+    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Sina/libSocialSina.a" framework="true"/>
+    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/libSocialQQ.a"
+                 framework="true"/>
+    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libSocialWechat.a" framework="true"/>
+    <!-- 同时使用微信支付插件时不需要引入 -->
+    <source-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/Wechat/libWeChatSDK.a" framework="true"/>
 
-    <resource-file src="src/ios/UMSocial_Sdk/en.lproj" />
-    <resource-file src="src/ios/UMSocial_Sdk/zh-Hans.lproj" />
-    <resource-file src="src/ios/UMSocial_Sdk/SocialSDKXib" />
-    <resource-file src="src/ios/UMSocial_Sdk/UMSocialSDKResourcesNew.bundle" />
-    <resource-file src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenApi_IOS_Bundle.bundle" />
+    <resource-file src="src/ios/UMSocial_Sdk/en.lproj"/>
+    <resource-file src="src/ios/UMSocial_Sdk/zh-Hans.lproj"/>
+    <resource-file src="src/ios/UMSocial_Sdk/SocialSDKXib"/>
+    <resource-file src="src/ios/UMSocial_Sdk/UMSocialSDKResourcesNew.bundle"/>
+    <resource-file
+      src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenApi_IOS_Bundle.bundle"/>
 
-    <framework src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenAPI.framework" custom="true" />
-    <framework src="Security.framework" />
-    <framework src="libiconv.dylib" />
-    <framework src="SystemConfiguration.framework" />
-    <framework src="CoreGraphics.framework" />
-    <framework src="libsqlite3.dylib" />
-    <framework src="CoreTelephony.framework" />
-    <framework src="libstdc++.dylib" />
-    <framework src="libz.dylib" />
+    <framework src="src/ios/UMSocial_Sdk/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenAPI.framework"
+               custom="true"/>
+    <framework src="Security.framework"/>
+    <framework src="libiconv.dylib"/>
+    <framework src="SystemConfiguration.framework"/>
+    <framework src="CoreGraphics.framework"/>
+    <framework src="libsqlite3.dylib"/>
+    <framework src="CoreTelephony.framework"/>
+    <framework src="libstdc++.dylib"/>
+    <framework src="libz.dylib"/>
   </platform>
 
 </plugin>
