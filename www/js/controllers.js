@@ -605,7 +605,7 @@ angular.module('starter.controllers', [])
               $rootScope.orderStatus = 3;//控制按钮状态 不能重复提交
               CommonService.platformPrompt('定金支付成功');
             } else {
-              CommonService.platformPrompt('定金支付失败','close');
+              CommonService.platformPrompt('定金支付失败', 'close');
             }
 
           })
@@ -728,7 +728,7 @@ angular.module('starter.controllers', [])
           $rootScope.searchorderTabsSelect = 2;//供货计划选项
           CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
         } else {
-          CommonService.platformPrompt('您的供货单提交失败','close');
+          CommonService.platformPrompt('您的供货单提交失败', 'close');
         }
 
       })
@@ -755,7 +755,7 @@ angular.module('starter.controllers', [])
         Status: '',//订单状态0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         BONo: '' /*$rootScope.supplyDetails.BONo*/,//关联买货单号
         ToUser: '',//关联买货单人
-        SPNo:$rootScope.orderId//供货计划单
+        SPNo: $rootScope.orderId//供货计划单
       };
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
@@ -973,7 +973,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
         } else {
-          CommonService.platformPrompt('确认交易操作失败','close');
+          CommonService.platformPrompt('确认交易操作失败', 'close');
         }
 
       }).then(function () {
@@ -995,7 +995,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '');
         } else {
-          CommonService.platformPrompt('提交退货信息操作失败','close');
+          CommonService.platformPrompt('提交退货信息操作失败', 'close');
         }
 
       }).then(function () {
@@ -1182,7 +1182,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
         } else {
-          CommonService.platformPrompt('确认交易操作失败','close');
+          CommonService.platformPrompt('确认交易操作失败', 'close');
         }
 
       }).then(function () {
@@ -1204,7 +1204,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
         } else {
-          CommonService.platformPrompt('提交退货信息操作失败','close');
+          CommonService.platformPrompt('提交退货信息操作失败', 'close');
         }
 
       }).then(function () {
@@ -1361,7 +1361,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.platformPrompt('恭喜您！评价成功！');
         } else {
-          CommonService.platformPrompt('评价失败','close');
+          CommonService.platformPrompt('评价失败', 'close');
         }
 
       }).then(function () {
@@ -1762,15 +1762,15 @@ angular.module('starter.controllers', [])
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.selectproductandnum = [];//提交成功后清空数据
-          if(ordeType==1){
+          if (ordeType == 1) {
             $rootScope.searchorderTabsSelect = 0;//卖货单选项
           }
-          if(ordeType==2){
+          if (ordeType == 2) {
             $rootScope.searchorderTabsSelect = 2;//供货计划选项
           }
           CommonService.showConfirm('', '<p>恭喜您！您的发货信息提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder', 'deliverlist');
         } else {
-          CommonService.platformPrompt('您的发货信息提交失败','close');
+          CommonService.platformPrompt('您的发货信息提交失败', 'close');
         }
 
       }).finally(function () {
@@ -1824,7 +1824,7 @@ angular.module('starter.controllers', [])
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
-          if(item.FromUser!=localStorage.getItem("usertoken")){ // 接单供货列表过滤自己的订单信息
+          if (item.FromUser != localStorage.getItem("usertoken")) { // 接单供货列表过滤自己的订单信息
             $scope.supplylist.push(item);
           }
         })
@@ -2022,7 +2022,7 @@ angular.module('starter.controllers', [])
           $rootScope.searchorderTabsSelect = 1;//买货单选项
           CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder');
         } else {
-          CommonService.platformPrompt('您的买货单提交失败','close');
+          CommonService.platformPrompt('您的买货单提交失败', 'close');
 
         }
       })
@@ -2172,8 +2172,8 @@ angular.module('starter.controllers', [])
             CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
             $state.go('adddealaddress');
           }
-          if(data.Key!=200){
-            CommonService.platformPrompt('交易地址获取失败','close');
+          if (data.Key != 200) {
+            CommonService.platformPrompt('交易地址获取失败', 'close');
           }
         }).then(function () {
           if ($scope.addrliststatus.length == 0) {
@@ -2192,8 +2192,8 @@ angular.module('starter.controllers', [])
               CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
               $state.go('addbankaccount');
             }
-            if(data.Key!=200){
-              CommonService.platformPrompt('银行账户获取失败','close');
+            if (data.Key != 200) {
+              CommonService.platformPrompt('银行账户获取失败', 'close');
             }
           }).then(function () {
             if ($scope.userbankliststatus.length == 0) {
@@ -2214,7 +2214,7 @@ angular.module('starter.controllers', [])
                 $rootScope.searchorderTabsSelect = 0;//卖货单选项
                 CommonService.showConfirm('', '<p>恭喜您！您的卖货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder', '');
               } else {
-                CommonService.platformPrompt('您的卖货单提交失败','close');
+                CommonService.platformPrompt('您的卖货单提交失败', 'close');
               }
             }).finally(function () {
               CommonService.ionicLoadingHide();
@@ -2562,7 +2562,7 @@ angular.module('starter.controllers', [])
             $rootScope.selectproductandnum = [];//提交成功后清空数据
             CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood');
           } else {
-            CommonService.platformPrompt('验货扣款记录操作失败','close');
+            CommonService.platformPrompt('验货扣款记录操作失败', 'close');
           }
 
         })
@@ -2587,7 +2587,7 @@ angular.module('starter.controllers', [])
     $scope.getPageFaHuo = function () {
       $scope.params = {
         currentPage: 1,//当前页码
-        pageSize: 5,//条数
+        pageSize: 1000,//条数
         ID: '',//编码 ,等于空时取所有
         No: $rootScope.checkDetails.No,//订单号，模糊匹配
         OrderType: $rootScope.checkDetails.OrderType,//类型 1卖货单2供货单
@@ -2595,22 +2595,39 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
         $scope.deiverList = data.Values.data_list[0];
+        console.log($scope.deiverList);
         angular.forEach($scope.deiverList.Details, function (item) {
           var items = {};
+          items.GrpID = item.GrpID;
           items.PID = item.ProdID;
           items.PName = item.ProdName;
           items.PUID = item.Unit;
+          items.PUName = item.UName;
           items.num = item.Num;
-          /*        items.Prices=item.Price;
-           items.PriType=item.PriType;*/
+          items.Prices = item.Price;
+          items.PriType = 0;
           items.PUSaleType = item.SaleClass;
           items.Mark = 'Fahuo';//标示是发货详情信息还是获取的报价详情的信息
           $rootScope.selectproductandnum.push(items);
         })
-
+        //增加没有的商品类别
+        $scope.selectproductandnumother = [];
+        //已有有的商品类别
+        $scope.hasselectproductandnum = [];
+        angular.forEach($rootScope.selectproductandnum, function (item) {
+          angular.forEach($scope.goodTypeList, function (items) {
+            if (items.GID == item.GrpID) {
+              $scope.hasselectproductandnum.push(item);
+            }
+          })
+        })
+        //求两个集合的差集
+        if ($rootScope.selectproductandnum.length > $scope.hasselectproductandnum.length) {
+          $scope.selectproductandnumother = CommonService.arrayMinus($rootScope.selectproductandnum, $scope.hasselectproductandnum);
+        }
       })
     }
-    /* $scope.getPageFaHuo(); */ //获取发货详情填充添加验货清单
+
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
       //发货 签收 验货  获取产品类别
@@ -2626,8 +2643,10 @@ angular.module('starter.controllers', [])
 
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
+        console.log($scope.goodTypeList);
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
+      //  $scope.getPageFaHuo();  //获取发货详情填充添加验货清单
         $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $scope.goodTypeListAll = data.Values;
@@ -2640,15 +2659,14 @@ angular.module('starter.controllers', [])
 
     //选中的产品以及发货的数量
     $scope.selectproduct = [];
-    //添加缺件
+    //添加验货发货记录
     $scope.addQueJian = function (index, item) {
       $scope.adddeliverinfo.isAdd[index] = false;
       $scope.adddeliverinfo.isMinus[index] = true;
       $scope.adddeliverinfo.selectnum++;
       $scope.selectproduct.push(item);
-
     }
-    //取消添加的缺件
+    //取消验货发货记录
     $scope.minusQueJian = function (index, item) {
       $scope.adddeliverinfo.isAdd[index] = true;
       $scope.adddeliverinfo.isMinus[index] = false;
@@ -2693,14 +2711,13 @@ angular.module('starter.controllers', [])
           $scope.adddeliverinfo.isAdd[index] = true;
           $scope.adddeliverinfo.isMinus[index] = false;
           angular.forEach($rootScope.selectproductandnum, function (items) {
-
             if (items.PID == item.PID) {
-              /*            if(items.Mark='Fahuo'){
-               $scope.addQueJian(index,items);
-               }else {*/
-              $scope.adddeliverinfo.isAdd[index] = false;
-              $scope.adddeliverinfo.isMinus[index] = true;
-              /*        }*/
+              if (items.Mark == 'Fahuo') {
+                $scope.addQueJian(index, items);
+              } else {
+                $scope.adddeliverinfo.isAdd[index] = false;
+                $scope.adddeliverinfo.isMinus[index] = true;
+              }
               $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
@@ -2841,7 +2858,7 @@ angular.module('starter.controllers', [])
           $rootScope.searchorderTabsSelect = 2;//供货计划选项
           CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
         } else {
-          CommonService.platformPrompt('提交供货计划操作失败','close');
+          CommonService.platformPrompt('提交供货计划操作失败', 'close');
         }
       })
 
@@ -2977,7 +2994,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
         } else {
-          CommonService.platformPrompt('地址信息' + $scope.buttonText + '失败','close');
+          CommonService.platformPrompt('地址信息' + $scope.buttonText + '失败', 'close');
         }
 
       }).finally(function () {
@@ -3130,7 +3147,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
         } else {
-          CommonService.platformPrompt('提交签收数据操作失败','close');
+          CommonService.platformPrompt('提交签收数据操作失败', 'close');
         }
 
       }).finally(function () {
@@ -3209,7 +3226,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
         } else {
-          CommonService.platformPrompt('提交供货商申请失败','close');
+          CommonService.platformPrompt('提交供货商申请失败', 'close');
         }
 
       })
@@ -3318,7 +3335,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！还款成功！</p>')
         } else {
-          CommonService.platformPrompt('提交还款失败','close');
+          CommonService.platformPrompt('提交还款失败', 'close');
         }
 
       })
@@ -3371,7 +3388,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showConfirm('', '<p>恭喜您！您的预收款申请提交成功！</p><p>我们会尽快处理您的订单</p>', '查看订单', '关闭', 'myadvance');
         } else {
-          CommonService.platformPrompt('您的预收款申请提交失败','close');
+          CommonService.platformPrompt('您的预收款申请提交失败', 'close');
         }
       })
 
@@ -3473,7 +3490,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！</p><p>账户信息' + $scope.buttonText + '成功！</p>', '');
         } else {
-          CommonService.platformPrompt('账户信息' + $scope.buttonText + '失败','close');
+          CommonService.platformPrompt('账户信息' + $scope.buttonText + '失败', 'close');
         }
 
 
@@ -3486,20 +3503,19 @@ angular.module('starter.controllers', [])
 
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('mycredit'));
-     option = {
+    option = {
       tooltip: {
         formatter: "{a} <br/>{b} : {c}"
       },
-/*      toolbox: {//保存图片 刷新图片
-        feature: {
-          restore: {},
-          saveAsImage: {}
-        }
-      },*/
+      /*      toolbox: {//保存图片 刷新图片
+       feature: {
+       restore: {},
+       saveAsImage: {}
+       }
+       },*/
       series: [
         {
-          axisLine:
-          {
+          axisLine: {
             show: true,
             lineStyle: {
               color: [
@@ -3512,10 +3528,12 @@ angular.module('starter.controllers', [])
           },
           name: '信用分指标',
           type: 'gauge',
-          detail: {formatter: $rootScope.userinfo.zmscore, textStyle: {
-            color: 'auto',
-            fontSize :38
-          }},
+          detail: {
+            formatter: $rootScope.userinfo.zmscore, textStyle: {
+              color: 'auto',
+              fontSize: 38
+            }
+          },
           data: [{value: $rootScope.userinfo.zmscore, name: '信用分'}]
         }
       ]
@@ -3589,7 +3607,7 @@ angular.module('starter.controllers', [])
         $scope.bankstatus = certstate.substr(5, 1);//银行账号状态码
 
       } else {
-        CommonService.platformPrompt('获取用户信息失败','close');
+        CommonService.platformPrompt('获取用户信息失败', 'close');
       }
 
     })
@@ -3638,7 +3656,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>温馨提示:您的反馈我们已经接收,</p><p>我们会针对您的问题尽快做出答复,</p><p>非常感谢您对博绿网的支持！</p>', '')
         } else {
-          CommonService.platformPrompt('提交反馈失败','close');
+          CommonService.platformPrompt('提交反馈失败', 'close');
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -3716,7 +3734,7 @@ angular.module('starter.controllers', [])
           if (data.Key == 200) {
             CommonService.platformPrompt('修改手机号成功', 'tab.account');
           } else {
-            CommonService.platformPrompt('修改手机号失败','close');
+            CommonService.platformPrompt('修改手机号失败', 'close');
           }
 
         }).finally(function () {
@@ -3737,10 +3755,10 @@ angular.module('starter.controllers', [])
 
       AccountService.sendEmailCode($scope.params).success(function (data) {
         if (data.Key == 200) {
-          $rootScope.email.rescode=data.Values;
+          $rootScope.email.rescode = data.Values;
           CommonService.showAlert('', '<p>温馨提示:验证邮件已经发送到您的</p><p>邮箱,请尽快去您的邮箱进行验证！</p>', 'authenticationemail')
         } else {
-          CommonService.platformPrompt('发送邮件失败','close');
+          CommonService.platformPrompt('发送邮件失败', 'close');
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -3753,22 +3771,22 @@ angular.module('starter.controllers', [])
     $scope.verify = true;
     //认证邮箱
     $scope.authenticationEmail = function () {
-      if($rootScope.email.rescode!=$rootScope.email.code){
-        CommonService.platformPrompt('邮箱认证码输入错误','close');
+      if ($rootScope.email.rescode != $rootScope.email.code) {
+        CommonService.platformPrompt('邮箱认证码输入错误', 'close');
         return;
       }
       CommonService.ionicLoadingShow();
       $scope.datas = {
         userid: localStorage.getItem("usertoken"),		//用户id
         email: $rootScope.email.No,//邮箱号
-        code:$rootScope.email.code //邮箱验证码
+        code: $rootScope.email.code //邮箱验证码
       }
       AccountService.authEmail($scope.datas).success(function (data) {
         if (data.Key == 200) {
           CommonService.platformPrompt('认证邮箱成功');
           $scope.verify = false;
         } else {
-          CommonService.platformPrompt('认证邮箱失败','close');
+          CommonService.platformPrompt('认证邮箱失败', 'close');
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -3811,7 +3829,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>温馨提示:您的认证信息已经</p><p>提交成功,我们会尽快处理！</p>', '')
         } else {
-          CommonService.platformPrompt('实名认证失败','close');
+          CommonService.platformPrompt('实名认证失败', 'close');
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();

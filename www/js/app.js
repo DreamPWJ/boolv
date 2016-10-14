@@ -88,6 +88,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }catch (e){
           console.log(e);
         }
+      // System events
+      document.addEventListener("resume", resume, false);
+
+      function resume() {
+        if (window.plugins.jPushPlugin.isPlatformIOS()) {
+          window.plugins.jPushPlugin.setBadge(0);
+          window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+        } else if (window.plugins.jPushPlugin.isAndroid()) {
+          window.plugins.jPushPlugin.setLatestNotificationNum(3);
+          window.plugins.jPushPlugin.clearAllNotification();
+        }
+      }
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
 
@@ -112,6 +124,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         })
 
       }, false);
+
       //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
 /*      $rootScope.clearcacheInfo = [];
       $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
