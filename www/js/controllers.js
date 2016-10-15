@@ -2604,11 +2604,14 @@ angular.module('starter.controllers', [])
           items.PUID = item.Unit;
           items.PUName = item.UName;
           items.num = item.Num;
-          items.Prices = item.Price;
+          items.Prices=[];
+          items.Prices.push({Price:item.Price});
           items.PriType = 0;
           items.PUSaleType = item.SaleClass;
           items.Mark = 'Fahuo';//标示是发货详情信息还是获取的报价详情的信息
           $rootScope.selectproductandnum.push(items);
+          $scope.addQueJian(items.PID,items);
+          $scope.adddeliverinfo.num[items.PID] = items.num;
         })
         //增加没有的商品类别
         $scope.selectproductandnumother = [];
@@ -2626,6 +2629,7 @@ angular.module('starter.controllers', [])
           $scope.selectproductandnumother = CommonService.arrayMinus($rootScope.selectproductandnum, $scope.hasselectproductandnum);
         }
       })
+
     }
 
     //获取产品类别列表
@@ -2643,15 +2647,15 @@ angular.module('starter.controllers', [])
 
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        console.log($scope.goodTypeList);
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
-      //  $scope.getPageFaHuo();  //获取发货详情填充添加验货清单
         $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
+          console.log(data);
           $scope.goodTypeListAll = data.Values;
 
         })
+        $scope.getPageFaHuo();  //获取发货详情填充添加验货清单
       })
     }
 
@@ -2660,16 +2664,16 @@ angular.module('starter.controllers', [])
     //选中的产品以及发货的数量
     $scope.selectproduct = [];
     //添加验货发货记录
-    $scope.addQueJian = function (index, item) {
-      $scope.adddeliverinfo.isAdd[index] = false;
-      $scope.adddeliverinfo.isMinus[index] = true;
+    $scope.addQueJian = function (PID, item) {
+      $scope.adddeliverinfo.isAdd[PID] = false;
+      $scope.adddeliverinfo.isMinus[PID] = true;
       $scope.adddeliverinfo.selectnum++;
       $scope.selectproduct.push(item);
     }
     //取消验货发货记录
-    $scope.minusQueJian = function (index, item) {
-      $scope.adddeliverinfo.isAdd[index] = true;
-      $scope.adddeliverinfo.isMinus[index] = false;
+    $scope.minusQueJian = function (PID, item) {
+      $scope.adddeliverinfo.isAdd[PID] = true;
+      $scope.adddeliverinfo.isMinus[PID] = false;
       $scope.adddeliverinfo.selectnum--;
       $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
     }
@@ -2708,17 +2712,13 @@ angular.module('starter.controllers', [])
           $scope.adddeliverList.push(item);
         })
         angular.forEach($scope.adddeliverList, function (item, index) {
-          $scope.adddeliverinfo.isAdd[index] = true;
-          $scope.adddeliverinfo.isMinus[index] = false;
+          $scope.adddeliverinfo.isAdd[item.PID] = true;
+          $scope.adddeliverinfo.isMinus[item.PID] = false;
           angular.forEach($rootScope.selectproductandnum, function (items) {
             if (items.PID == item.PID) {
-              if (items.Mark == 'Fahuo') {
-                $scope.addQueJian(index, items);
-              } else {
-                $scope.adddeliverinfo.isAdd[index] = false;
-                $scope.adddeliverinfo.isMinus[index] = true;
-              }
-              $scope.adddeliverinfo.num[item.PID] = items.num;
+                $scope.adddeliverinfo.isAdd[item.PID] = false;
+                $scope.adddeliverinfo.isMinus[item.PID] = true;
+                $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
         })
@@ -2741,6 +2741,18 @@ angular.module('starter.controllers', [])
       $scope.selectGID = GID;
       $scope.addDeliverProduct(GID);
     }
+
+    //增加数量信息 重新组装数组
+    $scope.selectedproduct = function () {
+      $rootScope.selectproductandnum = [];//增加数量信息
+      angular.forEach($scope.selectproduct, function (item) {
+        if ($scope.adddeliverinfo.num[item.PID]) {
+          item.num = $scope.adddeliverinfo.num[item.PID];
+          $rootScope.selectproductandnum.push(item)
+        }
+      })
+    }
+
     //选好了方法
     $scope.selectaffirm = function () {
       $scope.selectedproduct();  //增加数量信息 重新组装数组
@@ -2760,21 +2772,9 @@ angular.module('starter.controllers', [])
         $scope.selectproductandnumother = CommonService.arrayMinus($rootScope.selectproductandnum, $scope.hasselectproductandnum);
       }
 
-
       $scope.closeModal();//关闭modal
     }
-    //增加数量信息 重新组装数组
-    $scope.selectedproduct = function () {
-      $rootScope.selectproductandnum = [];//增加数量信息
-      angular.forEach($scope.selectproduct, function (item) {
-        if ($scope.adddeliverinfo.num[item.PID]) {
-          item.num = $scope.adddeliverinfo.num[item.PID];
-          $rootScope.selectproductandnum.push(item)
-        }
 
-      })
-
-    }
 
     //关闭modle清空数据
     $scope.closeModalClear = function () {

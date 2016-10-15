@@ -13,9 +13,9 @@
        </select>
      </ion-item>
      <ion-item class="item-icon-right" ng-repeat="item in adddeliverList"><h2 class="padding-bottom">{{item.PName}}</h2>
-      <i ng-if="adddeliverinfo.isAdd[$index]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian($index,item)"></i>
-      <i ng-if="adddeliverinfo.isMinus[$index]" class="icon ion-ios-minus assertive" ng-click="minusQueJian($index,item)"></i>
-       <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[$index]">
+      <i ng-if="adddeliverinfo.isAdd[item.PID]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian(item.PID,item)"></i>
+      <i ng-if="adddeliverinfo.isMinus[item.PID]" class="icon ion-ios-minus assertive" ng-click="minusQueJian(item.PID,item)"></i>
+       <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[item.PID]">
          <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" check-form ng-change="checkForm(adddeliverinfo.num[item.PID],'数量错误 台数为正整数 公斤为正数可保留两位小数',item.PUType==1?'positiveinteger':'positivenumber','')" ng-blur="selectedproduct()"/>
        </label>
    </ion-item>

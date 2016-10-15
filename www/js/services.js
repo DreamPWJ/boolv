@@ -799,6 +799,7 @@ angular.module('starter.services', [])
           console.log("success=" + result.response);
         }, function (err) {
           $cordovaToast.showLongCenter("上传失败");
+          $scope.imageList.splice(imageUrl,1);//删除失败以后不显示
           console.log("err=" + err.response);
         }, function (progress) {
           // constant progress updates
