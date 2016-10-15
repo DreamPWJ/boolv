@@ -1788,7 +1788,7 @@ angular.module('starter.controllers', [])
       //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
       $scope.userid = localStorage.getItem("usertoken");
       AccountService.getUserInfo($scope.userid).success(function (data) {
-        if (data.Values.grade != 5) {
+        if (data.Values.grade!= 5) {
           CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
         }
         localStorage.setItem('user', JSON.stringify(data.Values));
@@ -2344,9 +2344,23 @@ angular.module('starter.controllers', [])
 
   })
   //验货列表详情
-  .controller('CheckDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
+  .controller('CheckDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService,SearchOrderService) {
     $rootScope.checkDetails = JSON.parse($stateParams.item);
-
+    //获取发货详情
+    $scope.getPageFaHuo = function () {
+      $scope.params = {
+        currentPage: 1,//当前页码
+        pageSize: 5,//条数
+        ID: '',//编码 ,等于空时取所有
+        No: $rootScope.checkDetails.No,//订单号，模糊匹配
+        OrderType: $rootScope.checkDetails.OrderType,//类型 1卖货单2供货单
+        AddUser: ''//添加人
+      }
+      SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
+        $scope.deiverList = data.Values.data_list[0];
+      })
+    }
+    $scope.getPageFaHuo();  //获取发货详情
   })
   //添加扣款项
   .controller('AddCutPaymentCtrl', function ($scope, $rootScope, $stateParams, CommonService, DeliverService) {
@@ -2560,7 +2574,8 @@ angular.module('starter.controllers', [])
           if (data.Key == 200) {
             $rootScope.addcutpayment = [];//提交成功清空数据
             $rootScope.selectproductandnum = [];//提交成功后清空数据
-            CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood');
+            $rootScope.searchorderTabsSelect = 3;//收货单选项
+            CommonService.showConfirm('', '<p>恭喜您！您的验货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
           } else {
             CommonService.platformPrompt('验货扣款记录操作失败', 'close');
           }
@@ -2604,13 +2619,13 @@ angular.module('starter.controllers', [])
           items.PUID = item.Unit;
           items.PUName = item.UName;
           items.num = item.Num;
-          items.Prices=[];
-          items.Prices.push({Price:item.Price});
+          items.Prices = [];
+          items.Prices.push({Price: item.Price});
           items.PriType = 0;
           items.PUSaleType = item.SaleClass;
           items.Mark = 'Fahuo';//标示是发货详情信息还是获取的报价详情的信息
           $rootScope.selectproductandnum.push(items);
-          $scope.addQueJian(items.PID,items);
+          $scope.addQueJian(items.PID, items);
           $scope.adddeliverinfo.num[items.PID] = items.num;
         })
         //增加没有的商品类别
@@ -2716,9 +2731,9 @@ angular.module('starter.controllers', [])
           $scope.adddeliverinfo.isMinus[item.PID] = false;
           angular.forEach($rootScope.selectproductandnum, function (items) {
             if (items.PID == item.PID) {
-                $scope.adddeliverinfo.isAdd[item.PID] = false;
-                $scope.adddeliverinfo.isMinus[item.PID] = true;
-                $scope.adddeliverinfo.num[item.PID] = items.num;
+              $scope.adddeliverinfo.isAdd[item.PID] = false;
+              $scope.adddeliverinfo.isMinus[item.PID] = true;
+              $scope.adddeliverinfo.num[item.PID] = items.num;
             }
           })
         })
@@ -2908,14 +2923,17 @@ angular.module('starter.controllers', [])
     $scope.getAddrlist(0);//交易地址加载刷新
 
     //删除用户常用地址
-    $scope.deleteAddr = function (addrid, index) {
+    $scope.deleteAddr = function (addrid, status) {
+       if($rootScope.userinfo.grade==5&&status==1){//当会员是供货商（=5）时，默认地址不能删除
+         CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
+         return;
+       }
       $scope.delparams = {
         id: addrid,
         userid: localStorage.getItem("usertoken")
       }
       AccountService.deleteAddr($scope.delparams).success(function (data) {
-        $scope.getAddrlist(0)
-        /* $scope.addrlist.splice(index, 1)*/
+        $scope.getAddrlist(0);//重新加载列表
       })
     }
     //修改地址信息
@@ -3096,9 +3114,16 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
         $scope.deiverList = data.Values.data_list[0];
+        $scope.signinfo.Number = $scope.deiverList.Number;
+        $scope.signinfo.Weight = $scope.deiverList.Weight;
+        $scope.signinfo.ExpName = $scope.deiverList.ExpName;
+        $scope.signinfo.ExpNo = $scope.deiverList.ExpNo;
+        $scope.signinfo.Cost = $scope.deiverList.Cost;
+        $scope.signinfo.ExpCost = $scope.deiverList.ExpCost;
       })
     }
     $scope.getPageFaHuo();  //获取发货详情填充签收表单
+
     //查询物流快递
     $scope.params = {
       code: '',
@@ -3145,7 +3170,7 @@ angular.module('starter.controllers', [])
 
       DeliverService.addSign($scope.datas).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'signlist')
+          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
         } else {
           CommonService.platformPrompt('提交签收数据操作失败', 'close');
         }
@@ -3519,13 +3544,16 @@ angular.module('starter.controllers', [])
             show: true,
             lineStyle: {
               color: [
-                [0.3, '#ef473a'],
-                [0.7, '#11c1f3'],
-                [1, '#33cd5f']
+                [0.2, 'rgb(255,69,49)'],
+                [0.4, 'rgb(255,130,16)'],
+                [0.6, 'rgb(189,219,8)'],
+                [0.8, 'rgb(82,223,74)'],
+                [1, 'rgb(0,219,132)']
               ],
-              width: 25
-            }
+              width: 20
+            },
           },
+          max:990,
           name: '信用分指标',
           type: 'gauge',
           detail: {
@@ -3534,12 +3562,47 @@ angular.module('starter.controllers', [])
               fontSize: 38
             }
           },
-          data: [{value: $rootScope.userinfo.zmscore, name: '信用分'}]
+          data: [{value: $rootScope.userinfo.zmscore, name: '我的信用分'}]
         }
       ]
     };
     myChart.setOption(option, true);
 
+    var zmChart = echarts.init(document.getElementById('zmcredit'));
+    zmoption = {
+      tooltip: {
+        formatter: "{a} <br/>{b} : {c}"
+      },
+      series: [
+        {
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: [
+                [0.2, 'rgb(255,69,49)'],
+                [0.4, 'rgb(255,130,16)'],
+                [0.6, 'rgb(189,219,8)'],
+                [0.8, 'rgb(82,223,74)'],
+                [1, 'rgb(0,219,132)']
+              ],
+              width: 20
+            }
+          },
+          min:350,
+          max:950,
+          name: '信用分指标',
+          type: 'gauge',
+          detail: {
+            formatter: 736, textStyle: {
+              color: 'auto',
+              fontSize: 38
+            }
+          },
+          data: [{value: 736, name: '芝麻信用分'}]
+        }
+      ]
+    };
+    zmChart.setOption(zmoption, true);
   })
   //芝麻信用身份证授权
   .controller('CreditNoAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService) {

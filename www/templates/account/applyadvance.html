@@ -8,11 +8,12 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 申请预收款</h1>
   </ion-nav-title>
   <form name="applyadvance">
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
+    <p></p>
     <div class="list list-borderless ">
         <label class="item item-input">
           <span class="input-label">申请金额</span>
-          <input type="number" placeholder="最高额度100000元" ng-model="applyinfo.Money" check-form ng-change="checkForm(applyinfo.Money,'申请金额输入错误 正数可保留两位小数','positivenumber','')" required/>
+          <input type="number" placeholder="最高额度100000元" ng-model="applyinfo.Money" check-form ng-change="checkForm(applyinfo.Money,'申请金额输入错误 正数可保留两位小数','positivenumber','')" ng-maxlength="10" required/>
         </label>
 
       <a ng-href="" class="item item-divider">
@@ -20,7 +21,7 @@
       </a>
       <label class="item item-input border-bottom-1">
         <span class="input-label">借款周期</span>
-        <input type="number" placeholder="不能超过30天" check-form ng-change="checkForm(applyinfo.Cycle,'借款周期不能超过30天或小于0','maxvaule',30)" ng-model="applyinfo.Cycle" required/>
+        <input type="number" placeholder="不能超过30天"  ng-model="applyinfo.Cycle" check-form ng-change="checkForm(applyinfo.Cycle,'借款周期不能超过30天或小于0','maxvaule',30)" required/>
       </label>
       <a ng-href="" class="item " >
         <h2 style="color:#444;">服务费 <span class="item-note dark font-size-1" >0.03%</span></h2>

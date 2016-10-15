@@ -23,36 +23,36 @@
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数</span>
-        <input type="number"  placeholder="(单位 : 件)" ng-model="signinfo.Number" ng-value="deiverList.Number" check-form ng-change="checkForm(signinfo.Number,'签收件数输入错误 需为正整数','positiveinteger','')" />
+        <input type="number"  placeholder="(单位 : 件)"  ng-model="signinfo.Number"   check-form ng-change="checkForm(signinfo.Number,'签收件数输入错误 需为正整数','positiveinteger','')" />
       </label>
       <label class="item item-input">
         <span class="input-label"> 重量</span>
-        <input type="number" placeholder="(单位 : 公斤)" ng-model="signinfo.Weight" ng-value="deiverList.Weight" check-form ng-change="checkForm(signinfo.Weight,'签收重量输入错误 正数可保留两位小数','positivenumber','')" />
+        <input type="number" placeholder="(单位 : 公斤)" ng-model="signinfo.Weight" check-form ng-change="checkForm(signinfo.Weight,'签收重量输入错误 正数可保留两位小数','positivenumber','')" />
       </label>
 
       <label class="item " ng-show="goodtype==null||goodtype==1">
         <span class="input-label"><span class="padding-right">物流公司 : </span>
-          <input ng-model="signinfo.ExpName" ng-value="deiverList.ExpName" placeholder="填写或选择物流公司" class="no-border bankname"  list="expName" />
+          <input ng-model="signinfo.ExpName"  placeholder="填写或选择物流公司" class="no-border bankname"  list="expName" />
         <datalist id="expName">
           <option  ng-repeat="item in expresses">{{item.Name}}</option>
         </datalist></span>
         </label>
       <div class="item item-input item-icon-right" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 物流单号:  </span>
-        <input class="col-50"  type="text" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo||deiverList.ExpNo" />
+        <input class="col-50"  type="text" placeholder="点击右侧图标扫描"  ng-model="signinfo.ExpNo"  ng-value="signinfo.ExpNo" />
         <i class="icon ion-qr-scanner" ng-click="barcodeScanner()" ></i>
       </div>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 提货费</span>
-        <input type="number" placeholder="（单位 : 元）"  ng-model="signinfo.Cost" ng-value="deiverList.Cost"/>
+        <input type="number" placeholder="（单位 : 元）"  ng-model="signinfo.Cost" />
       </label>
       <label class="item item-input" ng-show="goodtype==null||goodtype==1">
         <span class="input-label"> 物流费</span>
-        <input type="number" placeholder="（单位 : 元）" ng-model="signinfo.ExpCost" ng-value="deiverList.ExpCost"/>
+        <input type="number" placeholder="（单位 : 元）" ng-model="signinfo.ExpCost" />
       </label>
       <label class="item item-input" ng-show="goodtype!=3">
         <span class="input-label"> 送货费</span>
-        <input type="number" placeholder="（单位 : 元）" ng-model="signinfo.Cost" ng-value="deiverList.Cost"/>
+        <input type="number" placeholder="（单位 : 元）" ng-model="signinfo.Cost" />
       </label>
       <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">
         <span class="input-label"> 上传照片:  <span class="grey">货运车、车牌、货物包装照片</span></span>
