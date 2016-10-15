@@ -32,7 +32,7 @@
     // 添加QQ
     [UMSocialQQHandler setQQWithAppId:qqAppKey appKey:qqAppSecret url:@"http://mobile.umeng.com/social"];
     // 添加微信
-    [UMSocialWechatHandler setWXAppId:@"wx3a43052a36e31c53" appSecret:@"6a3041d9f45d265f79d20bacf6d4965b" url:@"http://mobile.umeng.com/social"];
+    [UMSocialWechatHandler setWXAppId:wechatAppKey appSecret:wechatAppSecret url:@"http://mobile.umeng.com/social"];
 }
 
 - (void)share:(CDVInvokedUrlCommand*)command
