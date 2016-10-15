@@ -11,6 +11,6 @@ configMod.constant("BooLv", {
   'siteUrl': "http://a.boolv.com",//仓库地址 暂无使用
   'imgUrl': "http://f.boolv.com",//图片地址 暂无使用
   'moblileApi':"http://m.boolv.com",//手机端服务  使用（分享链接展示调用）
-  'version': '1.0.9' //版本号
+  'version': '1.1.0' //版本号
 });
 
