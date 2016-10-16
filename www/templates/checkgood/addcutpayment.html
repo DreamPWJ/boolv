@@ -1,8 +1,8 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons  header-item " ng-click="$ionicGoBack()">
+    <a class="button back-button buttons  header-item " ng-href="{{checksuccess?'#/checkgood':'#/addproduct'}}">
       <i class="icon ion-chevron-left"></i>
-    </button>
+    </a>
     <a class="button icon ion-android-home no-border" nav-direction=forward ng-href="#/tab/main"></a>
   </ion-nav-buttons>
   <ion-nav-title>

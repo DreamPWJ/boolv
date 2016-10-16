@@ -5,18 +5,18 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova','ionic-native-transitions'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova', 'ionic-native-transitions'])
 
-  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory,$cordovaToast,$cordovaNetwork,CommonService) {
+  .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     localStorage.setItem("start", 1);
     $ionicPlatform.ready(function () {
       if (window.StatusBar) {
         //状态栏颜色设置
         // org.apache.cordova.statusbar required
-        if($ionicPlatform.is('ios')){
+        if ($ionicPlatform.is('ios')) {
           StatusBar.styleLightContent();
         }
-        if($ionicPlatform.is('android')){
+        if ($ionicPlatform.is('android')) {
           StatusBar.backgroundColorByHexString("#11c1f3");
         }
 
@@ -83,14 +83,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
 
       //启动极光推送服务
-        try{
-          window.plugins.jPushPlugin.init();
-        }catch (e){
-          console.log(e);
-        }
+      try {
+        window.plugins.jPushPlugin.init();
+      } catch (e) {
+        console.log(e);
+      }
       // System events
       document.addEventListener("resume", resume, false);
-
       function resume() {
         if (window.plugins.jPushPlugin.isPlatformIOS()) {
           window.plugins.jPushPlugin.setBadge(0);
@@ -100,53 +99,84 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           window.plugins.jPushPlugin.clearAllNotification();
         }
       }
+
+      //点击极光推送跳转到相应页面
+      document.addEventListener("jpush.openNotification", function (data) {
+        var BLNo = data.extras.BLNo;//订单号
+        var BLType = data.extras.BLType;//（查看类型 1.非收货订单 2.收货订单）
+        var BLOrderType = data.extras.BLOrderType;//（类型通知 1-卖货单2-采购单3-供货单4-供货计划5-申请预收款）
+        if (BLOrderType == 1 || BLOrderType == 2 || BLOrderType == 3 || BLOrderType == 4) {
+          if (BLType == 1 && BLOrderType == 1) {
+            $rootScope.searchorderTabsSelect = 0;//卖货单选项
+          }
+          if (BLOrderType == 2) {
+            $rootScope.searchorderTabsSelect = 1;//买货单选项
+          }
+          if (BLType == 1 && (BLOrderType == 3 || BLOrderType == 4)) {
+            $rootScope.searchorderTabsSelect = 2;//供货计划选项
+          }
+          if ((BLType == 2 && BLOrderType == 1) || (BLType == 2 && BLOrderType == 3) || (BLType == 2 && BLOrderType == 4)) {
+            $rootScope.searchorderTabsSelect = 3;//收货单选项
+          }
+          $state.go("searchorder");
+        }
+        if (BLOrderType == 5) {
+          $state.go("myadvance");//申请预收款列表
+        }
+
+        /*        if (device.platform == "Android") {*/
+        /*      } else {
+         }*/
+
+      }, false)
+
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
       //window.plugins.jPushPlugin.setDebugMode(true);
 
       //判断网络状态
-      document.addEventListener("deviceready", function() {
+      document.addEventListener("deviceready", function () {
         //var type = $cordovaNetwork.getNetwork()
         //var isOnline = $cordovaNetwork.isOnline()
         //var isOffline = $cordovaNetwork.isOffline()
 
         // listen for Online event
-        $rootScope.$on('$cordovaNetwork:online', function(event, networkState) {
+        $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
           var onlineState = networkState;
           console.log("device online...");
         })
 
         // listen for Offline event
-        $rootScope.$on('$cordovaNetwork:offline', function(event, networkState) {
+        $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 不能连接到服务器",'close');
+          CommonService.platformPrompt("网络异常 不能连接到服务器", 'close');
           CommonService.ionicLoadingHide();//取消加载动画
         })
 
       }, false);
 
       //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
-/*      $rootScope.clearcacheInfo = [];
-      $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
-        var history = $ionicHistory.forwardView();
-        if (history && history.stateName) {
-          $rootScope.clearcacheInfo.push(history.stateName);
-        }
+      /*      $rootScope.clearcacheInfo = [];
+       $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
+       var history = $ionicHistory.forwardView();
+       if (history && history.stateName) {
+       $rootScope.clearcacheInfo.push(history.stateName);
+       }
 
-      });
-      $rootScope.$on('$ionicView.afterEnter', function (event, data) {
-        if ($rootScope.clearcacheInfo.length > 0)
-        {
-          $ionicHistory.clearCache($rootScope.clearcacheInfo).then(function () {
-            $rootScope.clearcacheInfo = [];
-          });
-        }
-      });*/
+       });
+       $rootScope.$on('$ionicView.afterEnter', function (event, data) {
+       if ($rootScope.clearcacheInfo.length > 0)
+       {
+       $ionicHistory.clearCache($rootScope.clearcacheInfo).then(function () {
+       $rootScope.clearcacheInfo = [];
+       });
+       }
+       });*/
 
     });
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider,$ionicNativeTransitionsProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
     $ionicConfigProvider.platform.ios.tabs.style('standard');
     $ionicConfigProvider.platform.ios.tabs.position('bottom');
     $ionicConfigProvider.platform.android.tabs.style('standard');
@@ -252,14 +282,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('login', {
         url: '/login',
         cache: false,
-/*        nativeTransitions: {
-          "type": "flip",
-          "direction": "up"
-        },*/
+        /*        nativeTransitions: {
+         "type": "flip",
+         "direction": "up"
+         },*/
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
       })
-       //查单列表
+      //查单列表
       .state('searchorder', {
         url: '/searchorder',
         cache: false,
@@ -294,14 +324,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/searchorder/supplyorderlist.html',
         controller: 'SupplyOrderListCtrl'
       })
-       //供货单详情
+      //供货单详情
       .state('supplyorderdetails', {
         url: '/supplyorderdetails/:item',
         cache: false,
         templateUrl: 'templates/searchorder/supplyorderdetails.html',
         controller: 'SupplyOrderDetailsCtrl'
       })
-     // 查单卖货单审核验货单列表
+      // 查单卖货单审核验货单列表
       .state('examinegoodsorder', {
         url: '/examinegoodsorder',
         cache: false,
@@ -345,7 +375,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //通知消息列表
       .state('tab.news', {
         url: '/news',
-        cache:false,
+        cache: false,
         nativeTransitions: null,
         views: {
           'tab-news': {
@@ -363,7 +393,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //发货列表
       .state('deliverlist', {
         url: '/deliverlist',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/delivergoods/deliverlist.html',
         controller: 'DeliverListCtrl'
 
@@ -379,11 +409,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //添加发货清单
       .state('adddeliverlist', {
         url: '/adddeliverlist',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/delivergoods/adddeliverlist.html',
         controller: 'AddDeliverListCtrl'
       })
-       //添加发货清单model
+      //添加发货清单model
       .state('delivergoodsmodel', {
         url: '/delivergoodsmodel',
         templateUrl: 'templates/delivergoods/delivergoodsmodel.html',
@@ -393,7 +423,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //提交发货信息
       .state('delivergoods', {
         url: '/delivergoods',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/delivergoods/delivergoods.html',
         controller: 'DeliverGoodsCtrl'
 
@@ -401,7 +431,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //接单供货计划
       .state('supplygood', {
         url: '/supplygood',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/jiedan/supplygood.html',
         controller: 'SupplyGoodCtrl'
 
@@ -430,7 +460,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //地址详细列表
       .state('dealaddress', {
         url: '/dealaddress',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/jiedan/dealaddress.html',
         controller: 'DealAddressCtrl'
 
@@ -439,7 +469,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //添加地址
       .state('adddealaddress', {
         url: '/adddealaddress',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/jiedan/adddealaddress.html',
         controller: 'AddDealAddressCtrl'
 
@@ -448,7 +478,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货选择产品
       .state('releaseprocure', {
         url: '/releaseprocure',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/buygood/releaseprocure.html',
         controller: 'ReleaseProcureCtrl'
 
@@ -456,7 +486,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货发布买货单数量
       .state('procuredetailsnum', {
         url: '/procuredetailsnum',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/buygood/procuredetailsnum.html',
         controller: 'ProcureDetailsNumCtrl'
 
@@ -464,7 +494,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货发布买货单报价
       .state('procuredetails', {
         url: '/procuredetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/buygood/procuredetails.html',
         controller: 'ProcureDetailsCtrl'
 
@@ -472,7 +502,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //收货地址选择提交买货单
       .state('releaseprocureorder', {
         url: '/releaseprocureorder',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/buygood/releaseprocureorder.html',
         controller: 'ReleaseProcureOrderCtrl'
 
@@ -485,28 +515,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我要卖货
       .state('sellprocure', {
         url: '/sellprocure',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sellgood/sellprocure.html',
         controller: 'SellProcureCtrl'
       })
       //卖货下单
       .state('selldetails', {
         url: '/selldetails',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sellgood/selldetails.html',
         controller: 'SellDetailsCtrl'
       })
       //查单卖货详情
       .state('sellorderdetails', {
         url: '/sellorderdetails/:item',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sellgood/sellorderdetails.html',
         controller: 'SellOrderDetailsCtrl'
       })
       //验货列表
       .state('checkgood', {
         url: '/checkgood',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/checkgood/checkgood.html',
         controller: 'CheckGoodCtrl'
       })
@@ -514,14 +544,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //验货列表详情
       .state('checkdetails', {
         url: '/checkdetails/:item',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/checkgood/checkdetails.html',
         controller: 'CheckDetailsCtrl'
       })
       //添加验货清单
       .state('addproduct', {
         url: '/addproduct',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/checkgood/addproduct.html',
         controller: 'AddProductCtrl'
       })
@@ -534,7 +564,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //添加扣款项
       .state('addcutpayment', {
         url: '/addcutpayment',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/checkgood/addcutpayment.html',
         controller: 'AddCutPaymentCtrl'
       })
@@ -549,21 +579,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //签收列表
       .state('signlist', {
         url: '/signlist',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sign/signlist.html',
         controller: 'SignListCtrl'
       })
       //签收收货单详情
       .state('signdetails', {
         url: '/signdetails/:item',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sign/signdetails.html',
         controller: 'SignDetailsCtrl'
       })
       //签收提交
       .state('sign', {
         url: '/sign',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/sign/sign.html',
         controller: 'SignCtrl'
       })
@@ -576,21 +606,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //申请预收款
       .state('applyadvance', {
         url: '/applyadvance',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/applyadvance.html',
         controller: 'ApplyAdvancesCtrl'
       })
       //我的预收款列表
       .state('myadvance', {
         url: '/myadvance',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/myadvance.html',
         controller: 'MyAvanceCtrl'
       })
-       //获取还款记录列表
+      //获取还款记录列表
       .state('davancedetails', {
         url: '/davancedetails/:item',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/davancedetails.html',
         controller: 'DavanceDetailsCtrl'
       })
@@ -604,7 +634,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //收款银行账号列表
       .state('collectionaccount', {
         url: '/collectionaccount',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/collectionaccount.html',
         controller: 'CollectionAccountCtrl'
       })
@@ -612,28 +642,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //增加收款银行账号
       .state('addbankaccount', {
         url: '/addbankaccount',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/addbankaccount.html',
         controller: 'AddBankAccountCtrl'
       })
       //芝麻信用
       .state('mycredit', {
         url: '/mycredit',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/mycredit.html',
         controller: 'MyCreditCtrl'
       })
       //芝麻信用身份证授权
       .state('creditnoauthorization', {
         url: '/creditnoauthorization',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/creditnoauthorization.html',
         controller: 'CreditNoAuthorizationCtrl'
       })
       //芝麻信用手机号授权
       .state('creditphoneauthorization', {
         url: '/creditphoneauthorization',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/creditphoneauthorization.html',
         controller: 'CreditPhoneAuthorizationCtrl'
       })
@@ -652,14 +682,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //设置安全
       .state('accountsecurity', {
         url: '/accountsecurity',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/accountsecurity.html',
         controller: 'AccountSecurityCtrl'
       })
       //帮助与反馈
       .state('helpfeedback', {
         url: '/helpfeedback',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/helpfeedback.html',
         controller: 'HelpFeedBackCtrl'
       })
@@ -702,7 +732,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //实名认证
       .state('realname', {
         url: '/realname',
-        cache:false,
+        cache: false,
         templateUrl: 'templates/account/realname.html',
         controller: 'RealNameCtrl'
       })

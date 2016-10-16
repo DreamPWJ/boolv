@@ -1494,6 +1494,7 @@ angular.module('starter.controllers', [])
   })
   //发货列表  发货列表页是包含供货单和卖货单
   .controller('DeliverListCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
+    $rootScope.deliversuccess=false;//发货提交成功的标示
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -1823,6 +1824,7 @@ angular.module('starter.controllers', [])
       }
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         if (data.Key == 200) {
+          $rootScope.deliversuccess=true;//发货提交成功的标示
           $rootScope.selectproductandnum = [];//提交成功后清空数据
           if (ordeType == 1) {
             $rootScope.searchorderTabsSelect = 0;//卖货单选项
@@ -1843,6 +1845,7 @@ angular.module('starter.controllers', [])
   })
   //接单供货计划订单列表以及详情
   .controller('SupplyGoodCtrl', function ($scope, $state, $rootScope, CommonService, SupplyService, AccountService) {
+    $rootScope.supplysuccess=false;//供货计划成功下单标示
     //是否登录
     if (!CommonService.isLogin()) {
       return
@@ -1929,7 +1932,7 @@ angular.module('starter.controllers', [])
   })
   //买货选择产品
   .controller('ReleaseProcureCtrl', function ($scope, $rootScope, CommonService, MainService) {
-
+    $rootScope.buysuccess=false;//买货成功标示
     //获取行情报价分页列表
     $rootScope.buyprodsList = [];
     $scope.currentPage = 0;
@@ -2081,6 +2084,7 @@ angular.module('starter.controllers', [])
       }
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
         if (data.Key == 200) {
+          $rootScope.buysuccess=true;//买货成功标示
           $rootScope.searchorderTabsSelect = 1;//买货单选项
           CommonService.showConfirm('', '<p>恭喜您！您的买货单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder');
         } else {
@@ -2160,7 +2164,7 @@ angular.module('starter.controllers', [])
 
         SellService.getListLongAndLat($scope.supplierListParams).success(function (data) {
           if (data.Values == null) {
-            CommonService.platformPrompt('暂无附近供货商信息', '');
+            CommonService.platformPrompt('暂无供货商信息', '');
             return;
           }
           angular.forEach(data.Values.data_list, function (item) {
@@ -2358,6 +2362,7 @@ angular.module('starter.controllers', [])
   })
   //验货列表
   .controller('CheckGoodCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
+    $rootScope.checksuccess=false;//验货提交成功的标示
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -2634,6 +2639,7 @@ angular.module('starter.controllers', [])
 
         DeliverService.addQJ($scope.datas).success(function (data) {
           if (data.Key == 200) {
+            $rootScope.checksuccess=true;//验货提交成功的标示
             $rootScope.addcutpayment = [];//提交成功清空数据
             $rootScope.selectproductandnum = [];//提交成功后清空数据
             $rootScope.searchorderTabsSelect = 3;//收货单选项
@@ -2932,6 +2938,7 @@ angular.module('starter.controllers', [])
       SupplyService.addSupplyPlan($scope.datas).success(function (data) {
 
         if (data.Key == 200) {
+          $rootScope.supplysuccess=true;//供货计划成功下单标示
           $rootScope.searchorderTabsSelect = 2;//供货计划选项
           CommonService.showConfirm('', '<p>恭喜您！您的订单提交成功！</p><p>我们会尽快审核您的订单</p>', '查看订单', '关闭', 'searchorder')
         } else {
@@ -3087,6 +3094,7 @@ angular.module('starter.controllers', [])
 
   //签收列表
   .controller('SignListCtrl', function ($scope, $state, $rootScope, CommonService, DeliverService) {
+    $rootScope.signsuccess=false;//签收下单成功的标示
     //是否登录
     if (!CommonService.isLogin()) {
       return;
@@ -3240,6 +3248,7 @@ angular.module('starter.controllers', [])
 
       DeliverService.addSign($scope.datas).success(function (data) {
         if (data.Key == 200) {
+          $rootScope.signsuccess=true;//签收下单成功的标示
           CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
         } else {
           CommonService.platformPrompt('提交签收数据操作失败', 'close');
