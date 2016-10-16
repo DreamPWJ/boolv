@@ -44,7 +44,7 @@
       </a>
       <div ng-hide="showme2">
         <a ng-href="" class="item" ng-repeat="item in supplyPlanDetails.Details">
-          <h2>{{item.ProdName}}  供货量(余/总) : {{item.Num}}/{{supplyPlanDetails.NumSum+item.UName}}</h2>
+          <h2>{{item.ProdName}}  供货量(余/总) : {{item.SupNum}}/{{item.Num+item.UName}}</h2>
           <p>供货次数 : {{item.SupCount}}次</p>
           <p>单次供货量: {{item.SupNum+item.UName}}</p>
 

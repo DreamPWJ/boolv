@@ -1012,7 +1012,8 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.addSaleTrade($scope.datas).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+          $rootScope.searchorderTabsSelect = 0;//卖货单选项
+          CommonService.showConfirm('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
         } else {
           CommonService.platformPrompt('确认交易操作失败', 'close');
         }
@@ -1034,7 +1035,8 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.addReturn($scope.datas).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '');
+          $rootScope.searchorderTabsSelect = 0;//卖货单选项
+          CommonService.showConfirm('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
         } else {
           CommonService.platformPrompt('提交退货信息操作失败', 'close');
         }
@@ -1237,7 +1239,8 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.addSupTrade($scope.datas).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+          $rootScope.searchorderTabsSelect = 2;//供货计划选项
+          CommonService.showConfirm('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
         } else {
           CommonService.platformPrompt('确认交易操作失败', 'close');
         }
@@ -1259,7 +1262,8 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.addReturn($scope.datas).success(function (data) {
         if (data.Key == 200) {
-          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', '')
+          $rootScope.searchorderTabsSelect = 2;//供货计划选项
+          CommonService.showConfirm('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
         } else {
           CommonService.platformPrompt('提交退货信息操作失败', 'close');
         }
