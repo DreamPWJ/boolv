@@ -66,7 +66,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //hide splash immediately 加载完成立刻隐藏启动画面
       if (navigator && navigator.splashscreen) {
-        navigator.splashscreen.hide();
+        setTimeout(function () { //延迟显示 让页面先加载 不显示不美观的加载过程
+          navigator.splashscreen.hide();
+        }, 600);
+
       }
 
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
