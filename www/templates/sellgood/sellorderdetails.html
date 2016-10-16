@@ -11,7 +11,7 @@
     <button class="button icon ion-navicon button-clear"  ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>订单号 : </strong>{{deliverDetails.No}}<span class="item-note"><i
@@ -46,7 +46,7 @@
     </div>
 
   </ion-content>
-  <div class="row row-horizontal-around padding light-bg bottom-0">
+  <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a class="col-40 button button-balanced " ng-disabled="orderStatus!=2" ng-href="#/adddeliverlist">发货</a>
     <a class="col-40  button button-calm " ng-disabled="orderStatus!=5" ng-href="#/examinegoodsorder">审核验货</a>
   </div>

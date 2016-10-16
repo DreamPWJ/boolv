@@ -19,7 +19,7 @@
     </div>
   </div>
   <form name="deliver">
-    <ion-content overflow-scroll="false" class="stable-bg  has-subheader  has-button-footer">
+    <ion-content overflow-scroll="false" class="stable-bg  has-subheader  has-button-footer" has-bouncing="true">
       <div class="list padding-top">
         <label class="item item-input item-borderless">
           <span class="input-label"> 件数</span>
@@ -61,7 +61,7 @@
       </div>
 
     </ion-content>
-    <div class="padding light-bg bottom-0">
+    <div class="padding light-bg bottom-0" keyboard-attach>
       <button ng-disabled="!(deliver.$valid&&verify)" class="button button-calm full-image " ng-click="delivergoodssubmit()">提交
       </button>
     </div>

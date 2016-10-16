@@ -44,7 +44,7 @@
     </div>
 
   </ion-content>
-  <div class="row row-horizontal-around padding light-bg bottom-0">
+  <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a class="col-40 button button-balanced " ng-disabled="orderStatus!=2"  ng-href="#/adddeliverlist">发货</a>
     <a ng-if="OrderType==1" class="col-40  button button-calm " ng-disabled="orderStatus!=5" ng-href="#/supplyexamineorder">审核验收</a>
     <a ng-if="OrderType==2" class="col-40  button button-calm " ng-disabled="orderStatus!=6" ng-href="#/supplyexamineorder">审核验收</a>

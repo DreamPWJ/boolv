@@ -10,7 +10,7 @@
   <ion-nav-buttons side="right">
     <a class="button icon ion-plus no-border" ng-href="#/adddealaddress"></a>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
     <div class="list">
       <a ng-href="" class="item  item-icon-right" ng-repeat="item in addrliststatus | limitTo:1">
         <h2><strong>收货人 :</strong> {{item.username}}</h2>
@@ -23,7 +23,7 @@
     </div>
 
   </ion-content>
-  <div class="padding light-bg bottom-0">
+  <div class="padding light-bg bottom-0" keyboard-attach>
     <button class="button button-calm full-image " ng-click="supplysubmit()">提交</button>
   </div>
 </ion-view>

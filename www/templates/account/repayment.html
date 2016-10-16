@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 还款</h1>
   </ion-nav-title>
   <form name="repayment">
-    <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
       <div class="list  ">
         <label class="item item-input item-borderless">
           <span class="input-label">本金金额</span>
@@ -32,7 +32,7 @@
         </a>
       </div>
     </ion-content>
-    <div class="padding light-bg  bottom-0">
+    <div class="padding light-bg  bottom-0" keyboard-attach>
       <button class="button button-calm full-image " ng-disabled="!repayment.$valid" ng-click="repaymentMoney()">确认还款</button>
     </div>
   </form>

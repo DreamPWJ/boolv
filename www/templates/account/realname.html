@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 实名认证</h1>
   </ion-nav-title>
   <form name="realname">
-    <ion-content overflow-scroll="false" class="stable-bg   has-button-footer">
+    <ion-content overflow-scroll="false" class="stable-bg   has-button-footer" has-bouncing="true">
       <div class="list padding-top">
         <label class="item item-input ">
           <span class="input-label"> 姓名</span>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </ion-content>
-    <div class="padding light-bg bottom-0">
+    <div class="padding light-bg bottom-0" keyboard-attach>
       <button ng-disabled="!realname.$valid" class="button button-calm full-image " ng-click="addCertificationName()">
         提交认证
       </button>

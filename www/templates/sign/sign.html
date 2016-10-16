@@ -19,7 +19,7 @@
     </div>
   </div>
   <form  name="sign">
-  <ion-content overflow-scroll="false" class="stable-bg  has-subheader has-button-footer">
+  <ion-content overflow-scroll="false" class="stable-bg  has-subheader has-button-footer" has-bouncing="true">
     <div class="list padding-top">
       <label class="item item-input item-borderless">
         <span class="input-label"> 件数</span>
@@ -63,7 +63,7 @@
       </div>
 </div>
   </ion-content>
-  <div class="padding light-bg bottom-0">
+  <div class="padding light-bg bottom-0" keyboard-attach>
     <button ng-disabled="!(sign.$valid&&verify)" class="button button-calm full-image " ng-click="signsubmit()">提交</button>
   </div>
   </form>

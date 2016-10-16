@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 买货-录入报价</h1>
   </ion-nav-title>
   <form name="procuredetails">
-    <ion-content overflow-scroll="false" class="has-button-footer stable-bg">
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
       <div class="list padding-top">
         <div ng-repeat="item in buyDetails">
           <a ng-click="toggle(1)" class="item " hide-show>
@@ -27,7 +27,7 @@
       </div>
 
     </ion-content>
-    <div class="padding light-bg bottom-0">
+    <div class="padding light-bg bottom-0" keyboard-attach>
       <a ng-disabled="!(procuredetails.$valid&&verify)" class="button button-calm full-image"
          ng-href="#/releaseprocureorder">下一步</a>
     </div>

@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> {{buttonText}}账户</h1>
   </ion-nav-title>
   <form name="addbank">
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg ">
+  <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
     <div class="list list-borderless ">
       <p class="padding-top"></p>
       <label class="item item-input ">
@@ -42,7 +42,7 @@
       </div>
     </div>
   </ion-content>
-  <div class="padding light-bg  bottom-0">
+  <div class="padding light-bg  bottom-0" keyboard-attach>
     <a ng-disabled="!addbank.$valid" class="button button-calm full-image " ng-click="addUserBank()" >{{buttonText}}</a>
   </div>
     </form>

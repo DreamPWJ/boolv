@@ -54,9 +54,8 @@
     </div>
     <ion-infinite-scroll  on-infinite="getRepayment()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
-  <div class="padding light-bg row row-horizontal-around bottom-0">
+  <div class="padding light-bg row row-horizontal-around bottom-0" keyboard-attach>
     <a class="col-80 button button-calm"  ng-disabled="(repayPrincipalTotal>=applaydetails.Money)||(applaydetails.Status>=4||applaydetails.Status<=1)" ng-href="#/repayment" >还款  <small   ng-if="repayPrincipalTotal>=applaydetails.Money">(还款金额不能大于借款金额)</small></a>
-    <!--    <button class="col-40 button button-stable  " ng-click="">取消</button>-->
   </div>
 
 </ion-view>
