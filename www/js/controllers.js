@@ -616,26 +616,25 @@ angular.module('starter.controllers', [])
     }
 
   })
-  //查单供货详情
+  //查单供货计划详情
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    $rootScope.supplyPlanDetails = JSON.parse($stateParams.item);
     $rootScope.deliverDetails = JSON.parse($stateParams.item);//用于发货数据
-    console.log($rootScope.supplyDetails);
     $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
     //订单号
-    $rootScope.orderId = $rootScope.supplyDetails.No;
+    $rootScope.orderId = $rootScope.supplyPlanDetails.No;
     //订单类型
-    $rootScope.OrderType = $rootScope.supplyDetails.OrderType;//订单类型 1卖货单2供货单
+    $rootScope.OrderType = $rootScope.supplyPlanDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
     $rootScope.orderType = 3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
-    $rootScope.evaluateFromUser = $rootScope.supplyDetails.FromUser;
+    $rootScope.evaluateFromUser = $rootScope.supplyPlanDetails.FromUser;
     //订单状态
-    $rootScope.orderStatus = $rootScope.supplyDetails.Status;
+    $rootScope.orderStatus = $rootScope.supplyPlanDetails.Status;
 
     //是否供货   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了
-    $rootScope.isSupply = ($rootScope.supplyDetails.NumSum != $rootScope.supplyDetails.SupSum || $rootScope.supplyDetails.WeightSum != $rootScope.supplyDetails.SupWeight) ? true : false;
+    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight) ? true : false;
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService, SearchOrderService) {
@@ -737,7 +736,7 @@ angular.module('starter.controllers', [])
     }
   })
   //供货记录单列表  供货记录就是当前供货计划所对应的供货单列表
-  .controller('SupplyOrderListCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
+  .controller('SupplyOrderListCtrl', function ($scope, $rootScope,$ionicHistory, CommonService, SearchOrderService) {
     $scope.supplylist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -754,9 +753,9 @@ angular.module('starter.controllers', [])
         No: '',//订单号，模糊匹配
         User: '',//下单人账号
         Status: '',//订单状态0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
-        BONo: '' /*$rootScope.supplyDetails.BONo*/,//关联买货单号
+        BONo: '' /*$rootScope.supplyPlanDetails.BONo*/,//关联买货单号
         ToUser: '',//关联买货单人
-        SPNo: $rootScope.orderId//供货计划单
+        SPNo: $rootScope.supplyPlanDetails.No//供货计划单
       };
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
@@ -776,13 +775,12 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-
-    $scope.getSupplyPlanList(0);//供货计划加载刷新
-
+      $scope.getSupplyPlanList(0);//供货计划加载刷新
   })
   //供货单详情
   .controller('SupplyOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);//用于发货数据传递
+    $rootScope.deliverDetails.OrderType=2;//用于发货数据传递
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
@@ -1544,13 +1542,15 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.deliverDetails.No,//发货单号
-        BNode: ''//买货单号
+        SNode:$rootScope.deliverDetails.OrderType==1?$rootScope.deliverDetails.No:'',//发货单号  卖货单
+        BNode: $rootScope.deliverDetails.OrderType==2?$rootScope.deliverDetails.BONo:''//买货单号  供货单
       }
+      console.log($scope.params);
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
+        $scope.params.BNode = '';//全部数据
         $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $rootScope.goodTypeListAll = data.Values;
@@ -1789,7 +1789,6 @@ angular.module('starter.controllers', [])
         Details: $scope.details //发货明细
 
       }
-
       DeliverService.addFaHuo($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.selectproductandnum = [];//提交成功后清空数据
