@@ -37,15 +37,15 @@ angular.module('starter.directive', [])
     }
   })
   .directive('scrollTop', function ($ionicScrollDelegate) {//返回顶部指令
-  return {
-    restrict: 'AE',
-    link: function (scope, element, attrs) {
-      scope.scrollTop = function () {
-        $ionicScrollDelegate.scrollTop(500);
-      };
+    return {
+      restrict: 'AE',
+      link: function (scope, element, attrs) {
+        scope.scrollTop = function () {
+          $ionicScrollDelegate.scrollTop(500);
+        };
+      }
     }
-  }
-})
+  })
   .directive('toolTip', [function () { //提示框tooltip
 
     return {
@@ -66,28 +66,28 @@ angular.module('starter.directive', [])
     };
   }])
   .directive('checkForm', function ($rootScope, CommonService) {//验证表单类型 提示
-    $rootScope.verifyarray=[];
+    $rootScope.verifyarray = [];
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
         $rootScope.commonService = CommonService;
         $rootScope.verify = true;
-        $rootScope.verifyarray[scope.$id]=true;
-        scope.publicCheckForm=function (regular,value,content) { //验证公共部分封装
+        $rootScope.verifyarray[scope.$id] = true;
+        scope.publicCheckForm = function (regular, value, content) { //验证公共部分封装
           if (regular) {
-            $rootScope.verifyarray[scope.$id]=true;
+            $rootScope.verifyarray[scope.$id] = true;
             $rootScope.verify = true;
-            angular.forEach($rootScope.verifyarray,function (item,index) {
-              if(!item){
+            angular.forEach($rootScope.verifyarray, function (item, index) {
+              if (!item) {
                 $rootScope.verify = false;
               }
             })
           } else {
             if (value || value == 0) {
               $rootScope.commonService.toolTip(content, '')
+              $rootScope.verifyarray[scope.$id] = false;
+              $rootScope.verify = false;
             }
-            $rootScope.verifyarray[scope.$id]=false;
-            $rootScope.verify = false;
           }
         }
         scope.checkForm = function (value, content, type, maxvalue) {
@@ -102,14 +102,14 @@ angular.module('starter.directive', [])
             }
           }
           if (type == 'maxvaule') {//最大不能超过maxvalue值
-            scope.publicCheckForm(value>0&&value<=maxvalue,value,content);
+            scope.publicCheckForm(value > 0 && value <= maxvalue, value, content);
           }
           if (type == 'positivenumber') {//正数验证(如 价格)
-            scope.publicCheckForm(/^([1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value),value,content)
+            scope.publicCheckForm(/^([1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value), value, content)
 
           }
           if (type == 'positiveinteger') {//正整数
-            scope.publicCheckForm(/^[1-9]\d*$/.test(value),value,content);
+            scope.publicCheckForm(/^[1-9]\d*$/.test(value), value, content);
 
           }
         };

@@ -2691,7 +2691,6 @@ angular.module('starter.controllers', [])
           items.Prices.push({Price: item.Price});
           items.PriType = 0;
           items.PUSaleType = item.SaleClass;
-          items.Mark = 'Fahuo';//标示是发货详情信息还是获取的报价详情的信息
           $rootScope.selectproductandnum.push(items);
           $scope.addQueJian(items.PID, items);
           $scope.adddeliverinfo.num[items.PID] = items.num;
@@ -2751,14 +2750,15 @@ angular.module('starter.controllers', [])
       $scope.adddeliverinfo.isAdd[PID] = false;
       $scope.adddeliverinfo.isMinus[PID] = true;
       $scope.adddeliverinfo.selectnum++;
-      $scope.selectproduct.push(item);
+      $scope.selectproduct[PID]=item;
     }
     //取消验货发货记录
     $scope.minusQueJian = function (PID, item) {
       $scope.adddeliverinfo.isAdd[PID] = true;
       $scope.adddeliverinfo.isMinus[PID] = false;
       $scope.adddeliverinfo.selectnum--;
-      $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
+      $scope.selectproduct.splice(PID, 1);
+      
     }
 
     //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
@@ -2866,6 +2866,7 @@ angular.module('starter.controllers', [])
       $scope.selectproductandnumother = [];//清空数据
       $scope.selectproduct = [];
       $scope.adddeliverinfo.selectnum = 0;
+      $rootScope.verify = true;
     }
   })
   //接单供货计划详情
