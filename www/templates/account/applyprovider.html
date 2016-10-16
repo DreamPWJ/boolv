@@ -10,21 +10,34 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
-    <h1 class="title "> <img id="logo" src="img/logo.png" alt=""/> 申请成为供货商</h1>
+    <h1 class="title "> <img id="logo" src="img/logo.png" alt=""/> 申请供货商</h1>
   </ion-nav-title>
   <form name="applyprovider">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
+    <p></p>
     <div class="list list-borderless">
       <label class="item item-input ">
-        <span class="input-label"> 姓名</span>
+        <span class="input-label"> 供货商姓名</span>
         <input type="text"  ng-model="addrinfo.username" placeholder="供货商姓名" required/>
       </label>
       <p></p>
+      <a ng-click="toggle(0)" hide-show class="item ">
+        <h2>供货品类 <span class="item-note"><i
+          class="icon ion-chevron-down" ng-class="{true:'ion-chevron-right'}[showme]"></i></span></h2>
+      </a>
+      <div ng-hide="showme" class="item item-checkbox item-checkbox-right" ng-repeat="item in goodTypeListAll"  >
+        <label class="checkbox checkbox-calm " >
+          <input type="checkbox" ng-model="item.checked" >
+        </label>
+        {{item.GName}}
+      </div>
+      <p></p>
+
       <label class="item item-input ">
-        <span class="input-label"> 月供应量</span>
-        <input type="number"  ng-model="addrinfo.num" placeholder="（单位 : 台）" ng-pattern="/^[1-9]\d*(\.\d+)?$/" required/>
+        <span class="input-label"> 每周供货量</span>
+        <input type="number"  ng-model="addrinfo.num" placeholder="（单位 : 台）" check-form  ng-change="checkForm(addrinfo.num,'供货量输入错误 需为正整数','positiveinteger','')"  required/>
       </label>
-      <p class="padding-top"></p>
+      <p></p>
       <label class="item item-input item-select">
         <div class="input-label">
           供货省
@@ -33,7 +46,7 @@
           <option  value="{{item.code}}" ng-repeat="item in addrareaprovince">{{item.name}}</option>
         </select>
       </label>
-      <p class="padding-top"></p>
+      <p ></p>
       <label class="item item-input item-select">
         <div class="input-label">
           供货市
@@ -42,7 +55,7 @@
           <option value="{{item.code}}" ng-repeat="item in addrareacity">{{item.name}}</option>
         </select>
       </label>
-      <p class="padding-top"></p>
+      <p ></p>
       <label class="item item-input item-select">
         <div class="input-label">
           供货县
@@ -51,7 +64,7 @@
           <option   value="{{item.code}}"   ng-repeat="item in addrareacounty">{{item.name}}</option>
         </select>
       </label>
-      <p class="padding-top"></p>
+      <p ></p>
       <label class="item item-input ">
         <span class="input-label"> 详细地址</span>
         <textarea class="col-60" rows="2"   ng-model="addrinfo.address" placeholder="请输入真实详细地址"  required></textarea>
@@ -60,7 +73,7 @@
 
   </ion-content>
   <div class="padding light-bg  bottom-0" keyboard-attach>
-    <button ng-disabled="!applyprovider.$valid" class="button button-calm full-image " ng-click="applyprovidersubmit()">提交申请</button>
+    <button ng-disabled="!(applyprovider.$valid&&verify)" class="button button-calm full-image " ng-click="applyprovidersubmit()">提交申请</button>
   </div>
   </form>
 </ion-view>

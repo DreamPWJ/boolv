@@ -218,13 +218,26 @@ angular.module('starter.controllers', [])
   //交易公告
   .controller('DealNoticeCtrl', function ($scope, $rootScope, $stateParams, $state, BooLv, CommonService, MainService) {
     CommonService.ionicLoadingShow();
-    var Id = $stateParams.Id;
-    MainService.getNews(Id).success(function (data) {
-      $scope.news = data.Values;
-    }).finally(function () {
-      CommonService.ionicLoadingHide();
-    })
-    //分享
+    $scope.getNewsDetails=function () {
+      var Id = $stateParams.Id;
+      MainService.getNews(Id).success(function (data) {
+        $scope.news = data.Values;
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
+      })
+    }
+
+    if (!localStorage.getItem("token")) {//如果没有授权先授权
+      //接口授权
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem('token', data.Values)
+      }).then(function () {
+        $scope.getNewsDetails();
+      })
+    } else {
+      $scope.getNewsDetails();
+    }
+    //调用分享面板
     $scope.shareActionSheet = function () {
       umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/dealnotice/' + Id);
     }
@@ -233,13 +246,25 @@ angular.module('starter.controllers', [])
   //公司新闻
   .controller('CompanyTrendsCtrl', function ($scope, $rootScope, $stateParams, $state, BooLv, CommonService, MainService) {
     CommonService.ionicLoadingShow();
-    var Id = $stateParams.Id;
-    MainService.getNews(Id).success(function (data) {
-      $scope.news = data.Values;
-    }).finally(function () {
-      CommonService.ionicLoadingHide();
-    })
-    //分享
+    $scope.getNewsDetails=function () {
+      var Id = $stateParams.Id;
+      MainService.getNews(Id).success(function (data) {
+        $scope.news = data.Values;
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
+      })
+    }
+    if (!localStorage.getItem("token")) {//如果没有授权先授权
+      //接口授权
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem('token', data.Values)
+      }).then(function () {
+        $scope.getNewsDetails();
+      })
+    } else {
+      $scope.getNewsDetails();
+    }
+    //调用分享面板
     $scope.shareActionSheet = function () {
       umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/companytrends/' + Id);
     }
@@ -636,7 +661,7 @@ angular.module('starter.controllers', [])
     $rootScope.orderStatus = $rootScope.supplyPlanDetails.Status;
 
     //是否能提交供货单   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了 当剩余周期是0或者剩余的供货量为0时，就不能“提交供货单”了
-    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight)&&($rootScope.supplyPlanDetails.SupCycle>$scope.diffCycle)&&($rootScope.supplyPlanDetails.NumSum-$rootScope.supplyPlanDetails.SupSum>0) ? true : false;
+    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight) && ($rootScope.supplyPlanDetails.SupCycle > $scope.diffCycle) && ($rootScope.supplyPlanDetails.NumSum - $rootScope.supplyPlanDetails.SupSum > 0) ? true : false;
 
   })
   //查单供货计划备货录入
@@ -3249,7 +3274,7 @@ angular.module('starter.controllers', [])
     $scope.isprovider = JSON.parse(localStorage.getItem("user")).grade == 5 ? true : false
   })
   //申请成为供货商
-  .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('ApplyProviderCtrl', function ($scope, $rootScope, $state, CommonService, AccountService,DeliverService) {
     $scope.addrinfo = {};
     $scope.addrcode = '0';
     //选择省级
@@ -3268,12 +3293,44 @@ angular.module('starter.controllers', [])
         $scope.addrareacounty = data.Values;
       })
     }
+    //获取全部产品类别列表
+    $scope.getGoodTypeList = function () {
+      $scope.goodTypeListAll=[];
+      // 获取产品类别
+      $scope.params = {
+        IDList: '',//产品类别ID，多个用,隔开
+        Name: '',//产品类别名称
+        PIDList: '',//产品ID，多个用,隔开
+        Node: '',//供货验货订单号
+        SYNode: '',//卖货验货订单号
+        SNode:  '',//发货单号  卖货单
+        BNode: ''//买货单号  供货单
+      }
+      DeliverService.getGoodTypeList($scope.params).success(function (data) {
+        angular.forEach(data.Values,function (item,index) {
+          var items={};
+          items.GID=item.GID;
+          items.GName=item.GName;
+          items.checked=false;
+          $scope.goodTypeListAll.push(items)
+        })
+      })
+    }
+
+    $scope.getGoodTypeList();
 
     $scope.applyprovidersubmit = function () {
       //选择县级查询当前记录
       angular.forEach($scope.addrareacounty, function (item) {
         if (item.code == $scope.addrinfo.county) {
           $scope.addrareaone = item;
+        }
+      })
+      //选中的供货评类
+      var  prodclass=[];//供货品类（多个以逗号隔开）
+      angular.forEach($scope.goodTypeListAll, function (item) {
+        if (item.checked) {
+          prodclass.push(item.GID)
         }
       })
       $scope.datas = {
@@ -3283,7 +3340,7 @@ angular.module('starter.controllers', [])
         addrcode: $scope.addrareaone.code,	//地区编码
         addr: $scope.addrareaone.mergername + $scope.addrinfo.address,	//详细地址
         quantity: $scope.addrinfo.num, 	//供货量
-        prodclass: "",//供货品类（多个以逗号隔开）
+        prodclass:prodclass.length!=0?prodclass.join(","):"",//供货品类（多个以逗号隔开）
         lat: $scope.addrareaone.lat,	//纬度
         lng: $scope.addrareaone.lng	//经度
 
@@ -3660,32 +3717,46 @@ angular.module('starter.controllers', [])
   //帮助信息共用模板
   .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BooLv, CommonService, MainService) {
     CommonService.ionicLoadingShow();
-    var id = $stateParams.ID;
-    if (id == 11) {
-      $scope.title = '登录注册协议';
-    }
-    if (id == 12) {
-      $scope.title = '提升额度';
-    }
-    if (id == 13) {
-      $scope.title = '关于我们';
-    }
-    if (id == 14) {
-      $scope.title = '信用分解读';
-    }
-    //获取帮助中心详情
-    $scope.params = {
-      ID: id
-    }
-    MainService.getHelpDetails($scope.params).success(function (data) {
-      $scope.helpdata = data.Values;
-      if (!$scope.title) {
-        $scope.title = data.Values.Title;
+
+    $scope.getHelpDetails = function () {
+      var id = $stateParams.ID;
+      if (id == 11) {
+        $scope.title = '登录注册协议';
       }
-    }).finally(function () {
-      CommonService.ionicLoadingHide();
-    })
-    //分享
+      if (id == 12) {
+        $scope.title = '提升额度';
+      }
+      if (id == 13) {
+        $scope.title = '关于我们';
+      }
+      if (id == 14) {
+        $scope.title = '信用分解读';
+      }
+      //获取帮助中心详情
+      $scope.params = {
+        ID: id
+      }
+      MainService.getHelpDetails($scope.params).success(function (data) {
+        $scope.helpdata = data.Values;
+        if (!$scope.title) {
+          $scope.title = data.Values.Title;
+        }
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
+      })
+    }
+    if (!localStorage.getItem("token")) {//如果没有授权先授权
+      //接口授权
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem('token', data.Values)
+      }).then(function () {
+        $scope.getHelpDetails();
+      })
+    } else {
+      $scope.getHelpDetails();
+    }
+
+    //调用分享面板
     $scope.shareActionSheet = function () {
       umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
     }

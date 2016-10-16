@@ -16,7 +16,7 @@
   color: #ddd;
 }
 
-.account p .ion-star:not(:first-child){
+.account p .ion-star.stargrey{
   color: #dddddd!important;
 }
 .authcode {

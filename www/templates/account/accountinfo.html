@@ -8,11 +8,11 @@
     <h1 class="title icon ion-ios-person"> 账号信息</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="stable-bg account ">
+  <ion-content overflow-scroll="false" class="stable-bg account " has-bouncing="true">
     <div class="list margin-top-1px ">
       <a ui-sref="uploadhead({figure:userinfo.figure})"  class="item item-avatar item-icon-right  item-borderless">
         <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
-        <p>头像</p>
+        <p class="padding-top">头像</p>
         <i class="icon ion-ios-arrow-right"></i>
       </a>
       <a ng-href="#/updateuser/nickname/{{userinfo.nickname}}" class="item item-icon-right">
