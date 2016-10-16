@@ -30,8 +30,8 @@
         <i class="icon ion-star " ng-class="{true:'calm',false:'grey'}[evaluateinfo.star[$index]>=5]" ng-click="evaluatestar($index,5)"></i>
       </span></ion-item>
       <p></p>
-      <label class="item item-input ">
-        <textarea class="col-60" rows="3" ng-model="evaluateinfo.Memo" placeholder="evaluateinfo.Memo" ng-maxlength="300" required></textarea>
+      <label class="item item-input item-borderless">
+        <textarea  rows="5" ng-model="evaluateinfo.Memo" placeholder="请填写评价内容" ng-maxlength="300" required></textarea>
       </label>
     </div>
 
