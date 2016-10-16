@@ -531,6 +531,7 @@ angular.module('starter.controllers', [])
   //查单买货详情
   .controller('ProcureOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, MainService, SearchOrderService) {
     $rootScope.buyDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.buyDetails);
     $rootScope.searchorderTabsSelect = 1;//买货单选项
     CommonService.ionicPopover($scope, 'my-pay.html');
     //订单号
@@ -910,7 +911,7 @@ angular.module('starter.controllers', [])
         if ($scope.isAllUpdate) {//明细都执行完了再改主表状态 要查看明细的那个状态是不是默认状态，只有全部不是默认状态时，才会执行9.4，9.2的接口 因为可能是我今天只审核了一条明细，第二天再审核一条明细
           //查单(卖货订单)修改卖货验货状态
           $scope.yanhuoparams = {
-            No: $scope.yanhuolist[0].No,//订单号
+            No: $scope.yanhuolist[0].OrderNo,//关联单号
             Status: 2,//订单状态0-验货中1-待审核/验货完成2-已审核
             YhUser: localStorage.getItem("usertoken")//会员账号 验货人
           }
@@ -921,7 +922,7 @@ angular.module('starter.controllers', [])
 
           //查单(卖货订单)修改卖货/供货订单状态
           $scope.supplyparams = {
-            No: $scope.yanhuolist[0].OrderNo,//订单号 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
+            No: $scope.yanhuolist[0].OrderNo,// 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
             Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
             OrderType: 1//1代表卖货单2代表供货单
@@ -930,24 +931,38 @@ angular.module('starter.controllers', [])
           SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
             console.log(data);
           })
-          /*    Status  这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
-           是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
-           是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
-           供货时，审核验货单（7）后就是结款（8）*/
-
-          $scope.addStatementdatas = {
-            OrderNo: $scope.yanhuolist[0].No,//订单号
-            OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
-            FromUser: localStorage.getItem("usertoken"),//付款方
-            ToUser: $rootScope.deliverDetails.FromUser,//收款方
-            Amount: $scope.yanhuolist[0].Debit,//订单金额
-            Yushou: 0,//到付款
-            AmountFu: 0,//余款
-            Earnest: 0,//定金
-            Status: 7 //订单所对应的结算状态值
+          //获取单号对应总金额/到付款/余款
+          $scope.paypriceParams = {
+            ordertype: 1,//类型 1卖货单2供货单
+            node: $rootScope.orderId //所属分组卖货单/供货单NO
           }
-          SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
-            console.log(data);
+
+          SearchOrderService.getSaleSupplyTotalPrice($scope.paypriceParams).success(function (data) {
+            if (data.Values == null) {
+              CommonService.platformPrompt("获取当前单号的金额失败", "close");
+              return;
+            }
+            $scope.payprice = data.Values;
+          }).then(function () {
+            /*    Status  这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+             是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
+             是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
+             供货时，审核验货单（7）后就是结款（8）*/
+
+            $scope.addStatementdatas = {
+              OrderNo: $scope.yanhuolist[0].OrderNo,//关联订单号OrderNo字段
+              OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
+              FromUser: localStorage.getItem("usertoken"),//付款方
+              ToUser: $rootScope.deliverDetails.FromUser,//收款方
+              Amount: $scope.payprice.TotalPrice,//订单金额
+              Yushou: 0,//到付款
+              AmountFu: 0,//余款
+              Earnest: 0,//定金
+              Status: 7 //订单所对应的结算状态值
+            }
+            SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
+              console.log(data);
+            })
           })
         }
       })
@@ -1118,7 +1133,7 @@ angular.module('starter.controllers', [])
         if ($scope.isAllUpdate) {//明细都执行完了再改主表状态 要查看明细的那个状态是不是默认状态，只有全部不是默认状态时，才会执行9.4，9.2的接口 因为可能是我今天只审核了一条明细，第二天再审核一条明细
           //查单(供货订单)修改供货验货状态
           $scope.yanhuoparams = {
-            No: $scope.yanhuolist[0].No,//订单号
+            No: $scope.yanhuolist[0].OrderNo,//关联订单号OrderNo字段
             Status: 2,//订单状态0-验货中1-待审核/验货完成2-已审核
             YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
           }
@@ -1129,7 +1144,7 @@ angular.module('starter.controllers', [])
 
           //查单(供货订单)修改供货计划状态
           $scope.supplyparams = {
-            No: $scope.yanhuolist[0].No,//订单号
+            No: $scope.yanhuolist[0].OrderNo,//有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
             Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
             OrderType: 2,//1代表卖货单2代表供货单
@@ -1138,25 +1153,41 @@ angular.module('starter.controllers', [])
           SearchOrderService.updateSupplyPlanStatus($scope.supplyparams).success(function (data) {
             console.log(data);
           })
-          /*    Status  这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
-           是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
-           是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
-           供货时，审核验货单（7）后就是结款（8）*/
 
-          $scope.addStatementdatas = {
-            OrderNo: $scope.yanhuolist[0].No,//订单号
-            OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
-            FromUser: localStorage.getItem("usertoken"),//付款方
-            ToUser: $rootScope.deliverDetails.FromUser,//收款方
-            Amount: $scope.yanhuolist[0].Debit,//订单金额
-            Yushou: 0,//到付款
-            AmountFu: 0,//余款
-            Earnest: 0,//定金
-            Status: 7 //订单所对应的结算状态值
+
+          //获取单号对应总金额/到付款/余款
+          $scope.paypriceParams = {
+            ordertype: 2,//类型 1卖货单2供货单
+            node: $rootScope.orderId //所属分组卖货单/供货单NO
           }
 
-          SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
-            console.log(data);
+          SearchOrderService.getSaleSupplyTotalPrice($scope.paypriceParams).success(function (data) {
+            if (data.Values == null) {
+              CommonService.platformPrompt("获取当前单号的金额失败", "close");
+              return;
+            }
+            $scope.payprice = data.Values;
+          }).then(function () {
+            /*    Status  这个是根据单号来分析的，结算在买货，卖货，供货里都有结算功能
+             是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
+             是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
+             供货时，审核验货单（7）后就是结款（8）*/
+
+            $scope.addStatementdatas = {
+              OrderNo: $scope.yanhuolist[0].OrderNo,//关联订单号OrderNo字段
+              OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
+              FromUser: localStorage.getItem("usertoken"),//付款方
+              ToUser: $rootScope.deliverDetails.FromUser,//收款方
+              Amount: $scope.payprice.TotalPrice,//订单金额
+              Yushou: 0,//到付款
+              AmountFu: 0,//余款
+              Earnest: 0,//定金
+              Status: 7 //订单所对应的结算状态值
+            }
+
+            SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
+              console.log(data);
+            })
           })
         }
       })
@@ -1218,7 +1249,7 @@ angular.module('starter.controllers', [])
     $rootScope.collectGoodDetails = JSON.parse($stateParams.item);
     $rootScope.signDetails = JSON.parse($stateParams.item);//签收
     $rootScope.checkDetails = JSON.parse($stateParams.item);//验货
-
+    console.log($rootScope.collectGoodDetails);
     $rootScope.searchorderTabsSelect = 3;//收货单选项
     //订单号
     $rootScope.orderId = $rootScope.collectGoodDetails.No;
@@ -1788,7 +1819,7 @@ angular.module('starter.controllers', [])
       //接单供货模块要先判断一下，此会员是不是供货商，非供货商没有权限供货的 根据这个接口判断grade级别是不是5（5代表供货商）
       $scope.userid = localStorage.getItem("usertoken");
       AccountService.getUserInfo($scope.userid).success(function (data) {
-        if (data.Values.grade!= 5) {
+        if (data.Values.grade != 5) {
           CommonService.showConfirm('', '<p>非供货商没有权限供货</p><p>点击‘确定’去申请成为供货商</p>', '确定', '关闭', 'applyprovider', '');
         }
         localStorage.setItem('user', JSON.stringify(data.Values));
@@ -2344,7 +2375,7 @@ angular.module('starter.controllers', [])
 
   })
   //验货列表详情
-  .controller('CheckDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService,SearchOrderService) {
+  .controller('CheckDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, SearchOrderService) {
     $rootScope.checkDetails = JSON.parse($stateParams.item);
     //获取发货详情
     $scope.getPageFaHuo = function () {
@@ -2924,10 +2955,10 @@ angular.module('starter.controllers', [])
 
     //删除用户常用地址
     $scope.deleteAddr = function (addrid, status) {
-       if($rootScope.userinfo.grade==5&&status==1){//当会员是供货商（=5）时，默认地址不能删除
-         CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
-         return;
-       }
+      if ($rootScope.userinfo.grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
+        CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
+        return;
+      }
       $scope.delparams = {
         id: addrid,
         userid: localStorage.getItem("usertoken")
@@ -3091,7 +3122,7 @@ angular.module('starter.controllers', [])
       $scope.goodtype = 3;
     }
 
-    $scope.delivery();
+
     //扫描物流单号
     $scope.barcodeScanner = function () {
       CommonService.barcodeScanner($scope);
@@ -3114,12 +3145,20 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.getPageFaHuo($scope.params).success(function (data) {
         $scope.deiverList = data.Values.data_list[0];
+        if ($scope.deiverList.TradeType == 0) {
+          $scope.delivery();
+        } else if ($scope.deiverList.TradeType == 1) {
+          $scope.delivergoods();
+        } else if ($scope.deiverList.TradeType == 2) {
+          $scope.oneself();
+        }
         $scope.signinfo.Number = $scope.deiverList.Number;
         $scope.signinfo.Weight = $scope.deiverList.Weight;
         $scope.signinfo.ExpName = $scope.deiverList.ExpName;
         $scope.signinfo.ExpNo = $scope.deiverList.ExpNo;
         $scope.signinfo.Cost = $scope.deiverList.Cost;
         $scope.signinfo.ExpCost = $scope.deiverList.ExpCost;
+
       })
     }
     $scope.getPageFaHuo();  //获取发货详情填充签收表单
@@ -3553,7 +3592,7 @@ angular.module('starter.controllers', [])
               width: 20
             },
           },
-          max:990,
+          max: 990,
           name: '信用分指标',
           type: 'gauge',
           detail: {
@@ -3588,8 +3627,8 @@ angular.module('starter.controllers', [])
               width: 20
             }
           },
-          min:350,
-          max:950,
+          min: 350,
+          max: 950,
           name: '信用分指标',
           type: 'gauge',
           detail: {

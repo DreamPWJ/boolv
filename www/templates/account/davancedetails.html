@@ -14,7 +14,7 @@
       <p class="item energized" style="font-size: 1.5rem;">
         {{applaydetails.Money|currency:'￥'}}
       <p class="grey">{{repaymentstatus[applaydetails.Status+1]}}</p>
-      <p class="grey">剩余还款周期 : {{applaydetails.Cycle-diffCycle}}天</p>
+      <p class="grey">剩余还款周期 : {{applaydetails.Cycle>=diffCycle?applaydetails.Cycle-diffCycle:'已超期'+(diffCycle-applaydetails.Cycle)}}天</p>
       </p>
     </div>
     <div class="list ">
