@@ -22,7 +22,7 @@
           <h2>买货商家 : {{supplyPlanDetails.Tousername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>剩余供货周期 : {{supplyPlanDetails.SupCycle}}天</h2>
+          <h2>剩余供货周期 : {{supplyPlanDetails.SupCycle>diffCycle?supplyPlanDetails.SupCycle-diffCycle:0}}天</h2>
         </a>
         <a ng-href="" class="item ">
           <h2>总供货量(余/总) : {{supplyPlanDetails.SupSum}}/{{supplyPlanDetails.NumSum}}台</h2>

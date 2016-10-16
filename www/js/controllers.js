@@ -622,6 +622,8 @@ angular.module('starter.controllers', [])
     $rootScope.deliverDetails = JSON.parse($stateParams.item);//用于发货数据
     $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
+    //当前时间与下单时间差
+    $scope.diffCycle = Math.floor((new Date().getTime() - new Date($rootScope.supplyPlanDetails.AddTime).getTime()) / (24 * 3600 * 1000));
     //订单号
     $rootScope.orderId = $rootScope.supplyPlanDetails.No;
     //订单类型
@@ -633,8 +635,9 @@ angular.module('starter.controllers', [])
     //订单状态
     $rootScope.orderStatus = $rootScope.supplyPlanDetails.Status;
 
-    //是否供货   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了
-    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight) ? true : false;
+    //是否能提交供货单   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了 当剩余周期是0或者剩余的供货量为0时，就不能“提交供货单”了
+    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight)&&($rootScope.supplyPlanDetails.SupCycle>$scope.diffCycle)&&($rootScope.supplyPlanDetails.NumSum-$rootScope.supplyPlanDetails.SupSum>0) ? true : false;
+
   })
   //查单供货计划备货录入
   .controller('EnteringNumCtrl', function ($scope, $rootScope, $state, $stateParams, CommonService, AccountService, SearchOrderService) {
@@ -684,12 +687,12 @@ angular.module('starter.controllers', [])
 
     $scope.enteringnumsubmit = function () {
       if ($scope.addrliststatus.length == 0) {
-        CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
+        CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
         $state.go('adddealaddress');
         return;
       }
       if ($rootScope.userbankliststatus.length == 0) {
-        CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
+        CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount');
         $state.go('addbankaccount');
         return;
       }
@@ -736,7 +739,7 @@ angular.module('starter.controllers', [])
     }
   })
   //供货记录单列表  供货记录就是当前供货计划所对应的供货单列表
-  .controller('SupplyOrderListCtrl', function ($scope, $rootScope,$ionicHistory, CommonService, SearchOrderService) {
+  .controller('SupplyOrderListCtrl', function ($scope, $rootScope, $ionicHistory, CommonService, SearchOrderService) {
     $scope.supplylist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -775,12 +778,12 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
       })
     }
-      $scope.getSupplyPlanList(0);//供货计划加载刷新
+    $scope.getSupplyPlanList(0);//供货计划加载刷新
   })
   //供货单详情
   .controller('SupplyOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);//用于发货数据传递
-    $rootScope.deliverDetails.OrderType=2;//用于发货数据传递
+    $rootScope.deliverDetails.OrderType = 2;//用于发货数据传递
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
     CommonService.ionicPopover($scope, 'my-order.html');
     //订单号
@@ -1542,8 +1545,8 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode:$rootScope.deliverDetails.OrderType==1?$rootScope.deliverDetails.No:'',//发货单号  卖货单
-        BNode: $rootScope.deliverDetails.OrderType==2?$rootScope.deliverDetails.BONo:''//买货单号  供货单
+        SNode: $rootScope.deliverDetails.OrderType == 1 ? $rootScope.deliverDetails.No : '',//发货单号  卖货单
+        BNode: $rootScope.deliverDetails.OrderType == 2 ? $rootScope.deliverDetails.BONo : ''//买货单号  供货单
       }
       console.log($scope.params);
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -3289,6 +3292,7 @@ angular.module('starter.controllers', [])
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
         } else {
+          console.log(data);
           CommonService.platformPrompt('提交供货商申请失败', 'close');
         }
 

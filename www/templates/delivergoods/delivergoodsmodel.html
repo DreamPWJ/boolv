@@ -25,7 +25,7 @@
    </ion-list>
     <ion-infinite-scroll  on-infinite="addDeliverProduct()" ng-if="total > currentPage"  immediate-check="false">   </ion-infinite-scroll>
   </ion-content>
-  <div class="light-bg bottom-0">
+  <div class="light-bg bottom-0" keyboard-attach>
     <div class="row row-no-padding">
       <div class="col-66   gongxiang" >共 :  <span class="calm" ng-bind="adddeliverinfo.selectnum"></span>  项</div>
       <button class="button button-calm full-image col-34" ng-disabled="!verify" ng-click="selectaffirm()" >选好了</button>
