@@ -68,7 +68,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       if (navigator && navigator.splashscreen) {
         setTimeout(function () { //延迟显示 让页面先加载 不显示不美观的加载过程
           navigator.splashscreen.hide();
-        }, 600);
+        }, 500);
 
       }
 

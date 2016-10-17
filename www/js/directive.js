@@ -88,6 +88,9 @@ angular.module('starter.directive', [])
               $rootScope.verifyarray[scope.$id] = false;
               $rootScope.verify = false;
             }
+            if(!value){ //非必填清空不再验证 可下一步
+              $rootScope.verifyarray[scope.$id] = true;
+            }
           }
         }
         scope.checkForm = function (value, content, type, maxvalue) {

@@ -222,7 +222,13 @@ angular.module('starter.controllers', [])
       var Id = $stateParams.Id;
       MainService.getNews(Id).success(function (data) {
         $scope.news = data.Values;
-      }).finally(function () {
+      }).then(function () {
+        //调用分享面板
+        $scope.shareActionSheet = function () {
+          umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/dealnotice/' + Id);
+        }
+      })
+        .finally(function () {
         CommonService.ionicLoadingHide();
       })
     }
@@ -237,10 +243,7 @@ angular.module('starter.controllers', [])
     } else {
       $scope.getNewsDetails();
     }
-    //调用分享面板
-    $scope.shareActionSheet = function () {
-      umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/dealnotice/' + Id);
-    }
+
 
   })
   //公司新闻
@@ -250,7 +253,13 @@ angular.module('starter.controllers', [])
       var Id = $stateParams.Id;
       MainService.getNews(Id).success(function (data) {
         $scope.news = data.Values;
-      }).finally(function () {
+      }).then(function () {
+        //调用分享面板
+        $scope.shareActionSheet = function () {
+          umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/companytrends/' + Id);
+        }
+      })
+        .finally(function () {
         CommonService.ionicLoadingHide();
       })
     }
@@ -263,10 +272,6 @@ angular.module('starter.controllers', [])
       })
     } else {
       $scope.getNewsDetails();
-    }
-    //调用分享面板
-    $scope.shareActionSheet = function () {
-      umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/companytrends/' + Id);
     }
 
 
@@ -2758,7 +2763,7 @@ angular.module('starter.controllers', [])
       $scope.adddeliverinfo.isMinus[PID] = false;
       $scope.adddeliverinfo.selectnum--;
       $scope.selectproduct.splice(PID, 1);
-      
+
     }
 
     //发货的时候，就要取非统货IsTH:0的数据，再根据下单里面之前的GrpIDList值获取到   (卖货单，买货单，供货单，供货计划单IsTH:1)
@@ -3246,7 +3251,6 @@ angular.module('starter.controllers', [])
         Imgs: $scope.imgsDetails  //上传图片集合
 
       }
-
       DeliverService.addSign($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.signsuccess=true;//签收下单成功的标示
@@ -3755,6 +3759,11 @@ angular.module('starter.controllers', [])
         if (!$scope.title) {
           $scope.title = data.Values.Title;
         }
+      }).then(function () {
+        //调用分享面板
+        $scope.shareActionSheet = function () {
+          umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
+        }
       }).finally(function () {
         CommonService.ionicLoadingHide();
       })
@@ -3770,10 +3779,7 @@ angular.module('starter.controllers', [])
       $scope.getHelpDetails();
     }
 
-    //调用分享面板
-    $scope.shareActionSheet = function () {
-      umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
-    }
+
   })
   //我的设置
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BooLv, CommonService) {
