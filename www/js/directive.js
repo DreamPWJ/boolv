@@ -75,6 +75,12 @@ angular.module('starter.directive', [])
         $rootScope.verifyarray[scope.$id] = true;
         scope.publicCheckForm = function (regular, value, content) { //验证公共部分封装
           if (regular) {
+            if(value==0){
+              $rootScope.commonService.toolTip(content, '')
+              $rootScope.verifyarray[scope.$id] = false;
+              $rootScope.verify = false;
+              return;
+            }
             $rootScope.verifyarray[scope.$id] = true;
             $rootScope.verify = true;
             angular.forEach($rootScope.verifyarray, function (item, index) {
@@ -108,7 +114,7 @@ angular.module('starter.directive', [])
             scope.publicCheckForm(value > 0 && value <= maxvalue, value, content);
           }
           if (type == 'positivenumber') {//正数验证(如 价格)
-            scope.publicCheckForm(/^([1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value), value, content)
+            scope.publicCheckForm(/^(0|[1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value), value, content)
 
           }
           if (type == 'positiveinteger') {//正整数

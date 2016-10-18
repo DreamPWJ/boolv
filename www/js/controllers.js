@@ -758,8 +758,7 @@ angular.module('starter.controllers', [])
       SearchOrderService.addSearchOrderSupplyPlan($scope.datas).success(function (data) {
 
         if (data.Key == 200) {
-          $rootScope.searchorderTabsSelect = 2;//供货计划选项
-          CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'searchorder');
+          CommonService.showConfirm('', '<p>恭喜您！您的供货单提交成功！</p><p>我们会尽快处理您的订单,请耐心等待</p>', '查看订单', '关闭', 'supplyorderlist');
         } else {
           CommonService.platformPrompt('您的供货单提交失败', 'close');
         }
@@ -3372,7 +3371,7 @@ angular.module('starter.controllers', [])
           CommonService.showAlert('', '<p>恭喜您！提交申请成功！</p>')
         } else {
           console.log(data);
-          CommonService.platformPrompt('提交供货商申请失败', 'close');
+          CommonService.platformPrompt(data.Des, 'close');
         }
 
       })
