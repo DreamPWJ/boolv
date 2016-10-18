@@ -1296,7 +1296,7 @@ angular.module('starter.controllers', [])
     $rootScope.evaluateFromUser = $rootScope.collectGoodDetails.FromUser;
     //订单状态
     $rootScope.orderStatus = $rootScope.collectGoodDetails.Status;
-    
+
   })
   //发货详情页面
   .controller('DeiverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, SearchOrderService) {
@@ -4169,6 +4169,10 @@ angular.module('starter.controllers', [])
         node: $rootScope.orderId //所属分组卖货单/供货单NO
       }
       SearchOrderService.getSaleSupplyTotalPrice($scope.priceParams).success(function (data) {
+        if (data.Values == null) {
+          CommonService.platformPrompt("获取当前单号的金额失败", "close");
+          return;
+        }
         $scope.paytopaymentprice = data.Values;
       }).then(function () {
         CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>' + $scope.paytopaymentprice.DaofuPrice + '元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', 'close', $scope.paytopayments)
@@ -4223,7 +4227,8 @@ angular.module('starter.controllers', [])
 
       SearchOrderService.getSaleSupplyTotalPrice($scope.finalpaypriceParams).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt("获取当前单号的金额失败", "close")
+          CommonService.platformPrompt("获取当前单号的金额失败", "close");
+          return;
         }
         $scope.finalpayprice = data.Values;
       }).then(function () {

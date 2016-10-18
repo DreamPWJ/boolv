@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova', 'ionic-native-transitions'])
 
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
-    localStorage.setItem("start", 1);
+    localStorage.setItem("start", 1);//记录首页启动轮播展示图已经展示
     $ionicPlatform.ready(function () {
       if (window.StatusBar) {
         //状态栏颜色设置
@@ -27,7 +27,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         function showConfirm() {
           var confirmPopup = $ionicPopup.confirm({
             title: '<strong>退出应用?</strong>',
-            template: '你确定要退出博绿网应用吗?',
+            template: '<p class="text-center">您确定要退出博绿网应用吗?</p>',
             okText: '退出',
             cancelText: '取消',
             okType: 'button-calm',
@@ -52,7 +52,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             $cordovaToast.showShortCenter('再按返回退出博绿网');
             setTimeout(function () {
               $rootScope.backButtonPressedOnceToExit = false;
-            }, 3000);
+            }, 2000);
           }
 
         } else if ($ionicHistory.backView()) {
@@ -195,6 +195,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.platform.android.views.transition('android');
     //设置默认返回按钮的文字
     $ionicConfigProvider.backButton.previousTitleText(false).text('');
+    //ion-content to have overflow-scroll='false'
+    $ionicConfigProvider.scrolling.jsScrolling(false);
+    //Checkbox style. Android defaults to square and iOS defaults to circle
+    $ionicConfigProvider.form.checkbox('circle')
+    //Toggle item style. Android defaults to small and iOS defaults to large.
+    $ionicConfigProvider.form.toggle('large')
     //原生动画效果统一配置
     $ionicNativeTransitionsProvider.setDefaultOptions({
       duration: 200, // in milliseconds (ms), default 400,
