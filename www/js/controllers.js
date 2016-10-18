@@ -965,7 +965,7 @@ angular.module('starter.controllers', [])
           //获取单号对应总金额/到付款/余款
           $scope.paypriceParams = {
             ordertype: 1,//类型 1卖货单2供货单
-            node: $rootScope.orderId //所属分组卖货单/供货单NO
+            node: $scope.yanhuolist[0].OrderNo //所属分组卖货单/供货单NO
           }
 
           SearchOrderService.getSaleSupplyTotalPrice($scope.paypriceParams).success(function (data) {
@@ -1180,7 +1180,7 @@ angular.module('starter.controllers', [])
             No: $scope.yanhuolist[0].OrderNo,//有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
             Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
-            OrderType: 2,//1代表卖货单2代表供货单
+            OrderType: 2//1代表卖货单2代表供货单
 
           }
           SearchOrderService.updateSupplyPlanStatus($scope.supplyparams).success(function (data) {
@@ -1191,7 +1191,7 @@ angular.module('starter.controllers', [])
           //获取单号对应总金额/到付款/余款
           $scope.paypriceParams = {
             ordertype: 2,//类型 1卖货单2供货单
-            node: $rootScope.orderId //所属分组卖货单/供货单NO
+            node: $scope.yanhuolist[0].OrderNo //所属分组卖货单/供货单NO
           }
 
           SearchOrderService.getSaleSupplyTotalPrice($scope.paypriceParams).success(function (data) {
@@ -1296,7 +1296,7 @@ angular.module('starter.controllers', [])
     $rootScope.evaluateFromUser = $rootScope.collectGoodDetails.FromUser;
     //订单状态
     $rootScope.orderStatus = $rootScope.collectGoodDetails.Status;
-
+    
   })
   //发货详情页面
   .controller('DeiverDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService, SearchOrderService) {
@@ -2188,8 +2188,10 @@ angular.module('starter.controllers', [])
 
         })
       }
+      $scope.$on('$ionicView.beforeEnter',function () { //局部刷新
+        $rootScope.getListLongAndLatSupplier(0);//获取最新供应商
+      })
 
-      $rootScope.getListLongAndLatSupplier(0);//获取最新供应商
 
       $scope.itemnum = [];//卖货数量
       $scope.sellgoodssubmit = function () {//提交卖货订单
@@ -3156,13 +3158,15 @@ angular.module('starter.controllers', [])
   .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService, SearchOrderService) {
     $scope.signinfo = {};//签收信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
-
+     //物流配送
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
+    //发货上门
     $scope.delivergoods = function () {
       $scope.goodtype = 2;
     }
+    //上门回收
     $scope.oneself = function () {
       $scope.goodtype = 3;
     }

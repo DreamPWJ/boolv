@@ -41,7 +41,7 @@
                                                  ng-class="{true:'ion-chevron-right'}[showme2]"></i></span></strong>
       </a>
       <div ng-hide="showme2">
-        <a ng-href="" class="item" ng-repeat="item in collectGoodDetails.Details">
+        <a ng-href="" class="item" ng-repeat="item in collectGoodDetails.OrderType==1?collectGoodDetails.Details:collectGoodDetails.SpO_Details">
           <h2>{{item.ProdName}}: {{item.Num+item.UName}}</h2>
         </a>
 
@@ -53,7 +53,7 @@
     class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a ng-if="OrderType==2&&orderStatus==4" class="col-40 button button-balanced "  ng-click="paytopaymentsubmit()">付款</a>
     <a  ng-if="orderStatus==3" class="col-40  button button-calm "  ng-href="#/sign">签收</a>
-    <a ng-if="orderStatus==4" class="col-40  button button-balanced "  ng-href="#/addproduct">验货</a>
+    <a ng-if="(OrderType==1&&orderStatus==4)||(OrderType==2&&orderStatus==5)" class="col-40  button button-balanced "  ng-href="#/addproduct">验货</a>
     <a ng-if="OrderType==1&&(orderStatus==6||orderStatus==7)" class="col-40  button button-calm " ng-click="payfinalpaymentsubmit()"  > 结算</a>
     <a ng-if="OrderType==2&&orderStatus==7" class="col-40  button button-calm " ng-click="payfinalpaymentsubmit()" >支付尾款</a>
   </div>
