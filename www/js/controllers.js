@@ -716,6 +716,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.enteringnumsubmit = function () {
+      CommonService.ionicLoadingShow();
       if ($scope.addrliststatus.length == 0) {
         CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
         $state.go('adddealaddress');
@@ -763,6 +764,8 @@ angular.module('starter.controllers', [])
           CommonService.platformPrompt('您的供货单提交失败', 'close');
         }
 
+      }).finally(function () {
+        CommonService.ionicLoadingHide();
       })
 
     }
@@ -3020,7 +3023,13 @@ angular.module('starter.controllers', [])
 
   })
   //添加地址
-  .controller('AddDealAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('AddDealAddressCtrl', function ($scope, $rootScope, $state, CommonService, AccountService,$ionicHistory) {
+     //去掉默认的只在下单的地方去掉，会员中心要显示
+    if($ionicHistory.backView().stateName=='dealaddress'){
+       $scope.isshowstatus=true;
+    }else {
+      $scope.isshowstatus=false;
+    }
     CommonService.ionicLoadingShow();
     $scope.addrinfo = {};
     $scope.addrinfoother = {};
@@ -3059,6 +3068,15 @@ angular.module('starter.controllers', [])
       /* $scope.selectCity($rootScope.addressitem.addrcode);*/
       $rootScope.addressitem = [];
       $scope.buttonText = '修改';
+         //获取省市县信息
+
+      // $scope.$on('$ionicView.beforeEnter', function () {
+      //   AccountService.getAddrPCC({code:$scope.addressiteminfo.addrcode}).success(function (data) {
+      //     $scope.pccinfo=data.Values;
+      //     $scope.selectProvince($scope.pccinfo.province);//市级信息
+      //     $scope.selectCity($scope.pccinfo.city);//县级信息
+      //   })
+      // })
 
 
     } else {//查询是否有默认地址
@@ -3599,8 +3617,13 @@ angular.module('starter.controllers', [])
     }
   })
   //增加收款银行账号
-  .controller('AddBankAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-
+  .controller('AddBankAccountCtrl', function ($scope, $rootScope, $state, CommonService, AccountService,$ionicHistory) {
+    //去掉默认的只在下单的地方去掉，会员中心要显示
+    if($ionicHistory.backView().stateName=='collectionaccount'){
+      $scope.isshowdefault=true;
+    }else {
+      $scope.isshowdefault=false;
+    }
     //增加收款银行账号信息
     $scope.bankinfo = {};
     $scope.buttonText = '添加';
@@ -4230,6 +4253,7 @@ angular.module('starter.controllers', [])
           return;
         }
         $scope.finalpayprice = data.Values;
+        console.log(data);
       }).then(function () {
         CommonService.showConfirm('', '<p>温馨提示:此订单的尾款为</p><p>' + $scope.finalpayprice.YuEPrice + '元，支付请点击"确认"，否则</p><p>点击"取消"(尾款=订单总金额-到付款)</p>', '确定', '取消', '', 'close', $scope.payfinalpayment)
       })
