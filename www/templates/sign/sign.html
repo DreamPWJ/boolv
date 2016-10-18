@@ -1,14 +1,14 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button back-button buttons  header-item " ng-href="{{signsuccess?'#/signlist':'#/signdetails'}}">
+    <button class="button back-button buttons  header-item " nav-direction=back native-ui-sref="{{signsuccess?'signlist':'signdetails'}}" native-options="{type: 'slide',direction: 'right'}" >
       <i class="icon ion-chevron-left"></i>
-    </a>
+    </button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 签收</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <a class="button icon ion-android-home no-border" nav-direction=back  ng-href="#/tab/main"></a>
+    <button class="button icon ion-android-home no-border"  nav-direction=back native-ui-sref="tab.main" native-options="{type: 'slide',direction: 'right'}"></button>
   </ion-nav-buttons>
   <div class="bar bar-subheader no-border">
     <div class="button-bar">

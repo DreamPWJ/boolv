@@ -1,8 +1,8 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button back-button buttons  header-item "  ng-href="{{buysuccess?'#/releaseprocure':'#/procuredetails'}}">
+    <button class="button back-button buttons  header-item " nav-direction=back native-ui-sref="{{buysuccess?'releaseprocure':'procuredetails'}}" native-options="{type: 'slide',direction: 'right'}" >
       <i class="icon ion-chevron-left"></i>
-    </a>
+    </button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 我要买货</h1>
