@@ -26,7 +26,7 @@
             请选择省
           </div>
           <select ng-model="addrinfoother.province" required  ng-change="selectProvince(addrinfoother.province)">
-            <option  value="{{item.code}}" ng-repeat="item in addrareaprovince">{{item.name}}</option>
+            <option   value="{{item.code}}" ng-repeat="item in addrareaprovince">{{item.name}}</option>
           </select>
         </label>
         <p class="padding-top"></p>
@@ -35,7 +35,7 @@
             请选择市
           </div>
           <select ng-model="addrinfoother.city" required  ng-change="selectCity(addrinfoother.city)">
-            <option value="{{item.code}}" ng-repeat="item in addrareacity">{{item.name}}</option>
+            <option  value="{{item.code}}" ng-repeat="item in addrareacity">{{item.name}}</option>
           </select>
         </label>
         <p class="padding-top"></p>

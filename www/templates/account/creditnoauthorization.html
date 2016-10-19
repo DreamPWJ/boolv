@@ -20,26 +20,26 @@
         <span>短信认证</span></a>
 
     </div>
-
+    <form name="creditnoauthorization">
     <ion-list>
       <ion-item class="item-input">
         <label class="input-label">姓名</label>
-        <input type="text" placeholder="请输入真实姓名" required/>
+        <input type="text" placeholder="请输入真实姓名" ng-model="signinfo.name" ng-maxlength="8" required/>
       </ion-item>
       <ion-item class="item-input">
         <label class="input-label">身份证号码</label>
-        <input type="text" placeholder="请输入真实身份证号码" required/>
+        <input type="text" placeholder="请输入真实身份证号码" ng-model="signinfo.card" check-form ng-change="checkForm(signinfo.card,'身份证号输入错误','identitycard','')" required/>
       </ion-item>
       <p class="padding grey"><i class="icon ion-information-circled"></i> 以上信息用于确认您的身份</p>
       <div class="padding">
-        <button class="button button-calm button-full ">立即授权</button>
+        <button ng-disabled="!(creditnoauthorization.$valid&&verify)" class="button button-calm button-full " ng-click="authorization()">立即授权</button>
         <p class=" text-right padding-top"><a class="calm subdued" ng-href="#/creditphoneauthorization">手机验证授权>></a></p>
         <p class="padding grey"><i class="icon ion-information-circled"></i> 温馨提示: 在博绿网, 您的芝麻信用分越高, 您的预收款额度就会更高,
           立即授权芝麻信用吧！</p>
       </div>
 
     </ion-list>
-
+    </form>
   </ion-content>
 
 </ion-view>

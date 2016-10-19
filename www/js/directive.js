@@ -73,10 +73,9 @@ angular.module('starter.directive', [])
         $rootScope.commonService = CommonService;
         $rootScope.verify = true;
         $rootScope.verifyarray[scope.$id] = true;
-        scope.publicCheckForm = function (regular, value, content) { //验证公共部分封装
+        scope.publicCheckForm = function (regular, value, content,isshowtip) { //验证公共部分封装
           if (regular) {
             if(value==0){
-              $rootScope.commonService.toolTip(content, '')
               $rootScope.verifyarray[scope.$id] = false;
               $rootScope.verify = false;
               return;
@@ -90,7 +89,9 @@ angular.module('starter.directive', [])
             })
           } else {
             if (value || value == 0) {
-              $rootScope.commonService.toolTip(content, '')
+              if(isshowtip){
+                $rootScope.commonService.toolTip(content, '');
+              }
               $rootScope.verifyarray[scope.$id] = false;
               $rootScope.verify = false;
             }
@@ -101,25 +102,19 @@ angular.module('starter.directive', [])
         }
         scope.checkForm = function (value, content, type, maxvalue) {
           if (type == 'mobilephone') {//验证手机号
-            if (/^1(3|4|5|7|8)\d{9}$/.test(value)) {
-              $rootScope.verify = true;
-            } else {
-              if (value) {
-                $rootScope.commonService.toolTip(content, '')
-              }
-              $rootScope.verify = false;
-            }
+            scope.publicCheckForm(/^1(3|4|5|7|8)\d{9}$/.test(value), value, content,true)
           }
           if (type == 'maxvaule') {//最大不能超过maxvalue值
-            scope.publicCheckForm(value > 0 && value <= maxvalue, value, content);
+            scope.publicCheckForm(value > 0 && value <= maxvalue, value, content,true);
           }
           if (type == 'positivenumber') {//正数验证(如 价格)
-            scope.publicCheckForm(/^(0|[1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value), value, content)
-
+            scope.publicCheckForm(/^(0|[1-9][0-9]{0,9})(\.[0-9]{1,2})?$/.test(value), value, content,true)
           }
           if (type == 'positiveinteger') {//正整数
-            scope.publicCheckForm(/^[1-9]\d*$/.test(value), value, content);
-
+            scope.publicCheckForm(/^[1-9]\d*$/.test(value), value, content,true);
+          }
+          if (type == 'identitycard') {//验证身份证号
+            scope.publicCheckForm(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value), value, content,false)
           }
         };
       }

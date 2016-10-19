@@ -152,14 +152,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 不能连接到服务器", 'close');
+          CommonService.platformPrompt("网络异常 不能连接到博绿网服务器", 'close');
           CommonService.ionicLoadingHide();//取消加载动画
         })
 
       }, false);
 
       //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
-      /*      $rootScope.clearcacheInfo = [];
+/*       $rootScope.clearcacheInfo = [];
        $rootScope.$on('$ionicView.beforeEnter', function (event, data) {
        var history = $ionicHistory.forwardView();
        if (history && history.stateName) {
@@ -495,7 +495,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货发布买货单数量
       .state('procuredetailsnum', {
         url: '/procuredetailsnum',
-        cache: false,
         templateUrl: 'templates/buygood/procuredetailsnum.html',
         controller: 'ProcureDetailsNumCtrl'
 
@@ -503,7 +502,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //买货发布买货单报价
       .state('procuredetails', {
         url: '/procuredetails',
-        cache: false,
         templateUrl: 'templates/buygood/procuredetails.html',
         controller: 'ProcureDetailsCtrl'
 

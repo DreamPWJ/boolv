@@ -905,7 +905,8 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/user/sign_zm/"+params.name+"/"+params.cardno,
+        url: BooLv.api + "/user/sign_zm",
+        params:params
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
