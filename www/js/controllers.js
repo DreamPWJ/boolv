@@ -609,7 +609,7 @@ angular.module('starter.controllers', [])
     $rootScope.procureorderdetailssubmit = function () {
       //支付定金确认
       $scope.paymoney = function () {
-        //Status是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
+        //Status是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7) 支付定金是Earnest不为0，其他3个输入0就行
         $scope.datas = {
           OrderNo: $rootScope.buyDetails.No,//订单号
           OrderType: 2,//1-卖货单2-买货单3-供货单
@@ -981,15 +981,16 @@ angular.module('starter.controllers', [])
              是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
              是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
              供货时，审核验货单（7）后就是结款（8）*/
+   /*         支付余款和金额的时候是AmountFu不为0，其他3个输入0就行*/
 
             $scope.addStatementdatas = {
               OrderNo: $scope.yanhuolist[0].OrderNo,//关联订单号OrderNo字段
               OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
               FromUser: localStorage.getItem("usertoken"),//付款方
               ToUser: $rootScope.deliverDetails.FromUser,//收款方
-              Amount: $scope.payprice.TotalPrice,//订单金额
+              Amount: 0,//订单金额
               Yushou: 0,//到付款
-              AmountFu: 0,//余款
+              AmountFu: $scope.payprice.YuEPrice,//余款
               Earnest: 0,//定金
               Status: 7 //订单所对应的结算状态值
             }
@@ -1207,15 +1208,15 @@ angular.module('starter.controllers', [])
              是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
              是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
              供货时，审核验货单（7）后就是结款（8）*/
-
+ /*           支付余款和金额的时候是AmountFu不为0，其他3个输入0就行*/
             $scope.addStatementdatas = {
               OrderNo: $scope.yanhuolist[0].OrderNo,//关联订单号OrderNo字段
               OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
               FromUser: localStorage.getItem("usertoken"),//付款方
               ToUser: $rootScope.deliverDetails.FromUser,//收款方
-              Amount: $scope.payprice.TotalPrice,//订单金额
+              Amount: 0,//订单金额
               Yushou: 0,//到付款
-              AmountFu: 0,//余款
+              AmountFu: $scope.payprice.YuEPrice,//余款
               Earnest: 0,//定金
               Status: 7 //订单所对应的结算状态值
             }
@@ -2106,6 +2107,7 @@ angular.module('starter.controllers', [])
   })
   //收货地址选择提交买货单
   .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
+    console.log($rootScope.addrlistFirst);
     if (!$rootScope.addrlistFirst || $rootScope.addrlistFirst.length == 0) {
       CommonService.ionicLoadingShow();
       $rootScope.buyCycle = {}; //供货周期（天） 0-无限期：Cycle
@@ -2116,14 +2118,15 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AccountService.getAddrlist($scope.params).success(function (data) {
-        $rootScope.addrlistFirst = [];
-        $rootScope.addrlist = data.Values.data_list;
-        $rootScope.addrlistFirst.push(data.Values.data_list[0]);
-        if ($scope.addrlist.length == 0) {
+        if (data.Values.data_list == null) {
           CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
           $state.go('adddealaddress');
           return;
         }
+        $rootScope.addrlistFirst = [];
+        $rootScope.addrlist = data.Values.data_list;
+        $rootScope.addrlistFirst.push(data.Values.data_list[0]);
+
       }).finally(function () {
         CommonService.ionicLoadingHide()
       })
@@ -2236,17 +2239,19 @@ angular.module('starter.controllers', [])
         }
         //获取用户常用地址
         AccountService.getAddrlist($scope.params).success(function (data) {
+          if (data.Values.data_list == null) {
+            CommonService.ionicLoadingHide();
+            CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
+            $state.go('adddealaddress');
+            return;
+          }
           $scope.addrliststatus = [];
           angular.forEach(data.Values.data_list, function (item) {
             if (item.status == 1) {
               $scope.addrliststatus.push(item);
             }
           })
-          if ($scope.addrliststatus.length == 0) {
-            CommonService.ionicLoadingHide();
-            CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
-            $state.go('adddealaddress');
-          }
+
           if (data.Key != 200) {
             CommonService.platformPrompt('交易地址获取失败', 'close');
           }
@@ -2256,17 +2261,19 @@ angular.module('starter.controllers', [])
           }
           //查询用户银行信息
           AccountService.getUserBanklist($scope.params).success(function (data) {
+            if (data.Values.data_list == null) {
+              CommonService.ionicLoadingHide();
+              CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
+              $state.go('addbankaccount');
+              return;
+            }
             $scope.userbankliststatus = [];
             angular.forEach(data.Values.data_list, function (item) {
               if (item.isdefault == 1) {
                 $scope.userbankliststatus.push(item);
               }
             })
-            if ($scope.userbankliststatus.length == 0) {
-              CommonService.ionicLoadingHide();
-              CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
-              $state.go('addbankaccount');
-            }
+
             if (data.Key != 200) {
               CommonService.platformPrompt('银行账户获取失败', 'close');
             }
@@ -2905,12 +2912,12 @@ angular.module('starter.controllers', [])
     }
     //获取用户常用地址
     AccountService.getAddrlist($scope.params).success(function (data) {
-      $scope.addrlist = data.Values.data_list;
-      if ($scope.addrlist.length == 0) {
+      if (data.Values.data_list == null) {
         CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
         $state.go('adddealaddress');
         return;
       }
+      $scope.addrlist = data.Values.data_list;
       $scope.addrliststatus = [];
       angular.forEach($scope.addrlist, function (item) {
         if (item.status == 1) {
@@ -4153,7 +4160,7 @@ angular.module('starter.controllers', [])
          是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
          是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
          供货时，审核验货单（7）后就是结款（8）*/
-
+ /*       到付款是Yushou不为0，其他3个输入0就行*/
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
