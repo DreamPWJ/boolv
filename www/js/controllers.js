@@ -650,6 +650,7 @@ angular.module('starter.controllers', [])
   .controller('SupplyOrderPlanCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.supplyPlanDetails = JSON.parse($stateParams.item);
     $rootScope.deliverDetails = JSON.parse($stateParams.item);//用于发货数据
+    console.log($rootScope.deliverDetails);
     $rootScope.searchorderTabsSelect = 2;//供货计划选项
     CommonService.ionicPopover($scope, 'my-stockup.html');
     //当前时间与下单时间差
@@ -734,20 +735,27 @@ angular.module('starter.controllers', [])
       //供货计划明细数组
       $scope.details = [];
       angular.forEach($rootScope.deliverDetails.Details, function (item, index) {
-        var items = {};//提交供货计划明细json数据
-        items.ProdID = item.ProdID, // 产品编号
-          items.ProdName = item.ProdName , // 产品名称
-          items.SaleClass = item.SaleClass , // 销售分类ID
-          items.Unit = item.Unit, // 计算单位ID
-          items.Num = $scope.supplyinfo[index].num, //数量
-          items.Price = item.Price//买货单价
-        $scope.details.push(items)
+        if ($scope.supplyinfo[index]) {
+          var items = {};//提交供货计划明细json数据
+            items.ProdID = item.ProdID, // 产品编号
+            items.ProdName = item.ProdName , // 产品名称
+            items.SaleClass = item.SaleClass , // 销售分类ID
+            items.Unit = item.Unit, // 计算单位ID
+            items.Num = $scope.supplyinfo[index].num, //数量
+            items.Price = item.Price//买货单价
+            if($scope.supplyinfo[index].num!=0){
+              $scope.details.push(items)
+            }
+
+        }
+
       })
+
       //提交供货计划
       $scope.datas = {
         SPNo: $rootScope.deliverDetails.No,//供货计划单号
         BONo: $rootScope.deliverDetails.BONo,//买货单号
-        ToUser: $rootScope.deliverDetails.FromUser,//买货单(买货)账号（待供货接口获取）
+        ToUser: $rootScope.deliverDetails.ToUser,//买货单(买货)账号（待供货接口获取）
         FromUser: localStorage.getItem("usertoken"),//供货人账号
         FromAddr: $scope.addrliststatus[0].id,//发货地址ID
         ToAddr: $scope.toAddraddrliststatus[0].id,//收货地址ID
@@ -1294,7 +1302,7 @@ angular.module('starter.controllers', [])
     //订单类型
     $rootScope.OrderType = $rootScope.collectGoodDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
-    $rootScope.orderType = 2;//订单类型1-卖货单2-买货单3-供货单
+    $rootScope.orderType =$rootScope.collectGoodDetails.OrderType==1?1:3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.collectGoodDetails.FromUser;
     //订单状态
@@ -1915,16 +1923,20 @@ angular.module('starter.controllers', [])
   //供货计划填写
   .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
     $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    console.log($rootScope.supplyDetails);
     $rootScope.supplyinfo = [];//供货信息填写信息
     //根据距离及产品明细数量得到参考物流费用
     $scope.calculateExpressesCost = function () {
 
       $scope.details = [];
       angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
-        var items = {};
-        items.Num = $rootScope.supplyinfo[index].num;
-        items.SaleClass = item.SaleClass;
-        $scope.details.push(items);
+        if($rootScope.supplyinfo[index]){
+          var items = {};
+          items.Num = $rootScope.supplyinfo[index].num;
+          items.SaleClass = item.SaleClass;
+          $scope.details.push(items);
+        }
+
 
       })
       $scope.datas = {
@@ -2319,7 +2331,7 @@ angular.module('starter.controllers', [])
     //订单类型
     $rootScope.OrderType = $rootScope.deliverDetails.OrderType;//订单类型 1卖货单2供货单
     //评价订单类型
-    $rootScope.orderType = 1;//订单类型1-卖货单2-买货单3-供货单
+    $rootScope.orderType = $rootScope.deliverDetails.OrderType==1?1:3;//订单类型1-卖货单2-买货单3-供货单
     //被评价人的ID
     $rootScope.evaluateFromUser = $rootScope.deliverDetails.FromUser;
     //订单状态
@@ -2465,14 +2477,15 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.checkDetails.No,//发货单号
-        BNode: ''//买货单号
+        SNode: $rootScope.checkDetails.OrderType == 1 ? $rootScope.checkDetails.No : '',//发货单号  卖货单
+        BNode: $rootScope.checkDetails.OrderType == 2 ? $rootScope.checkDetails.BONo : ''//买货单号  供货单
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
         $scope.params.SNode = '';//全部数据
+        $scope.params.BNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $scope.goodTypeListAll = data.Values;
         })
@@ -2739,8 +2752,8 @@ angular.module('starter.controllers', [])
         PIDList: '',//产品ID，多个用,隔开
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
-        SNode: $rootScope.checkDetails.No,//发货单号
-        BNode: ''//买货单号
+        SNode: $rootScope.checkDetails.OrderType == 1 ? $rootScope.checkDetails.No : '',//发货单号  卖货单
+        BNode: $rootScope.checkDetails.OrderType == 2 ? $rootScope.checkDetails.BONo : ''//买货单号  供货单
       }
 
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -2748,6 +2761,7 @@ angular.module('starter.controllers', [])
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
         $scope.params.SNode = '';//全部数据
+        $scope.params.BNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           console.log(data);
           $scope.goodTypeListAll = data.Values;
@@ -2930,16 +2944,19 @@ angular.module('starter.controllers', [])
       //供货计划明细数组
       $scope.details = [];
       angular.forEach($rootScope.supplyDetails.Details, function (item, index) {
-        var items = {};//提交供货计划明细json数据
-        items.ProdID = item.ProdID; // 产品编号
-        items.ProdName = item.ProdName; // 产品名称
-        items.SaleClass = item.SaleClass; // 销售分类ID
-        items.Unit = item.Unit;// 计算单位ID
-        items.Num = $rootScope.supplyinfo[index].num; //数量
-        items.Price = item.Price;//买货单价
-        items.SupCount = $rootScope.supplyinfo[index].SupCount;//供货次数
-        $scope.details.push(items);
-
+        if ($rootScope.supplyinfo[index]) {
+          var items = {};//提交供货计划明细json数据
+          items.ProdID = item.ProdID; // 产品编号
+          items.ProdName = item.ProdName; // 产品名称
+          items.SaleClass = item.SaleClass; // 销售分类ID
+          items.Unit = item.Unit;// 计算单位ID
+          items.Num = $rootScope.supplyinfo[index].num; //数量
+          items.Price = item.Price;//买货单价
+          items.SupCount = $rootScope.supplyinfo[index].SupCount;//供货次数
+          if($rootScope.supplyinfo[index].num){
+            $scope.details.push(items);
+          }
+        }
       })
       //提交供货计划
       $scope.datas = {
@@ -3079,9 +3096,9 @@ angular.module('starter.controllers', [])
       $scope.$on('$ionicView.beforeEnter', function () {
         AccountService.getAddrPCC({code: $scope.addressiteminfo.addrcode}).success(function (data) {
           $scope.pccinfo = data.Values;
-          $scope.addrinfoother.province=$scope.pccinfo.province.toString();
-          $scope.addrinfoother.city=$scope.pccinfo.city.toString();
-          $scope.addrinfoother.county=$scope.pccinfo.county.toString();
+          $scope.addrinfoother.province = $scope.pccinfo.province.toString();
+          $scope.addrinfoother.city = $scope.pccinfo.city.toString();
+          $scope.addrinfoother.county = $scope.pccinfo.county.toString();
         }).then(function () {
           //市级信息
           AccountService.getArea($scope.pccinfo.province).success(function (data) {
@@ -4188,7 +4205,7 @@ angular.module('starter.controllers', [])
           Status: 8 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
-
+          console.log(data);
         }).then(function () {
           //查单(买货订单)修改买货订单状态
           $scope.params = {
@@ -4202,7 +4219,7 @@ angular.module('starter.controllers', [])
             } else {
               CommonService.platformPrompt('付款支付失败');
             }
-
+            console.log(data);
           })
         })
 

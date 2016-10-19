@@ -193,3 +193,7 @@
   top: 44px !important;
   background-color: #000000!important;
 }
+
+.show-updateconfirm .popup .popup-head {
+  border-bottom: 1px solid #dddddd;
+}

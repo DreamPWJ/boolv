@@ -944,7 +944,7 @@ angular.module('starter.services', [])
 
     showUpdateConfirm: function (updatecontent, appurl, version) {    // 显示是否更新对话框
       var confirmPopup = $ionicPopup.confirm({
-        cssClass: "show-confirm",
+      cssClass: "show-updateconfirm",
         title: '<strong>发现新版本' + version + '</strong>',
         template: updatecontent, //从服务端获取更新的内容
         cancelText: '稍后再说',

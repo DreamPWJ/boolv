@@ -16,7 +16,7 @@
       <div ng-hide="showme1">
         <label class="item item-input ">
           <span class="input-label"> 申请供货数量  </span>
-          <input type="number"  ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SurplusNum+item.UName}}" required  check-form  ng-change="checkForm(supplyinfo[$index].num,'申请供货数量不能超过剩余供货量或小于0','maxvaule',item.SurplusNum)"  />
+          <input type="number"  ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{item.SurplusNum+item.UName}}"   check-form  ng-change="checkForm(supplyinfo[$index].num,'申请供货数量不能超过剩余供货量或小于0','maxvaule',item.SurplusNum)"  />
         </label>
         <label class="item item-input">
           <span class="input-label"> 供货次数  </span>
