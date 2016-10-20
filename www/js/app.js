@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova', 'ionic-native-transitions'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive','starter.filter', 'ngCordova', 'ionic-native-transitions'])
     //Angularjs 模块的 run 方法 方法初始化全局的数据 ,只对全局作用域起作用 如$rootScope
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     localStorage.setItem("start", 1);//记录首页启动轮播展示图已经展示

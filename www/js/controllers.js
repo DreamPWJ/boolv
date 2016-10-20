@@ -2905,8 +2905,10 @@ angular.module('starter.controllers', [])
   })
   //接单供货计划详情
   .controller('SupplyDetailsCtrl', function ($scope, $rootScope, CommonService, $stateParams, SupplyService) {
-    $scope.supplyDetails = JSON.parse($stateParams.item);
-
+    if($stateParams.item){
+      $scope.supplyDetails = JSON.parse($stateParams.item);
+    }
+    
     $scope.params = {
       longt: localStorage.getItem("longitude") || 114.0557100,//当前经度
       lat: localStorage.getItem("latitude") || 22.5224500,//当前纬度

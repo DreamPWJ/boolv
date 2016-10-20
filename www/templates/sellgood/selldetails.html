@@ -27,9 +27,9 @@
         <strong>匹配供货商 : </strong>
       </a>
       <a ng-href="#/sellgood"  class="item item-icon-right border-bottom-none" >
-        <h2>姓名 : {{supplierListFirst.UserName}} <span class="item-note">距离 : {{supplierListFirst.Range}}</span></h2>
-        <h2>手机号码 : <span class="calm">{{supplierListFirst.Motel}}</span></h2>
-        <h2 class="text-wrap" >地址 : {{supplierListFirst.Addr}}</h2>
+        <h2>姓名 : {{supplierListFirst.UserName | hidepartinfo : 'name' }} <span class="item-note">距离 : {{supplierListFirst.Range}}</span></h2>
+        <h2>手机号码 : <span class="calm">{{supplierListFirst.Motel | hidepartinfo : 'phone' }}</span></h2>
+        <h2 class="text-wrap" >地址 : {{supplierListFirst.Addr | hidepartinfo : 'address'}}</h2>
         <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
       </a>
     </div>
