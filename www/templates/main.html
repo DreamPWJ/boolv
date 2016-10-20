@@ -1,6 +1,7 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <a class="button icon ion-android-person no-border" nav-direction=forward ui-sref="tab.account"></a>
+    <a class="button icon ion-android-person no-border" nav-direction=forward native-ui-sref="tab.account"
+       native-options="{type: 'slide',direction: 'left'}"></a>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 博绿网</h1>
@@ -11,10 +12,11 @@
 
   <ion-content overflow-scroll="false" class="stable-bg" has-bouncing="true">
     <ion-refresher on-refresh="getMainData()" pulling-text="下拉更新"></ion-refresher>
-    <ion-slide-box   show-pager="false" does-continue="true" auto-play="true" slide-interval="3000" delegate-handle="slideboximgs"  id="main-slide">
-       <ion-slide ng-repeat="item in adImg track by item.ImgUrl">
-         <img ng-click="windowOpen(item.Url)" ng-src="{{item.ImgUrl}}"  alt="首页轮播图" class="full-image"/>
-       </ion-slide>
+    <ion-slide-box show-pager="false" does-continue="true" auto-play="true" slide-interval="3000"
+                   delegate-handle="slideboximgs" id="main-slide">
+      <ion-slide ng-repeat="item in adImg track by item.ImgUrl">
+        <img ng-click="windowOpen(item.Url)" ng-src="{{item.ImgUrl}}" alt="首页轮播图" class="full-image"/>
+      </ion-slide>
     </ion-slide-box>
 
     <div class="row text-center light-bg  main-list">
@@ -56,13 +58,16 @@
         <strong>行情报价</strong>
         <span class="item-note">更多>></span>
       </a>
-      <a   ng-repeat="item in prods.data_list | limitTo:8 "  class="item item-thumbnail-left" ng-href="#/currenttimeoffer/{{item.GrpID}}"  nav-direction=forward >
-        <img  ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
-        <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span>  <span class="item-note ">[ 详情 ]</span></h2>
-        <p class="text-wrap"  style="height: 40px;">{{item.PIntrodu}} </p>
+      <a ng-repeat="item in prods.data_list | limitTo:8 " class="item item-thumbnail-left"
+         ng-href="#/currenttimeoffer/{{item.GrpID}}" nav-direction=forward>
+        <img ng-src="{{item.PImgUrl}}" alt="" onerror="this.src='img/logonew.png'">
+        <h2>{{item.PName}} <span ng-if="item.PriType==1" class="calm">[按量报价]</span> <span
+          class="item-note ">[ 详情 ]</span></h2>
+        <p class="text-wrap" style="height: 40px;">{{item.PIntrodu}} </p>
         <p class="row row-no-padding" ng-repeat="itemp in item.Prices">
           <span ng-if="item.PriType==1" class="col">{{itemp.PriNumMin | number}}~{{itemp.PriNumMax | number}}{{item.PUName}}</span>
-          <span class="col assertive text-right"><span class="calm">参考价 :</span> <strong>{{itemp.Price | currency :'￥'}}</strong> 元/{{item.PUName}}</span>
+          <span class="col assertive text-right"><span
+            class="calm">参考价 :</span> <strong>{{itemp.Price | currency :'￥'}}</strong> 元/{{item.PUName}}</span>
         </p>
         </p>
       </a>
@@ -74,23 +79,24 @@
       </a>
       <a nav-direction=forward ng-repeat="item in listNews.data_list" ng-href="#/dealnotice/{{item.ID}}"
          class="item item-thumbnail-left">
-        <img  ng-src="{{item.PicAddr}}" alt=""  onerror="this.src='img/logonew.png'" class="newspicture"/>
+        <img ng-src="{{item.PicAddr}}" alt="" onerror="this.src='img/logonew.png'" class="newspicture"/>
         <h2 class="padding-top">{{item.Title}}</h2>
-        <p class="text-wrap"  style="height: 40px;">{{item.Note}}</p>
-        <p>{{item.Source}}         <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span></p>
+        <p class="text-wrap" style="height: 40px;">{{item.Note}}</p>
+        <p>{{item.Source}} <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span></p>
       </a>
 
     </div>
 
     <div class="list light-bg">
-      <a nav-direction=forward  class="item item-borderless">
+      <a nav-direction=forward class="item item-borderless">
         <strong>公司动态</strong>
       </a>
-      <a ng-href="#/companytrends/{{item.ID}}" ng-repeat="item in listCompanyNews.data_list"  class="item item-thumbnail-left">
-        <img  ng-src="{{item.PicAddr}}" alt="" onerror="this.src='img/logonew.png'" class="newspicture"/>
+      <a ng-href="#/companytrends/{{item.ID}}" ng-repeat="item in listCompanyNews.data_list"
+         class="item item-thumbnail-left">
+        <img ng-src="{{item.PicAddr}}" alt="" onerror="this.src='img/logonew.png'" class="newspicture"/>
         <h2 class="padding-top">{{item.Title}}</h2>
-        <p class="text-wrap"  style="height: 40px;">{{item.Note}}</p>
-        <p>{{item.Source}}         <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span></p>
+        <p class="text-wrap" style="height: 40px;">{{item.Note}}</p>
+        <p>{{item.Source}} <span class="item-note"> {{item.AddTime | date : 'yyyy-MM-dd'}}</span></p>
       </a>
 
       </a>
