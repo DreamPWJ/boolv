@@ -11,7 +11,7 @@
     <button class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class=" stable-bg" has-bouncing="true" ng-class="{true:'has-button-footer'}[(OrderType==2&&orderStatus==4)||orderStatus==3||orderStatus==4||(OrderType==1&&(orderStatus==6||orderStatus==7))||(OrderType==2&&orderStatus==7)]">
+  <ion-content overflow-scroll="false" class=" stable-bg" has-bouncing="true" ng-class="{true:'has-button-footer'}[(OrderType==2&&orderStatus==4)||orderStatus==3||OrderType==1&&(orderStatus==6||orderStatus==7)||(OrderType==1&&(orderStatus==6||orderStatus==7))||(OrderType==2&&orderStatus==7)]">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>订单号 : </strong>{{collectGoodDetails.No}}<span class="item-note"><i
@@ -49,7 +49,7 @@
     </div>
 
   </ion-content>
-  <div  ng-if="(OrderType==2&&orderStatus==4)||orderStatus==3||orderStatus==4||(OrderType==1&&(orderStatus==6||orderStatus==7))||(OrderType==2&&orderStatus==7)"
+  <div  ng-if="(OrderType==2&&orderStatus==4)||orderStatus==3||(OrderType==1&&orderStatus==4)||(OrderType==2&&orderStatus==5)||(OrderType==1&&(orderStatus==6||orderStatus==7))||(OrderType==2&&orderStatus==7)"
     class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a ng-if="OrderType==2&&orderStatus==4" class="col-40 button button-balanced "  ng-click="paytopaymentsubmit()">到付款</a>
     <a  ng-if="orderStatus==3" class="col-40  button button-calm "  ng-href="#/sign">签收</a>

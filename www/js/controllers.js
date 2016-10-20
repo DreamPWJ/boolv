@@ -940,7 +940,7 @@ angular.module('starter.controllers', [])
       //查单(卖货订单)修改卖货验货明细产品状态
       $scope.paramsdetails = {
         IDList: $scope.IDList.join(','),//编号，多个用,隔开
-        Status: status,//订单状态0-待确认1-已退货2-暂存3-已成交
+        Status: status,//订单状态（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         YhUser: localStorage.getItem("usertoken")//会员账号 验货人
       }
 
@@ -1064,7 +1064,7 @@ angular.module('starter.controllers', [])
   })
 
   // 查单供货计划审核验货单列表
-  .controller('SupplyExamineOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService) {
+  .controller('SupplyExamineOrderCtrl', function ($scope, $rootScope, CommonService, SearchOrderService,DeliverService) {
 
     $scope.params = {
       currentPage: 1,//当前页码
@@ -1165,7 +1165,7 @@ angular.module('starter.controllers', [])
       //查单(供货订单)修改供货验货明细产品状态
       $scope.paramsdetails = {
         IDList: $scope.IDList.join(','),//编号，多个用,隔开
-        Status: status,//订单状态0-待确认1-已退货2-暂存3-已成交
+        Status: status,//供货订单状态（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         YhUser: localStorage.getItem("usertoken"),//会员账号 验货人
       }
 
@@ -1186,18 +1186,17 @@ angular.module('starter.controllers', [])
             console.log(data);
           })
 
-          //查单(供货订单)修改供货计划状态
+          //查单(卖货订单)修改卖货/供货订单状态
           $scope.supplyparams = {
-            No: $scope.yanhuolist[0].OrderNo,//有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
-            Status: 6,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
+            No: $scope.yanhuolist[0].OrderNo,// 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
+            Status: 7,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
             User: $scope.yanhuolist[0].AddUser,//下单人账号
             OrderType: 2//1代表卖货单2代表供货单
 
           }
-          SearchOrderService.updateSupplyPlanStatus($scope.supplyparams).success(function (data) {
+          SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
             console.log(data);
           })
-
 
           //获取单号对应总金额/到付款/余款
           $scope.paypriceParams = {
@@ -1262,7 +1261,7 @@ angular.module('starter.controllers', [])
         }
 
       }).then(function () {
-        $scope.funcreuse(3)
+        $scope.funcreuse(7)
       })
     }
 
@@ -1285,7 +1284,7 @@ angular.module('starter.controllers', [])
         }
 
       }).then(function () {
-        $scope.funcreuse(1)
+        $scope.funcreuse(5)
       })
     }
   })
