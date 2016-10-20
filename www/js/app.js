@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive', 'ngCordova', 'ionic-native-transitions'])
-
+    //Angularjs 模块的 run 方法 方法初始化全局的数据 ,只对全局作用域起作用 如$rootScope
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
     localStorage.setItem("start", 1);//记录首页启动轮播展示图已经展示
     $ionicPlatform.ready(function () {
@@ -108,6 +108,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         var BLNo = data.extras.BLNo;//订单号
         var BLType = data.extras.BLType;//（查看类型 1.非收货订单 2.收货订单）
         var BLOrderType = data.extras.BLOrderType;//（类型通知 1-卖货单2-采购单3-供货单4-供货计划5-申请预收款）
+         $rootScope.searchcontent=BLNo;//搜索订单
         if (BLOrderType == 1 || BLOrderType == 2 || BLOrderType == 3 || BLOrderType == 4) {
           if (BLType == 1 && BLOrderType == 1) {
             $rootScope.searchorderTabsSelect = 0;//卖货单选项

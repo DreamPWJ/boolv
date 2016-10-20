@@ -344,10 +344,10 @@ angular.module('starter.controllers', [])
     }
     //搜索订单号内容
     $scope.search = {};//搜索内容
-    $scope.searchcontent = '';//输入内容
+    $rootScope.searchcontent =$rootScope.searchcontent||'';//输入内容
     $scope.searchquery = function (searchcontent) {
       var index = $ionicTabsDelegate.$getByHandle('my-handle-searchorder').selectedIndex();
-      $scope.searchcontent = searchcontent;
+      $rootScope.searchcontent = searchcontent;
       if (index == 0) {
         $scope.getSaleOrderList();
       } else if (index == 1) {
@@ -363,7 +363,7 @@ angular.module('starter.controllers', [])
     $scope.sellparamspage = 0;
     $scope.sellparamstotal = 1;
     $scope.getSaleOrderList = function () {
-      if ((arguments != [] && arguments[0] == 0) || $scope.searchcontent != '') {
+      if ((arguments != [] && arguments[0] == 0) || $rootScope.searchcontent != '') {
         $scope.sellparamspage = 0;
         $scope.saleorderlist = [];
       }
@@ -373,7 +373,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.sellparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No: $scope.searchcontent || '',//订单号，模糊匹配
+        No: $rootScope.searchcontent || '',//订单号，模糊匹配
         User: '',//下单人账号
         Type: '',//0-物流配送1-送货上门2-上门回收
         Status: '',//0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款
@@ -382,7 +382,7 @@ angular.module('starter.controllers', [])
 
       //查单(卖货订单)获取卖货单列表
       SearchOrderService.getSaleOrderList($scope.sellparams).success(function (data) {
-        $scope.searchcontent = '';//清空搜索条件
+        $rootScope.searchcontent = '';//清空搜索条件
         $scope.isNotData1 = false;
         if (data.Values == null) {//没有订单数据
           $scope.isNotData1 = true;
@@ -406,7 +406,7 @@ angular.module('starter.controllers', [])
     $scope.buyparamspage = 0;
     $scope.buyparamstotal = 1;
     $scope.buyOrderList = function () {
-      if (arguments != [] && arguments[0] == 0 || $scope.searchcontent != '') {
+      if (arguments != [] && arguments[0] == 0 || $rootScope.searchcontent != '') {
         $scope.buyparamspage = 0;
         $scope.buyorderlist = [];
       }
@@ -416,7 +416,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.buyparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No: $scope.searchcontent || '',//订单号，模糊匹配
+        No: $rootScope.searchcontent || '',//订单号，模糊匹配
         User: localStorage.getItem("usertoken"),//买家账号
         Type: '',//0-物流配送1-送货上门2-上门回收
         Status: '',//0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价
@@ -425,7 +425,7 @@ angular.module('starter.controllers', [])
       }
       //查单(买货订单)获取买货单列表
       SupplyService.getToPage($scope.buyparams).success(function (data) {
-        $scope.searchcontent = '';//清空搜索条件
+        $rootScope.searchcontent = '';//清空搜索条件
         $scope.isNotData2 = false;
         if (data.Values == null) {//没有订单数据
           $scope.isNotData2 = true;
@@ -451,7 +451,7 @@ angular.module('starter.controllers', [])
     $scope.supplyparamspage = 0;
     $scope.supplyparamstotal = 1;
     $scope.getSupplyPlanList = function () {
-      if (arguments != [] && arguments[0] == 0 || $scope.searchcontent != '') {
+      if (arguments != [] && arguments[0] == 0 || $rootScope.searchcontent != '') {
         $scope.supplyparamspage = 0;
         $scope.supplyorderlist = [];
       }
@@ -461,7 +461,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.supplyparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No: $scope.searchcontent || '',//订单号，模糊匹配
+        No: $rootScope.searchcontent || '',//订单号，模糊匹配
         User: localStorage.getItem("usertoken"),//下单人账号
         Status: '',//0-未审核1-审核未通过2-审核通过3-备货中/供货中4-供货完成
         BONo: '',//买货单号 关联买货单号
@@ -469,7 +469,7 @@ angular.module('starter.controllers', [])
       }
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlanList($scope.supplyparams).success(function (data) {
-        $scope.searchcontent = '';//清空搜索条件
+        $rootScope.searchcontent = '';//清空搜索条件
         $scope.isNotData3 = false;
         if (data.Values == null) {//没有订单数据
           $scope.isNotData3 = true;
@@ -495,7 +495,7 @@ angular.module('starter.controllers', [])
     $scope.collectparamspage = 0;
     $scope.collectparamstotal = 1;
     $scope.getSaleSupply = function () {
-      if (arguments != [] && arguments[0] == 0 || $scope.searchcontent != '') {
+      if (arguments != [] && arguments[0] == 0 || $rootScope.searchcontent != '') {
         $scope.collectparamspage = 0;
         $scope.collectorderlist = [];
       }
@@ -505,7 +505,7 @@ angular.module('starter.controllers', [])
         currentPage: $scope.collectparamspage,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No: $scope.searchcontent || '',//订单号，模糊匹配
+        No: $rootScope.searchcontent || '',//订单号，模糊匹配
         User: localStorage.getItem("usertoken"),//卖货人（卖货单）/供货人（供货单）发货，卖货订单时，User不能为空，以User为主导走流程
         FromUser: '',//供货人（卖货单）/买货人（供货单）签收，验货，收货订单时，以FromUser为主导走流程
         Status: '',//订单状态(卖货单)-1取消订单0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款（供货单）-1取消订单0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
@@ -514,7 +514,7 @@ angular.module('starter.controllers', [])
       }
       //查单(收货订单)获取收货单列表
       DeliverService.getSaleSupply($scope.collectparams).success(function (data) {
-        $scope.searchcontent = '';//清空搜索条件
+        $rootScope.searchcontent = '';//清空搜索条件
         $scope.isNotData4 = false;
         if (data.Values == null) { //没有订单数据
           $scope.isNotData4 = true;
@@ -666,8 +666,8 @@ angular.module('starter.controllers', [])
     //订单状态
     $rootScope.orderStatus = $rootScope.supplyPlanDetails.Status;
 
-    //是否能提交供货单   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了 当剩余周期是0或者剩余的供货量为0时，就不能“提交供货单”了
-    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight) && ($rootScope.supplyPlanDetails.SupCycle > $scope.diffCycle) && ($rootScope.supplyPlanDetails.NumSum - $rootScope.supplyPlanDetails.SupSum > 0) ? true : false;
+    //是否能提交供货单   备货按钮的条件是计划单的状态是2或者 3，且要供的总数量总重量不等于已供的数量总重量才能备货。不然可能就是还没有到这一步或者已经供完了 当剩余周期是0或者剩余的供货量为0时，就不能“提交供货单”了  SupCycle=0是无限制 要判断一下
+    $rootScope.isSupply = ($rootScope.supplyPlanDetails.NumSum != $rootScope.supplyPlanDetails.SupSum || $rootScope.supplyPlanDetails.WeightSum != $rootScope.supplyPlanDetails.SupWeight) && ($rootScope.supplyPlanDetails.SupCycle==0?true:($rootScope.supplyPlanDetails.SupCycle > $scope.diffCycle)) && ($rootScope.supplyPlanDetails.NumSum - $rootScope.supplyPlanDetails.SupSum > 0) ? true : false;
 
   })
   //查单供货计划备货录入
