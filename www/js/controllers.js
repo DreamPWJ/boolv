@@ -394,7 +394,7 @@ angular.module('starter.controllers', [])
         })
         $scope.sellparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.saleorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
+        $rootScope.saleorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -438,7 +438,7 @@ angular.module('starter.controllers', [])
         })
         $scope.buyparamstotal = data.Values.page_count;
         //订单状态(买货单)
-        $rootScope.buyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
+        $rootScope.buyorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -482,7 +482,7 @@ angular.module('starter.controllers', [])
         })
         $scope.supplyparamstotal = data.Values.page_count;
         //订单状态(供货单)
-        $rootScope.supplyorderStatus = ['关闭/取消订单', '未审核', '审核未通过', '审核通过', '备货中/供货中', '供货完成'];
+        $rootScope.supplyorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '备货中', '供货完成'];
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -529,7 +529,7 @@ angular.module('starter.controllers', [])
         //订单状态(卖货单)
         $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
         //订单状态(供货单)
-        $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -812,7 +812,7 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -980,7 +980,7 @@ angular.module('starter.controllers', [])
 
           SearchOrderService.getSaleSupplyTotalPrice($scope.paypriceParams).success(function (data) {
             if (data.Values == null) {
-              CommonService.platformPrompt("获取当前单号的金额失败", "close");
+              CommonService.platformPrompt("获取当前订单号的金额失败", "close");
               return;
             }
             $scope.payprice = data.Values;
@@ -1207,7 +1207,7 @@ angular.module('starter.controllers', [])
 
           SearchOrderService.getSaleSupplyTotalPrice($scope.paypriceParams).success(function (data) {
             if (data.Values == null) {
-              CommonService.platformPrompt("获取当前单号的金额失败", "close");
+              CommonService.platformPrompt("获取当前订单号的金额失败", "close");
               return;
             }
             $scope.payprice = data.Values;
@@ -1445,23 +1445,27 @@ angular.module('starter.controllers', [])
         //查单(卖货订单)修改卖货/供货订单状态
         $scope.params = {
           No: $rootScope.orderId,//订单号
-          Status: 10,//状态值
+          Status: $rootScope.orderType == 1 ? 9 : 10,//状态值  卖货单已评价是9  买货供货单已评价是10
           User: $rootScope.evaluateFromUser,//下单人账号
-          OrderType: $rootScope.orderType == 1 ? 1 : 2,//1代表卖货单2代表供货单
+          OrderType: $rootScope.OrderType//1代表卖货单2代表供货单
         }
-        if ($rootScope.orderType == 1) {
+        if ($rootScope.orderType != 2) {
           //查单(卖货订单)修改卖货/供货订单状态
           SearchOrderService.updateSaleOrderStatus($scope.params).success(function (data) {
             console.log(data);
           })
-        } else if ($rootScope.orderType == 3) {
-          //查单(供货订单)修改供货计划状态
-          SearchOrderService.updateSupplyPlanStatus($scope.params).success(function (data) {
-            console.log(data);
+        } else if ($rootScope.orderType == 2) {
+          //查单(买货订单)修改买货订单状态
+          $scope.buyparams = {
+            No: $rootScope.orderId,//订单号
+            User: $rootScope.evaluateFromUser,//下单人账号
+            Status: 10//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+          }
+          SearchOrderService.updateBuyOrderStatus($scope.buyparams).success(function (data) {
+
           })
         }
       })
-
     }
   })
   //通知消息列表
@@ -1548,7 +1552,7 @@ angular.module('starter.controllers', [])
         //订单状态(卖货单)
         $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2429,7 +2433,7 @@ angular.module('starter.controllers', [])
         //订单状态(卖货单)
         $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -3189,7 +3193,7 @@ angular.module('starter.controllers', [])
         //订单状态(卖货单)
         $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过/待发货', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -4156,9 +4160,9 @@ angular.module('starter.controllers', [])
           No: $rootScope.orderId,//订单号
           Status: -1,//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过 3-已发货4-已签收5-已验货6-已确认7-已交易8-已结款)
           User: $rootScope.evaluateFromUser,//下单人账号
-          OrderType: $rootScope.orderType == 1 ? 1 : 2,//1代表卖货单2代表供货单
+          OrderType: $rootScope.OrderType//1代表卖货单2代表供货单
         }
-        if ($rootScope.orderType == 1) {
+        if ($rootScope.orderType != 2) {
           //查单(卖货订单)修改卖货/供货订单状态
           SearchOrderService.updateSaleOrderStatus($scope.closeordersparams).success(function (data) {
             if (data.Key == 200) {
@@ -4167,17 +4171,22 @@ angular.module('starter.controllers', [])
               CommonService.platformPrompt('取消订单失败');
             }
           })
-        } else if ($rootScope.orderType == 3) {
-          //查单(供货订单)修改供货计划状态
-          SearchOrderService.updateSupplyPlanStatus($scope.closeordersparams).success(function (data) {
-            if (data.Key == 200) {
-              CommonService.platformPrompt('取消订单成功');
-            } else {
-              CommonService.platformPrompt('取消订单失败');
-            }
-          })
         }
-
+        else if ($rootScope.orderType == 2) {
+            //查单(买货订单)修改买货订单状态
+            $scope.buyparams = {
+              No: $rootScope.orderId,//订单号
+              User: $rootScope.evaluateFromUser,//下单人账号
+              Status: -1//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+            }
+            SearchOrderService.updateBuyOrderStatus($scope.buyparams).success(function (data) {
+              if (data.Key == 200) {
+                CommonService.platformPrompt('取消订单成功');
+              } else {
+                CommonService.platformPrompt('取消订单失败');
+              }
+            })
+        }
 
       }
       CommonService.showConfirm('', '<p>温馨提示:您是否确认关闭此订单吗？</p><p>是请点击"确认"，否则请点击"取消"</p>', '确定', '取消', '', 'close', $scope.ordersubmit)
@@ -4192,7 +4201,7 @@ angular.module('starter.controllers', [])
          是卖货时，审核验货单后（6）或者已交易（7）后就是结款（8）
          是买货时，审核通过（2）后就是已支付定金（3），及备货完成（6)后就是已结款(7)
          供货时，审核验货单（7）后就是结款（8）*/
-        /*       到付款是Yushou不为0，其他3个输入0就行*/
+        /* 到付款是Yushou不为0，其他3个输入0就行 */
         $scope.datas = {
           OrderNo: $rootScope.collectGoodDetails.No,//订单号
           OrderType: $rootScope.orderType,//1-卖货单2-买货单3-供货单
@@ -4205,22 +4214,25 @@ angular.module('starter.controllers', [])
           Status: 8 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
-          console.log(data);
+
         }).then(function () {
-          //查单(买货订单)修改买货订单状态
-          $scope.params = {
-            No: $rootScope.collectGoodDetails.No,//订单号
+          //查单(卖货订单)修改卖货/供货订单状态
+          $scope.supplyparams = {
+            No: $rootScope.collectGoodDetails.No,// 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
+            Status: 5,//状态值//0-未审核1-审核未通过2-审核通过3-已发货4-已签收 5到付款 6 已验货 7 已审验货单 8 已交易 9 已结款 10 已评价
             User: $rootScope.collectGoodDetails.FromUser,//下单人账号
-            Status: 5//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+            OrderType: $rootScope.OrderType//1代表卖货单2代表供货单
+
           }
-          SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
+          SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
             if (data.Key == 200) {
-              CommonService.platformPrompt('付款支付成功');
+              CommonService.platformPrompt('到付款支付成功');
             } else {
-              CommonService.platformPrompt('付款支付失败');
+              CommonService.platformPrompt('到付款支付失败');
             }
             console.log(data);
           })
+
         })
 
       }
@@ -4231,7 +4243,7 @@ angular.module('starter.controllers', [])
       }
       SearchOrderService.getSaleSupplyTotalPrice($scope.priceParams).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt("获取当前单号的金额失败", "close");
+          CommonService.platformPrompt("获取当前订单号的金额失败", "close");
           return;
         }
         $scope.paytopaymentprice = data.Values;
@@ -4264,6 +4276,7 @@ angular.module('starter.controllers', [])
         SearchOrderService.addStatement($scope.datas).success(function (data) {
 
         }).then(function () {
+
           //查单(买货订单)修改买货订单状态
           $scope.params = {
             No: $rootScope.collectGoodDetails.No,//订单号
@@ -4288,7 +4301,7 @@ angular.module('starter.controllers', [])
 
       SearchOrderService.getSaleSupplyTotalPrice($scope.finalpaypriceParams).success(function (data) {
         if (data.Values == null) {
-          CommonService.platformPrompt("获取当前单号的金额失败", "close");
+          CommonService.platformPrompt("获取当前订单号的金额失败", "close");
           return;
         }
         $scope.finalpayprice = data.Values;
