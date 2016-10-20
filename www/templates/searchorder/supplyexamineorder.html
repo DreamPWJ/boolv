@@ -66,7 +66,7 @@
   </ion-content>
   <div  ng-if="bigImage" class="popover-backdrop dark-bg pic-has-header" ng-click="hideBigImage()" >
     <img class="full-image"
-         src="{{Url}}"/>
+         ng-src="{{Url}}"/>
   </div>
   <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a ng-if="OrderType==1"  class="col-40 button button-balanced " ng-disabled="!(ischecked&&orderStatus==5)" ng-click="examinegoodsordersubmit()">确认交易</a>

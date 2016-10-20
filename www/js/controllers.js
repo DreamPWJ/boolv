@@ -1925,8 +1925,9 @@ angular.module('starter.controllers', [])
   })
   //供货计划填写
   .controller('SupplyPlanCtrl', function ($scope, $rootScope, CommonService, SupplyService, $stateParams) {
-    $rootScope.supplyDetails = JSON.parse($stateParams.item);
-    console.log($rootScope.supplyDetails);
+    if($stateParams.item){
+      $rootScope.supplyDetails = JSON.parse($stateParams.item);
+    }
     $rootScope.supplyinfo = [];//供货信息填写信息
     //根据距离及产品明细数量得到参考物流费用
     $scope.calculateExpressesCost = function () {
@@ -3203,7 +3204,9 @@ angular.module('starter.controllers', [])
   })
   //签收收货单详情
   .controller('SignDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
-    $rootScope.signDetails = JSON.parse($stateParams.item);
+    if($stateParams.item){
+      $rootScope.signDetails = JSON.parse($stateParams.item);
+    }
 
   })
   //签收提交
