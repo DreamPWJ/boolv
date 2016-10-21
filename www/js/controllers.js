@@ -623,7 +623,9 @@ angular.module('starter.controllers', [])
         }
 
         SearchOrderService.addStatement($scope.datas).success(function (data) {
-          console.log(data);
+          if (data.Key != 200) {
+            CommonService.platformPrompt('提交结算失败');
+          }
         }).then(function () {
           //查单(买货订单)修改买货订单状态
           $scope.params = {
@@ -1003,7 +1005,9 @@ angular.module('starter.controllers', [])
               Status: 7 //订单所对应的结算状态值
             }
             SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
-              console.log(data);
+              if (data.Key != 200) {
+                CommonService.platformPrompt('提交结算失败');
+              }
             })
           })
         }
@@ -1229,7 +1233,9 @@ angular.module('starter.controllers', [])
             }
 
             SearchOrderService.addStatement($scope.addStatementdatas).success(function (data) {
-              console.log(data);
+              if (data.Key != 200) {
+                CommonService.platformPrompt('提交结算失败');
+              }
             })
           })
         }
@@ -2908,7 +2914,7 @@ angular.module('starter.controllers', [])
     if($stateParams.item){
       $scope.supplyDetails = JSON.parse($stateParams.item);
     }
-    
+
     $scope.params = {
       longt: localStorage.getItem("longitude") || 114.0557100,//当前经度
       lat: localStorage.getItem("latitude") || 22.5224500,//当前纬度
@@ -4218,23 +4224,25 @@ angular.module('starter.controllers', [])
           Status: 8 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
-
+          if (data.Key != 200) {
+            CommonService.platformPrompt('提交结算失败');
+          }
         }).then(function () {
           //查单(卖货订单)修改卖货/供货订单状态
-          $scope.supplyparams = {
+          $scope.paytopaymentsparams = {
             No: $rootScope.collectGoodDetails.No,// 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
             Status: 5,//状态值//0-未审核1-审核未通过2-审核通过3-已发货4-已签收 5到付款 6 已验货 7 已审验货单 8 已交易 9 已结款 10 已评价
             User: $rootScope.collectGoodDetails.FromUser,//下单人账号
             OrderType: $rootScope.OrderType//1代表卖货单2代表供货单
 
           }
-          SearchOrderService.updateSaleOrderStatus($scope.supplyparams).success(function (data) {
+          SearchOrderService.updateSaleOrderStatus($scope.paytopaymentsparams).success(function (data) {
             if (data.Key == 200) {
               CommonService.platformPrompt('到付款支付成功');
             } else {
               CommonService.platformPrompt('到付款支付失败');
             }
-            console.log(data);
+
           })
 
         })
@@ -4278,23 +4286,27 @@ angular.module('starter.controllers', [])
           Status: 8 //订单所对应的结算状态值
         }
         SearchOrderService.addStatement($scope.datas).success(function (data) {
-
+          if (data.Key != 200) {
+            CommonService.platformPrompt('提交结算失败');
+          }
         }).then(function () {
 
-          //查单(买货订单)修改买货订单状态
-          $scope.params = {
-            No: $rootScope.collectGoodDetails.No,//订单号
+          //查单(卖货订单)修改卖货/供货订单状态
+          $scope.payfinalparams = {
+            No: $rootScope.collectGoodDetails.No,// 有的订单跟其他的订单有关联 验货单接口里的no代表的是验货订单号 OrderNo代表是买货订单号
+            Status:$rootScope.OrderType==1?7:8,//状态值//0-未审核1-审核未通过2-审核通过3-已发货4-已签收 5到付款 6 已验货 7 已审验货单 8 已交易 9 已结款 10 已评价
             User: $rootScope.collectGoodDetails.FromUser,//下单人账号
-            Status: 8//状态值(-1取消订单 0-未审核1-审核未通过2-审核通过3-已支付定金4-已收到定金5-备货中 6-备货完成7-已结款8-已返定金9-已成交10-已评价)
+            OrderType: $rootScope.OrderType//1代表卖货单2代表供货单
           }
-          SearchOrderService.updateBuyOrderStatus($scope.params).success(function (data) {
-            if (data.Key == 200) {
-              CommonService.platformPrompt('付款支付成功');
-            } else {
-              CommonService.platformPrompt('付款支付失败');
-            }
 
+          SearchOrderService.updateSaleOrderStatus($scope.payfinalparams).success(function (data) {
+            if (data.Key == 200) {
+              CommonService.platformPrompt('支付成功');
+            } else {
+              CommonService.platformPrompt('支付失败');
+            }
           })
+
         })
       }
       //获取单号对应总金额/到付款/余款
