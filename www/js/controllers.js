@@ -2672,7 +2672,7 @@ angular.module('starter.controllers', [])
         $scope.datas = {
           OrderType: $rootScope.checkDetails.OrderType,//订单类型1-卖货单2-供货出库单
           Node: $rootScope.checkDetails.No,//订单号
-          Debit: $scope.cutpaymentinfo.totalmoney,//扣款总金额
+          Debit: $scope.cutpaymentinfo.totalmoney||0,//扣款总金额
           Details: $scope.details//卖货/供货验货扣款记录
         }
 
@@ -3080,6 +3080,7 @@ angular.module('starter.controllers', [])
     $scope.selectProvince = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacity = data.Values;
+        $scope.addrareacounty={};//选择省的时候同时情况县
         $scope.addrinfo.addr = '';//清空详细地址
       })
     }
@@ -4238,6 +4239,7 @@ angular.module('starter.controllers', [])
           }
           SearchOrderService.updateSaleOrderStatus($scope.paytopaymentsparams).success(function (data) {
             if (data.Key == 200) {
+              $rootScope.orderStatus==5;//供货单到付款支付成功 显示验货按钮
               CommonService.platformPrompt('到付款支付成功');
             } else {
               CommonService.platformPrompt('到付款支付失败');
@@ -4301,6 +4303,12 @@ angular.module('starter.controllers', [])
 
           SearchOrderService.updateSaleOrderStatus($scope.payfinalparams).success(function (data) {
             if (data.Key == 200) {
+                if($rootScope.OrderType==1){
+                  $rootScope.orderStatus==7;//卖货单结算状态已审验货单到已交易
+                }
+              if($rootScope.OrderType==2){
+                  $rootScope.orderStatus==8;//供货单支付尾款状态已审验货单到已交易
+              }
               CommonService.platformPrompt('支付成功');
             } else {
               CommonService.platformPrompt('支付失败');
