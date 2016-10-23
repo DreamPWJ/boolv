@@ -394,7 +394,7 @@ angular.module('starter.controllers', [])
         })
         $scope.sellparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.saleorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认(已审验货单)', '已交易', '已结款'];
+        $rootScope.saleorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款','已评价'];
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -527,9 +527,9 @@ angular.module('starter.controllers', [])
         })
         $scope.collectparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+        $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款','已评价'];
         //订单状态(供货单)
-        $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易','已结款', '已评价'];
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -814,7 +814,7 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易','已结款', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1555,9 +1555,9 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款','已评价'];
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单','已交易', '已结款', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2437,9 +2437,9 @@ angular.module('starter.controllers', [])
 
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款','已评价'];
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易','已结款', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -3200,9 +3200,9 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已确认', '已交易', '已结款'];
+        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款','已评价'];
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货/待收货', '已收货/待付到付款', '已付到付款/待验货', '已验货/待审验货单', '已审核验货单/待结款', '已结款/待评价', '已评价'];
+        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易','已结款', '已评价'];
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -3322,7 +3322,13 @@ angular.module('starter.controllers', [])
       DeliverService.addSign($scope.datas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.signsuccess = true;//签收下单成功的标示
-          CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood')
+          if(ordeType==1){//卖货单
+            CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'checkgood');
+          }
+          if(ordeType==2){//供货单
+            $rootScope.searchorderTabsSelect = 3;//收货单选项
+            CommonService.showAlert('', '<p>恭喜您！操作成功！</p><p>我们会尽快处理您的订单</p>', 'searchorder');
+          }
         } else {
           CommonService.platformPrompt('提交签收数据操作失败', 'close');
         }

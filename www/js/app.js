@@ -109,20 +109,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         var BLType = data.extras.BLType;//（查看类型 1.非收货订单 2.收货订单）
         var BLOrderType = data.extras.BLOrderType;//（类型通知 1-卖货单2-采购单3-供货单4-供货计划5-申请预收款）
          $rootScope.searchcontent=BLNo;//搜索订单
-        if (BLOrderType == 1 || BLOrderType == 2 || BLOrderType == 3 || BLOrderType == 4) {
+        if (BLOrderType == 1 || BLOrderType == 2  || BLOrderType == 4) {
           if (BLType == 1 && BLOrderType == 1) {
             $rootScope.searchorderTabsSelect = 0;//卖货单选项
           }
           if (BLOrderType == 2) {
             $rootScope.searchorderTabsSelect = 1;//买货单选项
           }
-          if (BLType == 1 && (BLOrderType == 3 || BLOrderType == 4)) {
+          if (BLType == 1 && BLOrderType == 4) {
             $rootScope.searchorderTabsSelect = 2;//供货计划选项
           }
-          if ((BLType == 2 && BLOrderType == 1) || (BLType == 2 && BLOrderType == 3) || (BLType == 2 && BLOrderType == 4)) {
+          if ((BLType == 2 && BLOrderType == 1) || (BLType == 2 && BLOrderType == 4)) {
             $rootScope.searchorderTabsSelect = 3;//收货单选项
           }
           $state.go("searchorder");
+        }
+        if (BLOrderType == 3) {
+          $rootScope.supplyPlanDetails.No=BLNo;
+          $state.go("supplyorderlist");//供货单列表
         }
         if (BLOrderType == 5) {
           $state.go("myadvance");//申请预收款列表
