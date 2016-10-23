@@ -1749,6 +1749,21 @@ angular.module('starter.controllers', [])
     }
     $scope.recover = function () {
       $scope.goodtype = 3;
+      //获取卖货供货人的地址
+      $scope.addressparams = {
+        page: 1,
+        size: 5,
+        userid: localStorage.getItem("usertoken")
+      }
+      //获取用户常用地址
+      AccountService.getAddrlist($scope.addressparams).success(function (data) {
+        if (data.Values.data_list == null) {
+          CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
+          $state.go('adddealaddress');
+          return;
+        }
+        $scope.spaddrliststatus = data.Values.data_list[0];
+      })
     }
 
     $scope.delivery();
@@ -1791,6 +1806,7 @@ angular.module('starter.controllers', [])
         return;
       }
     })
+
 
     $scope.bigImage = false;    //初始默认大图是隐藏的
     $scope.hideBigImage = function () {
