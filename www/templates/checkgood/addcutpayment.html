@@ -44,7 +44,7 @@
     </ion-list>
   </ion-content>
   <div class="padding light-bg bottom-0" keyboard-attach>
-    <button  ng-disabled="!(cutpaymentinfo.totalmoney&&verify)" class="button button-calm full-image" ng-click="submitCutPayMent()" >提交</button>
+    <button  ng-disabled="!verify" class="button button-calm full-image" ng-click="submitCutPayMent()" >提交</button>
   </div>
   <div  ng-if="bigImage" class="popover-backdrop dark-bg pic-has-header" ng-click="hideBigImage()" >
     <img class="full-image"

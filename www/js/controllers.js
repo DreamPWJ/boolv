@@ -4261,7 +4261,7 @@ angular.module('starter.controllers', [])
           }
           SearchOrderService.updateSaleOrderStatus($scope.paytopaymentsparams).success(function (data) {
             if (data.Key == 200) {
-              $rootScope.orderStatus==5;//供货单到付款支付成功 显示验货按钮
+              $rootScope.orderStatus=5;//供货单到付款支付成功 显示验货按钮
               CommonService.platformPrompt('到付款支付成功');
             } else {
               CommonService.platformPrompt('到付款支付失败');
@@ -4326,10 +4326,10 @@ angular.module('starter.controllers', [])
           SearchOrderService.updateSaleOrderStatus($scope.payfinalparams).success(function (data) {
             if (data.Key == 200) {
                 if($rootScope.OrderType==1){
-                  $rootScope.orderStatus==7;//卖货单结算状态已审验货单到已交易
+                  $rootScope.orderStatus=7;//卖货单结算状态已审验货单到已交易
                 }
               if($rootScope.OrderType==2){
-                  $rootScope.orderStatus==8;//供货单支付尾款状态已审验货单到已交易
+                  $rootScope.orderStatus=8;//供货单支付尾款状态已审验货单到已交易
               }
               CommonService.platformPrompt('支付成功');
             } else {
