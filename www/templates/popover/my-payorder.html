@@ -33,7 +33,7 @@
         <i class="icon ion-card assertive"></i>
         {{OrderType==1?"结算":"支付尾款"}}
       </a>
-      <a ng-href="#/evaluate" ng-if="(OrderType==1&&orderStatus>=8)||(OrderType==2&&orderStatus>=9)" class="item item-icon-left" nav-direction=forward>
+      <a ng-href="#/evaluate" ng-if="(OrderType==1&&orderStatus==8)||(OrderType==2&&orderStatus==9)" class="item item-icon-left" nav-direction=forward>
         <i class="icon ion-star energized"></i>
         评价
       </a>
