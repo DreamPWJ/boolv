@@ -44,14 +44,15 @@
         </div>
 
         <a ng-href="" ng-show="goodtype==2" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
-          <h2>收货人 : {{item.username | hidepartinfo : 'name' }}</h2>
-          <p>手机 : {{item.mobile | hidepartinfo : 'phone'}}</p>
-          <p class="text-wrap">地址 : {{item.addr | hidepartinfo : 'address'}}</p>
+          <h2>收货人 : {{item.username  }}</h2>
+          <p>手机 : {{item.mobile }}</p>
+          <p class="text-wrap">地址 : {{item.addr}}</p>
         </a>
-        <a ng-href="" ng-show="goodtype==3"  class="item item-icon-right">
+        <a ng-href="{{spaddrliststatus?'':'#/adddealaddress'}}" ng-show="goodtype==3"  class="item item-icon-right">
           <h2>{{deliverDetails.OrderType==1?'卖':'供'}}货人 : {{spaddrliststatus.username}}</h2>
           <p>手机 : {{spaddrliststatus.mobile}}</p>
           <p class="text-wrap">地址 : {{spaddrliststatus.addr }}</p>
+          <i ng-if="!spaddrliststatus"  class="icon ion-android-add calm"></i>
         </a>
 
         <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">

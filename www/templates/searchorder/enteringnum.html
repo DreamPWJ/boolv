@@ -1,35 +1,40 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons  header-item "  ng-click="$ionicGoBack()">
+    <button class="button back-button buttons  header-item " ng-click="$ionicGoBack()">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 录入数量</h1>
   </ion-nav-title>
+  <form name="enteringnum">
+    <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
+      <p></p>
+      <div class="list">
+        <label class="item item-input " ng-repeat="item in deliverDetails.Details">
+          <span class="input-label">{{item.ProdName}}</span>
+          <input type="number" ng-model="supplyinfo[$index].num"
+                 placeholder="剩余供货量{{(item.Num-item.SupNum)+item.UName}}" check-form
+                 ng-change="checkForm(supplyinfo[$index].num,'数量不能大于剩余供货量或小于0','maxvaule',(item.Num-item.SupNum))"
+                 ng-keyup="checkAtLeastOne(supplyinfo,'num')"/>
+        </label>
 
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg " has-bouncing="true">
-    <p></p>
-    <div class="list">
-      <label class="item item-input " ng-repeat="item in deliverDetails.Details">
-        <span class="input-label">{{item.ProdName}}</span>
-        <input type="number" ng-model="supplyinfo[$index].num" placeholder="剩余供货量{{(item.Num-item.SupNum)+item.UName}}" check-form ng-change="checkForm(supplyinfo[$index].num,'数量不能大于剩余供货量或小于0','maxvaule',(item.Num-item.SupNum))"  />
-      </label>
 
+        <a ng-href="" class="item item-divider">
+          <p>选择收款账户</p>
+        </a>
+        <a ng-href="#/collectionaccount" class="item  item-icon-right item-borderless">
+          <h2><strong>收款人 : </strong>{{userbankliststatus[0].accountname}}</h2>
+          <h2><strong>账号 : </strong>{{userbankliststatus[0].accountno}}</h2>
+          <h2><strong>银行 : </strong>{{userbankliststatus[0].bankname}}</h2>
+          <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
+        </a>
+      </div>
 
-      <a ng-href="" class="item item-divider">
-        <p>选择收款账户</p>
-      </a>
-      <a ng-href="#/collectionaccount" class="item  item-icon-right item-borderless">
-        <h2><strong>收款人 : </strong>{{userbankliststatus[0].accountname}}</h2>
-        <h2><strong>账号 : </strong>{{userbankliststatus[0].accountno}}</h2>
-        <h2><strong>银行 : </strong>{{userbankliststatus[0].bankname}}</h2>
-        <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
-      </a>
+    </ion-content>
+    <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
+      <a class=" button button-balanced full-image " ng-disabled="!(verify&&enteringnum.$dirty&&verifyLeastOne)"
+         ng-click="enteringnumsubmit()">提交</a>
     </div>
-
-  </ion-content>
-  <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
-    <a class=" button button-balanced full-image " ng-disabled="!verify" ng-click="enteringnumsubmit()">提交</a>
-  </div>
+  </form>
 </ion-view>

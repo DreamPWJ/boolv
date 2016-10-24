@@ -117,6 +117,14 @@ angular.module('starter.directive', [])
             scope.publicCheckForm(/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(value), value, content,false)
           }
         };
+        scope.checkAtLeastOne = function (array,keystr){  //检测相同遍历数据至少填写一个
+          $rootScope.verifyLeastOne = false;
+          angular.forEach(array,function (item,index) {
+            if(item[keystr]){
+              $rootScope.verifyLeastOne = true;
+            }
+           })
+        }
       }
     }
   });

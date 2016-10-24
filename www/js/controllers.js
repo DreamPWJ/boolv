@@ -1601,14 +1601,15 @@ angular.module('starter.controllers', [])
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
         SNode: $rootScope.deliverDetails.OrderType == 1 ? $rootScope.deliverDetails.No : '',//发货单号  卖货单
-        BNode: $rootScope.deliverDetails.OrderType == 2 ? $rootScope.deliverDetails.BONo : ''//买货单号  供货单
+        BNode: '',//买货单号
+        SpONode:$rootScope.deliverDetails.OrderType == 2 ? $rootScope.deliverDetails.No : ''//供货单单号
       }
       console.log($scope.params);
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
-        $scope.params.BNode = '';//全部数据
+        $scope.params.SpONode = '';//全部数据
         $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $rootScope.goodTypeListAll = data.Values;
@@ -2277,12 +2278,12 @@ angular.module('starter.controllers', [])
         }
         //获取用户常用地址
         AccountService.getAddrlist($scope.params).success(function (data) {
-          if (data.Values.data_list == null) {
+/*          if (data.Values.data_list == null) {
             CommonService.ionicLoadingHide();
             CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress')
             $state.go('adddealaddress');
             return;
-          }
+          }*/
           $scope.addrliststatus = [];
           angular.forEach(data.Values.data_list, function (item) {
             if (item.status == 1) {
@@ -2294,17 +2295,17 @@ angular.module('starter.controllers', [])
             CommonService.platformPrompt('交易地址获取失败', 'close');
           }
         }).then(function () {
-          if ($scope.addrliststatus.length == 0) {
+     /*     if ($scope.addrliststatus.length == 0) {
             return;
-          }
+          }*/
           //查询用户银行信息
           AccountService.getUserBanklist($scope.params).success(function (data) {
-            if (data.Values.data_list == null) {
+/*            if (data.Values.data_list == null) {
               CommonService.ionicLoadingHide();
               CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount')
               $state.go('addbankaccount');
               return;
-            }
+            }*/
             $scope.userbankliststatus = [];
             angular.forEach(data.Values.data_list, function (item) {
               if (item.isdefault == 1) {
@@ -2316,19 +2317,20 @@ angular.module('starter.controllers', [])
               CommonService.platformPrompt('银行账户获取失败', 'close');
             }
           }).then(function () {
-            if ($scope.userbankliststatus.length == 0) {
+     /*       if ($scope.userbankliststatus.length == 0) {
               return;
-            }
+            }*/
             //提交卖货订单数据
             $scope.sellDatas = {
               FromUser: localStorage.getItem('usertoken'),//供货商账号
               ToUser: $rootScope.supplierListFirst.LogID,//回收商账号
               TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
-              FromAddr: $scope.addrliststatus[0].id,//发货地址ID
+              FromAddr:$scope.addrliststatus.length!= 0?$scope.addrliststatus[0].id:0,//发货地址ID 不填为0
               ToAddr: $rootScope.supplierListFirst.AddrID,//收货地址ID
-              Account: $scope.userbankliststatus[0].id,//收款账号ID
+              Account:$scope.userbankliststatus.length != 0? $scope.userbankliststatus[0].id:0,//收款账号ID 不填为0
               Details: $scope.Details//收货明细
             }
+            console.log($scope.sellDatas);
             SellService.addOrderDetails($scope.sellDatas).success(function (data) {
               if (data.Key == 200) {
                 $rootScope.searchorderTabsSelect = 0;//卖货单选项
@@ -2504,14 +2506,15 @@ angular.module('starter.controllers', [])
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
         SNode: $rootScope.checkDetails.OrderType == 1 ? $rootScope.checkDetails.No : '',//发货单号  卖货单
-        BNode: $rootScope.checkDetails.OrderType == 2 ? $rootScope.checkDetails.BONo : ''//买货单号  供货单
+        BNode: '',//买货单号
+        SpONode:$rootScope.checkDetails.OrderType == 2 ? $rootScope.checkDetails.No : ''//供货单单号
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
         $scope.params.SNode = '';//全部数据
-        $scope.params.BNode = '';//全部数据
+        $scope.params.SpONode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           $scope.goodTypeListAll = data.Values;
         })
@@ -2779,7 +2782,8 @@ angular.module('starter.controllers', [])
         Node: '',//供货验货订单号
         SYNode: '',//卖货验货订单号
         SNode: $rootScope.checkDetails.OrderType == 1 ? $rootScope.checkDetails.No : '',//发货单号  卖货单
-        BNode: $rootScope.checkDetails.OrderType == 2 ? $rootScope.checkDetails.BONo : ''//买货单号  供货单
+        BNode:'',//买货单号
+        SpONode:$rootScope.checkDetails.OrderType == 2 ? $rootScope.checkDetails.No : ''//供货单单号
       }
 
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -2787,7 +2791,7 @@ angular.module('starter.controllers', [])
         $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
         $scope.params.SNode = '';//全部数据
-        $scope.params.BNode = '';//全部数据
+        $scope.params.SpONode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
           console.log(data);
           $scope.goodTypeListAll = data.Values;
@@ -3096,6 +3100,7 @@ angular.module('starter.controllers', [])
     $scope.selectProvince = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacity = data.Values;
+        $scope.addrinfoother.city='';//清空市的选择项
         $scope.addrareacounty={};//选择省的时候同时情况县
         $scope.addrinfo.addr = '';//清空详细地址
       })
@@ -3104,6 +3109,7 @@ angular.module('starter.controllers', [])
     $scope.selectCity = function (addrcode) {
       AccountService.getArea(addrcode).success(function (data) {
         $scope.addrareacounty = data.Values;
+        $scope.addrinfoother.county='';//清空县的选择项
         $scope.addrinfo.addr = '';//清空详细地址
       })
     }
