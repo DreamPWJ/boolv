@@ -21,7 +21,7 @@
     [MobClick setLogEnabled:YES];
 
     UMConfigInstance.appKey = umengAppKey;
-    UMConfigInstance.ChannelId = @"";
+    UMConfigInstance.ChannelId = @"A3000";
     [MobClick startWithConfigure:UMConfigInstance];
 
 
