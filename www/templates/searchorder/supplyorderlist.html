@@ -17,9 +17,9 @@
     <div class="list margin-top-1px">
       <a ng-href="#/supplyorderdetails/{{item}}" class="item" ng-repeat="item in supplylist">
         <h2>订单号: {{item.No}} </h2>
-        <p>供货人 :  {{item.Username}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  <i
+        <p>买货人 :  {{item.Tousername}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  <i
           class="icon ion-ios-arrow-right"></i></span></p>
-        <p>手机号 : {{item.Usermotel}}</p>
+        <p>手机号 : {{item.Tousermotel}}</p>
         <p>供货品类 :  <span ng-repeat="items in item.Details"> {{items.ProdName}} </span> </p>
         <p>订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>
       </a>

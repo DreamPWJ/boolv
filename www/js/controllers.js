@@ -2185,15 +2185,6 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('SellGoodCtrl', function ($scope, $rootScope, $ionicHistory, $state, CommonService) {
-    $scope.selectSupplier = function (item) {
-      $rootScope.supplierListFirst = item;
-      $ionicHistory.goBack();
-    }
-
-    CommonService.searchModal($scope, 'templates/search.html');
-
-  })
   //卖货下单
   .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
       CommonService.ionicLoadingShow();
@@ -2239,8 +2230,8 @@ angular.module('starter.controllers', [])
 
         }).finally(function () {
           CommonService.ionicLoadingHide();
-          $scope.$broadcast('scroll.refreshComplete');
-          $scope.$broadcast('scroll.infiniteScrollComplete');
+          $rootScope.$broadcast('scroll.refreshComplete');
+          $rootScope.$broadcast('scroll.infiniteScrollComplete');
 
         })
       }
@@ -2365,6 +2356,15 @@ angular.module('starter.controllers', [])
 
     }
   )
+
+  //卖货选择供应商列表
+  .controller('SellGoodCtrl', function ($scope, $rootScope, $ionicHistory, $state, CommonService) {
+    $scope.selectSupplier = function (item) {
+      $rootScope.supplierListFirst = item;
+      $ionicHistory.goBack();
+    }
+  })
+
   //查单卖货详情
   .controller('SellOrderDetailsCtrl', function ($scope, $rootScope, $stateParams, CommonService) {
     $rootScope.deliverDetails = JSON.parse($stateParams.item);
@@ -3914,6 +3914,23 @@ angular.module('starter.controllers', [])
   //我的设置
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BooLv, CommonService) {
     $scope.version = BooLv.version;
+    $scope.securitylevel='未知';
+    var certstate=$rootScope.userinfo.certstate;
+    if(certstate.indexOf('2')==-1){
+      $scope.securitylevel='极低';
+    }
+    if((certstate.substr(0,1)==2||certstate.substr(1,1)==2)||(certstate.substr(3,1)==2||certstate.substr(4,1)==2)){
+      $scope.securitylevel='中等';
+    }
+    if((certstate.substr(0,1)==2||certstate.substr(1,1)==2)&&(certstate.substr(3,1)==2||certstate.substr(4,1)==2)){
+      $scope.securitylevel='高';
+    }
+    if((certstate.substr(0,1)==2&&certstate.substr(1,1)==2)&&(certstate.substr(3,1)==2||certstate.substr(4,1)==2)){
+      $scope.securitylevel='较高';
+    }
+    if((certstate.substr(0,1)==2&&certstate.substr(1,1)==2)&&(certstate.substr(3,1)==2&&certstate.substr(4,1)==2)){
+      $scope.securitylevel='极高';
+    }
   })
   //设置安全
   .controller('AccountSecurityCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {

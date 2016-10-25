@@ -143,10 +143,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
       //判断网络状态
       document.addEventListener("deviceready", function () {
-        //var type = $cordovaNetwork.getNetwork()
-        //var isOnline = $cordovaNetwork.isOnline()
-        //var isOffline = $cordovaNetwork.isOffline()
-
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
           var onlineState = networkState;
@@ -519,6 +515,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'ReleaseProcureOrderCtrl'
 
       })
+      //卖货选择供应商列表
       .state('sellgood', {
         url: '/sellgood',
         templateUrl: 'templates/sellgood/sellgood.html',
@@ -687,6 +684,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       //我的设置
       .state('setting', {
         url: '/setting',
+        cache: false,
         templateUrl: 'templates/account/setting.html',
         controller: 'SettingCtrl'
       })
