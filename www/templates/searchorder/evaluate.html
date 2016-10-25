@@ -12,14 +12,15 @@
     <div class="list padding-top list-borderless">
       <a ng-href="" class="item item-thumbnail-left ">
         <img ng-src="{{evaluateuserinfo.figure}}" class="border-radius-50" alt="">
-        <h2>{{evaluateuserinfo.username}}</h2>
+        <h2 class="padding-top">{{evaluateuserinfo.username}}</h2>
         <p>{{evaluateuserinfo.mobile}} </p>
-        <p>
-          <i class="icon ion-star calm "></i>
-          <i class="icon ion-star calm"></i>
-          <i class="icon ion-star calm"></i>
-          <i class="icon ion-star calm"></i>
-          <i class="icon ion-star "></i></p>
+        <p >信用等级 :
+          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.zmscore>0]"   class="icon ion-star"></i>
+          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.zmscore>198]" class="icon ion-star"></i>
+          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.zmscore>396]" class="icon ion-star "></i>
+          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.zmscore>594]" class="icon ion-star "></i>
+          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.zmscore>792]" class="icon ion-star "></i></p>
+
       </a>
       <p></p>
       <ion-item  ng-repeat="item in evaluatelist"  >{{item.Name}}  <span class="padding-left  evaluate-star" >
@@ -39,7 +40,7 @@
 
   </ion-content>
   <div class="padding light-bg bottom-0" keyboard-attach>
-    <a class=" button button-balanced  full-image" ng-disabled="!evaluate.$valid"  ng-click="submitevalute()">提交评价</a>
+    <a class="button button-balanced  full-image" ng-disabled="!evaluate.$valid"  ng-click="submitevalute()">提交评价</a>
   </div>
   </form>
 </ion-view>

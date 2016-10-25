@@ -1400,7 +1400,7 @@ angular.module('starter.controllers', [])
     };
   })
   //添加评论页面
-  .controller('EvaluateCtrl', function ($scope, $rootScope, $stateParams, CommonService, SearchOrderService, AccountService) {
+  .controller('EvaluateCtrl', function ($scope, $rootScope,$ionicHistory, $stateParams, CommonService, SearchOrderService, AccountService) {
     $scope.evaluateinfo = {};//评论信息
     $scope.evaluateinfo.star = [];//评分数组
     $scope.evaluatestar = function (index, stars) {
@@ -1442,6 +1442,7 @@ angular.module('starter.controllers', [])
       SearchOrderService.addEvaluate($scope.datas).success(function (data) {
         if (data.Key == 200) {
           CommonService.platformPrompt('恭喜您！评价成功！');
+          $ionicHistory.goBack();//返回上一级
         } else {
           CommonService.platformPrompt('评价失败', 'close');
         }
@@ -4306,7 +4307,7 @@ angular.module('starter.controllers', [])
         }
         $scope.paytopaymentprice = data.Values;
       }).then(function () {
-        CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>' + $scope.paytopaymentprice.DaofuPrice + '元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=预计总金额)</p>', '确定', '取消', '', 'close', $scope.paytopayments)
+        CommonService.showConfirm('', '<p>温馨提示:此订单的到付款为</p><p>' + $scope.paytopaymentprice.DaofuPrice + '元，支付请点击"确认"，否则</p><p>点击"取消"(到付款=50%预计总金额)</p>', '确定', '取消', '', 'close', $scope.paytopayments)
       })
 
 
