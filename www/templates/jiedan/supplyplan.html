@@ -30,7 +30,7 @@
     <div class="list list-borderless">
       <label class="item item-input">
         <span class="input-label"> 平均供货周期  </span>
-        <input type="number" ng-model="supplyinfo.SupNum" check-form  ng-change="checkForm(supplyinfo.SupNum,'平均供货周期不能大于总周期或小于0','maxvaule',supplyDetails.Cycle==0?supplyinfo.SupNum:supplyDetails.Cycle)"     placeholder="(单位 : 天/次; 不能大于总周期)" />
+        <input type="number" ng-model="supplyinfo.SupNum" check-form  ng-change="checkForm(supplyinfo.SupNum,'平均供货周期不能大于总周期或小于0','maxvaule',supplyDetails.Cycle==0?supplyinfo.SupNum:supplyDetails.Cycle)"     placeholder="(单位 : 天/次; 不能大于总周期)"  required/>
       </label>
 
     </div>
