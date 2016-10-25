@@ -43,12 +43,12 @@
           <i ng-click="barcodeScanner()" class="icon ion-qr-scanner"></i>
         </div>
 
-        <a ng-href="" ng-show="goodtype==2" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
+        <a ng-href="" ng-if="goodtype==1||goodtype==2" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
           <h2>收货人 : {{item.username  }}</h2>
           <p>手机 : {{item.mobile }}</p>
           <p class="text-wrap">地址 : {{item.addr}}</p>
         </a>
-        <a ng-href="{{spaddrliststatus?'':'#/adddealaddress'}}" ng-show="goodtype==3"  class="item item-icon-right">
+        <a ng-href="{{spaddrliststatus?'':'#/adddealaddress'}}" ng-if="goodtype==3"  class="item item-icon-right">
           <h2>{{deliverDetails.OrderType==1?'卖':'供'}}货人 : {{spaddrliststatus.username}}</h2>
           <p>手机 : {{spaddrliststatus.mobile}}</p>
           <p class="text-wrap">地址 : {{spaddrliststatus.addr }}</p>

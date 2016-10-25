@@ -2740,6 +2740,7 @@ angular.module('starter.controllers', [])
     $scope.adddeliverinfo.isAdd = [];
     $scope.adddeliverinfo.isMinus = [];
     $scope.adddeliverinfo.num = [];//填写数量
+    $scope.adddeliverinfo.money = [];//填写价格
     $scope.adddeliverinfo.selectnum = 0;//选中数量
     //获取发货详情填充添加验货清单
     $scope.getPageFaHuo = function () {
@@ -2769,6 +2770,7 @@ angular.module('starter.controllers', [])
           $rootScope.selectproductandnum.push(items);
           $scope.addQueJian(items.PID, items);
           $scope.adddeliverinfo.num[items.PID] = items.num;
+          $scope.adddeliverinfo.money[items.PID] = item.Price;
         })
         //增加没有的商品类别
         $scope.selectproductandnumother = [];
@@ -2879,6 +2881,7 @@ angular.module('starter.controllers', [])
               $scope.adddeliverinfo.isAdd[item.PID] = false;
               $scope.adddeliverinfo.isMinus[item.PID] = true;
               $scope.adddeliverinfo.num[item.PID] = items.num;
+              $scope.adddeliverinfo.money[item.PID] = items.Prices[0].Price;
             }
           })
         })
@@ -2902,12 +2905,14 @@ angular.module('starter.controllers', [])
       $scope.addDeliverProduct(GID);
     }
 
-    //增加数量信息 重新组装数组
+    //增加数量价格信息 重新组装数组
     $scope.selectedproduct = function () {
       $rootScope.selectproductandnum = [];//增加数量信息
       angular.forEach($scope.selectproduct, function (item) {
         if ($scope.adddeliverinfo.num[item.PID]) {
           item.num = $scope.adddeliverinfo.num[item.PID];
+          item.Prices=[];
+          item.Prices.push({Price:$scope.adddeliverinfo.money[item.PID]||0}) ;
           $rootScope.selectproductandnum.push(item)
         }
       })

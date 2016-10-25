@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 审核验货单</h1>
   </ion-nav-title>
 
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
+  <ion-content overflow-scroll="false" class="stable-bg"  ng-class="{true:'has-button-footer'}[searchorderTabsSelect!=3]" has-bouncing="true">
     <div class="list" ng-repeat="item in yanhuolist">
       <a ng-click="toggle(1)" hide-show class="item item-borderless "  >
         <h2><strong>订单号 : </strong>{{item.No}}<span class="item-note"><i
@@ -35,10 +35,10 @@
                     全选
                 </li>-->
           <li class="item item-checkbox item-checkbox-right " ng-repeat="item in yanhuolistDetails">
-            <label class="checkbox checkbox-calm">
+            <label ng-if="searchorderTabsSelect!=3" class="checkbox checkbox-calm">
               <input type="checkbox" ng-model="item.checked" ng-checked="item.checked"  ng-click="checkChecded()" >
             </label>
-            {{item.ProdName}} : {{item.Num + item.UName}}
+            {{item.ProdName}} : {{item.Num + item.UName}} / {{item.Price}}元
           </li>
 
         </div>
@@ -68,7 +68,7 @@
     <img class="full-image"
          ng-src="{{Url}}"/>
   </div>
-  <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
+  <div ng-if="searchorderTabsSelect!=3"  class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a ng-if="OrderType==1"  class="col-40 button button-balanced " ng-disabled="!(ischecked&&orderStatus==5)" ng-click="examinegoodsordersubmit()">确认交易</a>
     <a ng-if="OrderType==2"  class="col-40 button button-balanced " ng-disabled="!(ischecked&&orderStatus==6)" ng-click="examinegoodsordersubmit()">确认交易</a>
 <!--    <a ng-if="OrderType==1" class="col-40  button button-calm " ng-disabled="!(ischecked&&orderStatus==5)" ng-click="salesreturn()">退货</a>

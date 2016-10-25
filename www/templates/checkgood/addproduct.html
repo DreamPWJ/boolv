@@ -21,7 +21,7 @@
         </ion-item>
         <ion-item ng-if="item.GID==items.GrpID" ng-repeat="items in selectproductandnum">
           {{items.PName}}
-          <span class="item-note dark">{{items.num+items.PUName}}</span>
+          <span class="item-note dark">{{items.num+items.PUName}} / {{items.Prices[0].Price}}元</span>
         </ion-item>
         <p></p>
       </div>
@@ -30,7 +30,7 @@
       <div ng-repeat="items in selectproductandnumother">
         <ion-item>
           {{items.PName}}
-          <span class="item-note dark">{{items.num+items.PUName}}</span>
+          <span class="item-note dark">{{items.num+items.PUName}}  / {{items.Prices[0].Price}}元</span>
         </ion-item>
         <p></p>
       </div>

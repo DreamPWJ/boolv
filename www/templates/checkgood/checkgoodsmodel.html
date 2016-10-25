@@ -15,8 +15,11 @@
      <ion-item class="item-icon-right" ng-repeat="item in adddeliverList"><h2 class="padding-bottom">{{item.PName}}</h2>
       <i ng-if="adddeliverinfo.isAdd[item.PID]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian(item.PID,item)"></i>
       <i ng-if="adddeliverinfo.isMinus[item.PID]" class="icon ion-ios-minus assertive" ng-click="minusQueJian(item.PID,item)"></i>
-       <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[item.PID]">
+       <label class=" item-input stable-bg border-bottom-1px"  ng-if="adddeliverinfo.isMinus[item.PID]">
          <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" check-form ng-change="checkForm(adddeliverinfo.num[item.PID],'数量错误 台数为正整数 公斤为正数可保留两位小数',item.PUType==1?'positiveinteger':'positivenumber','')" ng-blur="selectedproduct()"/>
+       </label>
+       <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[item.PID]">
+         <input type="number"   ng-model="adddeliverinfo.money[item.PID]" placeholder="{{item.PName}}金额 (单位:元) " check-form ng-change="checkForm(adddeliverinfo.money[item.PID],'验货金额输入错误 正数可保留两位小数','positivenumber','')" ng-blur="selectedproduct()"/>
        </label>
    </ion-item>
 
