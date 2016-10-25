@@ -1135,7 +1135,7 @@ angular.module('starter.controllers', [])
       $scope.isAllUpdate = true;
       angular.forEach($scope.yanhuolistDetails, function (item) {
         var items = {};//提交供货交易信息明细json数据
-        if (item.checked && item.Status == 0) {  //选择选中的  明细不是默认值后下次就不能修改状态了 如一条明细是退货了，就不能改成成交了
+        if (item.checked && item.Status == 4) {  //选择选中的  明细不是默认值后下次就不能修改状态了 如一条明细是退货了，就不能改成成交了
           items.ProdID = item.ProdID, // 产品编号
             items.ProdName = item.ProdName , // 产品名称
             items.SaleClass = item.SaleClass , // 销售分类ID
@@ -1145,7 +1145,7 @@ angular.module('starter.controllers', [])
           $scope.details.push(items);
           $scope.detailsmore.push(item);
           $scope.IDList.push(item.ID);
-        } else if (!item.checked && item.Status == 0) {
+        } else if (!item.checked && item.Status == 4) {
           $scope.isAllUpdate = false;
         }
 
@@ -1267,7 +1267,7 @@ angular.module('starter.controllers', [])
         }
 
       }).then(function () {
-        $scope.funcreuse(7)
+        $scope.funcreuse(7);
       })
     }
 
@@ -2672,7 +2672,7 @@ angular.module('starter.controllers', [])
         }
         items.Price = referenceprice;//参考价格
         items.SaleClass = item.PUSaleType;
-        items.Status = 0;//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
+        items.Status =(ordeType==1?0:4);//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         $scope.addYanhuodetails.push(items);
       })
       $scope.imgsDetails = [];
