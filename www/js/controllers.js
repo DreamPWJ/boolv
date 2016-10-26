@@ -438,7 +438,7 @@ angular.module('starter.controllers', [])
         })
         $scope.buyparamstotal = data.Values.page_count;
         //订单状态(买货单)
-        $rootScope.buyorderStatus =CommonService.orderStatus(2);
+        $rootScope.buyorderStatus = CommonService.orderStatus(2);
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -482,7 +482,7 @@ angular.module('starter.controllers', [])
         })
         $scope.supplyparamstotal = data.Values.page_count;
         //订单状态(供货计划单)
-        $rootScope.supplyorderStatus =CommonService.orderStatus(4) ;
+        $rootScope.supplyorderStatus = CommonService.orderStatus(4);
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -529,7 +529,7 @@ angular.module('starter.controllers', [])
         //订单状态(卖货单)
         $rootScope.collectsellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.collectsupplyStatus =CommonService.orderStatus(3);
+        $rootScope.collectsupplyStatus = CommonService.orderStatus(3);
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -1400,7 +1400,7 @@ angular.module('starter.controllers', [])
     };
   })
   //添加评论页面
-  .controller('EvaluateCtrl', function ($scope, $rootScope,$ionicHistory, $stateParams, CommonService, SearchOrderService, AccountService) {
+  .controller('EvaluateCtrl', function ($scope, $rootScope, $ionicHistory, $stateParams, CommonService, SearchOrderService, AccountService) {
     $scope.evaluateinfo = {};//评论信息
     $scope.evaluateinfo.star = [];//评分数组
     $scope.evaluatestar = function (index, stars) {
@@ -1775,7 +1775,7 @@ angular.module('starter.controllers', [])
           $state.go('adddealaddress');
           return;
         }
-        $scope.spaddrliststatus =[];
+        $scope.spaddrliststatus = [];
         angular.forEach(data.Values.data_list, function (item) {
           if (item.status == 1) {
             $scope.spaddrliststatus.push(item);
@@ -1837,7 +1837,7 @@ angular.module('starter.controllers', [])
     };
     //提交发货
     $scope.delivergoodssubmit = function () {
-      if($scope.goodtype==3&&$scope.spaddrliststatus.length==0){//上门回收时，判断有没有默认地址
+      if ($scope.goodtype == 3 && $scope.spaddrliststatus.length == 0) {//上门回收时，判断有没有默认地址
         CommonService.platformPrompt('上门回收时 必须填写默认交易地址', 'close');
         return;
       }
@@ -2261,7 +2261,7 @@ angular.module('starter.controllers', [])
           return;
         }
         //没有登录的情况下不能选择自己作为供货商
-        if($rootScope.supplierListFirst.LogID==localStorage.getItem("usertoken")){
+        if ($rootScope.supplierListFirst.LogID == localStorage.getItem("usertoken")) {
           CommonService.platformPrompt('不能选择自己作为供货商', 'selldetails');
           return;
         }
@@ -2481,9 +2481,9 @@ angular.module('starter.controllers', [])
 
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus =CommonService.orderStatus(1);
+        $rootScope.sellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.supplyStatus =CommonService.orderStatus(3);
+        $rootScope.supplyStatus = CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2682,7 +2682,7 @@ angular.module('starter.controllers', [])
         }
         items.Price = referenceprice;//参考价格
         items.SaleClass = item.PUSaleType;
-        items.Status =(ordeType==1?0:4);//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
+        items.Status = (ordeType == 1 ? 0 : 4);//服务器端默认已处理（卖货单）0-待确认1-已退货2-暂存3-已成交 （供货单）4-待确认5-已退货6-暂存7-已成交
         $scope.addYanhuodetails.push(items);
       })
       $scope.imgsDetails = [];
@@ -2920,8 +2920,8 @@ angular.module('starter.controllers', [])
       angular.forEach($scope.selectproduct, function (item) {
         if ($scope.adddeliverinfo.num[item.PID]) {
           item.num = $scope.adddeliverinfo.num[item.PID];
-          item.Prices=[];
-          item.Prices.push({Price:$scope.adddeliverinfo.money[item.PID]||0}) ;
+          item.Prices = [];
+          item.Prices.push({Price: $scope.adddeliverinfo.money[item.PID] || 0});
           $rootScope.selectproductandnum.push(item)
         }
       })
@@ -3806,12 +3806,12 @@ angular.module('starter.controllers', [])
           name: '信用分指标',
           type: 'gauge',
           detail: {
-            formatter: $rootScope.userinfo.zmscore, textStyle: {
+            formatter: $rootScope.userinfo.score, textStyle: {
               color: 'auto',
               fontSize: 38
             }
           },
-          data: [{value: $rootScope.userinfo.zmscore, name: '我的信用分'}]
+          data: [{value: $rootScope.userinfo.score, name: '我的信用分'}]
         }
       ]
     };
@@ -3842,12 +3842,12 @@ angular.module('starter.controllers', [])
           name: '信用分指标',
           type: 'gauge',
           detail: {
-            formatter: 736, textStyle: {
+            formatter: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, textStyle: {
               color: 'auto',
               fontSize: 38
             }
           },
-          data: [{value: 736, name: '芝麻信用分'}]
+          data: [{value: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, name: '芝麻信用分'}]
         }
       ]
     };
@@ -3923,22 +3923,22 @@ angular.module('starter.controllers', [])
   //我的设置
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BooLv, CommonService) {
     $scope.version = BooLv.version;
-    $scope.securitylevel='未知';
-    var certstate=$rootScope.userinfo.certstate;
-    if(certstate.indexOf('2')==-1){
-      $scope.securitylevel='极低';
+    $scope.securitylevel = '未知';
+    var certstate = $rootScope.userinfo.certstate;
+    if (certstate.indexOf('2') == -1) {
+      $scope.securitylevel = '极低';
     }
-    if((certstate.substr(0,1)==2||certstate.substr(1,1)==2)||(certstate.substr(3,1)==2||certstate.substr(4,1)==2)){
-      $scope.securitylevel='中等';
+    if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) || (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '中等';
     }
-    if((certstate.substr(0,1)==2||certstate.substr(1,1)==2)&&(certstate.substr(3,1)==2||certstate.substr(4,1)==2)){
-      $scope.securitylevel='高';
+    if ((certstate.substr(0, 1) == 2 || certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '高';
     }
-    if((certstate.substr(0,1)==2&&certstate.substr(1,1)==2)&&(certstate.substr(3,1)==2||certstate.substr(4,1)==2)){
-      $scope.securitylevel='较高';
+    if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 || certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '较高';
     }
-    if((certstate.substr(0,1)==2&&certstate.substr(1,1)==2)&&(certstate.substr(3,1)==2&&certstate.substr(4,1)==2)){
-      $scope.securitylevel='极高';
+    if ((certstate.substr(0, 1) == 2 && certstate.substr(1, 1) == 2) && (certstate.substr(3, 1) == 2 && certstate.substr(4, 1) == 2)) {
+      $scope.securitylevel = '极高';
     }
   })
   //设置安全
