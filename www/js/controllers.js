@@ -1775,7 +1775,12 @@ angular.module('starter.controllers', [])
           $state.go('adddealaddress');
           return;
         }
-        $scope.spaddrliststatus = data.Values.data_list[0];
+        $scope.spaddrliststatus =[];
+        angular.forEach(data.Values.data_list, function (item) {
+          if (item.status == 1) {
+            $scope.spaddrliststatus.push(item);
+          }
+        })
       })
     }
 
@@ -1815,7 +1820,7 @@ angular.module('starter.controllers', [])
         }
       })
       if ($scope.addrliststatus.length == 0) {
-        CommonService.platformPrompt('无法获取到收货人地址默认地址', '');
+        CommonService.platformPrompt('无法获取到收货人地址默认地址', 'close');
         return;
       }
     })
@@ -1832,6 +1837,10 @@ angular.module('starter.controllers', [])
     };
     //提交发货
     $scope.delivergoodssubmit = function () {
+      if($scope.goodtype==3&&$scope.spaddrliststatus.length==0){//上门回收时，判断有没有默认地址
+        CommonService.platformPrompt('上门回收时 必须填写默认交易地址', 'close');
+        return;
+      }
       CommonService.ionicLoadingShow();
       //提交发货详细数据
       $scope.details = [];

@@ -48,11 +48,11 @@
           <p>手机 : {{item.mobile }}</p>
           <p class="text-wrap">地址 : {{item.addr}}</p>
         </a>
-        <a ng-href="{{spaddrliststatus?'':'#/adddealaddress'}}" ng-if="goodtype==3"  class="item item-icon-right">
-          <h2>{{deliverDetails.OrderType==1?'卖':'供'}}货人 : {{spaddrliststatus.username}}</h2>
-          <p>手机 : {{spaddrliststatus.mobile}}</p>
-          <p class="text-wrap">地址 : {{spaddrliststatus.addr }}</p>
-          <i ng-if="!spaddrliststatus"  class="icon ion-android-add calm"></i>
+        <a ng-href="{{spaddrliststatus.length==0?'#/adddealaddress':''}}" ng-if="goodtype==3"  class="item item-icon-right">
+          <h2>{{deliverDetails.OrderType==1?'卖':'供'}}货人 : {{spaddrliststatus[0].username}}</h2>
+          <p>手机 : {{spaddrliststatus[0].mobile}}</p>
+          <p class="text-wrap">地址 : {{spaddrliststatus[0].addr }}</p>
+          <i ng-if="spaddrliststatus.length==0"  class="icon ion-android-add calm"></i>
         </a>
 
         <label class="item item-input item-icon-right border-bottom-none" ng-click="uploadActionSheet()">
