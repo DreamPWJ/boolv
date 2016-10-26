@@ -9,13 +9,15 @@ var exec = require('cordova/exec');
  */
 var SesameCredit =  {
   test : function(content1,content2) {
-    alert(content1);
   exec(function(message) {
     alert("成功=="+message);
   }, function(message) {
     alert(message);
   }, "SesameCredit", "test", [content1,content2]);
-}
+}, 
+  sesamecredit:function (type) {
+    exec(success, error, "SesameCredit", "sesamecredit", [type]);
+  }
 };
 
 module.exports = SesameCredit;

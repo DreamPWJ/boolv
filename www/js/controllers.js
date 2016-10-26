@@ -720,16 +720,16 @@ angular.module('starter.controllers', [])
 
     $scope.enteringnumsubmit = function () {
       CommonService.ionicLoadingShow();
-/*      if ($scope.addrliststatus.length == 0) {
-        CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
-        $state.go('adddealaddress');
-        return;
-      }
-      if ($rootScope.userbankliststatus.length == 0) {
-        CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount');
-        $state.go('addbankaccount');
-        return;
-      }*/
+      /*      if ($scope.addrliststatus.length == 0) {
+       CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
+       $state.go('adddealaddress');
+       return;
+       }
+       if ($rootScope.userbankliststatus.length == 0) {
+       CommonService.platformPrompt('请先添加一个默认银行账户', 'addbankaccount');
+       $state.go('addbankaccount');
+       return;
+       }*/
       if ($scope.toAddraddrliststatus.length == 0) {
         CommonService.platformPrompt('获取收货用户常用地址失败');
         return;
@@ -759,10 +759,10 @@ angular.module('starter.controllers', [])
         BONo: $rootScope.deliverDetails.BONo,//买货单号
         ToUser: $rootScope.deliverDetails.ToUser,//买货单(买货)账号（待供货接口获取）
         FromUser: localStorage.getItem("usertoken"),//供货人账号
-        FromAddr: $scope.addrliststatus.length == 0?0:$scope.addrliststatus[0].id,//发货地址ID
+        FromAddr: $scope.addrliststatus.length == 0 ? 0 : $scope.addrliststatus[0].id,//发货地址ID
         ToAddr: $scope.toAddraddrliststatus[0].id,//收货地址ID
         TradeType: 0,//0-物流配送1-送货上门3-上门回收：TradeType
-        Account: $rootScope.userbankliststatus.length == 0?0:$rootScope.userbankliststatus[0].id,//收款账号ID
+        Account: $rootScope.userbankliststatus.length == 0 ? 0 : $rootScope.userbankliststatus[0].id,//收款账号ID
         Details: $scope.details// 供货明细
       };
 
@@ -781,7 +781,7 @@ angular.module('starter.controllers', [])
     }
   })
   //供货记录单列表  供货记录就是当前供货计划所对应的供货单列表
-  .controller('SupplyOrderListCtrl', function ($scope, $rootScope,$state, $ionicHistory, CommonService, SearchOrderService) {
+  .controller('SupplyOrderListCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, SearchOrderService) {
     $scope.supplylist = [];
     $scope.page = 0;
     $scope.total = 1;
@@ -795,12 +795,12 @@ angular.module('starter.controllers', [])
         currentPage: $scope.page,//当前页码
         pageSize: 5,//每页条数
         ID: '',//编码 ,等于空时取所有
-        No:$rootScope.searchcontent?$rootScope.searchcontent:'',//订单号，模糊匹配  极光推送查询
+        No: $rootScope.searchcontent ? $rootScope.searchcontent : '',//订单号，模糊匹配  极光推送查询
         User: '',//下单人账号
         Status: '',//订单状态0-未审核1-审核未通过2-审核通过/待发货3-已发货/待收货4-已收货/待付到付款5-已付到付款/待验货6-已验货/待审验货单7-已审核验货单/待结款8-已结款/待评价9-已评价
         BONo: '' /*$rootScope.supplyPlanDetails.BONo*/,//关联买货单号
         ToUser: '',//关联买货单人
-        SPNo:$rootScope.searchcontent?'':$rootScope.supplyPlanDetails.No//供货计划单
+        SPNo: $rootScope.searchcontent ? '' : $rootScope.supplyPlanDetails.No//供货计划单
       };
       //查单(供货订单)获取供货单列表
       SearchOrderService.getSupplyPlan($scope.params).success(function (data) {
@@ -810,8 +810,8 @@ angular.module('starter.controllers', [])
           return
         }
         angular.forEach(data.Values.data_list, function (item) {
-          if($rootScope.searchcontent){
-            $state.go("supplyorderdetails",{item:JSON.stringify(item)})
+          if ($rootScope.searchcontent) {
+            $state.go("supplyorderdetails", {item: JSON.stringify(item)})
             return;
           }
           $scope.supplylist.push(item);
@@ -3864,7 +3864,13 @@ angular.module('starter.controllers', [])
     $scope.authorization = function () {
       //芝麻信用参数签名
       AccountService.signZm($scope.signinfo).success(function (data) {
-        console.log(data);
+        if (data.Key == 200) {
+          $scope.zmsign = data.Values;
+
+        } else {
+          CommonService.platformPrompt('芝麻授权签名失败', 'close');
+        }
+
       })
     }
 
