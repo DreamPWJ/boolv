@@ -15,7 +15,7 @@
         <h2 class="padding-top">{{evaluateuserinfo.username}}</h2>
         <p>{{evaluateuserinfo.mobile}} </p>
         <p >信用等级 :
-          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.score>0]"   class="icon ion-star"></i>
+          <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.score>=0]"   class="icon ion-star"></i>
           <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.score>198]" class="icon ion-star"></i>
           <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.score>396]" class="icon ion-star "></i>
           <i ng-class="{true:'calm',false:'grey'}[evaluateuserinfo.score>594]" class="icon ion-star "></i>

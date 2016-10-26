@@ -12,7 +12,7 @@
         <img ng-src="{{userinfo.figure}}" class="border-radius-50" alt="" onerror="this.src='img/head.jpg'">
         <h2>{{userinfo.username}}</h2>
         <p ng-class={true:'padding-top'}[!userinfo.username]>信用等级 :
-          <i ng-class="{true:'calm',false:'stargrey'}[userinfo.score>0]"   class="icon ion-star"></i>
+          <i ng-class="{true:'calm',false:'stargrey'}[userinfo.score>=0]"   class="icon ion-star"></i>
           <i ng-class="{true:'calm',false:'stargrey'}[userinfo.score>198]" class="icon ion-star"></i>
           <i ng-class="{true:'calm',false:'stargrey'}[userinfo.score>396]" class="icon ion-star "></i>
           <i ng-class="{true:'calm',false:'stargrey'}[userinfo.score>594]" class="icon ion-star "></i>
