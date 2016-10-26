@@ -125,7 +125,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           $state.go("searchorder");
         }
         if (BLOrderType == 3) {
-          $rootScope.supplyPlanDetails.No=BLNo;
           $state.go("supplyorderlist");//供货单列表
         }
         if (BLOrderType == 5) {
@@ -394,6 +393,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
       })
+      //查单搜索框model
       .state('search', {
         url: '/search',
         templateUrl: 'templates/search.html',

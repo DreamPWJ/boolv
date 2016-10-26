@@ -19,7 +19,7 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>{{deliverDetails.OrderType==1?'供货商 ':'买货商 '}} : {{deliverDetails.OrderType==1?deliverDetails.Username:deliverDetails.Fromusername}}</h2>
+          <h2>{{deliverDetails.OrderType==1?'供货商 ':'买货商 '}} : {{deliverDetails.Username}}</h2>
         </a>
         <a ng-href="" class="item ">
           <h2 ng-if="deliverDetails.OrderType==1">订单状态 : <span>{{sellStatus[deliverDetails.Status+1]}}</span></h2>
