@@ -394,7 +394,7 @@ angular.module('starter.controllers', [])
         })
         $scope.sellparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.saleorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款', '已评价'];
+        $rootScope.saleorderStatus = CommonService.orderStatus(1);
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -438,7 +438,7 @@ angular.module('starter.controllers', [])
         })
         $scope.buyparamstotal = data.Values.page_count;
         //订单状态(买货单)
-        $rootScope.buyorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
+        $rootScope.buyorderStatus =CommonService.orderStatus(2);
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -481,8 +481,8 @@ angular.module('starter.controllers', [])
           $scope.supplyorderlist.push(item);
         })
         $scope.supplyparamstotal = data.Values.page_count;
-        //订单状态(供货单)
-        $rootScope.supplyorderStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '备货中', '供货完成'];
+        //订单状态(供货计划单)
+        $rootScope.supplyorderStatus =CommonService.orderStatus(4) ;
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -527,9 +527,9 @@ angular.module('starter.controllers', [])
         })
         $scope.collectparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.collectsellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款', '已评价'];
+        $rootScope.collectsellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.collectsupplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易', '已结款', '已评价'];
+        $rootScope.collectsupplyStatus =CommonService.orderStatus(3);
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -814,7 +814,7 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易', '已结款', '已评价'];
+        $rootScope.supplyStatus = CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1567,9 +1567,9 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款', '已评价'];
+        $rootScope.sellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易', '已结款', '已评价'];
+        $rootScope.supplyStatus = CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2481,9 +2481,9 @@ angular.module('starter.controllers', [])
 
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款', '已评价'];
+        $rootScope.sellStatus =CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易', '已结款', '已评价'];
+        $rootScope.supplyStatus =CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -3253,9 +3253,9 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款', '已评价'];
+        $rootScope.sellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.supplyStatus = ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易', '已结款', '已评价'];
+        $rootScope.supplyStatus = CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
