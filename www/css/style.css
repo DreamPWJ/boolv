@@ -214,3 +214,7 @@ background-color:  #aaa;
 .button.back-button{
   border: none;
 }
+/* modal显示非全屏 显示模态背景*/
+.active .modal-backdrop-bg {
+  background-color: rgba(0,0,0,0.3);
+}
