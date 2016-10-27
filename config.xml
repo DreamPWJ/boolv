@@ -30,6 +30,7 @@
   <preference name="QQ_APPSECRET" value="tw0WycrXSk54cfDG"/>
   <preference name="WECHAT_APPKEY" value="wx3a43052a36e31c53"/>
   <preference name="WECHAT_APPSECRET" value="6a3041d9f45d265f79d20bacf6d4965b"/>
+  <preference name="orientation" value="portrait" /> <!--强制竖屏显示 default表示landscape和portrait均可用，landscape(横屏)，portrait(竖屏)-->
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>

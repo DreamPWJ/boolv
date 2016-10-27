@@ -58,6 +58,9 @@
         },
         "phonegap-plugin-barcodescanner": {
             "PACKAGE_NAME": "com.boolv.trading"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.boolv.trading"
         }
     },
     "dependent_plugins": {
