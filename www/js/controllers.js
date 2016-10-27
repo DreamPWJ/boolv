@@ -3197,14 +3197,14 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.id = $scope.addressiteminfo ? $scope.addressiteminfo.id : 0;//传入id 则是修改地址
       $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
       $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
-      $scope.addrinfo.addrcode = $scope.addrareacountyone.code,	//地区编码
-        $scope.addrinfo.areaname = $scope.addrareacountyone.mergername, // 地区全称
-        $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0,	//是否默认0-否，1-是
-        $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode,	//邮政编码
-        $scope.addrinfo.lat = $scope.addrareacountyone.lat, 	//纬度
-        $scope.addrinfo.lon = $scope.addrareacountyone.lng, 	//经度
-        $scope.addrinfo.addrtype = 0	//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
-      $scope.addrinfo.addr = $scope.addrareacountyone.mergername + $scope.addrinfo.addr;
+      $scope.addrinfo.addrcode = $scope.addrareacountyone.code;	//地区编码
+        $scope.addrinfo.areaname = $scope.addrareacountyone.mergername; // 地区全称
+        $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
+        $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode;	//邮政编码
+        $scope.addrinfo.lat = $scope.addrareacountyone.lat;	//纬度
+        $scope.addrinfo.lon = $scope.addrareacountyone.lng; 	//经度
+        $scope.addrinfo.addrtype = 0	;//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
+        $scope.addrinfo.addr =  $scope.addrinfo.addr;
       AccountService.setAddr($scope.addrinfo).success(function (data) {
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
@@ -3488,7 +3488,7 @@ angular.module('starter.controllers', [])
         username: $scope.addrinfo.username,	//姓名
         mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
         addrcode: $scope.addrareaone.code,	//地区编码
-        addr: $scope.addrareaone.mergername + $scope.addrinfo.address,	//详细地址
+        addr: $scope.addrinfo.address,	//详细地址
         quantity: $scope.addrinfo.num, 	//供货量
         prodclass: prodclass.length != 0 ? prodclass.join(",") : "",//供货品类（多个以逗号隔开）
         lat: $scope.addrareaone.lat,	//纬度
