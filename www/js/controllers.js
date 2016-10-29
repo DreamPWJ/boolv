@@ -1746,13 +1746,17 @@ angular.module('starter.controllers', [])
       })
     }
 
-    //关闭modle清空数据
+    //关闭modal
     $scope.closeModalClear = function () {
       $scope.closeModal();
-      $rootScope.selectproductandnum = [];//清空数据
-      $scope.selectproductandnumother = [];//清空数据
-      $scope.selectproduct = [];
-      $scope.adddeliverinfo.selectnum = 0;
+      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct,$rootScope.selectproductandnum); //填写没有确认的数据
+      console.log($scope.closemodalcleardata);
+      if($scope.closemodalcleardata) {
+        angular.forEach($scope.closemodalcleardata, function (item) {//去掉填写没有确认的数据
+          $scope.adddeliverinfo.selectnum--;
+          $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
+        })
+      }
     }
   })
   //提交发货信息
@@ -2112,7 +2116,7 @@ angular.module('starter.controllers', [])
 
     $rootScope.buygoodssubmit = function () {//提交买货订单
       //是否登录
-      if (!CommonService.isLogin()) {
+      if (!CommonService.isLogin(true)) {
         return;
       }
       $scope.Details = [];//收货明细数据数组
@@ -2166,9 +2170,14 @@ angular.module('starter.controllers', [])
         }
       })
 
-
     }
 
+    //如果是登录页面跳转直接提交订单
+    $scope.$on('$ionicView.beforeEnter', function () { //局部刷新
+      if ($ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'login') {
+        $scope.buygoodssubmit();
+      }
+    })
   })
   //收货地址选择提交买货单
   .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
@@ -2646,13 +2655,17 @@ angular.module('starter.controllers', [])
       })
     }
 
-    //关闭modle清空数据
+    //关闭modal
     $scope.closeModalClear = function () {
       $scope.closeModal();
-      $rootScope.addcutpayment = [];//清空数据
-      $scope.selectproduct = [];
-      $scope.cutpaymentinfo.selectnum = 0;
-      $scope.cutpaymentinfo.totalmoney = 0;//扣款总金额
+      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct,$rootScope.addcutpayment); //填写没有确认的数据
+      console.log($scope.closemodalcleardata);
+      if($scope.closemodalcleardata) {
+        angular.forEach($scope.closemodalcleardata, function (item) {//去掉填写没有确认的数据
+          $scope.cutpaymentinfo.selectnum--;
+          $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
+        })
+      }
     }
     //上传图片数组集合
     $scope.imageList = [];
@@ -2961,14 +2974,18 @@ angular.module('starter.controllers', [])
     }
 
 
-    //关闭modle清空数据
+    //关闭modal
     $scope.closeModalClear = function () {
       $scope.closeModal();
-      $rootScope.selectproductandnum = [];//清空数据
-      $scope.selectproductandnumother = [];//清空数据
-      $scope.selectproduct = [];
-      $scope.adddeliverinfo.selectnum = 0;
-      $rootScope.verify = true;
+      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct,$rootScope.selectproductandnum); //填写没有确认的数据
+      if($scope.closemodalcleardata){
+        angular.forEach($scope.closemodalcleardata, function (item) {//去掉填写没有确认的数据
+          if(item){
+            $scope.adddeliverinfo.selectnum--;
+            $scope.selectproduct.splice(item.PID, 1);
+          }
+        })
+      }
     }
   })
   //接单供货计划详情
@@ -3868,7 +3885,8 @@ angular.module('starter.controllers', [])
   .controller('CreditNoAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.signinfo = {}
     $scope.authorization = function () {
-      //芝麻信用参数签名
+      //芝麻信用参数签名  服务器那边就能传给我们一个经过加密的param和一个经过加密的sign
+      //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
       AccountService.signZm($scope.signinfo).success(function (data) {
         if (data.Key == 200) {
           $scope.zmsign = data.Values;

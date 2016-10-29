@@ -1,7 +1,7 @@
 <ion-modal-view  >
   <ion-header-bar class="bar bar-header bar-calm" scroll-top  ng-click="scrollTop()">
     <h1 class="title icon ion-plus-circled"> 验货产品清单</h1>
-    <button class="button button-clear button-primary" ng-click="closeModalClear()"><i class="icon ion-ios-trash"></i>关闭</button>
+    <button class="button button-clear button-primary" ng-click="closeModalClear()">关闭</button>
   </ion-header-bar>
   <form  name="checkgoodsmodel">
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
@@ -17,10 +17,10 @@
       <i ng-if="adddeliverinfo.isAdd[item.PID]" class="icon ion-ios-plus-outline calm" ng-click="addQueJian(item.PID,item)"></i>
       <i ng-if="adddeliverinfo.isMinus[item.PID]" class="icon ion-ios-minus assertive" ng-click="minusQueJian(item.PID,item)"></i>
        <label class=" item-input stable-bg border-bottom-1px"  ng-if="adddeliverinfo.isMinus[item.PID]">
-         <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" check-form ng-change="checkForm(adddeliverinfo.num[item.PID],'数量错误 台数为正整数 公斤为正数可保留两位小数',item.PUType==1?'positiveinteger':'positivenumber','')" ng-blur="selectedproduct()"/>
+         <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" check-form ng-change="checkForm(adddeliverinfo.num[item.PID],'数量错误 台数为正整数 公斤为正数可保留两位小数',item.PUType==1?'positiveinteger':'positivenumber','')" />
        </label>
        <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[item.PID]">
-         <input type="number"   ng-model="adddeliverinfo.money[item.PID]" placeholder="{{item.PName}}金额 (单位:元) " ng-required="{{adddeliverinfo.num[item.PID]}}" check-form ng-change="checkForm(adddeliverinfo.money[item.PID],'验货金额输入错误 正数可保留两位小数','positivenumber','')" ng-blur="selectedproduct()" required/>
+         <input type="number"   ng-model="adddeliverinfo.money[item.PID]" placeholder="{{item.PName}}金额 (单位:元) " ng-required="{{adddeliverinfo.num[item.PID]}}" check-form ng-change="checkForm(adddeliverinfo.money[item.PID],'验货金额输入错误 正数可保留两位小数','positivenumber','')"  />
        </label>
    </ion-item>
 
