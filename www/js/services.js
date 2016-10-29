@@ -291,7 +291,7 @@ angular.module('starter.services', [])
         if (!localStorage.getItem("usertoken")) {
           if (flag) {
             if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-              this.platformPrompt("请您先登录", 'login');
+            /*  this.platformPrompt("请您先登录", 'login');*/
             }
             $state.go('login');
           } else {

@@ -309,7 +309,7 @@ angular.module('starter.controllers', [])
 
     }
     $scope.loginSubmit = function () {
-      if ($scope.user.passwordcode != $scope.user.password) {
+     if ($scope.user.passwordcode != $scope.user.password) {
         CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }
@@ -2175,7 +2175,7 @@ angular.module('starter.controllers', [])
 
   })
   //收货地址选择提交买货单
-  .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
+  .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, $ionicHistory,CommonService, AccountService) {
 
     if (!$rootScope.addrlistFirst || $rootScope.addrlistFirst.length == 0) {
       CommonService.ionicLoadingShow();
@@ -2187,8 +2187,9 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AccountService.getAddrlist($scope.params).success(function (data) {
+        $rootScope.addrlistFirst = [];
         if (!localStorage.getItem("usertoken")) {
-          CommonService.platformPrompt('无法获取默认地址 填写表单提交登录', 'releaseprocureorder');
+          CommonService.platformPrompt('无法获取默认地址 填写表单提交登录', 'close');
           return;
         }
         if (data.Values.data_list == null) {
@@ -2196,18 +2197,20 @@ angular.module('starter.controllers', [])
           $state.go('adddealaddress');
           return;
         }
-        $rootScope.addrlistFirst = [];
+
         $rootScope.addrlist = data.Values.data_list;
         $rootScope.addrlistFirst.push(data.Values.data_list[0]);
 
+      }).then(function () {
+        //如果是登录页面跳转直接提交订单
+        if ($ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'login') {
+          $rootScope.buygoodssubmit();
+        }
       }).finally(function () {
         CommonService.ionicLoadingHide()
       })
     }
-       //如果是登录页面跳转直接提交订单
-      if ($ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'login') {
-        $rootScope.buygoodssubmit();
-      }
+
   })
 
   //卖货下单
