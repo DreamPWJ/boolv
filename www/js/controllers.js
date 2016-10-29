@@ -2172,16 +2172,11 @@ angular.module('starter.controllers', [])
 
     }
 
-    //如果是登录页面跳转直接提交订单
-    $scope.$on('$ionicView.beforeEnter', function () { //局部刷新
-      if ($ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'login') {
-        $scope.buygoodssubmit();
-      }
-    })
+
   })
   //收货地址选择提交买货单
   .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, CommonService, AccountService) {
-    console.log($rootScope.addrlistFirst);
+
     if (!$rootScope.addrlistFirst || $rootScope.addrlistFirst.length == 0) {
       CommonService.ionicLoadingShow();
       $rootScope.buyCycle = {}; //供货周期（天） 0-无限期：Cycle
@@ -2209,7 +2204,10 @@ angular.module('starter.controllers', [])
         CommonService.ionicLoadingHide()
       })
     }
-
+       //如果是登录页面跳转直接提交订单
+      if ($ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'login') {
+        $rootScope.buygoodssubmit();
+      }
   })
 
   //卖货下单
