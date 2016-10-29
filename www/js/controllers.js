@@ -2200,7 +2200,7 @@ angular.module('starter.controllers', [])
   })
 
   //卖货下单
-  .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, CommonService, SellService, AccountService) {
+  .controller('SellDetailsCtrl', function ($scope, $rootScope, $state, $ionicHistory, CommonService, SellService, AccountService) {
       CommonService.ionicLoadingShow();
       $scope.sellDetails = [];
       angular.forEach($rootScope.sellprodsList, function (item) {
@@ -2257,7 +2257,7 @@ angular.module('starter.controllers', [])
       $scope.itemnum = [];//卖货数量
       $scope.sellgoodssubmit = function () {//提交卖货订单
         //是否登录
-        if (!CommonService.isLogin()) {
+        if (!CommonService.isLogin(true)) {
           return;
         }
         //是否有供货商信息
@@ -2368,7 +2368,13 @@ angular.module('starter.controllers', [])
 
       }
 
-    }
+      //如果是登录页面跳转直接提交订单
+     $scope.$on('$ionicView.beforeEnter', function () { //局部刷新
+      if ($ionicHistory.forwardView()&&$ionicHistory.forwardView().stateName == 'login') {
+        $scope.sellgoodssubmit();
+      }
+    })
+  }
   )
 
   //卖货选择供应商列表
@@ -3198,13 +3204,13 @@ angular.module('starter.controllers', [])
       $scope.addrinfo.userid = localStorage.getItem("usertoken");//用户id
       $scope.addrinfo.tel = $scope.addrinfo.mobile;//固定电话
       $scope.addrinfo.addrcode = $scope.addrareacountyone.code;	//地区编码
-        $scope.addrinfo.areaname = $scope.addrareacountyone.mergername; // 地区全称
-        $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
-        $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode;	//邮政编码
-        $scope.addrinfo.lat = $scope.addrareacountyone.lat;	//纬度
-        $scope.addrinfo.lon = $scope.addrareacountyone.lng; 	//经度
-        $scope.addrinfo.addrtype = 0	;//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
-        $scope.addrinfo.addr =  $scope.addrinfo.addr;
+      $scope.addrinfo.areaname = $scope.addrareacountyone.mergername; // 地区全称
+      $scope.addrinfo.status = $scope.addrinfoother.isstatus ? 1 : 0;	//是否默认0-否，1-是
+      $scope.addrinfo.postcode = $scope.addrareacountyone.zipcode;	//邮政编码
+      $scope.addrinfo.lat = $scope.addrareacountyone.lat;	//纬度
+      $scope.addrinfo.lon = $scope.addrareacountyone.lng; 	//经度
+      $scope.addrinfo.addrtype = 0;//地址类型0-	交易地址（默认）1-	家庭住址2-公司地址
+      $scope.addrinfo.addr = $scope.addrinfo.addr;
       AccountService.setAddr($scope.addrinfo).success(function (data) {
         if (data.Key == 200) {
           CommonService.showAlert('', '<p>恭喜您！</p><p>地址信息' + $scope.buttonText + '成功！</p>', '');
