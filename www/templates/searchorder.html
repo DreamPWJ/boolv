@@ -26,7 +26,8 @@
             <p>供货人 : {{item.Username}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></p>
             <p>手机号 : {{item.Usermotel}}</p>
             <p>卖货品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></p>
-            <p>订单状态 : <span>{{saleorderStatus[item.Status+1]}}</span></p>
+            <p>订单状态 : <span>{{item.StatusName}}</span></p>
+         <!--   <p>订单状态 : <span>{{saleorderStatus[item.Status+1]}}</span></p>-->
           </a>
         </div>
         <ion-infinite-scroll  on-infinite="getSaleOrderList()" ng-if="sellparamstotal > sellparamspage" immediate-check="false">
@@ -46,7 +47,8 @@
             <p>买货人 : {{item.Username}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  </span></p>
             <p>手机号 : {{item.Usermotel}}</p>
             <p>买货品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></p>
-            <p>订单状态 : <span>{{buyorderStatus[item.Status+1]}}</span></p>
+            <p>订单状态 : <span>{{item.StatusName}}</span></p>
+    <!--        <p>订单状态 : <span>{{buyorderStatus[item.Status+1]}}</span></p>-->
           </a>
         </div>
         <ion-infinite-scroll  on-infinite="buyOrderList()" ng-if="buyparamstotal > buyparamspage" immediate-check="false">
@@ -67,7 +69,8 @@
             <p>手机号 : {{item.Tousermotel}}</p>
             <p>供货品类 : <span ng-repeat="items in item.Details"> {{items.ProdName}} </span></p>
            <!-- <p  class="text-wrap">剩余供货量 : <span  ng-repeat="items in item.Details" >  {{items.ProdName+' : '+items.SupNum+' '+items.UName}} </span> </p>-->
-            <p>订单状态 : <span>{{supplyorderStatus[item.Status+1]}}</span></p>
+            <p>订单状态 : <span>{{item.StatusName}}</span></p>
+<!--            <p>订单状态 : <span>{{supplyorderStatus[item.Status+1]}}</span></p>-->
           </a>
         </div>
         <ion-infinite-scroll  on-infinite="getSupplyPlanList()" ng-if="supplyparamstotal > supplyparamspage" immediate-check="false">
@@ -88,8 +91,9 @@
             <p>手机号 : {{item.Fromusermotel}}</p>
             <p>{{item.OrderType==1?'卖货':'供货'}}品类 : <span
               ng-repeat="items in item.OrderType==1?item.Details:item.SpO_Details"> {{items.ProdName}} </span></p>
-            <p ng-if="item.OrderType==1">订单状态 : <span>{{collectsellStatus[item.Status+1]}}</span></p>
-            <p ng-if="item.OrderType==2">订单状态 : <span>{{collectsupplyStatus[item.Status+1]}}</span></p>
+            <p>订单状态 : <span>{{item.StatusName}}</span></p>
+          <!--  <p ng-if="item.OrderType==1">订单状态 : <span>{{collectsellStatus[item.Status+1]}}</span></p>
+            <p ng-if="item.OrderType==2">订单状态 : <span>{{collectsupplyStatus[item.Status+1]}}</span></p>-->
           </a>
         </div>
         <ion-infinite-scroll  on-infinite="getSaleSupply()" ng-if="collectparamstotal > collectparamspage" immediate-check="false">

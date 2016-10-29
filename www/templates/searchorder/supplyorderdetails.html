@@ -22,7 +22,8 @@
           <h2>买货商家 : {{supplyDetails.Tousername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>订单状态 : {{supplyStatus[supplyDetails.Status+1]}}</h2>
+          <h2>订单状态 : {{supplyDetails.StatusName}}</h2>
+<!--          <h2>订单状态 : {{supplyStatus[supplyDetails.Status+1]}}</h2>-->
         </a>
         <a ng-href="" class="item border-bottom-none">
           <h2>下单时间 : {{supplyDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>

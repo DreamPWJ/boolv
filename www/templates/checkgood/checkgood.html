@@ -1,6 +1,7 @@
 <ion-view>
   <ion-nav-buttons side="left">
-    <button class="button back-button buttons  header-item "  nav-direction=back native-ui-sref="tab.main" native-options="{type: 'slide',direction: 'right'}">
+    <button class="button back-button buttons  header-item " nav-direction=back native-ui-sref="tab.main"
+            native-options="{type: 'slide',direction: 'right'}">
       <i class="icon ion-chevron-left"></i>
     </button>
   </ion-nav-buttons>
@@ -21,11 +22,14 @@
         <p>{{item.OrderType==1?'卖货人 :':'供货人 : '}} {{item.Fromusername}} <span class="item-note">{{item.AddTime |date:'yyyy-MM-dd HH:mm'}}  <i
           class="icon ion-ios-arrow-right"></i></span></p>
         <p>手机号 : {{item.Fromusermotel}}</p>
-        <p>{{item.OrderType==1?'卖货':'供货'}}品类 :  <span ng-repeat="items in item.OrderType==1?item.Details:item.SpO_Details"> {{items.ProdName}} </span> </p>
-        <p ng-if="item.OrderType==1">订单状态 : <span>{{sellStatus[item.Status+1]}}</span></p>
-        <p ng-if="item.OrderType==2">订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>
+        <p>{{item.OrderType==1?'卖货':'供货'}}品类 : <span
+          ng-repeat="items in item.OrderType==1?item.Details:item.SpO_Details"> {{items.ProdName}} </span></p>
+        <p>订单状态 : <span>{{item.StatusName}}</span></p>
+        <!--    <p ng-if="item.OrderType==1">订单状态 : <span>{{sellStatus[item.Status+1]}}</span></p>
+                <p ng-if="item.OrderType==2">订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>-->
       </a>
     </div>
-    <ion-infinite-scroll  on-infinite="getSaleSupply()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>
+    <ion-infinite-scroll on-infinite="getSaleSupply()" ng-if="total > page"
+                         immediate-check="false"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

@@ -20,7 +20,7 @@
          <input type="number"  ng-model="adddeliverinfo.num[item.PID]" placeholder="{{item.PName}}数量 (单位:{{item.PUName}})" check-form ng-change="checkForm(adddeliverinfo.num[item.PID],'数量错误 台数为正整数 公斤为正数可保留两位小数',item.PUType==1?'positiveinteger':'positivenumber','')" />
        </label>
        <label class=" item-input stable-bg "  ng-if="adddeliverinfo.isMinus[item.PID]">
-         <input type="number"   ng-model="adddeliverinfo.money[item.PID]" placeholder="{{item.PName}}金额 (单位:元) " ng-required="{{adddeliverinfo.num[item.PID]}}" check-form ng-change="checkForm(adddeliverinfo.money[item.PID],'验货金额输入错误 正数可保留两位小数','positivenumber','')"  />
+         <input type="number"   ng-model="adddeliverinfo.money[item.PID]" placeholder="{{item.PName}}金额 (单位:元) " ng-required="adddeliverinfo.num[item.PID]" check-form ng-change="checkForm(adddeliverinfo.money[item.PID],'验货金额输入错误 正数可保留两位小数','positivenumber','')"  />
        </label>
    </ion-item>
 

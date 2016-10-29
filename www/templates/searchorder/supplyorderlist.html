@@ -21,7 +21,8 @@
           class="icon ion-ios-arrow-right"></i></span></p>
         <p>手机号 : {{item.Tousermotel}}</p>
         <p>供货品类 :  <span ng-repeat="items in item.Details"> {{items.ProdName}} </span> </p>
-        <p>订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>
+        <p>订单状态 : <span>{{item.StatusName}}</span></p>
+       <!-- <p>订单状态 : <span>{{supplyStatus[item.Status+1]}}</span></p>-->
       </a>
     </div>
     <ion-infinite-scroll  on-infinite="getSupplyPlanList()" ng-if="total > page"  immediate-check="false">   </ion-infinite-scroll>

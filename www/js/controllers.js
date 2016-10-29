@@ -394,7 +394,7 @@ angular.module('starter.controllers', [])
         })
         $scope.sellparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.saleorderStatus = CommonService.orderStatus(1);
+        /*        $rootScope.saleorderStatus = CommonService.orderStatus(1);*/
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -438,7 +438,7 @@ angular.module('starter.controllers', [])
         })
         $scope.buyparamstotal = data.Values.page_count;
         //订单状态(买货单)
-        $rootScope.buyorderStatus = CommonService.orderStatus(2);
+        /*     $rootScope.buyorderStatus = CommonService.orderStatus(2);*/
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -482,7 +482,7 @@ angular.module('starter.controllers', [])
         })
         $scope.supplyparamstotal = data.Values.page_count;
         //订单状态(供货计划单)
-        $rootScope.supplyorderStatus = CommonService.orderStatus(4);
+        /*        $rootScope.supplyorderStatus = CommonService.orderStatus(4);*/
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -527,9 +527,9 @@ angular.module('starter.controllers', [])
         })
         $scope.collectparamstotal = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.collectsellStatus = CommonService.orderStatus(1);
+        /*        $rootScope.collectsellStatus = CommonService.orderStatus(1);*/
         //订单状态(供货单)
-        $rootScope.collectsupplyStatus = CommonService.orderStatus(3);
+        /*        $rootScope.collectsupplyStatus = CommonService.orderStatus(3);*/
         $ionicScrollDelegate.resize();//添加数据后页面不能及时滚动刷新造成卡顿
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
@@ -818,7 +818,7 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(供货单)
-        $rootScope.supplyStatus = CommonService.orderStatus(3);
+        /*   $rootScope.supplyStatus = CommonService.orderStatus(3);*/
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1572,9 +1572,9 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = CommonService.orderStatus(1);
+        /*        $rootScope.sellStatus = CommonService.orderStatus(1);*/
         //订单状态(供货单)
-        $rootScope.supplyStatus = CommonService.orderStatus(3);
+        /*       $rootScope.supplyStatus = CommonService.orderStatus(3);*/
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -1749,9 +1749,9 @@ angular.module('starter.controllers', [])
     //关闭modal
     $scope.closeModalClear = function () {
       $scope.closeModal();
-      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct,$rootScope.selectproductandnum); //填写没有确认的数据
+      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct, $rootScope.selectproductandnum); //填写没有确认的数据
       console.log($scope.closemodalcleardata);
-      if($scope.closemodalcleardata) {
+      if ($scope.closemodalcleardata) {
         angular.forEach($scope.closemodalcleardata, function (item) {//去掉填写没有确认的数据
           $scope.adddeliverinfo.selectnum--;
           $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
@@ -2378,12 +2378,12 @@ angular.module('starter.controllers', [])
       }
 
       //如果是登录页面跳转直接提交订单
-     $scope.$on('$ionicView.beforeEnter', function () { //局部刷新
-      if ($ionicHistory.forwardView()&&$ionicHistory.forwardView().stateName == 'login') {
-        $scope.sellgoodssubmit();
-      }
-    })
-  }
+      $scope.$on('$ionicView.beforeEnter', function () { //局部刷新
+        if ($ionicHistory.forwardView() && $ionicHistory.forwardView().stateName == 'login') {
+          $scope.sellgoodssubmit();
+        }
+      })
+    }
   )
 
   //卖货选择供应商列表
@@ -2501,9 +2501,9 @@ angular.module('starter.controllers', [])
 
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = CommonService.orderStatus(1);
+        //  $rootScope.sellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.supplyStatus = CommonService.orderStatus(3);
+        // $rootScope.supplyStatus = CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2658,9 +2658,9 @@ angular.module('starter.controllers', [])
     //关闭modal
     $scope.closeModalClear = function () {
       $scope.closeModal();
-      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct,$rootScope.addcutpayment); //填写没有确认的数据
+      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct, $rootScope.addcutpayment); //填写没有确认的数据
       console.log($scope.closemodalcleardata);
-      if($scope.closemodalcleardata) {
+      if ($scope.closemodalcleardata) {
         angular.forEach($scope.closemodalcleardata, function (item) {//去掉填写没有确认的数据
           $scope.cutpaymentinfo.selectnum--;
           $scope.selectproduct.splice($scope.selectproduct.indexOf(item), 1);
@@ -2977,10 +2977,10 @@ angular.module('starter.controllers', [])
     //关闭modal
     $scope.closeModalClear = function () {
       $scope.closeModal();
-      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct,$rootScope.selectproductandnum); //填写没有确认的数据
-      if($scope.closemodalcleardata){
+      $scope.closemodalcleardata = CommonService.arrayMinus($scope.selectproduct, $rootScope.selectproductandnum); //填写没有确认的数据
+      if ($scope.closemodalcleardata) {
         angular.forEach($scope.closemodalcleardata, function (item) {//去掉填写没有确认的数据
-          if(item){
+          if (item) {
             $scope.adddeliverinfo.selectnum--;
             $scope.selectproduct.splice(item.PID, 1);
           }
@@ -3281,9 +3281,9 @@ angular.module('starter.controllers', [])
         })
         $scope.total = data.Values.page_count;
         //订单状态(卖货单)
-        $rootScope.sellStatus = CommonService.orderStatus(1);
+        // $rootScope.sellStatus = CommonService.orderStatus(1);
         //订单状态(供货单)
-        $rootScope.supplyStatus = CommonService.orderStatus(3);
+        //  $rootScope.supplyStatus = CommonService.orderStatus(3);
       }).finally(function () {
         $scope.$broadcast('scroll.refreshComplete');
         $scope.$broadcast('scroll.infiniteScrollComplete');

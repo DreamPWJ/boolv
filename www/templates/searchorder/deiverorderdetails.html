@@ -22,8 +22,9 @@
           <h2>{{collectGoodDetails.OrderType==1?'卖货':'供货'}}人 : {{collectGoodDetails.Fromusername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2 ng-if="collectGoodDetails.OrderType==1">订单状态 : {{collectsellStatus[orderStatus+1]}}</h2>
-          <h2 ng-if="collectGoodDetails.OrderType==2">订单状态 : {{collectsupplyStatus[orderStatus+1]}}</h2>
+          <h2 >订单状态 : {{collectGoodDetails.StatusName}}</h2>
+<!--          <h2 ng-if="collectGoodDetails.OrderType==1">订单状态 : {{collectsellStatus[orderStatus+1]}}</h2>
+          <h2 ng-if="collectGoodDetails.OrderType==2">订单状态 : {{collectsupplyStatus[orderStatus+1]}}</h2>-->
         </a>
         <a ng-href="" class="item ">
           <h2>下单时间 : {{collectGoodDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>

@@ -19,8 +19,9 @@
           <h2>{{checkDetails.OrderType==1?'卖货':'供货'}}人 : {{checkDetails.Fromusername}}</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2 ng-if="checkDetails.OrderType==1">订单状态 : <span>{{sellStatus[checkDetails.Status+1]}}</span></h2>
-          <h2 ng-if="checkDetails.OrderType==2">订单状态 : <span>{{supplyStatus[checkDetails.Status+1]}}</span></h2>
+          <h2 >订单状态 : <span>{{checkDetails.StatusName}}</span></h2>
+<!--          <h2 ng-if="checkDetails.OrderType==1">订单状态 : <span>{{sellStatus[checkDetails.Status+1]}}</span></h2>
+          <h2 ng-if="checkDetails.OrderType==2">订单状态 : <span>{{supplyStatus[checkDetails.Status+1]}}</span></h2>-->
         </a>
         <a ng-href="" class="item border-bottom-none">
           <h2>下单时间 : {{checkDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>

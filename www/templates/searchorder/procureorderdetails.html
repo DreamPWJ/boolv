@@ -25,7 +25,8 @@
           <h2>预计买货总金额 : {{minTotalMoney | currency:''}} ~ {{maxTotalMoney | currency:''}}元</h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>订单状态 : {{buyorderStatus[buyDetails.Status+1]}}</h2>
+          <h2>订单状态 : {{buyDetails.StatusName}}</h2>
+<!--          <h2>订单状态 : {{buyorderStatus[buyDetails.Status+1]}}</h2>-->
         </a>
         <a ng-href="" class="item ">
           <h2>下单时间 : {{buyDetails.AddTime |date:'yyyy-MM-dd HH:mm'}}</h2>
