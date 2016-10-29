@@ -309,7 +309,7 @@ angular.module('starter.controllers', [])
 
     }
     $scope.loginSubmit = function () {
-     if ($scope.user.passwordcode != $scope.user.password) {
+      if ($scope.user.passwordcode != $scope.user.password) {
         CommonService.platformPrompt("输入验证码不正确", 'close');
         return;
       }
@@ -2175,7 +2175,7 @@ angular.module('starter.controllers', [])
 
   })
   //收货地址选择提交买货单
-  .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, $ionicHistory,CommonService, AccountService) {
+  .controller('ReleaseProcureOrderCtrl', function ($scope, $state, $rootScope, $ionicHistory, CommonService, AccountService) {
 
     if (!$rootScope.addrlistFirst || $rootScope.addrlistFirst.length == 0) {
       CommonService.ionicLoadingShow();
@@ -2958,6 +2958,7 @@ angular.module('starter.controllers', [])
 
     //选好了方法
     $scope.selectaffirm = function () {
+      event.preventDefault();
       $scope.selectedproduct();  //增加数量信息 重新组装数组
       //增加没有的商品类别
       $scope.selectproductandnumother = [];
