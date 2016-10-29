@@ -2192,6 +2192,10 @@ angular.module('starter.controllers', [])
       }
       //获取用户常用地址
       AccountService.getAddrlist($scope.params).success(function (data) {
+        if (!localStorage.getItem("usertoken")) {
+          CommonService.platformPrompt('无法获取默认地址 填写表单提交登录', 'releaseprocureorder');
+          return;
+        }
         if (data.Values.data_list == null) {
           CommonService.platformPrompt('请先添加一个默认地址', 'adddealaddress');
           $state.go('adddealaddress');
