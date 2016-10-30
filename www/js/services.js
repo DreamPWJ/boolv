@@ -290,9 +290,9 @@ angular.module('starter.services', [])
       isLogin: function (flag) {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
           if (flag) {
-            if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
-            /*  this.platformPrompt("请您先登录", 'login');*/
-            }
+         /*   if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
+             this.platformPrompt("请您先登录", 'login');
+            }*/
             $state.go('login');
           } else {
             this.showConfirm('博绿网', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
