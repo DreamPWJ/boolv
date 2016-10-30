@@ -24,7 +24,7 @@
     "cordova-plugin-screen-orientation"
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ]
 }

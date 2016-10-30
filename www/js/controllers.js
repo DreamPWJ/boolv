@@ -3895,8 +3895,12 @@ angular.module('starter.controllers', [])
       //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
       AccountService.signZm($scope.signinfo).success(function (data) {
         if (data.Key == 200) {
-          $scope.zmsign = data.Values;
+          //芝麻应用授权SDK调用
+          SesameCredit.sesamecredit(data.Values.parem,data.Values.sign,function (data) {
+      
+          },function (error) {
 
+          });
         } else {
           CommonService.platformPrompt('芝麻授权签名失败', 'close');
         }
