@@ -6,6 +6,7 @@ package com.boolv.sesamecredit;
 
 import android.view.Window;
 import android.widget.Toast;
+import com.boolv.sesamecredit.CreditAuthHelper;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -16,9 +17,10 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-
+import com.android.moblie.zmxy.antgroup.creditsdk.app.ICreditListener;
 
 public class SesameCredit extends CordovaPlugin {
   private static final String TAG = "SesameCredit";
@@ -62,5 +64,44 @@ public class SesameCredit extends CordovaPlugin {
     return false;
   }
 
+  public void doCreditRequest() {
+    //测试数据，此部分数据，请由商户服务端生成下发，具体见开放平台商户对接文档
+    //请注意params、sign为encode过后的数据
+    String params = "ApO88WwMflzmDXYX1aTdnz0L3%2FUF8kHXtd5GF1tFJKzDSo2tmOcRmaoDYGiSNUpVyx4jqWl2HgM30v0hOXNDUlKA5ZGrExYmT5qMPbtplGFHpJe4k%2ByZHHIz6CJFuYcq8b2fGMg%2FXAH0Hq2XV2Yhu9ZOahx5W8ryJPnBh8kt1ks%3D";
+    String appId = "1000100";
+    String sign = "XusqllQQjawQPF2pmFelPuWrS6zLwLpTzKG5HoSNDyYEshqdjjs1MgOAL7LP8RHceCLu5PPh5SbKAM0ghtR5e%2FvA25eeOY1V4WAVtQq%2FGer197sUNzJsXONAgGAT1ukwJ%2FTIGew384iqRXIf4nV%2BcUjCmlWTC7NXkwKgBE%2FrNdo%3D";
+    //extParams参数可以放置一些额外的参数，例如当biz_params参数忘记组织auth_code参数时，可以通过extParams参数带入auth_code。
+    //不过建议auth_code参数组织到biz_params里面进行加密加签。
+    Map<String, String> extParams = new HashMap<String, String>();
+    //extParams.put("auth_code", "M_FACE");
 
+    try {
+      final Activity activity = this.cordova.getActivity();
+      //请求授权
+      CreditAuthHelper.creditAuth(activity, appId, params, sign, extParams, new ICreditListener() {
+        @Override
+        public void onComplete(Bundle result) {
+          //从result中获取params参数,然后解析params数据,可以获取open_id。
+          if (result != null) {
+            Set<String> keys = result.keySet();
+            for (String key : keys) {
+              Log.d(TAG, key + " = " + result.getString(key));
+            }
+          }
+        }
+
+        @Override
+        public void onError(Bundle result) {
+          Log.d(TAG, "doCreditAuthRequest.onError.");
+        }
+
+        @Override
+        public void onCancel() {
+          Log.d(TAG, "doCreditAuthRequest.onCancel.");
+        }
+      });
+    } catch (Exception e) {
+      Log.e(TAG, "doCreditAuthRequest.exception=" + e.toString());
+    }
+  }
 }
