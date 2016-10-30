@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="multi_app_name">图片多选</string>
-    <string name="free_version_label">Free version - Images left: %d</string>
-    <string name="error_database">There was an error opening the images database. Please report the problem.</string>
-    <string name="requesting_thumbnails">Requesting thumbnails, please be patient</string>
+    <string name="free_version_label">剩余图片: %d</string>
+    <string name="error_database">打开相册出现错误</string>
+    <string name="requesting_thumbnails">请稍后...</string>
     <string name="processing_images_header">上传图片</string>
     <string name="processing_images_message">图片上传中...</string>
-    <string name="maximum_selection_count_error_header">Limit reached</string>
-    <string name="maximum_selection_count_error_message">You can only select %d photos at once.</string>
+    <string name="maximum_selection_count_error_header">最多限制</string>
+    <string name="maximum_selection_count_error_message">您只能同时选择 %d 张图片</string>
     <string name="discard">取消</string>
     <string name="done">确定</string>
 </resources>
