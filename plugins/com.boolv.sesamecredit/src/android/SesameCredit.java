@@ -13,7 +13,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CordovaArgs;
 import org.json.JSONException;
-
+import android.content.Intent;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +21,7 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+import com.android.moblie.zmxy.antgroup.creditsdk.app.CreditApp;
 import com.android.moblie.zmxy.antgroup.creditsdk.app.ICreditListener;
 
 public class SesameCredit extends CordovaPlugin {
@@ -41,6 +41,12 @@ public class SesameCredit extends CordovaPlugin {
     Log.v(TAG, "SesameCredit: initialization");
   }
 
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Log.d(TAG, "SesameCredit.onActivityResult");
+    //onActivityResult callback
+    CreditApp.onActivityResult(requestCode, resultCode, data);
+  }
   /**
    * Executes the request and returns PluginResult.
    *
@@ -56,7 +62,7 @@ public class SesameCredit extends CordovaPlugin {
     final Window window = activity.getWindow();
     this.callbackContext = callbackContext;
     if ("sesamecredit".equals(action)) {  //芝麻授权
-      //测试数据，此部分数据，请由商户服务端生成下发，具体见开放平台商户对接文档
+      //请由商户服务端生成下发，具体见开放平台商户对接文档
       //请注意params、sign为encode过后的数据
       String params = args.getString(0);
       String appId = "1000697";//博绿网 芝麻商户应用ID
@@ -65,29 +71,31 @@ public class SesameCredit extends CordovaPlugin {
       //不过建议auth_code参数组织到biz_params里面进行加密加签。
       Map<String, String> extParams = new HashMap<String, String>();
       //extParams.put("auth_code", "M_FACE");
-
+      Toast.makeText(cordova.getActivity(), "博绿网芝麻信用授权中", Toast.LENGTH_SHORT).show();
       try {
         //请求授权
         CreditAuthHelper.creditAuth(activity, appId, params, sign, extParams, new ICreditListener() {
           @Override
           public void onComplete(Bundle result) {
+            Toast.makeText(cordova.getActivity(), "芝麻信用授权完成", Toast.LENGTH_SHORT).show();
             //从result中获取params参数,然后解析params数据,可以获取open_id。
             if (result != null) {
               Set<String> keys = result.keySet();
               for (String key : keys) {
                 Log.d(TAG, key + " = " + result.getString(key));
-                callbackContext.success(key + " = " + result.getString(key));
               }
             }
           }
 
           @Override
           public void onError(Bundle result) {
+            Toast.makeText(cordova.getActivity(), "芝麻信用授权失败", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "doCreditAuthRequest.onError.");
           }
 
           @Override
           public void onCancel() {
+            Toast.makeText(cordova.getActivity(), "芝麻信用授权取消", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "doCreditAuthRequest.onCancel.");
           }
         });
@@ -96,14 +104,16 @@ public class SesameCredit extends CordovaPlugin {
       }
       return true;
     }
-    if ("test".equals(action)) { //测试
+
+    if ("test".equals(action)) { //测试方法
       callbackContext.success("cordova插件成功返回参数=" + args.getString(0));
       callbackContext.error("cordova插件失败返回参数=" + args.getString(1));
       return true;
     }
     return false;
   }
-   //传入参数  请求芝麻信用授权 未使用
+
+  //传入参数  请求芝麻信用授权 未使用
   private void doCreditRequest() {
     //测试数据，此部分数据，请由商户服务端生成下发，具体见开放平台商户对接文档
     //请注意params、sign为encode过后的数据
