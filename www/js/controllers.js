@@ -3895,14 +3895,14 @@ angular.module('starter.controllers', [])
     //芝麻信用调用
     $scope.initCreditChart();
 
-    //获取芝麻信用授权及添加授权
+    //获取芝麻信用授权及添加授权获取芝麻信用积分
     $scope.params={
       userid:localStorage.getItem("usertoken"),
-      OpenId:'' //可选填 确认用户是否授权
+      OpenId:localStorage.getItem("zmOpenId")||'' //可选填 确认用户是否授权
     }
 
     AccountService.getCreditOpenId($scope.params).success(function (data) {
-     console.log(data);
+      $scope.authentication=data.Values.authentication;//是否授权
    })
 
   })
@@ -3917,18 +3917,6 @@ angular.module('starter.controllers', [])
           //芝麻应用授权SDK调用
           SesameCredit.sesamecredit(data.Values.param,data.Values.sign,function (data) {
             /*localStorage.setItem("zmOpenId")*/
-            //修改芝麻信用值
-            $scope.zmparams={
-              userid:localStorage.getItem("usertoken"),
-              zmscore:736
-            }
-             AccountService.modifyZmScore($scope.zmparams).success(function (data) {
-               if(data.Key==200){
-                 CommonService.platformPrompt('修改芝麻信用值成功', 'close');
-               }else {
-                 CommonService.platformPrompt('修改芝麻信用值失败', 'close');
-               }
-             })
           },function (error) {
 
           });
@@ -3941,8 +3929,27 @@ angular.module('starter.controllers', [])
   })
 
   //芝麻信用手机号授权
-  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService) {
+  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+    $scope.signinfo = {}
+    $scope.authorization = function () {
+      //芝麻信用参数签名  服务器那边就能传给我们一个经过加密的param和一个经过加密的sign
+      //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
+      AccountService.signZmmObile($scope.signinfo).success(function (data) {
+        console.log(data);
+        if (data.Key == 200) {
+          //芝麻应用授权SDK调用
+          SesameCredit.sesamecredit(data.Values.param,data.Values.sign,function (data) {
+/*            alert(JSON.stringify(data));*/
+            /*localStorage.setItem("zmOpenId")*/
+          },function (error) {
+    /*        alert(JSON.stringify(error))*/
+          });
+        } else {
+          CommonService.platformPrompt('芝麻授权签名失败', 'close');
+        }
 
+      })
+    }
 
   })
   //帮助信息共用模板

@@ -19,6 +19,6 @@
   </ion-content>
   <div class="row row-horizontal-around bottom-0" keyboard-attach>
     <a class="col-40 button button-calm block" ng-href="#/help/14"><i class="icon ion-ios-book"></i> 信用解读</a>
-    <a class="col-40 button button-balanced  " ng-href="#/creditnoauthorization"><i class="icon ion-ribbon-a"></i> 信用授权</a>
+    <a ng-if="!authentication" class="col-40 button button-balanced  " ng-href="#/creditnoauthorization"><i class="icon ion-ribbon-a"></i> 信用授权</a>
   </div>
 </ion-view>
