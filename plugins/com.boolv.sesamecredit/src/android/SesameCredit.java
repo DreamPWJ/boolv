@@ -97,13 +97,13 @@ public class SesameCredit extends CordovaPlugin {
       return true;
     }
     if ("test".equals(action)) { //测试
-      callbackContext.success("=====测试cordova插件" + args.getString(0));
-      callbackContext.error("=====测试cordova插件" + args.getString(1));
+      callbackContext.success("cordova插件成功返回参数=" + args.getString(0));
+      callbackContext.error("cordova插件失败返回参数=" + args.getString(1));
       return true;
     }
     return false;
   }
-
+   //传入参数  请求芝麻信用授权 未使用
   private void doCreditRequest() {
     //测试数据，此部分数据，请由商户服务端生成下发，具体见开放平台商户对接文档
     //请注意params、sign为encode过后的数据

@@ -3807,85 +3807,104 @@ angular.module('starter.controllers', [])
 
   })
   //芝麻信用
-  .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService) {
+  .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService,AccountService) {
 
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('mycredit'));
-    option = {
-      tooltip: {
-        formatter: "{a} <br/>{b} : {c}"
-      },
-      /*      toolbox: {//保存图片 刷新图片
-       feature: {
-       restore: {},
-       saveAsImage: {}
-       }
-       },*/
-      series: [
-        {
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: [
-                [0.2, 'rgb(255,69,49)'],
-                [0.4, 'rgb(255,130,16)'],
-                [0.6, 'rgb(189,219,8)'],
-                [0.8, 'rgb(82,223,74)'],
-                [1, 'rgb(0,219,132)']
-              ],
-              width: 20
+    $scope.initMyChart=function () {  //我的信用图表初始化
+      var myChart = echarts.init(document.getElementById('mycredit'));
+      option = {
+        tooltip: {
+          formatter: "{a} <br/>{b} : {c}"
+        },
+        /*      toolbox: {//保存图片 刷新图片
+         feature: {
+         restore: {},
+         saveAsImage: {}
+         }
+         },*/
+        series: [
+          {
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: [
+                  [0.2, 'rgb(255,69,49)'],
+                  [0.4, 'rgb(255,130,16)'],
+                  [0.6, 'rgb(189,219,8)'],
+                  [0.8, 'rgb(82,223,74)'],
+                  [1, 'rgb(0,219,132)']
+                ],
+                width: 20
+              },
             },
-          },
-          max: 990,
-          name: '信用分指标',
-          type: 'gauge',
-          detail: {
-            formatter: $rootScope.userinfo.score, textStyle: {
-              color: 'auto',
-              fontSize: 38
-            }
-          },
-          data: [{value: $rootScope.userinfo.score, name: '我的信用分'}]
-        }
-      ]
-    };
-    myChart.setOption(option, true);
+            max: 990,
+            name: '信用分指标',
+            type: 'gauge',
+            detail: {
+              formatter: $rootScope.userinfo.score, textStyle: {
+                color: 'auto',
+                fontSize: 38
+              }
+            },
+            data: [{value: $rootScope.userinfo.score, name: '我的信用分'}]
+          }
+        ]
+      };
+      myChart.setOption(option, true);
+    }
+    $scope.initCreditChart=function () {  //芝麻信用图表初始化
+      var zmChart = echarts.init(document.getElementById('zmcredit'));
+      zmoption = {
+        tooltip: {
+          formatter: "{a} <br/>{b} : {c}"
+        },
+        series: [
+          {
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: [
+                  [0.2, 'rgb(255,69,49)'],
+                  [0.4, 'rgb(255,130,16)'],
+                  [0.6, 'rgb(189,219,8)'],
+                  [0.8, 'rgb(82,223,74)'],
+                  [1, 'rgb(0,219,132)']
+                ],
+                width: 20
+              }
+            },
+            min: 350,
+            max: 950,
+            name: '信用分指标',
+            type: 'gauge',
+            detail: {
+              formatter: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, textStyle: {
+                color: 'auto',
+                fontSize: 38
+              }
+            },
+            data: [{value: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, name: '芝麻信用分'}]
+          }
+        ]
+      };
+      zmChart.setOption(zmoption, true);
+    }
 
-    var zmChart = echarts.init(document.getElementById('zmcredit'));
-    zmoption = {
-      tooltip: {
-        formatter: "{a} <br/>{b} : {c}"
-      },
-      series: [
-        {
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: [
-                [0.2, 'rgb(255,69,49)'],
-                [0.4, 'rgb(255,130,16)'],
-                [0.6, 'rgb(189,219,8)'],
-                [0.8, 'rgb(82,223,74)'],
-                [1, 'rgb(0,219,132)']
-              ],
-              width: 20
-            }
-          },
-          min: 350,
-          max: 950,
-          name: '信用分指标',
-          type: 'gauge',
-          detail: {
-            formatter: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, textStyle: {
-              color: 'auto',
-              fontSize: 38
-            }
-          },
-          data: [{value: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, name: '芝麻信用分'}]
-        }
-      ]
-    };
-    zmChart.setOption(zmoption, true);
+    //我的信用调用
+    $scope.initMyChart();
+    //芝麻信用调用
+    $scope.initCreditChart();
+
+    //获取芝麻信用授权及添加授权
+    $scope.params={
+      userid:localStorage.getItem("usertoken"),
+      OpenId:'' //可选填 确认用户是否授权
+    }
+
+    AccountService.getCreditOpenId($scope.params).success(function (data) {
+     console.log(data);
+   })
+
   })
   //芝麻信用身份证授权
   .controller('CreditNoAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
@@ -3896,8 +3915,20 @@ angular.module('starter.controllers', [])
       AccountService.signZm($scope.signinfo).success(function (data) {
         if (data.Key == 200) {
           //芝麻应用授权SDK调用
-          SesameCredit.sesamecredit(data.Values.parem,data.Values.sign,function (data) {
-      
+          SesameCredit.sesamecredit(data.Values.param,data.Values.sign,function (data) {
+            /*localStorage.setItem("zmOpenId")*/
+            //修改芝麻信用值
+            $scope.zmparams={
+              userid:localStorage.getItem("usertoken"),
+              zmscore:736
+            }
+             AccountService.modifyZmScore($scope.zmparams).success(function (data) {
+               if(data.Key==200){
+                 CommonService.platformPrompt('修改芝麻信用值成功', 'close');
+               }else {
+                 CommonService.platformPrompt('修改芝麻信用值失败', 'close');
+               }
+             })
           },function (error) {
 
           });
@@ -3907,8 +3938,6 @@ angular.module('starter.controllers', [])
 
       })
     }
-
-
   })
 
   //芝麻信用手机号授权
