@@ -31,12 +31,23 @@
   <preference name="WECHAT_APPKEY" value="wx3a43052a36e31c53"/>
   <preference name="WECHAT_APPSECRET" value="6a3041d9f45d265f79d20bacf6d4965b"/>
   <preference name="orientation" value="portrait" /> <!--强制竖屏显示 default表示landscape和portrait均可用，landscape(横屏)，portrait(竖屏)-->
+  <feature name="SplashScreen">
+    <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+  </feature>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
   <feature name="JPushPlugin">
     <param name="ios-package" value="JPushPlugin"/>
     <param name="onload" value="true"/>
+  </feature>
+  <feature name="File">
+    <param name="ios-package" value="CDVFile" />
+    <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+  </feature>
+  <feature name="FileTransfer">
+    <param name="ios-package" value="CDVFileTransfer" />
+    <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
   </feature>
   <platform name="android">
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
