@@ -97,7 +97,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         if (window.plugins.jPushPlugin.isPlatformIOS()) {
           window.plugins.jPushPlugin.setBadge(0);
           window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-        } else if (window.plugins.jPushPlugin.isAndroid()) {
+        } else if (device.platform == "Android") {
           window.plugins.jPushPlugin.setLatestNotificationNum(3);
           window.plugins.jPushPlugin.clearAllNotification();
         }
