@@ -46,12 +46,12 @@
         <a ng-href="" ng-if="goodtype==1||goodtype==2" ng-repeat="item in addrliststatus | limitTo:1" class="item item-icon-right">
           <h2>收货人 : {{item.username  }}</h2>
           <p>手机 : {{item.mobile }}</p>
-          <p class="text-wrap">地址 : {{item.addr}}</p>
+          <p class="text-wrap">地址 : {{item.areaname+item.addr}}</p>
         </a>
         <a ng-href="{{spaddrliststatus.length==0?'#/adddealaddress':''}}" ng-if="goodtype==3"  class="item item-icon-right">
           <h2>{{deliverDetails.OrderType==1?'卖':'供'}}货人 : {{spaddrliststatus[0].username}}</h2>
           <p>手机 : {{spaddrliststatus[0].mobile}}</p>
-          <p class="text-wrap">地址 : {{spaddrliststatus[0].addr }}</p>
+          <p class="text-wrap">地址 : {{spaddrliststatus[0].areaname+spaddrliststatus[0].addr }}</p>
           <i ng-if="spaddrliststatus.length==0"  class="icon ion-android-add calm"></i>
         </a>
 

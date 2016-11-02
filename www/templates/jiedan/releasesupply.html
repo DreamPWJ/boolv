@@ -15,7 +15,7 @@
       <a ng-href="" class="item  item-icon-right" ng-repeat="item in addrliststatus | limitTo:1">
         <h2><strong>收货人 :</strong> {{item.username}}</h2>
         <h2><strong>手机 :</strong> {{item.mobile}}</h2>
-        <h2 class="text-wrap"><strong>地址 :</strong> {{item.addr}}</h2>
+        <h2 class="text-wrap"><strong>地址 :</strong> {{item.areaname+item.addr}}</h2>
    <!--  <i class="icon ion-ios-arrow-right grey"></i>-->
       </a>
       <p class="text-right  padding"><a class="calm subdued icon ion-checkmark-circled" ng-href="#/help/18"

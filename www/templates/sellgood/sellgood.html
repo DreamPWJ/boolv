@@ -17,7 +17,7 @@
       <div ng-click="selectSupplier(item)" class="item item-icon-right" ng-repeat="item in supplierList">
         <h2>姓名 : {{item.UserName | hidepartinfo : 'name' }} <span class="item-note">距离 : {{item.Range}}</span></h2>
         <p>手机号码 : <span class="calm">{{item.Motel | hidepartinfo : 'phone'}}</span></p>
-        <p class="text-wrap">地址 : {{item.Addr | hidepartinfo : 'address'}}</p>
+        <p class="text-wrap">地址 : {{(item.areaname+item.Addr) | hidepartinfo : 'address'}}</p>
         <i class="icon ion-ios-arrow-right grey-arrow-right"></i>
       </div>
 
