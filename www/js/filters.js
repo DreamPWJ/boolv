@@ -20,7 +20,7 @@ angular.module('starter.filter', [])
         return str.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
       }
       if (type == 'address') { //地址信息
-        return str.replace(str, '*****');
+        return str.replace(str.substring(str.lastIndexOf(','),str.length), '*****');
       }
     }
   })
