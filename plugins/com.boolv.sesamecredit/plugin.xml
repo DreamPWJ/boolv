@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="com.boolv.sesamecredit"
-    version="1.0.0">
-    <name>SesameCredit</name>
-    <description>SesameCredit Plugin</description>
-    <license>Apache 2.0</license>
-    <keywords>Boolv,SesameCredit,PANWEIJI</keywords>
-<!-- 引入js 通过js调用原生SDK方法-->
+        id="com.boolv.sesamecredit"
+        version="1.0.0">
+  <!-- 插件名称 -->
+  <name>SesameCredit</name>
+  <!-- 插件描述 -->
+  <description>SesameCredit Plugin</description>
+  <!-- 插件license -->
+  <license>Apache 2.0</license>
+  <keywords>Boolv,SesameCredit,PANWEIJI</keywords>
+  <!-- 插件所依赖的cordova版本 -->
+  <engines>
+    <engine name="cordova" version=">=3.0.0" />
+  </engines>
+
+  <!-- 引入js 通过js调用原生SDK方法-->
+  <!-- 插件模块，src指明js文件路径，clobbers指明前台js调用的接口名,这个配置会被ionic自动编译到项目的platforms/android/assets/cordova_plugin.js 文件中,其中本配置文件中的开头的id指定了src所编译后存放的目录，version指定了本插件的版本 -->
   <js-module src="www/SesameCredit.js" name="SesameCredit">
-    <clobbers target="SesameCredit" />
+    <clobbers target="SesameCredit"/>
   </js-module>
 
   <!-- android -->
   <platform name="android">
+    <!-- 配置Android项目中的 res/xml/config.xml 文件，编译后会将feature配置到widget中，注意这个feature的name 值，这个值和我们www/SesameCredit.js 文件中的第三个参数对应-->
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="SesameCredit">
+        <param name="android-package" value="com.boolv.sesamecredit.SesameCredit"/>
+      </feature>
+    </config-file>
 
-  <config-file target="res/xml/config.xml" parent="/*">
-    <feature name="SesameCredit">
-      <param name="android-package" value="com.boolv.sesamecredit.SesameCredit" />
-    </feature>
-  </config-file>
-
-   <!-- 权限配置-->
+    <!-- 权限配置-->
     <config-file target="AndroidManifest.xml" parent="/*">
       <uses-permission android:name="android.permission.INTERNET"/>
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     </config-file>
 
-  <!--  配置Activity-->
+    <!--  配置Activity-->
     <config-file target="AndroidManifest.xml" parent="/manifest/application">>
       <activity
         android:name="com.android.moblie.zmxy.antgroup.creditsdk.app.SDKActivity"
         android:label="芝麻信用"
         android:screenOrientation="portrait"/>
     </config-file>
-    <!--   资源引入-->
-    <source-file src="src/android/SesameCredit.java" target-dir="src/com/boolv/sesamecredit" />
-    <source-file src="src/android/CreditAuthHelper.java" target-dir="src/com/boolv/sesamecredit" />
+
+    <!--   资源引入 指定编译后的文件位置-->
+    <source-file src="src/android/SesameCredit.java" target-dir="src/com/boolv/sesamecredit"/>
+    <source-file src="src/android/CreditAuthHelper.java" target-dir="src/com/boolv/sesamecredit"/>
     <source-file src="src/android/libs/zmxySDK.jar" target-dir="libs"/>
   </platform>
 

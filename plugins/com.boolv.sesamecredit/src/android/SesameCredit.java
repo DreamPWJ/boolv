@@ -1,7 +1,10 @@
-/*
-  芝麻信用 android SDK调用
-  潘维吉
-*/
+
+/**
+  js调用java方法
+ 必须继承CordovaPlugin
+ 芝麻信用 android SDK调用
+ 潘维吉
+ */
 package com.boolv.sesamecredit;
 
 import android.view.Window;
