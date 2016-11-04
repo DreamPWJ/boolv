@@ -19,10 +19,10 @@
       </a>
       <div ng-hide="showme1">
         <a ng-href="" class="item ">
-          <h2>{{deliverDetails.OrderType==1?'供货商':'买家'}} : {{deliverDetails.Username}}</h2>
+          <h2>{{deliverDetails.OrderType==1?'供货商':'买家'}} :  {{deliverDetails.Status>=2?(deliverDetails.Username):(deliverDetails.Username|hidepartinfo : 'name')}} </h2>
         </a>
         <a ng-href="" class="item ">
-          <h2>手机号码 : {{deliverDetails.Usermotel}}</h2>
+          <h2>手机号码 : {{deliverDetails.Status>=2?(deliverDetails.Usermotel):(deliverDetails.Usermotel | hidepartinfo : 'phone')}} </h2>
         </a>
         <a ng-href="" class="item ">
           <h2>订单状态 : {{deliverDetails.StatusName}}</h2>
