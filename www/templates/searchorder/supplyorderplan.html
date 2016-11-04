@@ -11,7 +11,7 @@
     <button ng-if="orderStatus>1" class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
+  <ion-content overflow-scroll="false" class=" stable-bg"  has-bouncing="true" ng-class="{true:'has-button-footer'}[orderStatus>1]">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>订单号 : </strong>{{supplyPlanDetails.No}}<span class="item-note"><i
@@ -55,9 +55,9 @@
     </div>
 
   </ion-content>
-  <div  class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
+  <div  ng-if="orderStatus>1" class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
     <a  ng-if="((orderStatus==2||orderStatus==3)&&isSupply)" class="col-40 button button-balanced "  ng-href="#/enteringnum/{{supplyPlanDetails}}">提交供货单</a>
-    <a class=" button button-calm " ng-class="{true:'col-40',false:'full-image'}[((orderStatus==2||orderStatus==3)&&isSupply)]"  ng-href="#/supplyorderlist">供货记录</a>
+    <a  ng-if="orderStatus>1" class=" button button-calm " ng-class="{true:'col-40',false:'full-image'}[((orderStatus==2||orderStatus==3)&&isSupply)]"  ng-href="#/supplyorderlist">供货记录</a>
   </div>
 
 </ion-view>
