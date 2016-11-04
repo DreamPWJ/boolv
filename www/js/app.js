@@ -145,14 +145,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         // listen for Online event
         $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
           var onlineState = networkState;
-          console.log("device online...");
         })
 
         // listen for Offline event
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 不能连接到博绿网服务器", 'close');
+          CommonService.platformPrompt("网络异常 无法连接到博绿网服务器", 'close');
           CommonService.ionicLoadingHide();//取消加载动画
         })
 
@@ -198,9 +197,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     //ion-content to have overflow-scroll='false'
     $ionicConfigProvider.scrolling.jsScrolling(false);
     //Checkbox style. Android defaults to square and iOS defaults to circle
-    $ionicConfigProvider.form.checkbox('circle')
+    $ionicConfigProvider.form.checkbox('circle');
     //Toggle item style. Android defaults to small and iOS defaults to large.
-    $ionicConfigProvider.form.toggle('large')
+    $ionicConfigProvider.form.toggle('large');
     //原生动画效果统一配置
     $ionicNativeTransitionsProvider.setDefaultOptions({
       duration: 200, // in milliseconds (ms), default 400,

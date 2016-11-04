@@ -8,7 +8,7 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 供货计划</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
+    <button ng-if="orderStatus>1" class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
@@ -55,9 +55,9 @@
     </div>
 
   </ion-content>
-  <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
-    <a class="col-40 button button-balanced " ng-disabled="!((orderStatus==2||orderStatus==3)&&isSupply)" ng-href="#/enteringnum/{{supplyPlanDetails}}">提交供货单</a>
-    <a class="col-40  button button-calm "  ng-href="#/supplyorderlist">供货记录</a>
+  <div  class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
+    <a  ng-if="((orderStatus==2||orderStatus==3)&&isSupply)" class="col-40 button button-balanced "  ng-href="#/enteringnum/{{supplyPlanDetails}}">提交供货单</a>
+    <a class=" button button-calm " ng-class="{true:'col-40',false:'full-image'}[((orderStatus==2||orderStatus==3)&&isSupply)]"  ng-href="#/supplyorderlist">供货记录</a>
   </div>
 
 </ion-view>

@@ -7,8 +7,8 @@
   <ion-nav-title>
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 收货单详情</h1>
   </ion-nav-title>
-  <ion-nav-buttons side="right">
-    <button class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
+  <ion-nav-buttons  side="right">
+    <button   ng-if="orderStatus>1" class="button icon ion-navicon button-clear" ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
   <ion-content overflow-scroll="false" class=" stable-bg" has-bouncing="true" ng-class="{true:'has-button-footer'}[(OrderType==2&&orderStatus==4)||orderStatus==3||(OrderType==1&&orderStatus==4)||(OrderType==2&&orderStatus==5)||(OrderType==1&&orderStatus==6)||(OrderType==2&&orderStatus==7)]">
@@ -53,8 +53,8 @@
   <div  ng-if="(OrderType==2&&orderStatus==4)||orderStatus==3||(OrderType==1&&orderStatus==4)||(OrderType==2&&orderStatus==5)||(OrderType==1&&orderStatus==6)||(OrderType==2&&orderStatus==7)"
     class=" padding light-bg bottom-0" keyboard-attach>
     <a  ng-if="orderStatus==3" class="full-image button button-calm "  ng-href="#/sign">签收</a>
-    <a ng-if="OrderType==2&&orderStatus==4" class="full-image button button-balanced "  ng-click="paytopaymentsubmit()">到付款</a>
-    <a ng-if="(OrderType==1&&orderStatus==4)||(OrderType==2&&orderStatus==5)" class="full-image button button-balanced "  ng-href="#/addproduct">验货</a>
+    <a ng-if="OrderType==2&&orderStatus==4" class="full-image button button-calm "  ng-click="paytopaymentsubmit()">到付款</a>
+    <a ng-if="(OrderType==1&&orderStatus==4)||(OrderType==2&&orderStatus==5)" class="full-image button button-calm "  ng-href="#/addproduct">验货</a>
     <a ng-if="OrderType==1&&orderStatus==6" class="full-image button button-calm " ng-click="payfinalpaymentsubmit()"  > 结算</a>
     <a ng-if="OrderType==2&&orderStatus==7" class="full-image button button-calm " ng-click="payfinalpaymentsubmit()" >支付尾款</a>
   </div>

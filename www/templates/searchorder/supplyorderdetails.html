@@ -8,10 +8,10 @@
     <h1 class="title "><img id="logo" src="img/logo.png" alt=""/> 供货单详情</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-navicon button-clear"  ng-click="openPopover($event)">
+    <button ng-if="orderStatus>1" class="button icon ion-navicon button-clear"  ng-click="openPopover($event)">
     </button>
   </ion-nav-buttons>
-  <ion-content overflow-scroll="false" class="has-button-footer stable-bg" has-bouncing="true">
+  <ion-content overflow-scroll="false" class=" stable-bg" has-bouncing="true" ng-class="{true:'has-button-footer'}[(orderStatus==2)||(OrderType==1&&orderStatus==5)||(OrderType==2&&orderStatus==6)]">
     <div class="list">
       <a ng-click="toggle(1)" hide-show class="item item-borderless ">
         <h2><strong>订单号 : </strong>{{supplyDetails.No}}<span class="item-note"><i
@@ -45,10 +45,10 @@
     </div>
 
   </ion-content>
-  <div class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
-    <a class="col-40 button button-balanced " ng-disabled="orderStatus!=2"  ng-href="#/adddeliverlist">发货</a>
-    <a ng-if="OrderType==1" class="col-40  button button-calm " ng-disabled="orderStatus!=5" ng-href="#/supplyexamineorder">审核验收</a>
-    <a ng-if="OrderType==2" class="col-40  button button-calm " ng-disabled="orderStatus!=6" ng-href="#/supplyexamineorder">审核验收</a>
+  <div ng-if="(orderStatus==2)||(OrderType==1&&orderStatus==5)||(OrderType==2&&orderStatus==6)" class="padding light-bg bottom-0" keyboard-attach>
+    <a ng-if="orderStatus==2" class="full-image button button-calm "   ng-href="#/adddeliverlist">发货</a>
+    <a ng-if="(OrderType==1&&orderStatus==5)||(OrderType==2&&orderStatus==6)" class="full-image  button button-calm" ng-href="#/supplyexamineorder">审核验收</a>
+
   </div>
 
 </ion-view>
