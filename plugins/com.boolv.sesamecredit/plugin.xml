@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--  芝麻信用 潘维吉
+ id插件唯一标示 -->
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="com.boolv.sesamecredit"
         version="1.0.0">
@@ -9,7 +10,7 @@
   <description>SesameCredit Plugin</description>
   <!-- 插件license -->
   <license>Apache 2.0</license>
-  <keywords>Boolv,SesameCredit,PANWEIJI</keywords>
+  <keywords>Boolv,SesameCredit</keywords>
   <!-- 插件所依赖的cordova版本 -->
   <engines>
     <engine name="cordova" version=">=3.0.0" />
@@ -37,7 +38,7 @@
     </config-file>
 
     <!--  配置Activity-->
-    <config-file target="AndroidManifest.xml" parent="/manifest/application">>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <activity
         android:name="com.android.moblie.zmxy.antgroup.creditsdk.app.SDKActivity"
         android:label="芝麻信用"
@@ -52,9 +53,10 @@
 
   <!-- ios 平台-->
   <platform name="ios">
+    <!--编译后会将feature配置到widget中，注意这个feature的name 值，这个值和我们www/SesameCredit.js 文件中的第三个参数对应-->
   <config-file target="config.xml" parent="/*">
     <feature name="SesameCredit">
-      <param name="ios-package" value="SesameCredit"/>
+      <param name="ios-package" value="SesameCreditDelegate"/>
     </feature>
   </config-file>
 
