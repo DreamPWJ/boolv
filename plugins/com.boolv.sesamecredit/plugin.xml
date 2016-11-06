@@ -50,5 +50,20 @@
     <source-file src="src/android/libs/zmxySDK.jar" target-dir="libs"/>
   </platform>
 
+  <!-- ios 平台-->
+  <platform name="ios">
+  <config-file target="config.xml" parent="/*">
+    <feature name="SesameCredit">
+      <param name="ios-package" value="SesameCredit"/>
+    </feature>
+  </config-file>
 
+  <header-file src="src/ios/SesameCreditDelegate.h"/>
+  <source-file src="src/ios/SesameCreditDelegate.m"/>
+
+  <header-file src="src/ios/ZMDependUponSDK.framework/Versions/A/Headers/ZMDependUponSDK.h"/>
+  <header-file src="src/ios/ZMCreditSDK.framework/Versions/A/Headers/ALCreditService.h"/>
+
+
+  </platform>
 </plugin>
