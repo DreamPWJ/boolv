@@ -37,6 +37,9 @@
         "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.boolv.trading"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.boolv.trading"
         },
