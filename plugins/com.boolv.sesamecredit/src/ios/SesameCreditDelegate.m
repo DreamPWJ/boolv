@@ -1,8 +1,9 @@
 // 芝麻信用 潘维吉
 
-#import <Cordova/CDV.h>
+
 #import "SesameCreditDelegate.h"
 #import "ALCreditService.h"
+#import <Cordova/CDVPlugin.h>
 
 
 @implementation SesameCreditDelegate
