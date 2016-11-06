@@ -2,7 +2,7 @@
 
 
 #import "SesameCreditDelegate.h"
-#import "ALCreditService.h"
+#import <ZMCreditSDK/ALCreditService.h>
 #import <Cordova/CDVPlugin.h>
 
 
@@ -17,7 +17,7 @@
   [[ALCreditService sharedService] resgisterApp];
 
    // 商户需要从服务端获取
-   NSString* params = [command.arguments objectAtIndex:0];
+    NSString* params = [command.arguments objectAtIndex:0];
 
     NSString* sign = [command.arguments objectAtIndex:1];
 
