@@ -74,7 +74,7 @@
     <framework src="EventKit.framework"/>
     <framework src="AssetsLibrary.framework"/>
     <framework src="CoreMotion.framework"/>
-    <framework src="Libz.dylib"/>
+    <framework src="libz.tbd"/>
     <framework src="SystemConfiguration.framework"/>
     <framework src="CoreTelephony.framework "/>
   </platform>

@@ -158,6 +158,11 @@
           </array>
         </dict>
 
+
+      </array>
+    </config-file>
+    <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+      <array>
         <key>NSAppTransportSecurity</key>
 
         <dict>
@@ -266,6 +271,7 @@
         </dict>
       </array>
       <key>LSApplicationQueriesSchemes</key>
+
       <array>
         <!-- 微信 URL Scheme 白名单-->
         <string>wechat</string>
@@ -309,7 +315,6 @@
         <string>fbshareextension</string>
       </array>
     </config-file>
-
     <header-file src="src/ios/UmengPlugin.h"/>
     <source-file src="src/ios/UmengPlugin.m"/>
 
