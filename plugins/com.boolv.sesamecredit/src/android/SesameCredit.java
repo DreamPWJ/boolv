@@ -1,9 +1,9 @@
 
 /**
-  js调用java方法
- 必须继承CordovaPlugin
- 芝麻信用 android SDK调用
- 潘维吉
+ * js调用java方法
+ * 必须继承CordovaPlugin
+ * 芝麻信用 android SDK调用
+ * 潘维吉
  */
 package com.boolv.sesamecredit;
 
@@ -24,6 +24,7 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import com.android.moblie.zmxy.antgroup.creditsdk.app.CreditApp;
 import com.android.moblie.zmxy.antgroup.creditsdk.app.ICreditListener;
 
@@ -44,7 +45,6 @@ public class SesameCredit extends CordovaPlugin {
   }
 
 
-
   //应用调用 Andriod_SDK 接口时,如果要成功接收到回调,需要在调用接口的 Activity 的 onActivityResult 方法中
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -54,6 +54,7 @@ public class SesameCredit extends CordovaPlugin {
     // 回调事件相应
     CreditApp.onActivityResult(requestCode, resultCode, data);
   }
+
   /**
    * Executes the request and returns PluginResult.
    *
@@ -63,10 +64,10 @@ public class SesameCredit extends CordovaPlugin {
    * @return True if the action was valid, false otherwise.
    */
   @Override
-  public boolean execute(final String action, final CordovaArgs args,  CallbackContext callbackContext) throws JSONException {
+  public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
     Log.i(TAG, "执行的方法是: " + action);
-     Activity activity = this.cordova.getActivity();
-     Window window = activity.getWindow();
+    Activity activity = this.cordova.getActivity();
+    Window window = activity.getWindow();
     if ("sesamecredit".equals(action)) {  //芝麻授权
       //请由商户服务端生成下发，具体见开放平台商户对接文档
       //请注意params、sign为encode过后的数据
@@ -74,7 +75,7 @@ public class SesameCredit extends CordovaPlugin {
       String appId = "1000697";//博绿网 芝麻商户应用ID
       String sign = args.getString(1);
       //请求芝麻信用授权方法
-      this.doCreditRequest(params,appId,sign,activity,callbackContext);
+      this.doCreditRequest(params, appId, sign, activity, callbackContext);
       return true;
     }
 
@@ -87,7 +88,7 @@ public class SesameCredit extends CordovaPlugin {
   }
 
   //传入参数  请求芝麻信用授权
-  private void doCreditRequest(String params,String appId,String sign,Activity activity,CallbackContext callbackContext) {
+  private void doCreditRequest(String params, String appId, String sign, Activity activity, CallbackContext callbackContext) {
     //extParams参数可以放置一些额外的参数，例如当biz_params参数忘记组织auth_code参数时，可以通过extParams参数带入auth_code。
     //不过建议auth_code参数组织到biz_params里面进行加密加签。
     Map<String, String> extParams = new HashMap<String, String>();
