@@ -7,8 +7,7 @@
 //
 
 #import "SesameCreditDelegate.h"
-#import "ViewController.h"
-#import <ZMCreditSDK/ALCreditService.h>
+#import "ALCreditService.h"
 @interface SesameCreditDelegate ()
 @property (strong, nonatomic) UINavigationController *navController;
 @end
@@ -19,18 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    [[ALCreditService sharedService] resgisterApp];
 
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    ViewController* controller = [[ViewController alloc] init];
-
-    self.navController = [[UINavigationController alloc] init];
-    [self.navController pushViewController:controller animated:YES];
-
-    [controller.view setBackgroundColor:[UIColor whiteColor]];
-    self.window.rootViewController = self.navController;
-
-    [self.window makeKeyAndVisible];
     return YES;
 }
 
