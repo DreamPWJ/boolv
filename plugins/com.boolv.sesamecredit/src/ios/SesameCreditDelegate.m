@@ -13,6 +13,7 @@
 }
  //芝麻授权方法
 - (void)sesamecredit {
+  CDVPluginResult* pluginResult = nil;
   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ios系统芝麻信用cordova插件调用成功"];
 }
 
