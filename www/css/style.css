@@ -214,6 +214,11 @@ background-color:  #aaa;
 .button.back-button{
   border: none;
 }
+/* 去掉时候点击按钮灰色边框颜色*/
+.button.active, .button.activated {
+  border-color:transparent!important;
+  background-color: #e5e5e5; }
+
 /* modal显示非全屏 显示模态背景*/
 .active .modal-backdrop-bg {
   background-color: rgba(0,0,0,0.3);
