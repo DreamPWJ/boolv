@@ -3807,10 +3807,10 @@ angular.module('starter.controllers', [])
 
   })
   //芝麻信用
-  .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService,AccountService) {
+  .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService, AccountService) {
 
     // 基于准备好的dom，初始化echarts实例
-    $scope.initMyChart=function () {  //我的信用图表初始化
+    $scope.initMyChart = function () {  //我的信用图表初始化
       var myChart = echarts.init(document.getElementById('mycredit'));
       option = {
         tooltip: {
@@ -3852,7 +3852,7 @@ angular.module('starter.controllers', [])
       };
       myChart.setOption(option, true);
     }
-    $scope.initCreditChart=function () {  //芝麻信用图表初始化
+    $scope.initCreditChart = function () {  //芝麻信用图表初始化
       var zmChart = echarts.init(document.getElementById('zmcredit'));
       zmoption = {
         tooltip: {
@@ -3896,14 +3896,14 @@ angular.module('starter.controllers', [])
     $scope.initCreditChart();
 
     //获取芝麻信用授权及添加授权获取芝麻信用积分
-    $scope.params={
-      userid:localStorage.getItem("usertoken"),
-      OpenId:localStorage.getItem("zmOpenId")||'' //可选填 确认用户是否授权
+    $scope.params = {
+      userid: localStorage.getItem("usertoken"),
+      OpenId: localStorage.getItem("zmOpenId") || '' //可选填 确认用户是否授权
     }
 
     AccountService.getCreditOpenId($scope.params).success(function (data) {
-      $scope.authentication=data.Values.authentication;//是否授权
-   })
+      $scope.authentication = data.Values.authentication;//是否授权
+    })
 
   })
   //芝麻信用身份证授权
@@ -3915,9 +3915,22 @@ angular.module('starter.controllers', [])
       AccountService.signZm($scope.signinfo).success(function (data) {
         if (data.Key == 200) {
           //芝麻应用授权SDK调用
-          SesameCredit.sesamecredit(data.Values.param,data.Values.sign,function (data) {
-            /*localStorage.setItem("zmOpenId")*/
-          },function (error) {
+          SesameCredit.sesamecredit(data.Values.param, data.Values.sign, function (data) {
+            //获取芝麻信用的返回数据传到服务器端解密再获取openId
+            $scope.params = {
+              userid: localStorage.getItem("usertoken"),
+              OpenId: data //可选填
+            }
+            AccountService.getCreditOpenId($scope.params).success(function (data) {
+              if(data.key=200){
+                CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
+              }else {
+                CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
+              }
+
+            })
+            $state.go("mycredit");
+          }, function (error) {
 
           });
         } else {
@@ -3938,11 +3951,22 @@ angular.module('starter.controllers', [])
         console.log(data);
         if (data.Key == 200) {
           //芝麻应用授权SDK调用
-          SesameCredit.sesamecredit(data.Values.param,data.Values.sign,function (data) {
-/*            alert(JSON.stringify(data));*/
-            /*localStorage.setItem("zmOpenId")*/
-          },function (error) {
-    /*        alert(JSON.stringify(error))*/
+          SesameCredit.sesamecredit(data.Values.param, data.Values.sign, function (data) {
+            //获取芝麻信用的返回数据传到服务器端解密再获取openId
+            $scope.params = {
+              userid: localStorage.getItem("usertoken"),
+              OpenId: data //可选填
+            }
+            AccountService.getCreditOpenId($scope.params).success(function (data) {
+              if(data.key=200){
+                CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
+              }else {
+                CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
+              }
+
+            })
+            $state.go("mycredit");
+          }, function (error) {
           });
         } else {
           CommonService.platformPrompt('芝麻授权签名失败', 'close');
