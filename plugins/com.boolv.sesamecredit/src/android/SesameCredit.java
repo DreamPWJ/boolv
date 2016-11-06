@@ -31,7 +31,7 @@ import com.android.moblie.zmxy.antgroup.creditsdk.app.ICreditListener;
 public class SesameCredit extends CordovaPlugin {
   private static final String TAG = "SesameCredit";
   public CallbackContext callbackContext;
-
+  private Activity activity;
   /**
    * Sets the context of the Command. This can then be used to do things like
    * get file paths associated with the Activity.
@@ -42,6 +42,9 @@ public class SesameCredit extends CordovaPlugin {
   @Override
   public void initialize(final CordovaInterface cordova, CordovaWebView webView) {
     Log.v(TAG, "SesameCredit: initialization");
+    this.activity = cordova.getActivity();
+    //设置在插件中时被调用的子activity活动 不同activity直接结果返回回调
+    cordova.setActivityResultCallback(this);
   }
 
 
@@ -66,8 +69,8 @@ public class SesameCredit extends CordovaPlugin {
   @Override
   public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
     Log.i(TAG, "执行的方法是: " + action);
-    Activity activity = this.cordova.getActivity();
-    Window window = activity.getWindow();
+/*    Activity activity = this.cordova.getActivity();
+    Window window = activity.getWindow();*/
     if ("sesamecredit".equals(action)) {  //芝麻授权
       //请由商户服务端生成下发，具体见开放平台商户对接文档
       //请注意params、sign为encode过后的数据
