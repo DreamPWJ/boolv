@@ -1,17 +1,10 @@
-//
-//  SesameCreditDelegate.h
-//  CreditSDKMerchantDemo
-//
-//  Created by leodi on 15/11/4.
-//  Copyright © 2015年 leodi. All rights reserved.
-//
+// 芝麻信用 潘维吉
 
-#import <UIKit/UIKit.h>
+#import <Cordova/CDV.h>
 
-@interface SesameCreditDelegate : UIResponder <UIApplicationDelegate>
+@interface SesameCreditDelegate : CDVPlugin
 
-@property (strong, nonatomic) UIWindow *window;
-
+- (void)share:(CDVInvokedUrlCommand*)command;
 
 @end
 

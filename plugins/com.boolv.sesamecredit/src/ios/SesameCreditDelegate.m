@@ -1,19 +1,19 @@
-//
-//  SesameCreditDelegate.m
-//  CreditSDKMerchantDemo
-//
-//  Created by leodi on 15/11/4.
-//  Copyright © 2015年 leodi. All rights reserved.
-//
+// 芝麻信用 潘维吉
 
+#import <Cordova/CDV.h>
 #import "SesameCreditDelegate.h"
 #import "ALCreditService.h"
-@interface SesameCreditDelegate ()
-@property (strong, nonatomic) UINavigationController *navController;
-@end
+
 
 @implementation SesameCreditDelegate
 
+- (void)pluginInitialize {
+
+}
+ //芝麻授权方法
+- (void)sesamecredit {
+  pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:'ios系统cordova插件调用成功！'];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
