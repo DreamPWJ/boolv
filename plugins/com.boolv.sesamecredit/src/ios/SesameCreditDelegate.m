@@ -2,7 +2,7 @@
 
 
 #import "SesameCreditDelegate.h"
-#import <ZMCreditSDK/ALCreditService.h>
+#import "ALCreditService.h"
 #import <Cordova/CDVPlugin.h>
 
 

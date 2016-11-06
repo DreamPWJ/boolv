@@ -13,7 +13,7 @@
   <keywords>Boolv,SesameCredit</keywords>
   <!-- 插件所依赖的cordova版本 -->
   <engines>
-    <engine name="cordova" version=">=3.0.0" />
+    <engine name="cordova" version=">=3.0.0"/>
   </engines>
 
   <!-- 引入js 通过js调用原生SDK方法-->
@@ -54,18 +54,28 @@
   <!-- ios 平台-->
   <platform name="ios">
     <!--编译后会将feature配置到widget中，注意这个feature的name 值，这个值和我们www/SesameCredit.js 文件中的第三个参数对应-->
-  <config-file target="config.xml" parent="/*">
-    <feature name="SesameCredit">
-      <param name="ios-package" value="SesameCreditDelegate"/>
-    </feature>
-  </config-file>
+    <config-file target="config.xml" parent="/*">
+      <feature name="SesameCredit">
+        <param name="ios-package" value="SesameCreditDelegate"/>
+      </feature>
+    </config-file>
 
-  <header-file src="src/ios/SesameCreditDelegate.h"/>
-  <source-file src="src/ios/SesameCreditDelegate.m"/>
+    <header-file src="src/ios/SesameCreditDelegate.h"/>
+    <source-file src="src/ios/SesameCreditDelegate.m"/>
 
-  <header-file src="src/ios/ZMDependUponSDK.framework/Versions/A/Headers/ZMDependUponSDK.h"/>
-  <header-file src="src/ios/ZMCreditSDK.framework/Versions/A/Headers/ALCreditService.h"/>
+    <header-file src="src/ios/ZMDependUponSDK.framework/Versions/A/Headers/ZMDependUponSDK.h"/>
+    <header-file src="src/ios/ZMCreditSDK.framework/Versions/A/Headers/ALCreditService.h"/>
+    <resource-file src="src/ios/H5Service.bundle"/>
+    <resource-file src="src/ios/Poseidon.bundle"/>
 
-
+    <framework src="MobileCoreServices.framewrok"/>
+    <framework src="CFNetwork.framework"/>
+    <framework src="MessageUI.framework"/>
+    <framework src="EventKit.framework"/>
+    <framework src="AssetsLibrary.framework"/>
+    <framework src="CoreMotion.framework"/>
+    <framework src="Libz.dylib"/>
+    <framework src="SystemConfiguration.framework"/>
+    <framework src="CoreTelephony.framework "/>
   </platform>
 </plugin>
