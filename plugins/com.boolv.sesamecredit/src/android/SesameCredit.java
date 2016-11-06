@@ -67,7 +67,7 @@ public class SesameCredit extends CordovaPlugin {
    * @return True if the action was valid, false otherwise.
    */
   @Override
-  public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
+  public boolean execute(String action, CordovaArgs args,final CallbackContext callbackContext) throws JSONException {
     Log.i(TAG, "执行的方法是: " + action);
 /*    Activity activity = this.cordova.getActivity();
     Window window = activity.getWindow();*/
@@ -91,7 +91,7 @@ public class SesameCredit extends CordovaPlugin {
   }
 
   //传入参数  请求芝麻信用授权
-  private void doCreditRequest(String params, String appId, String sign, Activity activity, CallbackContext callbackContext) {
+  private void doCreditRequest(String params, String appId, String sign, Activity activity,final CallbackContext callbackContext) {
     //extParams参数可以放置一些额外的参数，例如当biz_params参数忘记组织auth_code参数时，可以通过extParams参数带入auth_code。
     //不过建议auth_code参数组织到biz_params里面进行加密加签。
     Map<String, String> extParams = new HashMap<String, String>();
@@ -108,8 +108,10 @@ public class SesameCredit extends CordovaPlugin {
             Set<String> keys = result.keySet();
             for (String key : keys) {
               Log.d(TAG, key + " = " + result.getString(key));
+              if("params".equals(key)){ //params 商家服务器端解密后的值的格式是 key1=value1&key2=value2 包含27位的芝麻客户open_id
+                callbackContext.success(result.getString(key).toString());
+              }
             }
-     /*       SesameCredit.this.callbackContext.success(result);*/
           }
         }
 
