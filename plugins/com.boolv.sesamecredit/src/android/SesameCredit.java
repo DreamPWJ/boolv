@@ -31,7 +31,6 @@ public class SesameCredit extends CordovaPlugin {
   private static final String TAG = "SesameCredit";
   public CallbackContext callbackContext;
 
-
   /**
    * Sets the context of the Command. This can then be used to do things like
    * get file paths associated with the Activity.
@@ -44,10 +43,15 @@ public class SesameCredit extends CordovaPlugin {
     Log.v(TAG, "SesameCredit: initialization");
   }
 
+
+
+  //应用调用 Andriod_SDK 接口时,如果要成功接收到回调,需要在调用接口的 Activity 的 onActivityResult 方法中
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Toast.makeText(cordova.getActivity(), "博绿网芝麻信用onActivityResult方法", Toast.LENGTH_SHORT).show();
     Log.d(TAG, "SesameCredit.onActivityResult");
-    //onActivityResult callback
+    super.onActivityResult(requestCode, resultCode, data);
+    // 回调事件相应
     CreditApp.onActivityResult(requestCode, resultCode, data);
   }
   /**
@@ -77,6 +81,7 @@ public class SesameCredit extends CordovaPlugin {
       Toast.makeText(cordova.getActivity(), "博绿网芝麻信用授权中", Toast.LENGTH_SHORT).show();
       try {
         //请求授权
+        //应用在调用 SDK 提供的接口时,将实现了对应回调接口的实例传入。当 SDK 的接口调用完成后,如授权 调用完成后,会回调传入的接口实例。
         CreditAuthHelper.creditAuth(activity, appId, params, sign, extParams, new ICreditListener() {
           @Override
           public void onComplete(Bundle result) {
