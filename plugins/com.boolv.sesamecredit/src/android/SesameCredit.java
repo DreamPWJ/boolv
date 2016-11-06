@@ -32,6 +32,7 @@ public class SesameCredit extends CordovaPlugin {
   private static final String TAG = "SesameCredit";
   public CallbackContext callbackContext;
   private Activity activity;
+
   /**
    * Sets the context of the Command. This can then be used to do things like
    * get file paths associated with the Activity.
@@ -51,7 +52,6 @@ public class SesameCredit extends CordovaPlugin {
   //应用调用 Andriod_SDK 接口时,如果要成功接收到回调,需要在调用接口的 Activity 的 onActivityResult 方法中
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    Toast.makeText(cordova.getActivity(), "博绿网芝麻信用onActivityResult方法", Toast.LENGTH_SHORT).show();
     Log.d(TAG, "SesameCredit.onActivityResult");
     super.onActivityResult(requestCode, resultCode, data);
     // 回调事件相应
@@ -103,13 +103,13 @@ public class SesameCredit extends CordovaPlugin {
       CreditAuthHelper.creditAuth(activity, appId, params, sign, extParams, new ICreditListener() {
         @Override
         public void onComplete(Bundle result) {
-          Toast.makeText(cordova.getActivity(), "芝麻信用授权完成", Toast.LENGTH_SHORT).show();
           //从result中获取params参数,然后解析params数据,可以获取open_id。
           if (result != null) {
             Set<String> keys = result.keySet();
             for (String key : keys) {
               Log.d(TAG, key + " = " + result.getString(key));
             }
+     /*       SesameCredit.this.callbackContext.success(result);*/
           }
         }
 
