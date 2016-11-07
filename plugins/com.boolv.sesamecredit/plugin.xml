@@ -8,8 +8,11 @@
   <name>SesameCredit</name>
   <!-- 插件描述 -->
   <description>SesameCredit Plugin</description>
+  <!-- 插件作者 -->
+  <author>潘维吉</author>
   <!-- 插件license -->
   <license>Apache 2.0</license>
+  <!-- 插件关键字 搜索用 -->
   <keywords>Boolv,SesameCredit</keywords>
   <!-- 插件所依赖的cordova版本 -->
   <engines>
