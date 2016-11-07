@@ -3898,7 +3898,8 @@ angular.module('starter.controllers', [])
     //获取芝麻信用授权及添加授权获取芝麻信用积分
     $scope.params = {
       userid: localStorage.getItem("usertoken"),
-      OpenId: localStorage.getItem("zmOpenId") || '' //可选填 确认用户是否授权
+      param:'',
+      sign:''
     }
 
     AccountService.getCreditOpenId($scope.params).success(function (data) {
@@ -3919,10 +3920,11 @@ angular.module('starter.controllers', [])
             //获取芝麻信用的返回数据传到服务器端解密再获取openId
             $scope.params = {
               userid: localStorage.getItem("usertoken"),
-              OpenId: data //可选填
+              param:JSON.parse(data).params,
+              sign:JSON.parse(data).sign
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
-              if(data.key=200){
+              if(data.key ==200){
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
@@ -3948,17 +3950,17 @@ angular.module('starter.controllers', [])
       //芝麻信用参数签名  服务器那边就能传给我们一个经过加密的param和一个经过加密的sign
       //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
       AccountService.signZmmObile($scope.signinfo).success(function (data) {
-        console.log(data);
         if (data.Key == 200) {
           //芝麻应用授权SDK调用
           SesameCredit.sesamecredit(data.Values.param, data.Values.sign, function (data) {
             //获取芝麻信用的返回数据传到服务器端解密再获取openId
             $scope.params = {
               userid: localStorage.getItem("usertoken"),
-              OpenId: data //可选填
+              param:JSON.parse(data).params,
+              sign:JSON.parse(data).sign
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
-              if(data.key=200){
+              if(data.key ==200){
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
