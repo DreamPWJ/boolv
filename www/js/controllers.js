@@ -3924,7 +3924,7 @@ angular.module('starter.controllers', [])
               sign:JSON.parse(data).sign
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
-              if(data.key ==200){
+              if(data.Key ==200){
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
@@ -3960,7 +3960,7 @@ angular.module('starter.controllers', [])
               sign:JSON.parse(data).sign
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
-              if(data.key ==200){
+              if(data.Key ==200){
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
