@@ -3931,8 +3931,11 @@ angular.module('starter.controllers', [])
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
               }
 
+            }).then(function () {
+              //跳转信用首页
+              $state.go("mycredit");
             })
-            $state.go("mycredit");
+
           }, function (error) {
 
           });
@@ -3968,8 +3971,10 @@ angular.module('starter.controllers', [])
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
               }
 
+            }).then(function () {
+              //跳转信用首页
+              $state.go("mycredit");
             })
-            $state.go("mycredit");
           }, function (error) {
           });
         } else {
