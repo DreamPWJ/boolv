@@ -56,7 +56,7 @@
 
   </ion-content>
   <div  ng-if="orderStatus>1" class="row row-horizontal-around padding light-bg bottom-0" keyboard-attach>
-    <a  ng-if="((orderStatus==2||orderStatus==3)&&isSupply)" class="col-40 button button-balanced "  ng-href="#/enteringnum/{{supplyPlanDetails}}">提交供货单</a>
+    <a  ng-if="((orderStatus==2||orderStatus==3)&&isSupply)" class="col-40 button button-balanced "  ng-href="#/enteringnum/{{supplyPlanDetails}}">提交供货</a>
     <a  ng-if="orderStatus>1" class=" button button-calm " ng-class="{true:'col-40',false:'full-image'}[((orderStatus==2||orderStatus==3)&&isSupply)]"  ng-href="#/supplyorderlist">供货记录</a>
   </div>
 

@@ -3019,7 +3019,7 @@ angular.module('starter.controllers', [])
     $scope.params = {
       page: 1,
       size: 5,
-      userid: localStorage.getItem("usertoken")
+      userid: $rootScope.supplyDetails.FromUser
     }
     //获取用户常用地址
     AccountService.getAddrlist($scope.params).success(function (data) {
