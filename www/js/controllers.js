@@ -3809,6 +3809,7 @@ angular.module('starter.controllers', [])
   //芝麻信用
   .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService, AccountService) {
 
+
     // 基于准备好的dom，初始化echarts实例
     $scope.initMyChart = function () {  //我的信用图表初始化
       var myChart = echarts.init(document.getElementById('mycredit'));
@@ -3853,7 +3854,7 @@ angular.module('starter.controllers', [])
       myChart.setOption(option, true);
     }
     $scope.initCreditChart = function () {  //芝麻信用图表初始化
-      var zmChart = echarts.init(document.getElementById('zmcredit'));
+
       zmoption = {
         tooltip: {
           formatter: "{a} <br/>{b} : {c}"
@@ -3878,12 +3879,12 @@ angular.module('starter.controllers', [])
             name: '信用分指标',
             type: 'gauge',
             detail: {
-              formatter: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, textStyle: {
+              formatter: $scope.zmscore?  $scope.zmscore:350, textStyle: {
                 color: 'auto',
                 fontSize: 38
               }
             },
-            data: [{value: $rootScope.userinfo.zmscore == 0 ? 350 : $rootScope.userinfo.zmscore, name: '芝麻信用分'}]
+            data: [{value: $scope.zmscore? $scope.zmscore:350, name: '芝麻信用分'}]
           }
         ]
       };
@@ -3892,9 +3893,8 @@ angular.module('starter.controllers', [])
 
     //我的信用调用
     $scope.initMyChart();
-    //芝麻信用调用
-    $scope.initCreditChart();
-
+    //先初始化芝麻信用图表dom结构 防止出现大小问题
+    var zmChart = echarts.init(document.getElementById('zmcredit'));
     //获取芝麻信用授权及添加授权获取芝麻信用积分
     $scope.params = {
       userid:localStorage.getItem("usertoken"),
@@ -3902,9 +3902,13 @@ angular.module('starter.controllers', [])
       sign:''
     }
     AccountService.getCreditOpenId($scope.params).success(function (data) {
-      console.log(JSON.stringify(data));
       $scope.authentication = data.Values.authentication;//是否授权
+      $scope.zmscore=data.Values.score;//芝麻信用分
+    }).then(function () {
+      //芝麻信用调用  赋值芝麻信用分
+      $scope.initCreditChart();
     })
+
 
   })
   //芝麻信用身份证授权
@@ -3925,7 +3929,6 @@ angular.module('starter.controllers', [])
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
               if(data.Key ==200){
-                $rootScope.userinfo.zmscore=data.Values.score;//芝麻信用分
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
@@ -3965,7 +3968,6 @@ angular.module('starter.controllers', [])
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
               if(data.Key ==200){
-                $rootScope.userinfo.zmscore=data.Values.score;//芝麻信用分
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
