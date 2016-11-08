@@ -3897,12 +3897,12 @@ angular.module('starter.controllers', [])
 
     //获取芝麻信用授权及添加授权获取芝麻信用积分
     $scope.params = {
-      userid: localStorage.getItem("usertoken"),
+      userid:localStorage.getItem("usertoken"),
       param:'',
       sign:''
     }
-
     AccountService.getCreditOpenId($scope.params).success(function (data) {
+      console.log(JSON.stringify(data));
       $scope.authentication = data.Values.authentication;//是否授权
     })
 
@@ -3925,6 +3925,7 @@ angular.module('starter.controllers', [])
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
               if(data.Key ==200){
+                $rootScope.userinfo.zmscore=data.Values.score;//芝麻信用分
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
@@ -3961,6 +3962,7 @@ angular.module('starter.controllers', [])
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
               if(data.Key ==200){
+                $rootScope.userinfo.zmscore=data.Values.score;//芝麻信用分
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               }else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
