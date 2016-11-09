@@ -359,6 +359,8 @@
     <framework src="CoreTelephony.framework"/>
     <framework src="libstdc++.dylib"/>
     <framework src="libz.dylib"/>
+    <framework src="libsqlite3.tbd"/>
+    <framework src="libc++.tbd"/>
   </platform>
 
 </plugin>
