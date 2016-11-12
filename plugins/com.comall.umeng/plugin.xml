@@ -157,8 +157,10 @@
             <string>sina.5242e19241175a936bd2b469c50de423</string>
           </array>
         </dict>
-
-        <key>NSAppTransportSecurity</key>
+      </array>
+    </config-file>
+    <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+    <array>
 
         <dict>
           <key>NSExceptionDomains</key>
@@ -265,7 +267,9 @@
           </dict>
         </dict>
       </array>
-      <key>LSApplicationQueriesSchemes</key>
+ </config-file>
+    <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+
       <array>
         <!-- 微信 URL Scheme 白名单-->
         <string>wechat</string>
@@ -353,6 +357,7 @@
                custom="true"/>
     <framework src="Security.framework"/>
     <framework src="libiconv.dylib"/>
+    <framework src="ImageIO.framework"/>
     <framework src="SystemConfiguration.framework"/>
     <framework src="CoreGraphics.framework"/>
     <framework src="libsqlite3.dylib"/>
@@ -361,6 +366,7 @@
     <framework src="libz.dylib"/>
     <framework src="libsqlite3.tbd"/>
     <framework src="libc++.tbd"/>
+    <framework src="libz.tbd"/>
   </platform>
 
 </plugin>
