@@ -197,12 +197,12 @@ angular.module('starter.services', [])
               } else {
                 if ($scope.deliverinfo) {
                   $scope.deliverinfo.ExpNo = barcodeData.text;//发货
-                }
-                if ($scope.signinfo) {
+                }else if ($scope.signinfo) {
                   $scope.signinfo.ExpNo = barcodeData.text;//验收
+                }else {
+                  $cordovaToast.showShortCenter('扫一扫信息', barcodeData.text);
                 }
 
-                $cordovaToast.showShortCenter('扫一扫信息', barcodeData.text);
               }
             }, function (error) {
               $cordovaToast.showShortCenter('扫描失败,请重新扫描');
@@ -1001,7 +1001,7 @@ angular.module('starter.services', [])
             });
             $ionicLoading.hide();
           }, function (err) {
-            $cordovaToast.showLongCenter("APP下载失败");
+            $cordovaToast.showLongCenter("APP下载失败,"+err);
             $ionicLoading.hide();
             return;
           }, function (progress) {
