@@ -2155,10 +2155,11 @@ angular.module('starter.controllers', [])
       $scope.buyDatas = {
         FromUser: localStorage.getItem('usertoken'),//下单人
         TradeType: 0,//交易方式 0-物流配送1-送货上门2-上门回收
-        AddrID: $rootScope.addrlistFirst.id,//收货地址ID
+        AddrID: $rootScope.addrlistFirst[0].id,//收货地址ID
         Cycle: $rootScope.buyCycle.day || 0,//供货周期（天） 0-无限期：Cycle
         Details: $scope.Details//收货明细
       }
+
       BuyService.addBuyOrderDetails($scope.buyDatas).success(function (data) {
         if (data.Key == 200) {
           $rootScope.buysuccess = true;//买货成功标示
@@ -2200,6 +2201,7 @@ angular.module('starter.controllers', [])
 
         $rootScope.addrlist = data.Values.data_list;
         $rootScope.addrlistFirst.push(data.Values.data_list[0]);
+
 
       }).then(function () {
         //如果是登录页面跳转直接提交订单
