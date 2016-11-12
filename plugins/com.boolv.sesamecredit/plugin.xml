@@ -70,7 +70,7 @@
     <header-file src="src/ios/ZMCreditSDK.framework/Versions/A/Headers/ALCreditService.h"/>
     <resource-file src="src/ios/H5Service.bundle"/>
     <resource-file src="src/ios/Poseidon.bundle"/>
-
+    <!-- 导入依赖库-->
     <framework src="MobileCoreServices.framewrok"/>
     <framework src="CFNetwork.framework"/>
     <framework src="MessageUI.framework"/>
@@ -79,6 +79,6 @@
     <framework src="CoreMotion.framework"/>
     <framework src="libz.tbd"/>
     <framework src="SystemConfiguration.framework"/>
-    <framework src="CoreTelephony.framework "/>
+    <framework src="CoreTelephony.framework"/>
   </platform>
 </plugin>

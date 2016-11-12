@@ -5,7 +5,6 @@
 #import "ALCreditService.h"
 #import <Cordova/CDVPlugin.h>
 
-
 @implementation SesameCreditDelegate
 
 - (void)pluginInitialize {
@@ -14,7 +13,7 @@
  //芝麻授权方法
 - (void)sesamecredit:(CDVInvokedUrlCommand*)command{
   //ALCreditService是IOS SDK的功能入口，所有的接口调用都需要通过ALCreditService进行调用
- // [[ALCreditService sharedService] resgisterApp];
+ //[[ALCreditService sharedService] resgisterApp];
 
    // 商户需要从服务端获取
     NSString* params = [command.arguments objectAtIndex:0];
@@ -28,11 +27,18 @@
 
    CDVPluginResult* pluginResult = nil;
    if (appId != nil && [appId length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:appId];
+                 NSMutableDictionary* dictionary = [[NSMutableDictionary alloc] init];
+                  [dictionary setValue:params forKey:@"params"];
+                  [dictionary setValue:sign forKey:@"sign"];
+                  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
+                  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                  pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsonString];
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
+    //回调方法
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
 }
 
 
