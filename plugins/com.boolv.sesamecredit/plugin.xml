@@ -70,6 +70,8 @@
     <header-file src="src/ios/ZMCreditSDK.framework/Versions/A/Headers/ALCreditService.h"/>
     <resource-file src="src/ios/H5Service.bundle"/>
     <resource-file src="src/ios/Poseidon.bundle"/>
+    <source-file src="src/ios/ZMCreditSDK.framework/Versions/A/ZMCreditSDK" framework="true"/>
+    <source-file src="src/ios/ZMDependUponSDK.framework/Versions/A/ZMDependUponSDK" framework="true"/>
     <!-- 导入依赖库-->
     <framework src="MobileCoreServices.framewrok"/>
     <framework src="CFNetwork.framework"/>
