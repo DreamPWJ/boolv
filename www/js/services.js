@@ -200,7 +200,7 @@ angular.module('starter.services', [])
                 }else if ($scope.signinfo) {
                   $scope.signinfo.ExpNo = barcodeData.text;//验收
                 }else {
-                  $cordovaToast.showShortCenter('扫一扫信息', barcodeData.text);
+                  $cordovaToast.showShortCenter('扫一扫信息:', barcodeData.text);
                 }
 
               }
@@ -284,7 +284,7 @@ angular.module('starter.services', [])
             localStorage.setItem("latitude", position.coords.latitude);
             localStorage.setItem("longitude", position.coords.longitude);
           }, function (err) {
-            CommonService.platformPrompt("获取地理位置失败", 'close');
+            CommonService.platformPrompt("获取地理位置定位失败", 'close');
           });
       },
       isLogin: function (flag) {//判断是否登录
@@ -557,7 +557,7 @@ angular.module('starter.services', [])
           $scope.paraclass = true;
         } else {
           $scope.paraclass = false;
-          $scope.paracont = second + "秒后重发";
+          $scope.paracont = second + "s后重试";
           second--;
         }
       }, 1000, 100);
