@@ -382,7 +382,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv) { //微信接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv) { //微信 JS SDK 接口服务定义
     return {
       isWeiXin: function isWeiXin(){ //判断是否是微信内置浏览器
       var ua = window.navigator.userAgent.toLowerCase();
@@ -392,14 +392,14 @@ angular.module('starter.services', [])
         return false;
       }
       },
-      weichatConfig: function () { //微信JS SDK 通过config接口注入权限验证配置
+      weichatConfig: function (timestamp,nonceStr,signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
           debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: '', // 必填，公众号的唯一标识
-          timestamp: '', // 必填，生成签名的时间戳
-          nonceStr: '', // 必填，生成签名的随机串
-          signature: '',// 必填，签名，见附录1
-          jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          timestamp: timestamp, // 必填，生成签名的时间戳
+          nonceStr: nonceStr, // 必填，生成签名的随机串
+          signature: signature,// 必填，签名，见附录1
+          jsApiList: ['checkJsApi','chooseImage','getLocation','scanQRCode','chooseWXPay','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ','onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
       },
       wxcheckJsApi: function () { //判断当前客户端版本是否支持指定微信 JS SDK接口
@@ -454,12 +454,12 @@ angular.module('starter.services', [])
           }
         });
       },
-      wxonMenuShareAppMessage: function () { //获取“分享给朋友”按钮点击状态及自定义分享内容接口
+      wxonMenuShareAppMessage: function (title,desc,link,imgUrl) { //获取“分享给朋友”按钮点击状态及自定义分享内容接口
         wx.onMenuShareAppMessage({
-          title: '', // 分享标题
-          desc: '', // 分享描述
-          link: '', // 分享链接
-          imgUrl: '', // 分享图标
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: link, // 分享链接
+          imgUrl: imgUrl, // 分享图标
           type: '', // 分享类型,music、video或link，不填默认为link
           dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
           success: function () {
@@ -470,11 +470,11 @@ angular.module('starter.services', [])
           }
         });
       },
-      wxonMenuShareTimeline: function () {//获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+      wxonMenuShareTimeline: function (title,link,imgUrl) {//获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
         wx.onMenuShareTimeline({
-          title: '', // 分享标题
-          link: '', // 分享链接
-          imgUrl: '', // 分享图标
+          title: title, // 分享标题
+          link: link, // 分享链接
+          imgUrl: imgUrl, // 分享图标
           success: function () {
             // 用户确认分享后执行的回调函数
           },
@@ -483,12 +483,12 @@ angular.module('starter.services', [])
           }
         });
       },
-      wxonMenuShareQQ: function () {//获取“分享到QQ”按钮点击状态及自定义分享内容接口
+      wxonMenuShareQQ: function (title,desc,link,imgUrl) {//获取“分享到QQ”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQQ({
-          title: '', // 分享标题
-          desc: '', // 分享描述
-          link: '', // 分享链接
-          imgUrl: '', // 分享图标
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: link, // 分享链接
+          imgUrl: imgUrl, // 分享图标
           success: function () {
             // 用户确认分享后执行的回调函数
           },
@@ -497,12 +497,12 @@ angular.module('starter.services', [])
           }
         });
       },
-      wxonMenuShareQZone: function () {//获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
+      wxonMenuShareQZone: function (title,desc,link,imgUrl) {//获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQZone({
-          title: '', // 分享标题
-          desc: '', // 分享描述
-          link: '', // 分享链接
-          imgUrl: '', // 分享图标
+          title: title, // 分享标题
+          desc: desc, // 分享描述
+          link: link, // 分享链接
+          imgUrl: imgUrl, // 分享图标
           success: function () {
             // 用户确认分享后执行的回调函数
           },
