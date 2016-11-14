@@ -384,6 +384,14 @@ angular.module('starter.services', [])
   })
   .service('WeiXinService', function ($q, $http, BooLv) { //微信接口服务定义
     return {
+      isWeiXin: function isWeiXin(){ //判断是否是微信内置浏览器
+      var ua = window.navigator.userAgent.toLowerCase();
+      if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+        return true;
+      }else{
+        return false;
+      }
+      },
       weichatConfig: function () { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
           debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
