@@ -134,7 +134,8 @@
           <string>qq</string>
           <key>CFBundleURLSchemes</key>
           <array>
-            <string>QQ41e77e08</string>
+<!--      QQ”+腾讯QQ互联应用appId转换成十六进制（不足8位前面补0） 在QQ互联后台的URL schema中填入此字符串保持一致-->
+            <string>QQ41E77E08</string>
           </array>
         </dict>
         <dict>
