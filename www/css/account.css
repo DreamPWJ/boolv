@@ -21,11 +21,12 @@
 }
 .authcode {
   position: absolute;
-  top: 3.2rem;
+  top: 3.3rem;
   right: 0.5rem;
-  height: 40px;
+  height: 36px;
   background-color: rgba(51, 205, 95, 1);
   border: none;
+  border-radius: 0.2rem;
   color: #ffffff;
   z-index: 1000;
 }
