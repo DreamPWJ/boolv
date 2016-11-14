@@ -29,6 +29,14 @@
   border-radius: 0.8rem;
 }
 
+.tool-tip-message-success{
+  background-color: #33cd5f ;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.3rem 1.2rem;
+  border-radius: 0.8rem;
+}
+
 @-webkit-keyframes tooltipmessage {
   0% {
     -webkit-transform: translate(0, -1em);
