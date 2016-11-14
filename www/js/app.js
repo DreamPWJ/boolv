@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.config', 'starter.directive','starter.filter', 'ngCordova', 'ionic-native-transitions'])
     //Angularjs 模块的 run 方法 方法初始化全局的数据 ,只对全局作用域起作用 如$rootScope
   .run(function ($ionicPlatform, $rootScope, $ionicPopup, $location, $ionicHistory, $cordovaToast, $cordovaNetwork, CommonService, $state) {
-    localStorage.setItem("start", 1);//记录首页启动轮播展示图已经展示
+    localStorage.setItem("isStart", true);//记录首页启动轮播展示图已经展示
     $ionicPlatform.ready(function () {
       if (window.StatusBar) {
         //状态栏颜色设置
@@ -151,9 +151,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $rootScope.$on('$cordovaNetwork:offline', function (event, networkState) {
           var offlineState = networkState;
           //提醒用户的网络异常
-          CommonService.platformPrompt("网络异常 无法连接到博绿网服务器", 'close');
+          CommonService.platformPrompt("网络异常 无法连接博绿网服务器", 'close');
           CommonService.ionicLoadingHide();//取消加载动画
         })
+        //添加JS 屏幕监听事件 禁止APP 横屏
+        var so = cordova.plugins.screenorientation;
+        so.setOrientation(so.Orientation.LANDSCAPE);
 
       }, false);
 
@@ -202,7 +205,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.form.toggle('large');
     //原生动画效果统一配置
     $ionicNativeTransitionsProvider.setDefaultOptions({
-      duration: 200, // in milliseconds (ms), default 400,
+      duration: 200 // in milliseconds (ms), default 400,
     });
     $ionicNativeTransitionsProvider.setDefaultTransition({
       type: 'slide',
@@ -748,7 +751,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 // if none of the above states are matched, use this as the fallback
 
 
-    if (localStorage.getItem('start') == 1) {
+    if (localStorage.getItem('isStart')) {
       $urlRouterProvider.otherwise('/tab/main');
     } else {
       $urlRouterProvider.otherwise('start');
