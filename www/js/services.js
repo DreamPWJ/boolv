@@ -123,7 +123,7 @@ angular.module('starter.services', [])
 
       ionicLoadingShow: function (content) {
         $ionicLoading.show({
-          template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner><p>'+(content?content:'')+'</p>',
+          template: '<ion-spinner icon="bubbles" class="spinner-calm"></ion-spinner><p>' + (content ? content : '') + '</p>',
           animation: 'fade-in',
           showBackdrop: false
 
@@ -170,7 +170,7 @@ angular.module('starter.services', [])
           };
 
           $cordovaCamera.getPicture(options).then(function (imageUrl) {
-            $scope.imageUploadCount=1;
+            $scope.imageUploadCount = 1;
             $scope.imageList.push(imageUrl);
             AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
 
@@ -197,9 +197,9 @@ angular.module('starter.services', [])
               } else {
                 if ($scope.deliverinfo) {
                   $scope.deliverinfo.ExpNo = barcodeData.text;//发货
-                }else if ($scope.signinfo) {
+                } else if ($scope.signinfo) {
                   $scope.signinfo.ExpNo = barcodeData.text;//验收
-                }else {
+                } else {
                   $cordovaToast.showShortCenter('扫一扫信息:', barcodeData.text);
                 }
 
@@ -284,15 +284,15 @@ angular.module('starter.services', [])
             localStorage.setItem("latitude", position.coords.latitude);
             localStorage.setItem("longitude", position.coords.longitude);
           }, function (err) {
-            CommonService.platformPrompt("获取地理位置定位失败", 'close');
+            CommonService.platformPrompt("获取定位失败", 'close');
           });
       },
       isLogin: function (flag) {//判断是否登录
         if (!localStorage.getItem("usertoken")) {
           if (flag) {
-         /*   if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
+            /*   if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
              this.platformPrompt("请您先登录", 'login');
-            }*/
+             }*/
             $state.go('login');
           } else {
             this.showConfirm('博绿网', '温馨提示:此功能需要登录才能使用,请先登录', '登录', '关闭', 'login');
@@ -367,18 +367,142 @@ angular.module('starter.services', [])
           _self.type = null;
         }, 3000);
       },
-      orderStatus:function (OrderType) { //订单状态常量配置
-        if(OrderType==1){ //卖货单订单状态
+      orderStatus: function (OrderType) { //订单状态常量配置
+        if (OrderType == 1) { //卖货单订单状态
           return ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已验货', '已审验货单', '已交易', '已结款', '已评价'];
-        }else if(OrderType==2){//买货单订单状态
-          return  ['取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
-        }else if(OrderType==3){//供货单订单状态
+        } else if (OrderType == 2) {//买货单订单状态
+          return ['取消订单', '未审核', '审核未通过', '审核通过', '已支付定金', '已收到定金', '备货中', '备货完成', '已结款', '已返定金', '已成交', '已评价'];
+        } else if (OrderType == 3) {//供货单订单状态
           return ['取消订单', '未审核', '审核未通过', '审核通过', '已发货', '已签收', '已付到付款', '已验货', '已审核验货单', '已交易', '已结款', '已评价'];
-        }else if(OrderType==4){//供货计划单订单状态
+        } else if (OrderType == 4) {//供货计划单订单状态
           return ['取消订单', '未审核', '审核未通过', '审核通过', '备货中', '供货完成'];
         }
       }
 
+
+    }
+  })
+  .service('WeiXinService', function ($q, $http, BooLv) { //微信接口服务定义
+    return {
+      weichatConfig: function () { //微信JS SDK 通过config接口注入权限验证配置
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: '', // 必填，公众号的唯一标识
+          timestamp: '', // 必填，生成签名的时间戳
+          nonceStr: '', // 必填，生成签名的随机串
+          signature: '',// 必填，签名，见附录1
+          jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+      },
+      wxcheckJsApi: function () { //判断当前客户端版本是否支持指定微信 JS SDK接口
+        wx.checkJsApi({
+          jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+          success: function (res) {
+            // 以键值对的形式返回，可用的api值true，不可用为false
+            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+          }
+        });
+
+      },
+      wxchooseImage: function () { //拍照或从手机相册中选图接口
+        wx.chooseImage({
+          count: 6, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+          }
+        });
+      },
+      wxgetLocation: function () { //获取地理位置接口
+        wx.getLocation({
+          type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+          success: function (res) {
+            var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            var speed = res.speed; // 速度，以米/每秒计
+            var accuracy = res.accuracy; // 位置精度
+          }
+        });
+      },
+      wxscanQRCode: function () {//调起微信扫一扫接口
+        wx.scanQRCode({
+          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function (res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+          }
+        });
+      },
+      wxchooseWXPay: function () {//微信支付请求接口
+        wx.chooseWXPay({
+          timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+          nonceStr: '', // 支付签名随机串，不长于 32 位
+          package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+          signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+          paySign: '', // 支付签名
+          success: function (res) {
+            // 支付成功后的回调函数
+          }
+        });
+      },
+      wxonMenuShareAppMessage: function () { //获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+          title: '', // 分享标题
+          desc: '', // 分享描述
+          link: '', // 分享链接
+          imgUrl: '', // 分享图标
+          type: '', // 分享类型,music、video或link，不填默认为link
+          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+          success: function () {
+            // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+            // 用户取消分享后执行的回调函数
+          }
+        });
+      },
+      wxonMenuShareTimeline: function () {//获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+          title: '', // 分享标题
+          link: '', // 分享链接
+          imgUrl: '', // 分享图标
+          success: function () {
+            // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+            // 用户取消分享后执行的回调函数
+          }
+        });
+      },
+      wxonMenuShareQQ: function () {//获取“分享到QQ”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareQQ({
+          title: '', // 分享标题
+          desc: '', // 分享描述
+          link: '', // 分享链接
+          imgUrl: '', // 分享图标
+          success: function () {
+            // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+            // 用户取消分享后执行的回调函数
+          }
+        });
+      },
+      wxonMenuShareQZone: function () {//获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareQZone({
+          title: '', // 分享标题
+          desc: '', // 分享描述
+          link: '', // 分享链接
+          imgUrl: '', // 分享图标
+          success: function () {
+            // 用户确认分享后执行的回调函数
+          },
+          cancel: function () {
+            // 用户取消分享后执行的回调函数
+          }
+        });
+      }
     }
   })
   .service('MainService', function ($q, $http, BooLv) { //主页服务定义
@@ -807,7 +931,7 @@ angular.module('starter.services', [])
       $cordovaFileTransfer.upload(url, imageUrl, options)
         .then(function (result) {
           if (params.filenames == 'User') {
-            if($scope.uploadName=='uploadhead'){//上传头像单独处理
+            if ($scope.uploadName == 'uploadhead') {//上传头像单独处理
               var figurparams = {
                 userid: localStorage.getItem("usertoken"),
                 figure: JSON.parse(result.response).Des
@@ -817,13 +941,13 @@ angular.module('starter.services', [])
           }
           $scope.ImgsPicAddr.push(JSON.parse(result.response).Des);
           $scope.imageSuccessCount++;
-          if($scope.imageSuccessCount==$scope.imageUploadCount){
+          if ($scope.imageSuccessCount == $scope.imageUploadCount) {
             $cordovaToast.showLongCenter("上传成功");
           }
           console.log("success=" + result.response);
         }, function (err) {
           $cordovaToast.showLongCenter("上传失败");
-          $scope.imageList.splice(imageUrl,1);//删除失败以后不显示
+          $scope.imageList.splice(imageUrl, 1);//删除失败以后不显示
           console.log("err=" + err.response);
         }, function (progress) {
           // constant progress updates
@@ -903,7 +1027,7 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'POST',
-        url: BooLv.api + "/user/modify_ZmScore/"+params.userid+"/"+params.zmscore,
+        url: BooLv.api + "/user/modify_ZmScore/" + params.userid + "/" + params.zmscore,
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -917,7 +1041,7 @@ angular.module('starter.services', [])
       promise = $http({
         method: 'POST',
         url: BooLv.api + "/user/sign_zm",
-        params:params
+        params: params
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -931,7 +1055,7 @@ angular.module('starter.services', [])
       promise = $http({
         method: 'POST',
         url: BooLv.api + "/user/sign_zm_mobile",
-        params:params
+        params: params
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -944,7 +1068,7 @@ angular.module('starter.services', [])
       var promise = deferred.promise;
       promise = $http({
         method: 'GET',
-        url: BooLv.api + "/user/GetCertification/"+params.userid,
+        url: BooLv.api + "/user/GetCertification/" + params.userid,
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
       }).error(function (err) {
@@ -969,7 +1093,7 @@ angular.module('starter.services', [])
 
     showUpdateConfirm: function (updatecontent, appurl, version) {    // 显示是否更新对话框
       var confirmPopup = $ionicPopup.confirm({
-      cssClass: "show-updateconfirm",
+        cssClass: "show-updateconfirm",
         title: '<strong>发现新版本' + version + '</strong>',
         template: updatecontent, //从服务端获取更新的内容
         cancelText: '稍后再说',
@@ -1001,7 +1125,7 @@ angular.module('starter.services', [])
             });
             $ionicLoading.hide();
           }, function (err) {
-            $cordovaToast.showLongCenter("APP下载失败,"+err);
+            $cordovaToast.showLongCenter("APP下载失败," + err);
             $ionicLoading.hide();
             return;
           }, function (progress) {
@@ -1741,6 +1865,7 @@ angular.module('starter.services', [])
         if (token) {
           config.headers.authorization = token;
         }
+
         return config;
       },
       responseError: function (response) {
