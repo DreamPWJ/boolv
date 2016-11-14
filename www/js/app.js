@@ -155,9 +155,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           CommonService.ionicLoadingHide();//取消加载动画
         })
         //添加JS 屏幕监听事件 禁止APP 横屏
-        var so = cordova.plugins.screenorientation;
-        so.setOrientation(so.Orientation.LANDSCAPE);
-
+        if(screenOrientation){
+          screenOrientation.setOrientation('portrait');
+        }
+        
       }, false);
 
       //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
