@@ -23,7 +23,8 @@
   position: absolute;
   top: 3.3rem;
   right: 0.5rem;
-  height: 36px;
+  height: 35px;
+  line-height: 35px;
   background-color: rgba(51, 205, 95, 1);
   border: none;
   border-radius: 0.2rem;
@@ -32,7 +33,7 @@
 }
 
 .disabledauthcode {
-  background-color: rgba(51, 205, 95, 0.6);
+  background-color: rgba(51, 205, 95, 0.5);
 
 }
 
