@@ -26,7 +26,7 @@ angular.module('starter.controllers', [])
 
   })
   //APP首页面
-  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $timeout, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService) {
+  .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $timeout, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService, WeiXinService, $location) {
     CommonService.ionicLoadingShow();
     $scope.getMainData = function () {
       //登录授权
@@ -118,7 +118,47 @@ angular.module('starter.controllers', [])
             }
           })
         }
+        //是否是微信 获取微信签名 以及access_token Ticket
+        if (WeiXinService.isWeiXin()) {
+          //获取微信access_token
+          WeiXinService.getWCToken().success(function (data) {
+            if (data.Key == 200) {
+              localStorage.setItem("wxaccess_token", data.Values)
+              $scope.wxaccess_token = data.Values;
+            } else {
+              CommonService.platformPrompt("获取微信access_token失败!", 'close');
+            }
+          }).then(function () {
+            // 获取微信Ticket
+            WeiXinService.getWCTicket({token: $scope.wxaccess_token}).success(function (data) {
+              if (data.Key == 200) {
+                localStorage.setItem("wx_ticket", data.Values)
+                $scope.wx_ticket = data.Values;
+              } else {
+                CommonService.platformPrompt("获取微信Ticket失败!", 'close');
+              }
+            }).then(function () {
+              // 获取微信签名
+              $scope.wxparams = {
+                ticket: $scope.wx_ticket,
+                url: 'http://a.boolv.com'
+                // url: $location.protocol()+"://"+$location.host()+":"+$location.port() //当前网页的URL，不包含#及其后面部分
+              }
 
+              WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+                if (data.Key == 200) {
+                  localStorage.setItem("timestamp", data.Values.timestamp);//生成签名的时间戳
+                  localStorage.setItem("noncestr", data.Values.noncestr);//生成签名的随机串
+                  localStorage.setItem("signature", data.Values.signature);//生成签名
+                  //通过config接口注入权限验证配置
+                  WeiXinService.weichatConfig(data.Values.timestamp, data.Values.noncestr, data.Values.signature);
+                } else {
+                 // CommonService.platformPrompt("获取微信签名失败!", 'close');
+                }
+              })
+            })
+          })
+        }
       }).finally(function () {
         CommonService.ionicLoadingHide();
         $scope.$broadcast('scroll.refreshComplete');
@@ -3881,12 +3921,12 @@ angular.module('starter.controllers', [])
             name: '信用分指标',
             type: 'gauge',
             detail: {
-              formatter: $scope.zmscore?  $scope.zmscore:350, textStyle: {
+              formatter: $scope.zmscore ? $scope.zmscore : 350, textStyle: {
                 color: 'auto',
                 fontSize: 38
               }
             },
-            data: [{value: $scope.zmscore? $scope.zmscore:350, name: '芝麻信用分'}]
+            data: [{value: $scope.zmscore ? $scope.zmscore : 350, name: '芝麻信用分'}]
           }
         ]
       };
@@ -3899,13 +3939,13 @@ angular.module('starter.controllers', [])
     var zmChart = echarts.init(document.getElementById('zmcredit'));
     //获取芝麻信用授权及添加授权获取芝麻信用积分
     $scope.params = {
-      userid:localStorage.getItem("usertoken"),
-      param:'',
-      sign:''
+      userid: localStorage.getItem("usertoken"),
+      param: '',
+      sign: ''
     }
     AccountService.getCreditOpenId($scope.params).success(function (data) {
       $scope.authentication = data.Values.authentication;//是否授权
-      $scope.zmscore=data.Values.score;//芝麻信用分
+      $scope.zmscore = data.Values.score;//芝麻信用分
     }).then(function () {
       //芝麻信用调用  赋值芝麻信用分
       $scope.initCreditChart();
@@ -3926,13 +3966,13 @@ angular.module('starter.controllers', [])
             //获取芝麻信用的返回数据传到服务器端解密再获取openId
             $scope.params = {
               userid: localStorage.getItem("usertoken"),
-              param:JSON.parse(data).params,
-              sign:JSON.parse(data).sign
+              param: JSON.parse(data).params,
+              sign: JSON.parse(data).sign
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
-              if(data.Key ==200){
+              if (data.Key == 200) {
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
-              }else {
+              } else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
               }
 
@@ -3965,13 +4005,13 @@ angular.module('starter.controllers', [])
             //获取芝麻信用的返回数据传到服务器端解密再获取openId
             $scope.params = {
               userid: localStorage.getItem("usertoken"),
-              param:JSON.parse(data).params,
-              sign:JSON.parse(data).sign
+              param: JSON.parse(data).params,
+              sign: JSON.parse(data).sign
             }
             AccountService.getCreditOpenId($scope.params).success(function (data) {
-              if(data.Key ==200){
+              if (data.Key == 200) {
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
-              }else {
+              } else {
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
               }
 
