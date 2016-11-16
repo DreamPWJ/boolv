@@ -1,5 +1,5 @@
 angular.module('starter.services', [])
-  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService) {
+  .service('CommonService', function ($ionicPopup, $ionicPopover, $rootScope, $state, $ionicModal, $cordovaCamera, $cordovaImagePicker, $ionicPlatform, $ionicActionSheet, $ionicHistory, $timeout, $cordovaToast, $cordovaGeolocation, $cordovaBarcodeScanner, $ionicViewSwitcher, $ionicLoading, AccountService,WeiXinService) {
     return {
       platformPrompt: function (msg, stateurl) {
         if ($ionicPlatform.is('android') || $ionicPlatform.is('ios')) {
@@ -220,7 +220,7 @@ angular.module('starter.services', [])
         }, false);
       }
       ,
-      shareActionSheet: function () {
+      shareActionSheet: function (title,desc,link,imgUrl) {
         $ionicActionSheet.show({
           cssClass: 'action-s',
           titleText: '<p>分享</p>',
@@ -236,9 +236,13 @@ angular.module('starter.services', [])
           },
           buttonClicked: function (index) {
             switch (index) {
-              case 0:
+              case 0:WeiXinService.wxonMenuShareTimeline(title,link,imgUrl)
                 break;
-              case 1:
+              case 1:WeiXinService.wxonMenuShareAppMessage(title,desc,link,imgUrl)
+                break;
+              case 2:WeiXinService.wxonMenuShareQQ(title,desc,link,imgUrl)
+                break;
+              case 3:WeiXinService.wxonMenuShareQZone(title,desc,link,imgUrl)
                 break;
               default:
                 break;
@@ -438,7 +442,7 @@ angular.module('starter.services', [])
       weichatConfig: function (timestamp,nonceStr,signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
           debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: '', // 必填，公众号的唯一标识
+          appId: 'wx39ba5b2a2f59ef2c', // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串
           signature: signature,// 必填，签名，见附录1
