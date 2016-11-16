@@ -384,6 +384,49 @@ angular.module('starter.services', [])
   })
   .service('WeiXinService', function ($q, $http, BooLv) { //微信 JS SDK 接口服务定义
     return {
+      //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
+      getWCToken: function () {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/wc/token"
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取微信Ticket Ticket的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
+      getWCTicket: function (params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/wc/ticket/"+params.token
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取微信签名
+      getWCSignature: function (params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/wc/signature",
+          params:params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
       isWeiXin: function isWeiXin(){ //判断是否是微信内置浏览器
       var ua = window.navigator.userAgent.toLowerCase();
       if(ua.match(/MicroMessenger/i) == 'micromessenger'){
