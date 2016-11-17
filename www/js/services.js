@@ -132,58 +132,14 @@ angular.module('starter.services', [])
       ionicLoadingHide: function () {
         $ionicLoading.hide();
       },
-      //调用摄像头和相册 type 0是图库 1是拍照
-      takePicture: function ($scope, type, filenames) {
-        //统计上传成功数量
-        $scope.imageSuccessCount = 0;
-        if (type == 0) {//图库
-          var options = {
-            maximumImagesCount: 6 - $scope.imageList.length,//需要显示的图片的数量
-            width: 800,
-            height: 800,
-            quality: 80
-          };
-          $cordovaImagePicker.getPictures(options).then(function (results) {
-            $scope.imageUploadCount = results.length;
-            for (var i = 0, len = results.length; i < len; i++) {
-              $scope.imageList.push(results[i]);
-              AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
-            }
 
-          }, function (error) {
-            $cordovaToast.showLongCenter('获取图片失败');
-          });
-        }
-        if (type == 1) {  //拍照
-          //$cordovaCamera.cleanup();
-          var options = {
-            quality: 100,//相片质量0-100
-            destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-            sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
-            allowEdit: false,                                        //在选择之前允许修改截图
-            encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
-            targetWidth: 500,                                        //照片宽度
-            targetHeight: 500,                                       //照片高度
-            mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
-            cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
-            saveToPhotoAlbum: true                                   //保存进手机相册
-          };
-
-          $cordovaCamera.getPicture(options).then(function (imageUrl) {
-            $scope.imageUploadCount = 1;
-            $scope.imageList.push(imageUrl);
-            AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
-
-          }, function (err) {
-            // An error occured. Show a message to the user
-            $cordovaToast.showLongCenter('获取照片失败');
-
-          });
-        }
-
-      },
       //扫一扫
       barcodeScanner: function ($scope) {
+        //是否是微信
+        if(WeiXinService.isWeiXin()){
+          WeiXinService.wxscanQRCode($scope); //调起微信扫一扫接口
+          return;
+        }
         /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
         document.addEventListener("deviceready", function () {
           $cordovaBarcodeScanner
@@ -279,7 +235,67 @@ angular.module('starter.services', [])
           }
         });
       },
+      //调用摄像头和相册 type 0是图库 1是拍照
+      takePicture: function ($scope, type, filenames) {
+        //统计上传成功数量
+        $scope.imageSuccessCount = 0;
+        //是否是微信
+        if(WeiXinService.isWeiXin()){
+          WeiXinService.wxchooseImage($scope,type,filenames); //拍照或从手机相册中选图接口
+          return;
+        }
+        if (type == 0) {//图库
+          var options = {
+            maximumImagesCount: 6 - $scope.imageList.length,//需要显示的图片的数量
+            width: 800,
+            height: 800,
+            quality: 80
+          };
+          $cordovaImagePicker.getPictures(options).then(function (results) {
+            $scope.imageUploadCount = results.length;
+            for (var i = 0, len = results.length; i < len; i++) {
+              $scope.imageList.push(results[i]);
+              AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
+            }
+
+          }, function (error) {
+            $cordovaToast.showLongCenter('获取图片失败');
+          });
+        }
+        if (type == 1) {  //拍照
+          //$cordovaCamera.cleanup();
+          var options = {
+            quality: 100,//相片质量0-100
+            destinationType: Camera.DestinationType.FILE_URI,        //返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
+            sourceType: type == 0 ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
+            allowEdit: false,                                        //在选择之前允许修改截图
+            encodingType: Camera.EncodingType.JPEG,                   //保存的图片格式： JPEG = 0, PNG = 1
+            targetWidth: 500,                                        //照片宽度
+            targetHeight: 500,                                       //照片高度
+            mediaType: 0,                                             //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
+            cameraDirection: 0,                                       //枪后摄像头类型：Back= 0,Front-facing = 1
+            saveToPhotoAlbum: true                                   //保存进手机相册
+          };
+
+          $cordovaCamera.getPicture(options).then(function (imageUrl) {
+            $scope.imageUploadCount = 1;
+            $scope.imageList.push(imageUrl);
+            AccountService.addFilenames($scope, {filenames: filenames}, imageUrl);
+
+          }, function (err) {
+            // An error occured. Show a message to the user
+            $cordovaToast.showLongCenter('获取照片失败');
+
+          });
+        }
+
+      },
       getLocation: function () { //获取当前经纬度
+        //是否是微信
+        if(WeiXinService.isWeiXin()){
+          WeiXinService.wxgetLocation(); //获取地理位置接口
+          return;
+        }
         CommonService = this;
         var posOptions = {timeout: 10000, enableHighAccuracy: false};
         $cordovaGeolocation
@@ -386,7 +402,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv,AccountService) { //微信 JS SDK 接口服务定义
     return {
       //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
       getWCToken: function () {
@@ -459,13 +475,17 @@ angular.module('starter.services', [])
         });
 
       },
-      wxchooseImage: function () { //拍照或从手机相册中选图接口
+      wxchooseImage: function ($scope,type,filenames) { //拍照或从手机相册中选图接口
         wx.chooseImage({
           count: 6, // 默认9
           sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-          success: function (res) {
-            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+          sourceType:type==0?['album']:['camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (results) {
+            var localIds = results.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+            for (var i = 0, len = results.length; i < len; i++) {
+              $scope.imageList.push(results[i]);
+              AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
+            }
           }
         });
       },
@@ -477,15 +497,22 @@ angular.module('starter.services', [])
             var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
             var speed = res.speed; // 速度，以米/每秒计
             var accuracy = res.accuracy; // 位置精度
+            localStorage.setItem("latitude", latitude);
+            localStorage.setItem("longitude", longitude);
           }
         });
       },
-      wxscanQRCode: function () {//调起微信扫一扫接口
+      wxscanQRCode: function ($scope) {//调起微信扫一扫接口
         wx.scanQRCode({
           needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function (res) {
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            if ($scope.deliverinfo) {
+              $scope.deliverinfo.ExpNo = result;//发货
+            } else if ($scope.signinfo) {
+              $scope.signinfo.ExpNo = result;//验收
+            }
           }
         });
       },

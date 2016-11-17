@@ -119,7 +119,7 @@ angular.module('starter.controllers', [])
           })
         }
         //是否是微信 获取微信签名 以及access_token Ticket
-        if (WeiXinService.isWeiXin()) {
+        if (WeiXinService.isWeiXin()&&!localStorage.getItem("signature")) {
           //获取微信access_token
           WeiXinService.getWCToken().success(function (data) {
             if (data.Key == 200) {
@@ -142,7 +142,7 @@ angular.module('starter.controllers', [])
               $scope.wxparams = {
                 ticket: $scope.wx_ticket,
                 url: 'http://m.boolv.com'
-                //  url: $location.protocol()+"://"+$location.host()+":"+$location.port() //当前网页的URL，不包含#及其后面部分
+              //  url: $location.protocol()+"://"+$location.host()+":"+$location.port() //当前网页的URL，不包含#及其后面部分
               }
 
               WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
