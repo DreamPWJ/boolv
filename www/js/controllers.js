@@ -141,10 +141,8 @@ angular.module('starter.controllers', [])
               // 获取微信签名
               $scope.wxparams = {
                 ticket: $scope.wx_ticket,
-                url: 'http://m.boolv.com'
-              //  url: $location.protocol()+"://"+$location.host()+":"+$location.port() //当前网页的URL，不包含#及其后面部分
+                url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
               }
-
               WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
                 if (data.Key == 200) {
                   localStorage.setItem("timestamp", data.Values.timestamp);//生成签名的时间戳
