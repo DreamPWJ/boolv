@@ -118,7 +118,7 @@ angular.module('starter.controllers', [])
             }
           })
         }
-        //是否是微信 获取微信签名 以及access_token Ticket
+        //是否是微信 初次获取签名 获取微信签名 以及access_token Ticket
         if (WeiXinService.isWeiXin()&&!localStorage.getItem("signature")) {
           //获取微信access_token
           WeiXinService.getWCToken().success(function (data) {
@@ -156,6 +156,10 @@ angular.module('starter.controllers', [])
               })
             })
           })
+        }
+        //微信版已经获取签名 直接初始化配置权限信息
+        if (WeiXinService.isWeiXin()&&localStorage.getItem("signature")) {
+          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();
