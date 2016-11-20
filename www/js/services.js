@@ -137,7 +137,12 @@ angular.module('starter.services', [])
       barcodeScanner: function ($scope) {
         //是否是微信
         if(WeiXinService.isWeiXin()){
-          WeiXinService.wxscanQRCode($scope); //调起微信扫一扫接口
+          //通过config接口注入权限验证配置
+          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+          //通过ready接口处理成功验证
+          wx.ready(function() {
+            WeiXinService.wxscanQRCode($scope); //调起微信扫一扫接口
+          })
           return;
         }
         /*      先检测设备是否就绪，通过cordova内置的原生事件deviceready来检测*/
@@ -177,35 +182,42 @@ angular.module('starter.services', [])
       }
       ,
       shareActionSheet: function (title,desc,link,imgUrl) {
-        $ionicActionSheet.show({
-          cssClass: 'action-s',
-          titleText: '分享',
-          buttons: [
-            {text: '微信朋友圈'},
-            {text: '微信好友'},
-            {text: 'QQ好友'},
-            {text: 'QQ空间'},
-          ],
-          cancelText: '关闭',
-          cancel: function () {
-            return true;
-          },
-          buttonClicked: function (index) {
-            switch (index) {
-              case 0:WeiXinService.wxonMenuShareTimeline(title,link,imgUrl)
-                break;
-              case 1:WeiXinService.wxonMenuShareAppMessage(title,desc,link,imgUrl)
-                break;
-              case 2:WeiXinService.wxonMenuShareQQ(title,desc,link,imgUrl)
-                break;
-              case 3:WeiXinService.wxonMenuShareQZone(title,desc,link,imgUrl)
-                break;
-              default:
-                break;
+        //通过config接口注入权限验证配置
+        WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+        //通过ready接口处理成功验证
+        wx.ready(function(){
+          // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+          $ionicActionSheet.show({
+            cssClass: 'action-s',
+            titleText: '分享',
+            buttons: [
+              {text: '微信朋友圈'},
+              {text: '微信好友'},
+              {text: 'QQ好友'},
+              {text: 'QQ空间'},
+            ],
+            cancelText: '关闭',
+            cancel: function () {
+              return true;
+            },
+            buttonClicked: function (index) {
+              switch (index) {
+                case 0:WeiXinService.wxonMenuShareTimeline(title,link,imgUrl)
+                  break;
+                case 1:WeiXinService.wxonMenuShareAppMessage(title,desc,link,imgUrl)
+                  break;
+                case 2:WeiXinService.wxonMenuShareQQ(title,desc,link,imgUrl)
+                  break;
+                case 3:WeiXinService.wxonMenuShareQZone(title,desc,link,imgUrl)
+                  break;
+                default:
+                  break;
+              }
+              return true;
             }
-            return true;
-          }
+          });
         });
+
       },
       uploadActionSheet: function ($scope, filename) {
         CommonService = this;
@@ -241,7 +253,12 @@ angular.module('starter.services', [])
         $scope.imageSuccessCount = 0;
         //是否是微信
         if(WeiXinService.isWeiXin()){
-          WeiXinService.wxchooseImage($scope,type,filenames); //拍照或从手机相册中选图接口
+          //通过config接口注入权限验证配置
+          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+          //通过ready接口处理成功验证
+          wx.ready(function() {
+            WeiXinService.wxchooseImage($scope, type, filenames); //拍照或从手机相册中选图接口
+          })
           return;
         }
         if (type == 0) {//图库
@@ -293,7 +310,12 @@ angular.module('starter.services', [])
       getLocation: function () { //获取当前经纬度
         //是否是微信
         if(WeiXinService.isWeiXin()){
-          WeiXinService.wxgetLocation(); //获取地理位置接口
+          //通过config接口注入权限验证配置
+          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
+          //通过ready接口处理成功验证
+          wx.ready(function() {
+            WeiXinService.wxgetLocation(); //获取地理位置接口
+          })
           return;
         }
         CommonService = this;
@@ -455,14 +477,16 @@ angular.module('starter.services', [])
         return false;
       }
       },
+/*    所有需要使用JS-SDK的页面必须先注入配置信息，否则将无法调用（同一个url仅需调用一次，对于变化url的SPA的web app可在每次url变化时进行调用,
+      目前Android微信客户端不支持pushState的H5新特性，所以使用pushState来实现web app的页面会导致签名失败，此问题会在Android6.2中修复*/
       weichatConfig: function (timestamp,nonceStr,signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wx39ba5b2a2f59ef2c', // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串
           signature: signature,// 必填，签名，见附录1
-          jsApiList: ['checkJsApi','chooseImage','getLocation','scanQRCode','chooseWXPay','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ','onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          jsApiList: ['checkJsApi','chooseImage','uploadImage','getLocation','scanQRCode','chooseWXPay','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQQ','onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
       },
       wxcheckJsApi: function () { //判断当前客户端版本是否支持指定微信 JS SDK接口
@@ -482,10 +506,20 @@ angular.module('starter.services', [])
           sourceType:type==0?['album']:['camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: function (results) {
             var localIds = results.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-            for (var i = 0, len = results.length; i < len; i++) {
-              $scope.imageList.push(results[i]);
-              AccountService.addFilenames($scope, {filenames: filenames}, results[i]);
+            for (var i = 0, len = localIds.length; i < len; i++) {
+              $scope.imageList.push(localIds[i]);
+              WeiXinService.wxuploadImage(localIds[i].toString())
+             // AccountService.addFilenames($scope, {filenames: filenames}, localIds[i]);
             }
+          }
+        });
+      },
+      wxuploadImage:function (localId) {//微信上传图片接口
+        wx.uploadImage({
+          localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+          isShowProgressTips: 1, // 默认为1，显示进度提示
+          success: function (res) {
+            var serverId = res.serverId; // 返回图片的服务器端ID
           }
         });
       },
