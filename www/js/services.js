@@ -424,7 +424,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv,AccountService) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv,AccountService,CommonService) { //微信 JS SDK 接口服务定义
     return {
       //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
       getWCToken: function () {
@@ -481,7 +481,7 @@ angular.module('starter.services', [])
       目前Android微信客户端不支持pushState的H5新特性，所以使用pushState来实现web app的页面会导致签名失败，此问题会在Android6.2中修复*/
       weichatConfig: function (timestamp,nonceStr,signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wx39ba5b2a2f59ef2c', // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串
@@ -500,6 +500,7 @@ angular.module('starter.services', [])
 
       },
       wxchooseImage: function ($scope,type,filenames) { //拍照或从手机相册中选图接口
+        WeiXinService=this;
         wx.chooseImage({
           count: 6, // 默认9
           sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -537,15 +538,18 @@ angular.module('starter.services', [])
         });
       },
       wxscanQRCode: function ($scope) {//调起微信扫一扫接口
+        CommonService=this;
         wx.scanQRCode({
           needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function (res) {
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
             if ($scope.deliverinfo) {
-              $scope.deliverinfo.ExpNo = result;//发货
+              $scope.deliverinfo.ExpNo = result.split(",")[1];//发货
             } else if ($scope.signinfo) {
-              $scope.signinfo.ExpNo = result;//验收
+              $scope.signinfo.ExpNo = result.split(",")[1];//验收
+            }else {
+              CommonService.platformPrompt('扫一扫内容:'+res.resultStr,'close');
             }
           }
         });
@@ -577,6 +581,8 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
+        CommonService=this;
+        CommonService.platformPrompt('已获取“微信好友”自定义内容,请点击右上角按钮进行分享','close')
       },
       wxonMenuShareTimeline: function (title,link,imgUrl) {//获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
         wx.onMenuShareTimeline({
@@ -590,6 +596,8 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
+        CommonService=this;
+        CommonService.platformPrompt('已获取“微信朋友圈”自定义内容,请点击右上角按钮进行分享','close');
       },
       wxonMenuShareQQ: function (title,desc,link,imgUrl) {//获取“分享到QQ”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQQ({
@@ -604,6 +612,8 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
+        CommonService=this;
+        CommonService.platformPrompt('已获取“QQ好友”自定义内容,请点击右上角按钮进行分享','close');
       },
       wxonMenuShareQZone: function (title,desc,link,imgUrl) {//获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQZone({
@@ -618,6 +628,8 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
+        CommonService=this;
+        CommonService.platformPrompt('已获取“QQ空间”自定义内容,请点击右上角按钮进行分享','close');
       }
     }
   })
