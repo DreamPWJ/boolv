@@ -142,7 +142,7 @@ angular.module('starter.controllers', [])
               // 获取微信签名
               $scope.wxparams = {
                 ticket: $scope.wx_ticket,
-                url: encodeURIComponent(location.href.split('#')[0]) //当前网页的URL，不包含#及其后面部分
+                url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
               }
               WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
                 if (data.Key == 200) {
