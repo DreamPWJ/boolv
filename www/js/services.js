@@ -179,14 +179,14 @@ angular.module('starter.services', [])
       shareActionSheet: function (title,desc,link,imgUrl) {
         $ionicActionSheet.show({
           cssClass: 'action-s',
-          titleText: '<p>分享</p>',
+          titleText: '分享',
           buttons: [
-            {text: '<p>微信朋友圈</p>'},
-            {text: '<p>微信好友</p>'},
-            {text: '<p>QQ好友</p>'},
-            {text: '<p>QQ空间</p>'},
+            {text: '微信朋友圈'},
+            {text: '微信好友'},
+            {text: 'QQ好友'},
+            {text: 'QQ空间'},
           ],
-          cancelText: '<p>关闭</p>',
+          cancelText: '关闭',
           cancel: function () {
             return true;
           },
@@ -211,12 +211,12 @@ angular.module('starter.services', [])
         CommonService = this;
         $ionicActionSheet.show({
           cssClass: 'action-s',
-          titleText: '<p>上传照片</p>',
+          titleText: '上传照片',
           buttons: [
-            {text: '<p>图库</p>'},
-            {text: ' <p>拍照</p>'},
+            {text: '图库'},
+            {text: '拍照'},
           ],
-          cancelText: '<p>取消</p>',
+          cancelText: '取消',
           cancel: function () {
             return true;
           },

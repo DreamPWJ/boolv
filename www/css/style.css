@@ -164,7 +164,7 @@ background-color:  #aaa;
 }
 
 /*修改覆盖ActionSheet框默认样式*/
-.action-s p {
+.action-s .button {
   color: #11c1f3;
 }
 
