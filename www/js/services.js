@@ -424,7 +424,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv,AccountService) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv,AccountService,$sce,CommonService) { //微信 JS SDK 接口服务定义
     return {
       //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
       getWCToken: function () {
@@ -500,6 +500,7 @@ angular.module('starter.services', [])
 
       },
       wxchooseImage: function ($scope,type,filenames) { //拍照或从手机相册中选图接口
+        WeiXinService=this;
         wx.chooseImage({
           count: 6, // 默认9
           sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -507,7 +508,8 @@ angular.module('starter.services', [])
           success: function (results) {
             var localIds = results.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             for (var i = 0, len = localIds.length; i < len; i++) {
-              $scope.imageList.push(localIds[i]);
+              //$sce服务把一些地址变成安全的、授权的链接
+              $scope.imageList.push($sce.trustAsResourceUrl(localIds[i]));
               WeiXinService.wxuploadImage(localIds[i].toString())
              // AccountService.addFilenames($scope, {filenames: filenames}, localIds[i]);
             }
@@ -538,14 +540,14 @@ angular.module('starter.services', [])
       },
       wxscanQRCode: function ($scope) {//调起微信扫一扫接口
         wx.scanQRCode({
-          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          needResult:$scope.deliverinfo||$scope.signinfo?1:0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function (res) {
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
             if ($scope.deliverinfo) {
-              $scope.deliverinfo.ExpNo = result;//发货
+              $scope.deliverinfo.ExpNo = result.split(",")[1];//发货
             } else if ($scope.signinfo) {
-              $scope.signinfo.ExpNo = result;//验收
+              $scope.signinfo.ExpNo = result.split(",")[1];//验收
             }
           }
         });
