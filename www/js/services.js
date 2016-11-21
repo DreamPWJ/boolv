@@ -187,7 +187,13 @@ angular.module('starter.services', [])
         //通过ready接口处理成功验证
         wx.ready(function(){
           // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-          $ionicActionSheet.show({
+          //自动调用分享按钮注册和自定义分享
+          WeiXinService.wxonMenuShareTimeline(title,link,imgUrl);//微信朋友圈
+          WeiXinService.wxonMenuShareAppMessage(title,desc,link,imgUrl);//微信好友
+          WeiXinService.wxonMenuShareQQ(title,desc,link,imgUrl);//QQ好友
+          WeiXinService.wxonMenuShareQZone(title,desc,link,imgUrl);//QQ空间
+
+/*          $ionicActionSheet.show({
             cssClass: 'action-s',
             titleText: '分享',
             buttons: [
@@ -215,7 +221,7 @@ angular.module('starter.services', [])
               }
               return true;
             }
-          });
+          });*/
         });
 
       },
@@ -424,7 +430,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv,AccountService,CommonService) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv,AccountService,$sce) { //微信 JS SDK 接口服务定义
     return {
       //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
       getWCToken: function () {
@@ -508,7 +514,8 @@ angular.module('starter.services', [])
           success: function (results) {
             var localIds = results.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             for (var i = 0, len = localIds.length; i < len; i++) {
-              $scope.imageList.push(localIds[i]);
+              //$sce服务把一些地址变成安全的、授权的链接
+              $scope.imageList.push($sce.trustAsResourceUrl(localIds[i]));
               WeiXinService.wxuploadImage(localIds[i].toString())
              // AccountService.addFilenames($scope, {filenames: filenames}, localIds[i]);
             }
@@ -538,9 +545,8 @@ angular.module('starter.services', [])
         });
       },
       wxscanQRCode: function ($scope) {//调起微信扫一扫接口
-        CommonService=this;
         wx.scanQRCode({
-          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          needResult:$scope.deliverinfo||$scope.signinfo?1:0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function (res) {
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
@@ -548,8 +554,6 @@ angular.module('starter.services', [])
               $scope.deliverinfo.ExpNo = result.split(",")[1];//发货
             } else if ($scope.signinfo) {
               $scope.signinfo.ExpNo = result.split(",")[1];//验收
-            }else {
-              CommonService.platformPrompt('扫一扫内容:'+res.resultStr,'close');
             }
           }
         });
@@ -581,8 +585,6 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
-        CommonService=this;
-        CommonService.platformPrompt('已获取“微信好友”自定义内容,请点击右上角按钮进行分享','close')
       },
       wxonMenuShareTimeline: function (title,link,imgUrl) {//获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
         wx.onMenuShareTimeline({
@@ -596,8 +598,6 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
-        CommonService=this;
-        CommonService.platformPrompt('已获取“微信朋友圈”自定义内容,请点击右上角按钮进行分享','close');
       },
       wxonMenuShareQQ: function (title,desc,link,imgUrl) {//获取“分享到QQ”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQQ({
@@ -612,8 +612,6 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
-        CommonService=this;
-        CommonService.platformPrompt('已获取“QQ好友”自定义内容,请点击右上角按钮进行分享','close');
       },
       wxonMenuShareQZone: function (title,desc,link,imgUrl) {//获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQZone({
@@ -628,8 +626,6 @@ angular.module('starter.services', [])
             // 用户取消分享后执行的回调函数
           }
         });
-        CommonService=this;
-        CommonService.platformPrompt('已获取“QQ空间”自定义内容,请点击右上角按钮进行分享','close');
       }
     }
   })
