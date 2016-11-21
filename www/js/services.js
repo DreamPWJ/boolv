@@ -187,7 +187,13 @@ angular.module('starter.services', [])
         //通过ready接口处理成功验证
         wx.ready(function(){
           // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-          $ionicActionSheet.show({
+          //自动调用分享按钮注册和自定义分享
+          WeiXinService.wxonMenuShareTimeline(title,link,imgUrl);//微信朋友圈
+          WeiXinService.wxonMenuShareAppMessage(title,desc,link,imgUrl);//微信好友
+          WeiXinService.wxonMenuShareQQ(title,desc,link,imgUrl);//QQ好友
+          WeiXinService.wxonMenuShareQZone(title,desc,link,imgUrl);//QQ空间
+
+/*          $ionicActionSheet.show({
             cssClass: 'action-s',
             titleText: '分享',
             buttons: [
@@ -215,7 +221,7 @@ angular.module('starter.services', [])
               }
               return true;
             }
-          });
+          });*/
         });
 
       },
@@ -424,7 +430,7 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv,AccountService,$sce,CommonService) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv,AccountService,$sce) { //微信 JS SDK 接口服务定义
     return {
       //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
       getWCToken: function () {
@@ -481,7 +487,7 @@ angular.module('starter.services', [])
       目前Android微信客户端不支持pushState的H5新特性，所以使用pushState来实现web app的页面会导致签名失败，此问题会在Android6.2中修复*/
       weichatConfig: function (timestamp,nonceStr,signature) { //微信JS SDK 通过config接口注入权限验证配置
         wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: 'wx39ba5b2a2f59ef2c', // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串

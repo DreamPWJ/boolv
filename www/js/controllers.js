@@ -269,13 +269,14 @@ angular.module('starter.controllers', [])
       MainService.getNews(Id).success(function (data) {
         $scope.news = data.Values;
       }).then(function () {
+
+        if (WeiXinService.isWeiXin()) { //如果是微信
+          $scope.isWeiXin=true;
+          CommonService.shareActionSheet($scope.news.Title,$scope.news.Note,BooLv.moblileApi + '/#/dealnotice/' + Id,$scope.news.PicAddr);
+        }
         //调用分享面板
         $scope.shareActionSheet = function () {
-          if (WeiXinService.isWeiXin()) { //如果是微信
-            CommonService.shareActionSheet($scope.news.Title,$scope.news.Note,BooLv.moblileApi + '/#/dealnotice/' + Id,$scope.news.PicAddr);
-          } else {
             umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/dealnotice/' + Id);
-          }
         }
       })
         .finally(function () {
@@ -304,13 +305,15 @@ angular.module('starter.controllers', [])
       MainService.getNews(Id).success(function (data) {
         $scope.news = data.Values;
       }).then(function () {
+        if (WeiXinService.isWeiXin()) { //如果是微信
+          $scope.isWeiXin=true;
+          CommonService.shareActionSheet($scope.news.Title, $scope.news.Note, BooLv.moblileApi + '/#/companytrends/' + Id, $scope.news.PicAddr);
+        }
         //调用分享面板
         $scope.shareActionSheet = function () {
-          if (WeiXinService.isWeiXin()) { //如果是微信
-            CommonService.shareActionSheet($scope.news.Title, $scope.news.Note, BooLv.moblileApi + '/#/companytrends/' + Id, $scope.news.PicAddr);
-          } else {
+
             umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/companytrends/' + Id);
-          }
+
         }
       })
         .finally(function () {
@@ -3495,20 +3498,20 @@ angular.module('starter.controllers', [])
       $rootScope.userinfo = data.Values;
       localStorage.setItem('user', JSON.stringify(data.Values));
     })
-    //分享
-    $scope.shareActionSheet = function () {
 
       MainService.getHelpDetails({ID: 13}).success(function (data) {
         $scope.helpdata = data.Values;
+      }).then(function () {
         //分享
         if (WeiXinService.isWeiXin()) { //如果是微信
           CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BooLv.moblileApi + '/#/help/' + 13, '');
-        } else {
+          }
+          //分享
+          $scope.shareActionSheet = function () {
           umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + 13);
         }
       })
-
-    }
+    
   })
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, $state, CommonService) {
@@ -4077,13 +4080,13 @@ angular.module('starter.controllers', [])
           $scope.title = data.Values.Title;
         }
       }).then(function () {
+        if (WeiXinService.isWeiXin()) { //如果是微信
+          $scope.isWeiXin=true;
+          CommonService.shareActionSheet($scope.helpdata.Title,$scope.helpdata.Abstract,BooLv.moblileApi + '/#/help/' + id,'');
+        }
         //调用分享面板
         $scope.shareActionSheet = function () {
-          if (WeiXinService.isWeiXin()) { //如果是微信
-            CommonService.shareActionSheet($scope.helpdata.Title,$scope.helpdata.Abstract,BooLv.moblileApi + '/#/help/' + id,'');
-          } else {
             umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
-          }
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();
