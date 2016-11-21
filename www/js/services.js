@@ -141,7 +141,7 @@ angular.module('starter.services', [])
           WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
           //通过ready接口处理成功验证
           wx.ready(function() {
-            WeiXinService.wxscanQRCode($scope); //调起微信扫一扫接口
+            WeiXinService.wxscanQRCode($scope?1:0); //调起微信扫一扫接口
           })
           return;
         }
@@ -544,16 +544,18 @@ angular.module('starter.services', [])
           }
         });
       },
-      wxscanQRCode: function ($scope) {//调起微信扫一扫接口
+      wxscanQRCode: function (type) {//调起微信扫一扫接口
         wx.scanQRCode({
-          needResult:($scope.deliverinfo||$scope.signinfo)?1:0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          needResult:type, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
           success: function (res) {
-            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-            if ($scope.deliverinfo) {
-              $scope.deliverinfo.ExpNo = result.split(",")[1];//发货
-            } else if ($scope.signinfo) {
-              $scope.signinfo.ExpNo = result.split(",")[1];//验收
+            if(type==1){// 当needResult 为 1 时，扫码返回的结果
+              var result = res.resultStr;
+              if ($scope.deliverinfo) {
+                $scope.deliverinfo.ExpNo = result.split(",")[1];//发货
+              } else if ($scope.signinfo) {
+                $scope.signinfo.ExpNo = result.split(",")[1];//验收
+              }
             }
           }
         });
