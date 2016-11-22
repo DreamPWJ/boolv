@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
         }
 
         //是否是微信 初次获取签名 获取微信签名 以及access_token Ticket
-        if (WeiXinService.isWeiXin()&&!localStorage.getItem("signature")) {
+        if (WeiXinService.isWeiXin()) {
           //获取微信access_token
           WeiXinService.getWCToken().success(function (data) {
             if (data.Key == 200) {
@@ -160,10 +160,10 @@ angular.module('starter.controllers', [])
         }
 
         //微信版已经获取签名 直接初始化配置权限信息
-        if (WeiXinService.isWeiXin()&&localStorage.getItem("signature")) {
+/*        if (WeiXinService.isWeiXin()&&localStorage.getItem("signature")) {
           //通过config接口注入权限验证配置
           WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-        }
+        }*/
 
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -3511,7 +3511,7 @@ angular.module('starter.controllers', [])
           umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + 13);
         }
       })
-    
+
   })
   //账号信息
   .controller('AccountInfoCtrl', function ($scope, $rootScope, $state, CommonService) {
