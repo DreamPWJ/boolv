@@ -263,7 +263,7 @@ angular.module('starter.services', [])
           WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
           //通过ready接口处理成功验证
           wx.ready(function() {
-            WeiXinService.wxchooseImage($scope, type, filenames); //拍照或从手机相册中选图接口
+            WeiXinService.wxchooseImage($scope, type); //拍照或从手机相册中选图接口
           })
           return;
         }
@@ -430,36 +430,8 @@ angular.module('starter.services', [])
 
     }
   })
-  .service('WeiXinService', function ($q, $http, BooLv,AccountService,$sce) { //微信 JS SDK 接口服务定义
+  .service('WeiXinService', function ($q, $http, BooLv,AccountService) { //微信 JS SDK 接口服务定义
     return {
-      //获取微信access_token access_token的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
-      getWCToken: function () {
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
-        promise = $http({
-          method: 'GET',
-          url: BooLv.api + "/wc/token"
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
-      //获取微信Ticket Ticket的有效期为7200秒，即2小时（建议获取后缓存在本地，缓存时间小于7200秒）
-      getWCTicket: function (params) {
-        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
-        var promise = deferred.promise
-        promise = $http({
-          method: 'GET',
-          url: BooLv.api + "/wc/ticket/"+params.token
-        }).success(function (data) {
-          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
-        }).error(function (err) {
-          deferred.reject(err);// 声明执行失败，即服务器返回错误
-        });
-        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-      },
       //获取微信签名
       getWCSignature: function (params) {
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
@@ -467,6 +439,21 @@ angular.module('starter.services', [])
         promise = $http({
           method: 'GET',
           url: BooLv.api + "/wc/signature",
+          params:params
+        }).success(function (data) {
+          deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+        }).error(function (err) {
+          deferred.reject(err);// 声明执行失败，即服务器返回错误
+        });
+        return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+      },
+      //获取下载微信媒体文件
+      getWCMedia: function (params) {
+        var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+        var promise = deferred.promise
+        promise = $http({
+          method: 'GET',
+          url: BooLv.api + "/wc/media",
           params:params
         }).success(function (data) {
           deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
@@ -505,7 +492,7 @@ angular.module('starter.services', [])
         });
 
       },
-      wxchooseImage: function ($scope,type,filenames) { //拍照或从手机相册中选图接口
+      wxchooseImage: function ($scope,type) { //拍照或从手机相册中选图接口
         WeiXinService=this;
         wx.chooseImage({
           count: 6, // 默认9
@@ -514,20 +501,34 @@ angular.module('starter.services', [])
           success: function (results) {
             var localIds = results.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             for (var i = 0, len = localIds.length; i < len; i++) {
-              //$sce服务把一些地址变成安全的、授权的链接
-              $scope.imageList.push($sce.trustAsResourceUrl(localIds[i]));
-              WeiXinService.wxuploadImage(localIds[i].toString())
-             // AccountService.addFilenames($scope, {filenames: filenames}, localIds[i]);
+              WeiXinService.wxuploadImage(localIds[i].toString(),$scope.uploadtype)
             }
           }
         });
       },
-      wxuploadImage:function (localId) {//微信上传图片接口
+      wxuploadImage:function (localId,uploadtype) {//微信上传图片接口
+        WeiXinService=this;
         wx.uploadImage({
           localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
           isShowProgressTips: 1, // 默认为1，显示进度提示
           success: function (res) {
             var serverId = res.serverId; // 返回图片的服务器端ID
+            //获取下载微信媒体文件
+            $scope.mediaparams={
+              mediaId:serverId,//返回图片的服务器端ID
+              optld:uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
+            }
+            WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
+              $scope.imageList.push(data.Values.url);//客户端显示的url
+              $scope.ImgsPicAddr.push(data.Values.savepath);//提交订单需要的url
+              if (uploadtype == 5) {//上传头像单独处理
+                var figurparams = {
+                  userid: localStorage.getItem("usertoken"),
+                  figure: data.Values.savepath //上传图片接口获得地址
+                }
+                AccountService.modifyFigure(figurparams);
+              }
+            })
           }
         });
       },

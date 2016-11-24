@@ -119,29 +119,10 @@ angular.module('starter.controllers', [])
           })
         }
 
-        //是否是微信 初次获取签名 获取微信签名 以及access_token Ticket
+        //是否是微信 初次获取签名 获取微信签名
         if (WeiXinService.isWeiXin()) {
-          //获取微信access_token
-          WeiXinService.getWCToken().success(function (data) {
-            if (data.Key == 200) {
-              localStorage.setItem("wxaccess_token", data.Values)
-              $scope.wxaccess_token = data.Values;
-            } else {
-              CommonService.platformPrompt("获取微信access_token失败!", 'close');
-            }
-          }).then(function () {
-            // 获取微信Ticket
-            WeiXinService.getWCTicket({token: $scope.wxaccess_token}).success(function (data) {
-              if (data.Key == 200) {
-                localStorage.setItem("wx_ticket", data.Values)
-                $scope.wx_ticket = data.Values;
-              } else {
-                CommonService.platformPrompt("获取微信Ticket失败!", 'close');
-              }
-            }).then(function () {
               // 获取微信签名
               $scope.wxparams = {
-                ticket: $scope.wx_ticket,
                 url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
               }
               WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
@@ -155,15 +136,8 @@ angular.module('starter.controllers', [])
                   CommonService.platformPrompt("获取微信签名失败!", 'close');
                 }
               })
-            })
-          })
         }
 
-        //微信版已经获取签名 直接初始化配置权限信息
-/*        if (WeiXinService.isWeiXin()&&localStorage.getItem("signature")) {
-          //通过config接口注入权限验证配置
-          WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
-        }*/
 
       }).finally(function () {
         CommonService.ionicLoadingHide();
@@ -1820,6 +1794,7 @@ angular.module('starter.controllers', [])
   .controller('DeliverGoodsCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService) {
     $scope.deliverinfo = {};//发货信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadtype = $rootScope.deliverDetails.OrderType;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.delivery = function () {
       $scope.goodtype = 1;
     }
@@ -1910,7 +1885,7 @@ angular.module('starter.controllers', [])
       CommonService.ionicLoadingShow();
       //提交发货详细数据
       $scope.details = [];
-      var ordeType = $rootScope.deliverDetails.OrderType;
+      var ordeType = $rootScope.deliverDetails.OrderType;//类型 1卖货单2供货单
       angular.forEach($rootScope.selectproductandnum, function (item) {
         var items = {};
         items.ProdID = item.PID;
@@ -2599,6 +2574,7 @@ angular.module('starter.controllers', [])
   .controller('AddCutPaymentCtrl', function ($scope, $rootScope, $stateParams, CommonService, DeliverService) {
     $rootScope.addcutpayment = [];//提交成功清空数据
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadtype = $rootScope.checkDetails.OrderType;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.cutpaymentinfo = {};//扣款信息
     $scope.cutpaymentinfo.isAdd = [];
     $scope.cutpaymentinfo.isMinus = [];
@@ -2803,7 +2779,7 @@ angular.module('starter.controllers', [])
           $scope.details.push(items);
         })
         $scope.datas = {
-          OrderType: $rootScope.checkDetails.OrderType,//订单类型1-卖货单2-供货出库单
+          OrderType: $rootScope.checkDetails.OrderType,//订单类型1-卖货单2-供货单
           Node: $rootScope.checkDetails.No,//订单号
           Debit: $scope.cutpaymentinfo.totalmoney || 0,//扣款总金额
           Details: $scope.details//卖货/供货验货扣款记录
@@ -3368,6 +3344,7 @@ angular.module('starter.controllers', [])
   .controller('SignCtrl', function ($scope, $rootScope, CommonService, DeliverService, AccountService, SearchOrderService) {
     $scope.signinfo = {};//签收信息获取
     $scope.ImgsPicAddr = [];//图片信息数组
+    $scope.uploadtype = $rootScope.signDetails.OrderType;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     //物流配送
     $scope.delivery = function () {
       $scope.goodtype = 1;
@@ -4337,6 +4314,7 @@ angular.module('starter.controllers', [])
     $scope.imageList = [];
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.uploadName = 'realname';//上传图片的类别 用于区分
+    $scope.uploadtype = 4;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     //上传照片
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
@@ -4389,6 +4367,7 @@ angular.module('starter.controllers', [])
     $scope.ImgsPicAddr = [];//图片信息数组
     $scope.uploadName = 'uploadhead';//上传图片的类别 用于区分
     $scope.figureurl = $stateParams.figure;
+    $scope.uploadtype = 5;//上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
     $scope.uploadActionSheet = function () {
       CommonService.uploadActionSheet($scope, 'User');
     }
