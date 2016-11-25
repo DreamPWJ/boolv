@@ -141,7 +141,7 @@ angular.module('starter.services', [])
           WeiXinService.weichatConfig(localStorage.getItem("timestamp"), localStorage.getItem("noncestr"), localStorage.getItem("signature"));
           //通过ready接口处理成功验证
           wx.ready(function() {
-            WeiXinService.wxscanQRCode($scope?1:0); //调起微信扫一扫接口
+            WeiXinService.wxscanQRCode($scope,$scope?1:0); //调起微信扫一扫接口
           })
           return;
         }
@@ -501,12 +501,12 @@ angular.module('starter.services', [])
           success: function (results) {
             var localIds = results.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
             for (var i = 0, len = localIds.length; i < len; i++) {
-              WeiXinService.wxuploadImage(localIds[i].toString(),$scope.uploadtype)
+              WeiXinService.wxuploadImage($scope,localIds[i].toString(),$scope.uploadtype)
             }
           }
         });
       },
-      wxuploadImage:function (localId,uploadtype) {//微信上传图片接口
+      wxuploadImage:function ($scope,localId,uploadtype) {//微信上传图片接口
         WeiXinService=this;
         wx.uploadImage({
           localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
@@ -545,7 +545,7 @@ angular.module('starter.services', [])
           }
         });
       },
-      wxscanQRCode: function (type) {//调起微信扫一扫接口
+      wxscanQRCode: function ($scope,type) {//调起微信扫一扫接口
         wx.scanQRCode({
           needResult:type, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
