@@ -516,7 +516,7 @@ angular.module('starter.services', [])
             //获取下载微信媒体文件
             $scope.mediaparams={
               mediaId:serverId,//返回图片的服务器端ID
-              optld:uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
+              optId:uploadtype //上传媒体操作类型 1.卖货单 2 供货单 3 买货单 4身份证 5 头像
             }
             WeiXinService.getWCMedia($scope.mediaparams).success(function (data) {
               $scope.imageList.push(data.Values.url);//客户端显示的url
@@ -557,6 +557,7 @@ angular.module('starter.services', [])
               } else if ($scope.signinfo) {
                 $scope.signinfo.ExpNo = result.split(",")[1];//验收
               }
+              $scope.apply();
             }
           }
         });
