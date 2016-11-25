@@ -437,7 +437,7 @@ angular.module('starter.services', [])
         var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
         var promise = deferred.promise
         promise = $http({
-          method: 'GET',
+          method: 'POST',
           url: BooLv.api + "/wc/signature",
           params:params
         }).success(function (data) {
