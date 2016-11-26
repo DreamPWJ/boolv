@@ -1,33 +1,16 @@
 angular.module('starter.controllers', [])
-  .config(function ($httpProvider) {
-    //发货录入Fromuser，签收，验货录user，审核验货，及退货录Fromuser
-    //$http模块POST请求类型编码转换 统一配置
-    /*    $httpProvider.defaults.transformRequest = function (obj) {
-     var str = [];
-     for (var p in obj) {
-     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]))
-     }
-     return str.join("&")
-     }
-
-     $httpProvider.defaults.headers.post = {
-     'Content-Type': 'application/x-www-form-urlencoded'
-     }
-
-     $httpProvider.defaults.headers.put = {
-     'Content-Type': 'application/x-www-form-urlencoded'
-     }*/
-    //服务注册到$httpProvider.interceptors中
+  .config(function ($httpProvider) { //统一配置设置
+    //服务注册到$httpProvider.interceptors中  用于接口授权
     $httpProvider.interceptors.push('authInterceptor');
-    /*   $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
+    /* $httpProvider.defaults.headers.common['Authorization'] = localStorage.getItem('token');*/
   })
-  .controller('TabCtrl', function ($scope, $state, $rootScope, $ionicModal, $ionicLoading, CommonService) {
-
+  .controller('TabCtrl', function ($scope, $state, $rootScope, CommonService) {
 
   })
   //APP首页面
   .controller('MainCtrl', function ($scope, $state, $rootScope, $stateParams, $timeout, $ionicSlideBoxDelegate, CommonService, $ionicLoading, $ionicHistory, BooLv, MainService, NewsService, $ionicPlatform, AccountService, WeiXinService, $location) {
     CommonService.ionicLoadingShow();
+    //首页数据请求初始化
     $scope.getMainData = function () {
       //登录授权
       MainService.authLogin().success(function (data) {
@@ -43,8 +26,6 @@ angular.module('starter.controllers', [])
             $ionicSlideBoxDelegate.$getByHandle("slideboximgs").loop(true);
             /*            console.log($ionicSlideBoxDelegate.$getByHandle("slideboximgs").slidesCount());*/
           }, 100)
-
-
         })
         //获取行情报价分页列表
         $scope.restProdsParams = {
@@ -83,6 +64,7 @@ angular.module('starter.controllers', [])
           })
         })
         try {
+          //极光推送设置
           window.plugins.jPushPlugin.getRegistrationID(function (data) {
             $scope.jPushRegistrationID = data;
 
@@ -101,7 +83,7 @@ angular.module('starter.controllers', [])
         } catch (e) {
           console.log(e);
         }
-        if ($ionicPlatform.is('android')) {
+        if ($ionicPlatform.is('android')) { //android检查新版本自更新提示
           //android系统自动更新软件版本
           $scope.versionparams = {
             currentPage: 1,//当前页码
@@ -138,15 +120,15 @@ angular.module('starter.controllers', [])
               })
         }
 
-
       }).finally(function () {
         CommonService.ionicLoadingHide();
         $scope.$broadcast('scroll.refreshComplete');
       })
 
     }
-
+    //初始化首页数据
     $scope.getMainData();
+
     CommonService.ionicPopover($scope, 'my-popover.html');
     //在首页中清除导航历史退栈
     $scope.$on('$ionicView.afterEnter', function () {
@@ -160,7 +142,7 @@ angular.module('starter.controllers', [])
     $rootScope.barcodeScanner = function () {
       CommonService.barcodeScanner();
     }
-
+     //在外部浏览器打开连接
     $scope.windowOpen = function (url) {
       CommonService.windowOpen(url)
     }
@@ -3998,7 +3980,7 @@ angular.module('starter.controllers', [])
     $scope.authorization = function () {
       //芝麻信用参数签名  服务器那边就能传给我们一个经过加密的param和一个经过加密的sign
       //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
-      AccountService.signZmmObile($scope.signinfo).success(function (data) {
+      AccountService.signZmMobile($scope.signinfo).success(function (data) {
         if (data.Key == 200) {
           //芝麻应用授权SDK调用
           SesameCredit.sesamecredit(data.Values.param, data.Values.sign, function (data) {
