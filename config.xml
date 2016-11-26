@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.boolv.trading" version="1.1.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.boolv.trading" version="1.1.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>博绿固废直卖</name>
   <description>
     博绿固废直卖网是专注于再生资源回收再利用行业，为行业上下游客户提供货源、渠道、资金、信息的第三方服务平台。网站以直卖模式为创新点，为上游回收商提供直卖到拆解企业的交易服务，为下游拆解企业提供直买的货源整合服务，上下游直接对接解决行业物流成本高、回收效率低、货源渠道受限、资金流通不畅等问题，为行业发展搭建直通桥梁，牵手上下游两端客户，齐头并进，共建循环经济、物资再生的新形态
@@ -70,6 +70,8 @@
     <splash src="resources\android\splash\drawable-port-xhdpi-screen.png" density="port-xhdpi"/>
     <splash src="resources\android\splash\drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources\android\splash\drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
+<!--    如果设备有SD卡（或等效的存储分区）。那么持久性文件将被存储在该空间的根路径下-->
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   </platform>
   <platform name="ios">
     <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
@@ -100,6 +102,8 @@
     <splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
     <splash src="resources/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
     <splash src="resources/ios/splash/Default~iphone.png" width="320" height="480"/>
+<!--    要持久化保存很多文件，又不希望和普通用户文件混起来-->
+    <preference name="iosPersistentFileLocation" value="Library" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
   </platform>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>

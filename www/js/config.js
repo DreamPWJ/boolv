@@ -1,5 +1,5 @@
 /**
- * Created by pwj on 2016/5/23.
+ * Created by pwj on 2016/6/1.
  * 系统接口常量配置
  */
 var configMod = angular.module("starter.config", []);
@@ -11,6 +11,6 @@ configMod.constant("BooLv", {
   'siteUrl': "http://a.boolv.com",//仓库地址 暂无使用
   'imgUrl': "http://f.boolv.com",//图片地址 暂无使用
   'moblileApi':"http://m.boolv.com",//手机端服务  使用（分享链接展示调用）
-  'version': '1.1.7' //当前版本号
+  'version': '1.1.8' //当前版本号
 });
 
