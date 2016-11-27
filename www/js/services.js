@@ -1154,7 +1154,7 @@ angular.module('starter.services', [])
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise;
       promise = $http({
-        method: 'POST',
+        method: 'GET',
         url: BooLv.api + "/user/zm_h5_auth" ,
         params:params
       }).success(function (data) {
@@ -1168,8 +1168,21 @@ angular.module('starter.services', [])
       var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
       var promise = deferred.promise;
       promise = $http({
-        method: 'POST',
-        url: BooLv.api + "/user/zm_h5_auth_mobile" ,
+        method: 'GET',
+        url: BooLv.api + "/user/zm_h5_auth_mobile/"+params.mobile
+      }).success(function (data) {
+        deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了
+      }).error(function (err) {
+        deferred.reject(err);// 声明执行失败，即服务器返回错误
+      });
+      return promise; // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+    },
+    zmH5AuthCallback: function (params) {//H5芝麻信用授权回调解析参数
+      var deferred = $q.defer();// 声明延后执行，表示要去监控后面的执行
+      var promise = deferred.promise;
+      promise = $http({
+        method: 'GET',
+        url: BooLv.api + "/user/zm_h5_callback/"+params.userid,
         params:params
       }).success(function (data) {
         deferred.resolve(data);// 声明执行成功，即http请求数据成功，可以返回数据了

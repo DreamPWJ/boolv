@@ -3975,9 +3975,20 @@ angular.module('starter.controllers', [])
   })
 
   //芝麻信用手机号授权
-  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService,WeiXinService) {
     $scope.signinfo = {}
     $scope.authorization = function () {
+      if(WeiXinService.isWeiXin()){ //如果是微信
+        //H5芝麻信用参数签名  手机号
+        WeiXinService.zmH5AuthMobile({mobile:$scope.signinfo.mobile}).success(function (data) {
+          if (data.Key == 200) {
+            //CommonService.platformPrompt('H5芝麻信用参数签名成功', 'close');
+          } else {
+            CommonService.platformPrompt('H5芝麻信用参数签名失败', 'close');
+          }
+        })
+        return;
+      }
       //芝麻信用参数签名  服务器那边就能传给我们一个经过加密的param和一个经过加密的sign
       //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
       AccountService.signZmMobile($scope.signinfo).success(function (data) {
