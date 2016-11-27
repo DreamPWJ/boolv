@@ -103,21 +103,21 @@ angular.module('starter.controllers', [])
 
         //是否是微信 初次获取签名 获取微信签名
         if (WeiXinService.isWeiXin()) {
-              // 获取微信签名
-              $scope.wxparams = {
-                url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
-              }
-              WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
-                if (data.Key == 200) {
-                  localStorage.setItem("timestamp", data.Values.timestamp);//生成签名的时间戳
-                  localStorage.setItem("noncestr", data.Values.noncestr);//生成签名的随机串
-                  localStorage.setItem("signature", data.Values.signature);//生成签名
-                  //通过config接口注入权限验证配置
-                  WeiXinService.weichatConfig(data.Values.timestamp, data.Values.noncestr, data.Values.signature);
-                } else {
-                  CommonService.platformPrompt("获取微信签名失败!", 'close');
-                }
-              })
+          // 获取微信签名
+          $scope.wxparams = {
+            url: location.href.split('#')[0] //当前网页的URL，不包含#及其后面部分
+          }
+          WeiXinService.getWCSignature($scope.wxparams).success(function (data) {
+            if (data.Key == 200) {
+              localStorage.setItem("timestamp", data.Values.timestamp);//生成签名的时间戳
+              localStorage.setItem("noncestr", data.Values.noncestr);//生成签名的随机串
+              localStorage.setItem("signature", data.Values.signature);//生成签名
+              //通过config接口注入权限验证配置
+              WeiXinService.weichatConfig(data.Values.timestamp, data.Values.noncestr, data.Values.signature);
+            } else {
+              CommonService.platformPrompt("获取微信签名失败!", 'close');
+            }
+          })
         }
 
       }).finally(function () {
@@ -142,7 +142,7 @@ angular.module('starter.controllers', [])
     $rootScope.barcodeScanner = function () {
       CommonService.barcodeScanner();
     }
-     //在外部浏览器打开连接
+    //在外部浏览器打开连接
     $scope.windowOpen = function (url) {
       CommonService.windowOpen(url)
     }
@@ -227,12 +227,12 @@ angular.module('starter.controllers', [])
       }).then(function () {
 
         if (WeiXinService.isWeiXin()) { //如果是微信
-          $scope.isWeiXin=true;
-          CommonService.shareActionSheet($scope.news.Title,$scope.news.Note,BooLv.moblileApi + '/#/dealnotice/' + Id,$scope.news.PicAddr);
+          $scope.isWeiXin = true;
+          CommonService.shareActionSheet($scope.news.Title, $scope.news.Note, BooLv.moblileApi + '/#/dealnotice/' + Id, $scope.news.PicAddr);
         }
         //调用分享面板
         $scope.shareActionSheet = function () {
-            umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/dealnotice/' + Id);
+          umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/dealnotice/' + Id);
         }
       })
         .finally(function () {
@@ -262,13 +262,13 @@ angular.module('starter.controllers', [])
         $scope.news = data.Values;
       }).then(function () {
         if (WeiXinService.isWeiXin()) { //如果是微信
-          $scope.isWeiXin=true;
+          $scope.isWeiXin = true;
           CommonService.shareActionSheet($scope.news.Title, $scope.news.Note, BooLv.moblileApi + '/#/companytrends/' + Id, $scope.news.PicAddr);
         }
         //调用分享面板
         $scope.shareActionSheet = function () {
 
-            umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/companytrends/' + Id);
+          umeng.share($scope.news.Title, $scope.news.Note, $scope.news.PicAddr, BooLv.moblileApi + '/#/companytrends/' + Id);
 
         }
       })
@@ -3458,18 +3458,18 @@ angular.module('starter.controllers', [])
       localStorage.setItem('user', JSON.stringify(data.Values));
     })
 
-      MainService.getHelpDetails({ID: 13}).success(function (data) {
-        $scope.helpdata = data.Values;
-      }).then(function () {
-        //分享
-        if (WeiXinService.isWeiXin()) { //如果是微信
-          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BooLv.moblileApi + '/#/help/' + 13, '');
-          }
-          //分享
-          $scope.shareActionSheet = function () {
-          umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + 13);
-        }
-      })
+    MainService.getHelpDetails({ID: 13}).success(function (data) {
+      $scope.helpdata = data.Values;
+    }).then(function () {
+      //分享
+      if (WeiXinService.isWeiXin()) { //如果是微信
+        CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BooLv.moblileApi + '/#/help/' + 13, '');
+      }
+      //分享
+      $scope.shareActionSheet = function () {
+        umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + 13);
+      }
+    })
 
   })
   //账号信息
@@ -3939,6 +3939,18 @@ angular.module('starter.controllers', [])
   .controller('CreditNoAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.signinfo = {}
     $scope.authorization = function () {
+      if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
+        //H5芝麻信用参数签名  手机号
+        AccountService.zmH5Auth($scope.signinfo).success(function (data) {
+          if (data.Key == 200) {
+            console.log(data.Values.url);
+            CommonService.windowOpen(data.Values.url);
+          } else {
+            CommonService.platformPrompt('H5芝麻信用参数签名失败', 'close');
+          }
+        })
+        return;
+      }
       //芝麻信用参数签名  服务器那边就能传给我们一个经过加密的param和一个经过加密的sign
       //取到的这两个参数和商家APP ID传进去，这些就被传到芝麻信用的服务器，然后会返回给我们授权token，字段名也是sign和params
       AccountService.signZm($scope.signinfo).success(function (data) {
@@ -3975,14 +3987,15 @@ angular.module('starter.controllers', [])
   })
 
   //芝麻信用手机号授权
-  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService,WeiXinService) {
+  .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.signinfo = {}
     $scope.authorization = function () {
-      if(WeiXinService.isWeiXin()){ //如果是微信
+      if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
         //H5芝麻信用参数签名  手机号
-        WeiXinService.zmH5AuthMobile({mobile:$scope.signinfo.mobile}).success(function (data) {
+        AccountService.zmH5AuthMobile({mobile: $scope.signinfo.mobile}).success(function (data) {
           if (data.Key == 200) {
-            //CommonService.platformPrompt('H5芝麻信用参数签名成功', 'close');
+            console.log(data.Values.url);
+            CommonService.windowOpen(data.Values.url);
           } else {
             CommonService.platformPrompt('H5芝麻信用参数签名失败', 'close');
           }
@@ -4005,9 +4018,9 @@ angular.module('starter.controllers', [])
               if (data.Key == 200) {
                 CommonService.platformPrompt('获取芝麻授权数据成功', 'close');
               } else {
+
                 CommonService.platformPrompt('获取芝麻授权数据失败', 'close');
               }
-
             }).then(function () {
               //跳转信用首页
               $state.go("mycredit");
@@ -4021,6 +4034,27 @@ angular.module('starter.controllers', [])
       })
     }
 
+  })
+  //H5芝麻信用授权回调解析参数
+  .controller('ZmCallBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
+      if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
+        //获取芝麻信用的返回数据传到服务器端解密再获取openId
+        $scope.params = {
+          userid: localStorage.getItem("usertoken"),
+          param: '',
+          sign: ''
+        }
+        AccountService.zmH5AuthCallback($scope.params).success(function (data) {
+          if (data.Key == 200) {
+l
+          } else {
+            CommonService.platformPrompt('获取H5芝麻信用授权回调解析参数失败', 'close');
+          }
+        }).then(function () {
+          //跳转信用首页
+         // $state.go("mycredit");
+        })
+      }
   })
   //帮助信息共用模板
   .controller('HelpCtrl', function ($scope, $rootScope, $stateParams, $state, BooLv, CommonService, MainService, WeiXinService) {
@@ -4051,12 +4085,12 @@ angular.module('starter.controllers', [])
         }
       }).then(function () {
         if (WeiXinService.isWeiXin()) { //如果是微信
-          $scope.isWeiXin=true;
-          CommonService.shareActionSheet($scope.helpdata.Title,$scope.helpdata.Abstract,BooLv.moblileApi + '/#/help/' + id,'');
+          $scope.isWeiXin = true;
+          CommonService.shareActionSheet($scope.helpdata.Title, $scope.helpdata.Abstract, BooLv.moblileApi + '/#/help/' + id, '');
         }
         //调用分享面板
         $scope.shareActionSheet = function () {
-            umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
+          umeng.share($scope.helpdata.Title, $scope.helpdata.Abstract, '', BooLv.moblileApi + '/#/help/' + id);
         }
       }).finally(function () {
         CommonService.ionicLoadingHide();

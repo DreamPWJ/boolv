@@ -131,10 +131,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           $state.go("myadvance");//申请预收款列表
         }
 
-        /*        if (device.platform == "Android") {*/
-        /*      } else {
-         }*/
-
       }, false)
 
       //调试模式，这样报错会在应用中弹出一个遮罩层显示错误信息
@@ -158,7 +154,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         if(screenOrientation){
           screenOrientation.setOrientation('portrait');
         }
-        
+
       }, false);
 
       //页面   A->B  B的缓存是清掉的，B->C->B B的缓存是保留
@@ -183,6 +179,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
 
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
+   /* 设置平台特性*/
     $ionicConfigProvider.platform.ios.tabs.style('standard');
     $ionicConfigProvider.platform.ios.tabs.position('bottom');
     $ionicConfigProvider.platform.android.tabs.style('standard');
@@ -217,12 +214,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       direction: 'right'
     });
 
+    //..省略代码
+
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.
     // Each state's controller can be found in controllers.js
     $stateProvider
-
     // setup an abstract state for the tabs directive
       .state('tab', {
         url: '/tab',
@@ -748,10 +746,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/account/realname.html',
         controller: 'RealNameCtrl'
       })
+      //H5芝麻信用授权回调解析参数
+      .state('zmcallback', {
+        url: '/zmcallback',
+        cache: false,
+        controller: 'ZmCallBackCtrl'
+      })
     ;
 // if none of the above states are matched, use this as the fallback
 
-
+    //动态判断是否显示初始化页面
     if (localStorage.getItem('isStart')) {
       $urlRouterProvider.otherwise('/tab/main');
     } else {
