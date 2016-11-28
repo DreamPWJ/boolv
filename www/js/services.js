@@ -364,8 +364,12 @@ angular.module('starter.services', [])
       },
 
       windowOpen: function (url) {        //通过默认浏览器打开
+        if(ionic.Platform.isWebView()){  // Check if we are running within a WebView (such as Cordova)
+          window.open(url, '_system', 'location=yes');
+        }else {//如果是H5浏览器页面或者微信
+          window.open(url, "_self");
+        }
 
-        window.open(url, '_system', 'location=yes');
       },
       arrayMinus: function (a, b) {//求两个集合数组的差集
         function uniq(a) { // 去重复数据

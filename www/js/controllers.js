@@ -4036,13 +4036,12 @@ angular.module('starter.controllers', [])
 
   })
   //H5芝麻信用授权回调解析参数
-  .controller('ZmCallBackCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-      if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
+  .controller('ZmCallBackCtrl', function ($scope, $rootScope, $state,$stateParams, CommonService, AccountService) {
+    if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
         //获取芝麻信用的返回数据传到服务器端解密再获取openId
         $scope.params = {
           userid: localStorage.getItem("usertoken"),
-          param: '',
-          sign: ''
+          params: $stateParams.params
         }
         AccountService.zmH5AuthCallback($scope.params).success(function (data) {
           if (data.Key == 200) {
@@ -4052,7 +4051,7 @@ l
           }
         }).then(function () {
           //跳转信用首页
-         // $state.go("mycredit");
+          $state.go("mycredit");
         })
       }
   })
