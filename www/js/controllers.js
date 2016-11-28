@@ -3141,7 +3141,7 @@ angular.module('starter.controllers', [])
 
     //删除用户常用地址
     $scope.deleteAddr = function (addrid, status) {
-      if ($rootScope.userinfo.grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
+      if (JSON.parse(localStorage.getItem("user")).grade == 5 && status == 1) {//当会员是供货商（=5）时，默认地址不能删除
         CommonService.platformPrompt('供货商会员不能删除默认地址', 'close');
         return;
       }
@@ -3866,12 +3866,12 @@ angular.module('starter.controllers', [])
             name: '信用分指标',
             type: 'gauge',
             detail: {
-              formatter: $rootScope.userinfo.score, textStyle: {
+              formatter: JSON.parse(localStorage.getItem("user")).score, textStyle: {
                 color: 'auto',
                 fontSize: 38
               }
             },
-            data: [{value: $rootScope.userinfo.score, name: '我的信用分'}]
+            data: [{value: JSON.parse(localStorage.getItem("user")).score, name: '我的信用分'}]
           }
         ]
       };
@@ -3926,8 +3926,14 @@ angular.module('starter.controllers', [])
       sign: ''
     }
     AccountService.getCreditOpenId($scope.params).success(function (data) {
-      $scope.authentication = data.Values.authentication;//是否授权
-      $scope.zmscore = data.Values.score;//芝麻信用分
+      if(data.Key==200){
+        $scope.authentication = data.Values.authentication;//是否授权
+        $scope.zmscore = data.Values.score;//芝麻信用分
+      }else {
+        CommonService.platformPrompt('获取芝麻信用分和授权信息失败', 'close');
+        return;
+      }
+
     }).then(function () {
       //芝麻信用调用  赋值芝麻信用分
       $scope.initCreditChart();
@@ -4112,7 +4118,7 @@ l
   .controller('SettingCtrl', function ($scope, $rootScope, $state, BooLv, CommonService) {
     $scope.version = BooLv.version;
     $scope.securitylevel = '未知';
-    var certstate = $rootScope.userinfo.certstate;
+    var certstate = JSON.parse(localStorage.getItem("user")).certstate;
     if (certstate.indexOf('2') == -1) {
       $scope.securitylevel = '极低';
     }
