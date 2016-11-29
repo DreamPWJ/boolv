@@ -3926,11 +3926,11 @@ angular.module('starter.controllers', [])
       sign: ''
     }
     AccountService.getCreditOpenId($scope.params).success(function (data) {
-      if(data.Key==200){
+      if(data.Key==200||data.Key==105){ //授权报错的是105
         $scope.authentication = data.Values.authentication;//是否授权
         $scope.zmscore = data.Values.score;//芝麻信用分
       }else {
-        CommonService.platformPrompt('获取芝麻信用分和授权信息失败', 'close');
+        CommonService.platformPrompt(data.Des, 'close');
         return;
       }
 
@@ -4053,7 +4053,7 @@ angular.module('starter.controllers', [])
           if (data.Key == 200) {
 
           } else {
-            CommonService.platformPrompt('获取H5芝麻信用授权回调解析参数失败', 'close');
+            CommonService.platformPrompt('H5芝麻信用授权回调解析参数失败', 'close');
           }
         }).then(function () {
           //跳转信用首页
