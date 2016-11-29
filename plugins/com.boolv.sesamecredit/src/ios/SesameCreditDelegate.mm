@@ -55,22 +55,22 @@
     NSString* sign = [command.arguments objectAtIndex:1];
 
     NSString* appId = @"1000697"; //博绿网 芝麻商户应用ID
-
-   //目标controller,商户Controller必须是基于Navigation Controller
+   NSLog(@"=====目标controller,商户Controller必须是基于Navigation Controller= ",self.navController);
+   //目标controller,商户Controller必须是基于Navigation Controller  不能为nil 只有控制器才能控制页面跳转
    //  使用queryUserAuthReq方法进行授权验证 由于sdk里面有用到c编译,请把调用queryUserAuthReq的controller后缀名改成.mm
    [[ALCreditService sharedService] queryUserAuthReq:appId sign:sign params:params extParams:nil selector:@selector(result:) target:self.navController];
 
-   CDVPluginResult* pluginResult = nil;
-   if (appId != nil && [appId length] > 0) {
-                 NSMutableDictionary* dictionary = [[NSMutableDictionary alloc] init];
-                  [dictionary setValue:params forKey:@"params"];
-                  [dictionary setValue:sign forKey:@"sign"];
-                  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
-                  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                  pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsonString];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
+ //  CDVPluginResult* pluginResult = nil;
+ // if (appId != nil && [appId length] > 0) {
+  //               NSMutableDictionary* dictionary = [[NSMutableDictionary alloc] init];
+  //                [dictionary setValue:params forKey:@"params"];
+  //                [dictionary setValue:sign forKey:@"sign"];
+  //                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:NSJSONWritingPrettyPrinted error:nil];
+  //                NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  //                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsonString];
+ //   } else {
+  //      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+  //  }
 
     //回调方法
     //[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
