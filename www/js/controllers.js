@@ -4046,12 +4046,12 @@ angular.module('starter.controllers', [])
     if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
         //获取芝麻信用的返回数据传到服务器端解密再获取openId
         $scope.params = {
-          userid: localStorage.getItem("usertoken"),
-          params: $location.search()  //芝麻信用回调地址返回参数url?params=xxx&sign=xxx
+          userid: localStorage.getItem("usertoken"), //用户id
+          params: $location.search()  //芝麻信用回调地址返回参数url?params=xxx&sign=xxx   json对象
         }
         AccountService.zmH5AuthCallback($scope.params).success(function (data) {
           if (data.Key == 200) {
-l
+
           } else {
             CommonService.platformPrompt('获取H5芝麻信用授权回调解析参数失败', 'close');
           }
