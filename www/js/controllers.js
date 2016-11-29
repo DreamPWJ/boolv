@@ -3831,8 +3831,7 @@ angular.module('starter.controllers', [])
 
   })
   //芝麻信用
-  .controller('MyCreditCtrl', function ($scope, $rootScope, CommonService, AccountService) {
-
+  .controller('MyCreditCtrl', function ($scope, $rootScope, MainService,CommonService, AccountService) {
 
     // 基于准备好的dom，初始化echarts实例
     $scope.initMyChart = function () {  //我的信用图表初始化
@@ -3919,33 +3918,46 @@ angular.module('starter.controllers', [])
     $scope.initMyChart();
     //先初始化芝麻信用图表dom结构 防止出现大小问题
     var zmChart = echarts.init(document.getElementById('zmcredit'));
-    //获取芝麻信用授权及添加授权获取芝麻信用积分
-    $scope.params = {
-      userid: localStorage.getItem("usertoken"),
-      param: '',
-      sign: ''
-    }
-    AccountService.getCreditOpenId($scope.params).success(function (data) {
-      if(data.Key==200||data.Key==105){ //授权报错的是105
-        $scope.authentication = data.Values.authentication;//是否授权
-        $scope.zmscore = data.Values.score;//芝麻信用分
-      }else {
-        CommonService.platformPrompt(data.Des, 'close');
-        return;
+
+    $scope.getZMCredit=function () {
+      //获取芝麻信用授权及添加授权获取芝麻信用积分
+      $scope.params = {
+        userid: localStorage.getItem("usertoken"),
+        param: '',
+        sign: ''
       }
+      AccountService.getCreditOpenId($scope.params).success(function (data) {
+        if(data.Key==200||data.Key==105){ //授权报错的是105
+          $scope.authentication = data.Values.authentication;//是否授权
+          $scope.zmscore = data.Values.score;//芝麻信用分
+        }else {
+          CommonService.platformPrompt(data.Des, 'close');
+          return;
+        }
 
-    }).then(function () {
-      //芝麻信用调用  赋值芝麻信用分
-      $scope.initCreditChart();
-    })
+      }).then(function () {
+        //芝麻信用调用  赋值芝麻信用分
+        $scope.initCreditChart();
+      })
+    }
 
+    if (!localStorage.getItem("token")) {//如果没有授权先授权
+      //接口授权
+      MainService.authLogin().success(function (data) {
+        localStorage.setItem('token', data.Values)
+      }).then(function () {
+        $scope.getZMCredit();
+      })
+    } else {
+        $scope.getZMCredit();
+    }
 
   })
   //芝麻信用身份证授权
   .controller('CreditNoAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
     $scope.signinfo = {}
     $scope.authorization = function () {
-      if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
+      if (!ionic.Platform.isWebView()||ionic.Platform.isIOS()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
         //H5芝麻信用参数签名  手机号
         AccountService.zmH5Auth($scope.signinfo).success(function (data) {
           if (data.Key == 200) {
@@ -3994,9 +4006,9 @@ angular.module('starter.controllers', [])
 
   //芝麻信用手机号授权
   .controller('CreditPhoneAuthorizationCtrl', function ($scope, $rootScope, $state, CommonService, AccountService) {
-    $scope.signinfo = {}
+    $scope.signinfo = {};
     $scope.authorization = function () {
-      if (!ionic.Platform.isWebView()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
+      if (!ionic.Platform.isWebView()||ionic.Platform.isIOS()) { //如果是H5浏览器页面或者微信  Check if we are running within a WebView (such as Cordova)
         //H5芝麻信用参数签名  手机号
         AccountService.zmH5AuthMobile({mobile: $scope.signinfo.mobile}).success(function (data) {
           if (data.Key == 200) {
