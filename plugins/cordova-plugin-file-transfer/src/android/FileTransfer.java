@@ -65,7 +65,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.webkit.CookieManager;
-
+import org.apache.cordova.PermissionHelper;
+import android.Manifest;
 public class FileTransfer extends CordovaPlugin {
 
     private static final String LOG_TAG = "FileTransfer";
@@ -81,6 +82,7 @@ public class FileTransfer extends CordovaPlugin {
 
     private static HashMap<String, RequestContext> activeRequests = new HashMap<String, RequestContext>();
     private static final int MAX_BUFFER_SIZE = 16 * 1024;
+    String [] permissions = { Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS };
 
     private static final class RequestContext {
         String source;
@@ -178,12 +180,17 @@ public class FileTransfer extends CordovaPlugin {
         if (action.equals("upload") || action.equals("download")) {
             String source = args.getString(0);
             String target = args.getString(1);
-
+          if(hasPermisssion())
+          {
             if (action.equals("upload")) {
                 upload(source, target, args, callbackContext);
             } else {
                 download(source, target, args, callbackContext);
             }
+          }
+          else {
+            PermissionHelper.requestPermissions(this, 0, permissions);
+          }
             return true;
         } else if (action.equals("abort")) {
             String objectId = args.getString(0);
@@ -686,7 +693,7 @@ public class FileTransfer extends CordovaPlugin {
             if(body != null)
             {
                 error.put("body", body);
-            }   
+            }
             if (httpStatus != null) {
                 error.put("http_status", httpStatus);
             }
@@ -986,6 +993,7 @@ public class FileTransfer extends CordovaPlugin {
                 }
             }
         });
+
     }
 
     /**
