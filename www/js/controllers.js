@@ -3865,12 +3865,12 @@ angular.module('starter.controllers', [])
             name: '信用分指标',
             type: 'gauge',
             detail: {
-              formatter: JSON.parse(localStorage.getItem("user")).score, textStyle: {
+              formatter: localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).score:0, textStyle: {
                 color: 'auto',
                 fontSize: 38
               }
             },
-            data: [{value: JSON.parse(localStorage.getItem("user")).score, name: '我的信用分'}]
+            data: [{value: localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).score:0, name: '我的信用分'}]
           }
         ]
       };
