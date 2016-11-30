@@ -82,7 +82,7 @@ public class FileTransfer extends CordovaPlugin {
 
     private static HashMap<String, RequestContext> activeRequests = new HashMap<String, RequestContext>();
     private static final int MAX_BUFFER_SIZE = 16 * 1024;
-    String [] permissions = { Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS };
+    private String [] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
     private static final class RequestContext {
         String source;
@@ -174,6 +174,7 @@ public class FileTransfer extends CordovaPlugin {
           return bytesRead;
         }
     }
+
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -1029,4 +1030,15 @@ public class FileTransfer extends CordovaPlugin {
             });
         }
     }
+
+  public boolean hasPermisssion() {
+    for(String p : permissions)
+    {
+      if(!PermissionHelper.hasPermission(this, p))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
 }
