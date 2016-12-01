@@ -127,4 +127,13 @@ angular.module('starter.directive', [])
         }
       }
     }
-  });
+  })
+.directive('repeatFinish', function() { //利用angular指令监听ng-repeat渲染完成后执行脚本
+  return {
+    link: function(scope, element, attrs) {
+      if (scope.$last) {                   // 这个判断意味着最后一个 OK
+        scope.$eval(attrs.repeatFinish)    // 执行绑定的表达式
+      }
+    }
+  }
+})
