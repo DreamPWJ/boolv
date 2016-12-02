@@ -15,7 +15,7 @@
           <span class="input-label">{{item.ProdName}}</span>
           <input type="number" ng-model="supplyinfo[$index].num"
                  placeholder="剩余供货量{{(item.Num-item.SupNum)+item.UName}}" check-form
-                 ng-change="checkForm(supplyinfo[$index].num,'数量不能大于剩余供货量或小于0','maxvaule',(item.Num-item.SupNum))"
+                 ng-change="checkForm(supplyinfo[$index].num,'数量不能大于剩余供货量或小于0','maxvalue',(item.Num-item.SupNum))"
                  ng-keyup="checkAtLeastOne(supplyinfo,'num')"/>
         </label>
 

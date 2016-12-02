@@ -104,7 +104,7 @@ angular.module('starter.directive', [])
           if (type == 'mobilephone') {//验证手机号
             scope.publicCheckForm(/^1(3|4|5|7|8)\d{9}$/.test(value), value, content,true)
           }
-          if (type == 'maxvaule') {//最大不能超过maxvalue值
+          if (type == 'maxvalue') {//最大不能超过maxvalue值
             scope.publicCheckForm(value > 0 && value <= maxvalue, value, content,true);
           }
           if (type == 'positivenumber') {//正数验证(如 价格)
