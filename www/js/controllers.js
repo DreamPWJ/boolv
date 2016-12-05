@@ -72,7 +72,7 @@ angular.module('starter.controllers', [])
             $scope.datas = {
               registration_id: $scope.jPushRegistrationID,	//极光注册id
               user: localStorage.getItem("usertoken"),	//用户id,没登录为空
-              mobile: JSON.stringify(localStorage.getItem("user")).mobile,	//手机号码
+              mobile: JSON.parse(localStorage.getItem("user")).mobile,	//手机号码
               alias: "",	//设备别名
               device: $ionicPlatform.is('android') ? 0 : 1	//设备类型:0-android,1-ios
             }
