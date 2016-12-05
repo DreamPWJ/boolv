@@ -1620,6 +1620,7 @@ angular.module('starter.controllers', [])
     $scope.adddeliverinfo.isMinus = [];
     $scope.adddeliverinfo.num = [];//填写数量
     $scope.adddeliverinfo.selectnum = 0;//选中数量
+    $scope.goodTypeListGID=[];//产品类别ID
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
 
@@ -1637,8 +1638,11 @@ angular.module('starter.controllers', [])
       console.log($scope.params);
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
       }).then(function () {
+        angular.forEach($scope.goodTypeList ,function (item) {
+          $scope.goodTypeListGID.push(item.GID);
+        })
+        $scope.goodTypeList.push({'GID': $scope.goodTypeListGID.join(','), 'GName': '其它品类'});
         $scope.params.SpONode = '';//全部数据
         $scope.params.SNode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -1653,8 +1657,7 @@ angular.module('starter.controllers', [])
     $scope.currentPage = 0;
     $scope.total = 1;
     $scope.addDeliverProduct = function (GrpIDList) {
-
-      if (GrpIDList == 'other') {//是否是其他类别
+      if (GrpIDList == $scope.goodTypeListGID.join(',')) {//是否是其他类别
         $scope.isotherproduct = true;
       } else {
         $scope.isotherproduct = false;
@@ -2563,6 +2566,7 @@ angular.module('starter.controllers', [])
     $scope.cutpaymentinfo.num = [];//填写数量
     $scope.cutpaymentinfo.money = [];//填写金额
     $scope.cutpaymentinfo.selectnum = 0;//选中数量
+    $scope.goodTypeListGID=[];//产品类别ID
     CommonService.searchModal($scope, 'templates/checkgood/cutpaymentmodel.html')
     //获取产品类别列表
     $scope.getGoodTypeList = function () {
@@ -2579,8 +2583,12 @@ angular.module('starter.controllers', [])
       }
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
+
       }).then(function () {
+        angular.forEach($scope.goodTypeList ,function (item) {
+          $scope.goodTypeListGID.push(item.GID);
+        })
+        $scope.goodTypeList.push({'GID': $scope.goodTypeListGID.join(','), 'GName': '其它品类'});
         $scope.params.SNode = '';//全部数据
         $scope.params.SpONode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -2797,6 +2805,7 @@ angular.module('starter.controllers', [])
     $scope.adddeliverinfo.num = [];//填写数量
     $scope.adddeliverinfo.money = [];//填写价格
     $scope.adddeliverinfo.selectnum = 0;//选中数量
+    $scope.goodTypeListGID=[];//产品类别ID
     //获取发货详情填充添加验货清单
     $scope.getPageFaHuo = function () {
       $scope.params = {
@@ -2862,8 +2871,12 @@ angular.module('starter.controllers', [])
 
       DeliverService.getGoodTypeList($scope.params).success(function (data) {
         $scope.goodTypeList = data.Values;
-        $scope.goodTypeList.push({'GID': 'other', 'GName': '其它品类'});
+
       }).then(function () {
+        angular.forEach($scope.goodTypeList ,function (item) {
+          $scope.goodTypeListGID.push(item.GID);
+        })
+        $scope.goodTypeList.push({'GID': $scope.goodTypeListGID.join(','), 'GName': '其它品类'});
         $scope.params.SNode = '';//全部数据
         $scope.params.SpONode = '';//全部数据
         DeliverService.getGoodTypeList($scope.params).success(function (data) {
@@ -2901,7 +2914,7 @@ angular.module('starter.controllers', [])
     $scope.total = 1;
     $scope.addDeliverProduct = function (GrpIDList) {
 
-      if (GrpIDList == 'other') {//是否是其他类别
+      if (GrpIDList == $scope.goodTypeListGID.join(',')) {//是否是其他类别
         $scope.isotherproduct = true;
       } else {
         $scope.isotherproduct = false;
