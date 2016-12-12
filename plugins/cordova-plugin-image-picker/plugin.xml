@@ -27,9 +27,7 @@
 				<param name="ios-package" value="SOSPicker"/>
 			</feature>
 		</config-file>
-    <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescrip">
-      <string>使用相册</string>
-    </config-file>
+
     <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
       <string>使用相机</string>
     </config-file>
