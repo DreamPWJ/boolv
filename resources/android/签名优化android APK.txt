@@ -10,3 +10,7 @@ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore  boolv.keystore
 
 #优化已签名APK文件 减少占用空间和内存
 zipalign -v 4 android-release-unsigned.apk boolv.apk
+
+
+#启动全屏显示白色背景
+Theme.Light.NoTitleBar.Fullscreen
